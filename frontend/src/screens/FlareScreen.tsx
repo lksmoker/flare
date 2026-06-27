@@ -7,6 +7,7 @@ import { PlaceholderModal } from "../components/PlaceholderModal";
 import { RecoveryResponse } from "../components/RecoveryResponse";
 import { SendFlareButton } from "../components/SendFlareButton";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { useFlareEvents } from "../state/FlareEventContext";
 import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
 
 export function FlareScreen() {
@@ -14,6 +15,7 @@ export function FlareScreen() {
     useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
+  const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
   const {
     isConfigured: isRecoveryMemoryConfigured,
     recoveryMemory,
@@ -39,6 +41,7 @@ export function FlareScreen() {
     setIsRecoveryResponseVisible(false);
     setIsCheckpointVisible(true);
   };
+  const eventForResponse = activeEvent ?? currentEvent;
 
   return (
     <AppShell
@@ -47,7 +50,16 @@ export function FlareScreen() {
       subtitle="Keep the recovery path simple: one dominant action, one secondary reflection entry, and lightweight readiness cues."
       title="Immediate support for the hard moment"
     >
-      <SendFlareButton onPress={() => setIsRecoveryResponseVisible(true)} />
+      <SendFlareButton
+        onPress={() => {
+          createFlareEvent({
+            behaviorName: behaviorPattern?.behaviorName,
+            behaviorSummary: behaviorPattern?.shortDescription,
+          });
+          setIsCheckpointVisible(false);
+          setIsRecoveryResponseVisible(true);
+        }}
+      />
 
       <Pressable
         accessibilityRole="button"
@@ -56,7 +68,7 @@ export function FlareScreen() {
       >
         <Text style={styles.secondaryButtonLabel}>Checkpoint / Reflection</Text>
         <Text style={styles.secondaryButtonCopy}>
-          Open a lightweight placeholder sheet without leaving the Flare screen.
+          Open a lightweight reflection sheet without leaving the Flare screen.
         </Text>
       </Pressable>
 
@@ -74,14 +86,18 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsRecoveryResponseVisible(false)}
-        subtitle="This placeholder proves the no-confirmation urgent flow."
+        subtitle="This V0 sheet opens immediately and stays attached to the current in-memory Flare Event."
         title="Recovery Response"
         visible={isRecoveryResponseVisible}
       >
-        <RecoveryResponse onOpenCheckpoint={openCheckpoint} />
+        <RecoveryResponse
+          flareEvent={eventForResponse}
+          onOpenCheckpoint={openCheckpoint}
+        />
       </PlaceholderModal>
 
       <CheckpointReflectionModal
+        flareEvent={activeEvent}
         onClose={() => setIsCheckpointVisible(false)}
         visible={isCheckpointVisible}
       />

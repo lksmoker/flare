@@ -5,6 +5,7 @@ import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
+import { FlareEventProvider } from "../../state/FlareEventContext";
 import { RecoveryMemoryProvider } from "../../state/RecoveryMemoryContext";
 
 jest.mock("expo-router", () => ({
@@ -14,7 +15,9 @@ jest.mock("expo-router", () => ({
 function TestProviders({ children }: PropsWithChildren) {
   return (
     <BehaviorPatternProvider>
-      <RecoveryMemoryProvider>{children}</RecoveryMemoryProvider>
+      <RecoveryMemoryProvider>
+        <FlareEventProvider>{children}</FlareEventProvider>
+      </RecoveryMemoryProvider>
     </BehaviorPatternProvider>
   );
 }
@@ -56,27 +59,29 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Recovery Response")).toBeTruthy();
+    expect(getByText("Current Flare Event")).toBeTruthy();
+    expect(getByText(/status: active/i)).toBeTruthy();
     expect(getByText("You already interrupted the spiral.")).toBeTruthy();
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
-  it("opens the Checkpoint / Reflection placeholder sheet", () => {
+  it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", () => {
     const { getAllByText, getByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
     fireEvent.press(getAllByText("Checkpoint / Reflection")[0]);
 
-    expect(getByText("A quick placeholder sheet for the post-flare reflection flow.")).toBeTruthy();
+    expect(getByText("No active Flare Event")).toBeTruthy();
+    expect(getByText("Save Reflection")).toBeTruthy();
   });
 
-  it("renders the History placeholder list", () => {
-    const { getAllByText } = render(<HistoryScreen />, {
+  it("renders the History empty state before any flare events exist", () => {
+    const { getByText } = render(<HistoryScreen />, {
       wrapper: TestProviders,
     });
 
-    expect(getAllByText("Flare Event")).toHaveLength(2);
-    expect(getAllByText("Checkpoint / Reflection")).toHaveLength(1);
+    expect(getByText("No Flare Events yet")).toBeTruthy();
   });
 
   it("keeps setup ownership inside Customize and marks Telegram as future-scoped", () => {
@@ -286,6 +291,7 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Recovery Response")).toBeTruthy();
+    expect(getByText("Current Flare Event")).toBeTruthy();
     expect(
       getAllByText("Pause now. You already chose differently.").length,
     ).toBeGreaterThanOrEqual(2);
@@ -294,5 +300,104 @@ describe("V0 app shell", () => {
       getAllByText("You do not need to obey this feeling.").length,
     ).toBeGreaterThanOrEqual(2);
     expect(getAllByText("Leave the room and drink water.").length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("creates a flare event tied to the current behavior pattern and shows it in History", () => {
+    const { getAllByText, getByLabelText, getByText } = render(
+      <>
+        <CustomizeScreen />
+        <FlareScreen />
+        <HistoryScreen />
+      </>,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
+    fireEvent.changeText(getByLabelText("Behavior name"), "Late-night scrolling");
+    fireEvent.changeText(
+      getByLabelText("Short description"),
+      "I start checking feeds when I feel depleted.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Preferred recovery actions"),
+      "Leave the room and put the phone away",
+    );
+    fireEvent.press(getByText("Save Behavior Pattern"));
+
+    fireEvent.press(getByText("Send Flare"));
+
+    expect(getAllByText("Flare Event").length).toBeGreaterThanOrEqual(1);
+    expect(
+      getAllByText(/Behavior Pattern: Late-night scrolling/).length,
+    ).toBeGreaterThanOrEqual(1);
+    expect(
+      getAllByText("I start checking feeds when I feel depleted.").length,
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  it("saves a checkpoint reflection for the active event and shows it in History", () => {
+    const { getAllByText, getByLabelText, getByText, queryByText } = render(
+      <>
+        <FlareScreen />
+        <HistoryScreen />
+      </>,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    fireEvent.press(getByText("Send Flare"));
+    fireEvent.press(getAllByText("Checkpoint / Reflection")[1]);
+
+    fireEvent.changeText(
+      getByLabelText("What happened?"),
+      "I felt the spike right after finishing work.",
+    );
+    fireEvent.changeText(
+      getByLabelText("What helped?"),
+      "I left the room and drank cold water.",
+    );
+    fireEvent.changeText(
+      getByLabelText("How do I feel now?"),
+      "Less flooded and more steady.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Outcome"),
+      "The urge passed enough for me to reset.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Optional note"),
+      "The first minute was the hardest part.",
+    );
+    fireEvent.press(getByText("Save Reflection"));
+
+    expect(queryByText("Save Reflection")).toBeNull();
+    expect(getByText(/What happened: I felt the spike right after finishing work\./)).toBeTruthy();
+    expect(getByText(/What helped: I left the room and drank cold water\./)).toBeTruthy();
+    expect(getByText(/How I feel now: Less flooded and more steady\./)).toBeTruthy();
+    expect(getByText(/Outcome: The urge passed enough for me to reset\./)).toBeTruthy();
+    expect(getByText(/Note: The first minute was the hardest part\./)).toBeTruthy();
+    expect(getByText(/Reflected event/i)).toBeTruthy();
+  });
+
+  it("keeps Telegram support future-scoped after the flare event flow changes", () => {
+    const { getAllByText, getByText } = render(
+      <>
+        <FlareScreen />
+        <CustomizeScreen />
+        <HistoryScreen />
+      </>,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    expect(getAllByText("Telegram Support").length).toBeGreaterThanOrEqual(2);
+    expect(getAllByText("Coming in V1").length).toBeGreaterThanOrEqual(1);
+    expect(
+      getByText(/No real setup or integration behavior exists in V0\./),
+    ).toBeTruthy();
   });
 });
