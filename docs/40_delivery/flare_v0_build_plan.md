@@ -40,6 +40,24 @@ Required V0 navigation and structure constraints:
 
 If an implementation slice cannot satisfy these constraints, the slice should be re-scoped or blocked until the contract mismatch is resolved in docs first.
 
+Data and Persistence Gate
+
+Before implementation of durable storage, local database state, local device persistence, backend persistence, or history persistence behavior, the product build must conform to:
+
+- `docs/20_architecture/flare_v0_data_persistence_contract.md`
+
+This gate is required for all future implementation slices that create or save durable `Behavior Pattern`, `Recovery Memory`, `Flare Event`, or `Checkpoint / Reflection` data.
+
+Required persistence constraints:
+
+- V0 durable entities must remain distinct: `BehaviorPattern`, `RecoveryMemory`, `FlareEvent`, `CheckpointReflection`
+- `FlareEvent` history must preserve behavior meaning through snapshot fields rather than only live mutable references
+- local UI state, drafts, and modal state must not be treated as durable records by default
+- privacy-sensitive recovery content must stay out of telemetry and unnecessary logs
+- V0 persistence must not quietly expand into Telegram, support-contact, or support-group data
+
+If a persistence slice cannot satisfy these constraints, the slice should be re-scoped or blocked until the contract mismatch is resolved in docs first.
+
 Build Principles
 Build the solo-user loop first.
 Keep the urgent moment extremely simple.
@@ -139,6 +157,7 @@ user can save meaningful Recovery Memory
 saved memory can be surfaced later during a flare
 setup is optional but encouraged
 setup remains visually secondary to the urgent `Flare` screen
+Note: any future move from local state to durable save behavior for this slice must first follow `docs/20_architecture/flare_v0_data_persistence_contract.md`.
 Build Slice 5: Send Flare Flow
 
 Implement the central action.
@@ -156,6 +175,7 @@ user can press Send Flare with minimal friction
 a durable flare event is created
 response appears immediately
 the app does not insert a confirmation step before Recovery Response
+Note: any durable event-creation implementation must follow `docs/20_architecture/flare_v0_data_persistence_contract.md`, including behavior snapshot requirements.
 Build Slice 6: Recovery Response Screen
 
 Give the user useful support in the moment.
@@ -229,6 +249,7 @@ checkpoint can be completed quickly
 user can skip it
 checkpoint data appears in event history
 checkpoint flow remains secondary to the urgent `Send Flare` path
+Note: any future persistence work for checkpoint data must follow `docs/20_architecture/flare_v0_data_persistence_contract.md` before implementation.
 Build Slice 9: Customize Surface and Future Support Visibility
 
 Make setup and future support boundaries explicit.
