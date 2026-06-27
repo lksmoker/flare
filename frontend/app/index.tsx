@@ -1,5 +1,5 @@
-import { HomeScreen } from "../src/screens/home_screen";
+import { FlareScreen } from "../src/screens/FlareScreen";
 
 export default function IndexRoute() {
-  return <HomeScreen />;
+  return <FlareScreen />;
 }
