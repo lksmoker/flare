@@ -5,13 +5,18 @@ import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
+import { RecoveryMemoryProvider } from "../../state/RecoveryMemoryContext";
 
 jest.mock("expo-router", () => ({
   Link: ({ children }: { children: ReactNode }) => children,
 }));
 
 function TestProviders({ children }: PropsWithChildren) {
-  return <BehaviorPatternProvider>{children}</BehaviorPatternProvider>;
+  return (
+    <BehaviorPatternProvider>
+      <RecoveryMemoryProvider>{children}</RecoveryMemoryProvider>
+    </BehaviorPatternProvider>
+  );
 }
 
 describe("V0 app shell", () => {
@@ -85,7 +90,7 @@ describe("V0 app shell", () => {
     expect(getByText("Coming in V1")).toBeTruthy();
   });
 
-  it("opens Behavior Pattern Setup from Customize and keeps Recovery Memory and Telegram unchanged", () => {
+  it("opens Behavior Pattern Setup from Customize and keeps Telegram future-scoped", () => {
     const { getAllByText, getByText } = render(<CustomizeScreen />, {
       wrapper: TestProviders,
     });
@@ -100,9 +105,58 @@ describe("V0 app shell", () => {
 
     fireEvent.press(getByText("Close"));
     fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
-    expect(getByText("A V0 ownership placeholder for Recovery Memory editing.")).toBeTruthy();
+    expect(
+      getByText(
+        "Capture grounded words you will want available when the hard moment lands.",
+      ),
+    ).toBeTruthy();
+    expect(getByText("Save Recovery Memory")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
     expect(getByText("Coming in V1")).toBeTruthy();
+  });
+
+  it("saves Recovery Memory and shows the summary on Customize", () => {
+    const { getAllByText, getByLabelText, getByText, queryByText } = render(
+      <CustomizeScreen />,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+
+    fireEvent.changeText(
+      getByLabelText("Why interrupt this pattern?"),
+      "I want to stop before I lose the rest of tonight.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Costs or consequences of continuing"),
+      "I will be numb tomorrow and break trust with myself.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Reminder from grounded self"),
+      "The urge peaks fast and passes if I move.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Emergency action or commitment"),
+      "Put the phone away, drink water, and go outside.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Supportive phrase to show during recovery"),
+      "Pause now. Protect tomorrow.",
+    );
+
+    fireEvent.press(getByText("Save Recovery Memory"));
+
+    expect(queryByText("Save Recovery Memory")).toBeNull();
+    expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
+    expect(getByText("Pause now. Protect tomorrow.")).toBeTruthy();
+    expect(
+      getByText("I want to stop before I lose the rest of tonight."),
+    ).toBeTruthy();
+    expect(
+      getByText("Put the phone away, drink water, and go outside."),
+    ).toBeTruthy();
   });
 
   it("saves a behavior pattern and shows the summary on Customize", () => {
@@ -170,5 +224,75 @@ describe("V0 app shell", () => {
 
     expect(getByText("Configured: Weekend drinking")).toBeTruthy();
     expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("updates the Flare readiness indicator after Recovery Memory is saved", () => {
+    const { getAllByText, getByLabelText, getByText } = render(
+      <>
+        <CustomizeScreen />
+        <FlareScreen />
+      </>,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    expect(getAllByText("Ready to define").length).toBeGreaterThanOrEqual(2);
+
+    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.changeText(
+      getByLabelText("Why interrupt this pattern?"),
+      "This urge is not worth the fallout.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Supportive phrase to show during recovery"),
+      "Hold the line for ten minutes.",
+    );
+    fireEvent.press(getByText("Save Recovery Memory"));
+
+    expect(getByText("Configured: Hold the line for ten minutes.")).toBeTruthy();
+  });
+
+  it("shows saved Recovery Memory immediately in Recovery Response after Send Flare", () => {
+    const { getAllByText, getByLabelText, getByText } = render(
+      <>
+        <CustomizeScreen />
+        <FlareScreen />
+      </>,
+      {
+        wrapper: TestProviders,
+      },
+    );
+
+    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.changeText(
+      getByLabelText("Why interrupt this pattern?"),
+      "I want tomorrow morning back.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Reminder from grounded self"),
+      "You do not need to obey this feeling.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Emergency action or commitment"),
+      "Leave the room and drink water.",
+    );
+    fireEvent.changeText(
+      getByLabelText("Supportive phrase to show during recovery"),
+      "Pause now. You already chose differently.",
+    );
+    fireEvent.press(getByText("Save Recovery Memory"));
+
+    fireEvent.press(getByText("Send Flare"));
+
+    expect(getByText("Recovery Response")).toBeTruthy();
+    expect(
+      getAllByText("Pause now. You already chose differently.").length,
+    ).toBeGreaterThanOrEqual(2);
+    expect(getAllByText("I want tomorrow morning back.").length).toBeGreaterThanOrEqual(2);
+    expect(
+      getAllByText("You do not need to obey this feeling.").length,
+    ).toBeGreaterThanOrEqual(2);
+    expect(getAllByText("Leave the room and drink water.").length).toBeGreaterThanOrEqual(2);
   });
 });

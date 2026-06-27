@@ -1,5 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
+
 type RecoveryResponseProps = {
   onOpenCheckpoint: () => void;
 };
@@ -7,21 +9,37 @@ type RecoveryResponseProps = {
 export function RecoveryResponse({
   onOpenCheckpoint,
 }: RecoveryResponseProps) {
+  const { recoveryMemory } = useRecoveryMemory();
+
   return (
     <View style={styles.container}>
       <View style={styles.callout}>
-        <Text style={styles.calloutLabel}>Recovery Memory placeholder</Text>
-        <Text style={styles.calloutTitle}>You already interrupted the spiral.</Text>
-        <Text style={styles.calloutCopy}>
-          This V0 placeholder would surface grounding reminders, one recovery
-          action, and the next safe step immediately after `Send Flare`.
+        <Text style={styles.calloutLabel}>Recovery Memory</Text>
+        <Text style={styles.calloutTitle}>
+          {recoveryMemory?.supportivePhrase || "You already interrupted the spiral."}
         </Text>
+        <Text style={styles.calloutCopy}>
+          {recoveryMemory?.interruptionReasons ||
+            "This V0 placeholder now surfaces saved Recovery Memory immediately after `Send Flare`, even before persistence exists."}
+        </Text>
+        {recoveryMemory?.groundedReminders ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>Grounded reminder</Text>
+            <Text style={styles.memoryCopy}>{recoveryMemory.groundedReminders}</Text>
+          </View>
+        ) : null}
+        {recoveryMemory?.continuingCosts ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>If I keep going</Text>
+            <Text style={styles.memoryCopy}>{recoveryMemory.continuingCosts}</Text>
+          </View>
+        ) : null}
       </View>
       <View style={styles.actionCard}>
         <Text style={styles.actionTitle}>Try one next step</Text>
         <Text style={styles.actionCopy}>
-          Step away from the trigger for two minutes, drink water, and breathe
-          before deciding what comes next.
+          {recoveryMemory?.emergencyActions ||
+            "Step away from the trigger for two minutes, drink water, and breathe before deciding what comes next."}
         </Text>
       </View>
       <Pressable
@@ -62,6 +80,22 @@ const styles = StyleSheet.create({
     color: "#e5edf5",
     fontSize: 15,
     lineHeight: 22,
+  },
+  memorySection: {
+    gap: 4,
+    paddingTop: 4,
+  },
+  memoryLabel: {
+    color: "#f5d6a0",
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+  },
+  memoryCopy: {
+    color: "#e5edf5",
+    fontSize: 14,
+    lineHeight: 20,
   },
   actionCard: {
     gap: 6,

@@ -7,12 +7,17 @@ import { PlaceholderModal } from "../components/PlaceholderModal";
 import { RecoveryResponse } from "../components/RecoveryResponse";
 import { SendFlareButton } from "../components/SendFlareButton";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
 
 export function FlareScreen() {
   const [isRecoveryResponseVisible, setIsRecoveryResponseVisible] =
     useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
+  const {
+    isConfigured: isRecoveryMemoryConfigured,
+    recoveryMemory,
+  } = useRecoveryMemory();
 
   const readinessItems = [
     {
@@ -21,7 +26,12 @@ export function FlareScreen() {
         ? `Configured: ${behaviorPattern?.behaviorName}`
         : "Ready to define",
     },
-    { label: "Recovery Memory", status: "Ready to define" },
+    {
+      label: "Recovery Memory",
+      status: isRecoveryMemoryConfigured
+        ? `Configured: ${recoveryMemory?.supportivePhrase}`
+        : "Ready to define",
+    },
     { label: "Telegram Support", status: "Coming in V1" },
   ];
 

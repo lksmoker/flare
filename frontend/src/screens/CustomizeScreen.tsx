@@ -4,14 +4,20 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { AppShell } from "../components/AppShell";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
+import { RecoveryMemorySummary } from "../components/RecoveryMemorySummary";
 import { RecoveryMemorySetupModal } from "../components/RecoveryMemorySetupModal";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
 
 export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
   const [isRecoveryMemoryVisible, setIsRecoveryMemoryVisible] = useState(false);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
+  const {
+    isConfigured: isRecoveryMemoryConfigured,
+    recoveryMemory,
+  } = useRecoveryMemory();
 
   return (
     <AppShell
@@ -49,11 +55,24 @@ export function CustomizeScreen() {
           onPress={() => setIsRecoveryMemoryVisible(true)}
           style={styles.card}
         >
-          <Text style={styles.cardTitle}>Recovery Memory Setup</Text>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Recovery Memory Setup</Text>
+            <Text
+              style={[
+                styles.statusBadge,
+                isRecoveryMemoryConfigured
+                  ? styles.readyBadge
+                  : styles.pendingBadge,
+              ]}
+            >
+              {isRecoveryMemoryConfigured ? "Configured" : "Needs setup"}
+            </Text>
+          </View>
           <Text style={styles.cardCopy}>
             Capture grounded reminders, costs, and phrases that belong in the
             future Recovery Response.
           </Text>
+          <RecoveryMemorySummary recoveryMemory={recoveryMemory} />
         </Pressable>
 
         <View style={styles.comingSoonCard}>
