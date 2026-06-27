@@ -3,12 +3,15 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
+import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
 import { RecoveryMemorySetupModal } from "../components/RecoveryMemorySetupModal";
+import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 
 export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
   const [isRecoveryMemoryVisible, setIsRecoveryMemoryVisible] = useState(false);
+  const { behaviorPattern, isConfigured } = useBehaviorPattern();
 
   return (
     <AppShell
@@ -23,11 +26,22 @@ export function CustomizeScreen() {
           onPress={() => setIsBehaviorPatternVisible(true)}
           style={styles.card}
         >
-          <Text style={styles.cardTitle}>Behavior Pattern Setup</Text>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Behavior Pattern Setup</Text>
+            <Text
+              style={[
+                styles.statusBadge,
+                isConfigured ? styles.readyBadge : styles.pendingBadge,
+              ]}
+            >
+              {isConfigured ? "Configured" : "Needs setup"}
+            </Text>
+          </View>
           <Text style={styles.cardCopy}>
             Define the pattern, likely triggers, and the replacement action you
             want available during a flare.
           </Text>
+          <BehaviorPatternSummary behaviorPattern={behaviorPattern} />
         </Pressable>
 
         <Pressable
@@ -76,6 +90,12 @@ const styles = StyleSheet.create({
     borderColor: "#e7dcc7",
     backgroundColor: "#fffdf8",
   },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: 10,
+  },
   comingSoonCard: {
     gap: 8,
     padding: 18,
@@ -94,6 +114,23 @@ const styles = StyleSheet.create({
     color: "#5d6b7b",
     fontSize: 14,
     lineHeight: 20,
+  },
+  statusBadge: {
+    alignSelf: "flex-start",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    fontSize: 12,
+    fontWeight: "700",
+    textTransform: "uppercase",
+  },
+  readyBadge: {
+    backgroundColor: "#d7eadc",
+    color: "#24553a",
+  },
+  pendingBadge: {
+    backgroundColor: "#efe3d3",
+    color: "#7a5430",
   },
   comingSoonBadge: {
     alignSelf: "flex-start",

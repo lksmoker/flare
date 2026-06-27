@@ -6,17 +6,24 @@ import { CheckpointReflectionModal } from "../components/CheckpointReflectionMod
 import { PlaceholderModal } from "../components/PlaceholderModal";
 import { RecoveryResponse } from "../components/RecoveryResponse";
 import { SendFlareButton } from "../components/SendFlareButton";
-
-const readinessItems = [
-  { label: "Behavior Pattern", status: "Ready to define" },
-  { label: "Recovery Memory", status: "Ready to define" },
-  { label: "Telegram Support", status: "Coming in V1" },
-];
+import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 
 export function FlareScreen() {
   const [isRecoveryResponseVisible, setIsRecoveryResponseVisible] =
     useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
+  const { behaviorPattern, isConfigured } = useBehaviorPattern();
+
+  const readinessItems = [
+    {
+      label: "Behavior Pattern",
+      status: isConfigured
+        ? `Configured: ${behaviorPattern?.behaviorName}`
+        : "Ready to define",
+    },
+    { label: "Recovery Memory", status: "Ready to define" },
+    { label: "Telegram Support", status: "Coming in V1" },
+  ];
 
   const openCheckpoint = () => {
     setIsRecoveryResponseVisible(false);
