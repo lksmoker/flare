@@ -30,18 +30,6 @@ export function FlareScreen() {
       subtitle="Keep the recovery path simple: one dominant action, one secondary reflection entry, and lightweight readiness cues."
       title="Immediate support for the hard moment"
     >
-      <View style={styles.readinessCard}>
-        <Text style={styles.sectionTitle}>Readiness</Text>
-        <View style={styles.readinessList}>
-          {readinessItems.map((item) => (
-            <View key={item.label} style={styles.readinessPill}>
-              <Text style={styles.readinessLabel}>{item.label}</Text>
-              <Text style={styles.readinessStatus}>{item.status}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-
       <SendFlareButton onPress={() => setIsRecoveryResponseVisible(true)} />
 
       <Pressable
@@ -54,6 +42,18 @@ export function FlareScreen() {
           Open a lightweight placeholder sheet without leaving the Flare screen.
         </Text>
       </Pressable>
+
+      <View style={styles.readinessCard}>
+        <Text style={styles.sectionTitle}>Readiness</Text>
+        <View style={styles.readinessList}>
+          {readinessItems.map((item) => (
+            <View key={item.label} style={styles.readinessPill}>
+              <Text style={styles.readinessLabel}>{item.label}</Text>
+              <Text style={styles.readinessStatus}>{item.status}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
 
       <PlaceholderModal
         onClose={() => setIsRecoveryResponseVisible(false)}

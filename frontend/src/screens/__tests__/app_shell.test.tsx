@@ -18,6 +18,19 @@ describe("V0 app shell", () => {
     expect(getByText("Send Flare")).toBeTruthy();
   });
 
+  it("renders the flare screen hierarchy with actions before readiness cards", () => {
+    const { toJSON } = render(<FlareScreen />);
+    const rendered = JSON.stringify(toJSON());
+
+    const sendFlareIndex = rendered.indexOf("Send Flare");
+    const checkpointIndex = rendered.indexOf("Checkpoint / Reflection");
+    const readinessIndex = rendered.indexOf("Readiness");
+
+    expect(sendFlareIndex).toBeGreaterThan(-1);
+    expect(checkpointIndex).toBeGreaterThan(sendFlareIndex);
+    expect(readinessIndex).toBeGreaterThan(checkpointIndex);
+  });
+
   it("shows Recovery Response immediately when Send Flare is pressed", () => {
     const { getByText, queryByText } = render(<FlareScreen />);
 
