@@ -20,6 +20,26 @@ optionally checkpoint what happened afterward
 
 The goal is not to build every future feature. The goal is to prove that the core experience is valuable.
 
+Navigation and Structure Gate
+
+Before implementation of screen, route, navigation, or app-shell work, the product build must conform to:
+
+- `docs/10_design/flare_v0_app_structure_navigation.md`
+- `docs/20_architecture/flare_repo_structure_conventions.md`
+
+This gate is required for all future implementation slices that touch app structure or user-facing flow.
+
+Required V0 navigation and structure constraints:
+
+- top-level navigation labels must remain `Flare | History | Customize`
+- `Flare` is the primary screen and owns the dominant `Send Flare` action
+- `Send Flare` must enter Recovery Response immediately with no confirmation step
+- `Checkpoint / Reflection` must remain a secondary modal or sheet flow rather than a top-level destination
+- `Behavior Pattern Setup` and `Recovery Memory Setup` must live under `Customize`
+- `Telegram Support` should be visible under `Customize` but explicitly future-scoped for V1
+
+If an implementation slice cannot satisfy these constraints, the slice should be re-scoped or blocked until the contract mismatch is resolved in docs first.
+
 Build Principles
 Build the solo-user loop first.
 Keep the urgent moment extremely simple.
@@ -34,25 +54,29 @@ Build Slice 1: Project Skeleton
 Set up the repo and app foundation.
 
 Note: the repo structure and conventions contract now lives at `docs/20_architecture/flare_repo_structure_conventions.md` and should guide scaffold selection and initial folder layout.
+Note: the app shell, route plan, and navigation scaffold must also follow `docs/10_design/flare_v0_app_structure_navigation.md` before implementation proceeds beyond placeholders.
 
 Deliverables:
 
 app scaffold
-basic routing
+basic routing aligned to `Flare | History | Customize`
 docs folder in place
 environment setup
 local dev command
 initial README
-placeholder landing screen
+placeholder `Flare`, `History`, and `Customize` screens
 
 Acceptance:
 
 app runs locally
 repo structure is clear
 project can be deployed or prepared for deployment
+top-level scaffold reflects the V0 navigation contract
 Build Slice 2: Auth and User Profile
 
 Add account basics.
+
+Auth work should not replace or rename the V0 top-level navigation contract. Authenticated shell work must preserve `Flare | History | Customize` as the primary destinations.
 
 Deliverables:
 
@@ -71,6 +95,8 @@ Build Slice 3: Behavior Pattern Setup
 
 Let the user define what they want help interrupting.
 
+This setup flow belongs under `Customize` and should be implemented as a secondary screen, modal, or sheet flow rather than a top-level destination.
+
 Deliverables:
 
 create behavior pattern
@@ -84,9 +110,12 @@ Acceptance:
 
 user can name the pattern in their own words
 pattern is available during Send Flare flow
+setup remains visually secondary to the urgent `Flare` screen
 Build Slice 4: Recovery Memory Setup
 
 Create the clear-minded memory bank.
+
+This setup flow belongs under `Customize` and should be implemented as a secondary screen, modal, or sheet flow rather than a top-level destination.
 
 Deliverables:
 
@@ -109,22 +138,24 @@ Acceptance:
 user can save meaningful Recovery Memory
 saved memory can be surfaced later during a flare
 setup is optional but encouraged
+setup remains visually secondary to the urgent `Flare` screen
 Build Slice 5: Send Flare Flow
 
 Implement the central action.
 
 Deliverables:
 
-main app screen with primary Send Flare button
+`Flare` screen with primary `Send Flare` button
 create Flare Event
 choose/use active behavior pattern
-transition into recovery response screen
+transition into Recovery Response immediately with no confirmation step
 
 Acceptance:
 
 user can press Send Flare with minimal friction
 a durable flare event is created
 response appears immediately
+the app does not insert a confirmation step before Recovery Response
 Build Slice 6: Recovery Response Screen
 
 Give the user useful support in the moment.
@@ -136,6 +167,7 @@ show selected Recovery Memory content
 offer simple alternatives
 allow user to mark action as taken
 allow user to exit safely
+offer a secondary path into `Checkpoint / Reflection`
 
 Possible default recovery actions:
 
@@ -152,6 +184,7 @@ Acceptance:
 screen is calm and not crowded
 user gets one clear next step
 Recovery Memory appears in the moment
+the experience feels immediate from `Send Flare`
 Build Slice 7: Flare Event History
 
 Let the user see prior flares.
@@ -169,9 +202,12 @@ Acceptance:
 
 user can review recent flare events
 history is useful but not overwhelming
+history remains a top-level destination separate from setup/configuration
 Build Slice 8: Basic Checkpoints
 
 Allow reflection after a flare.
+
+`Checkpoint / Reflection` should remain a secondary modal or sheet flow launched from the `Flare` screen or Recovery Response, not a top-level navigation destination.
 
 Deliverables:
 
@@ -192,7 +228,25 @@ Acceptance:
 checkpoint can be completed quickly
 user can skip it
 checkpoint data appears in event history
-Build Slice 9: Polish and Deploy
+checkpoint flow remains secondary to the urgent `Send Flare` path
+Build Slice 9: Customize Surface and Future Support Visibility
+
+Make setup and future support boundaries explicit.
+
+Deliverables:
+
+`Customize` screen
+entry points for `Behavior Pattern Setup`
+entry points for `Recovery Memory Setup`
+visible `Telegram Support` placeholder labeled as future-scoped for V1
+lightweight setup readiness indicators where useful
+
+Acceptance:
+
+user can clearly distinguish urgent action, history, and customization
+setup lives under `Customize`
+Telegram Support is visible without expanding V0 into real Telegram behavior
+Build Slice 10: Polish and Deploy
 
 Prepare V0 for real use.
 
@@ -217,9 +271,15 @@ V0 Validation
 V0 should be tested against real product questions:
 
 Can the user understand what Flare does within 30 seconds?
+Is the top-level navigation clearly `Flare | History | Customize`?
+Is `Send Flare` obviously the primary action on the `Flare` screen?
 Can the user configure a behavior without friction?
 Does Recovery Memory feel worth filling out?
 Is Send Flare fast enough for a low-capacity moment?
+Does Recovery Response start immediately with no confirmation barrier?
+Does `Checkpoint / Reflection` feel secondary rather than competing with the urgent action?
+Is `Customize` the clear home for Behavior Pattern Setup and Recovery Memory Setup?
+Is Telegram Support visible as future-scoped V1 direction without inflating V0 scope?
 Does the recovery response feel supportive rather than annoying?
 Does the user want to use it again after the first test?
 Candidate V1 Build Slices
