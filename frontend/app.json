@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Flare",
+    "slug": "flare",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "flare",
+    "userInterfaceStyle": "light",
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

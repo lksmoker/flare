@@ -9,14 +9,14 @@ Role: Record the initial stack decision and why it fits the project.
 
 ## Decision
 
-Flare should be built as a modern full-stack web app with a stack that is useful both for the product and for portfolio value.
+Flare should be built as a mobile-first full-stack product with an Expo / React Native client and a separated backend/data layer that can grow into auth, persistence, and future integrations.
 
 Initial direction:
 
-- Frontend: React-based app
-- Backend: application API suitable for auth, user data, flare events, and future integrations
-- Database/Auth: managed Postgres/auth platform or equivalent
-- Deployment: simple cloud deployment suitable for a subscription web app
+- Frontend: Expo + React Native + TypeScript
+- Routing: Expo Router
+- Backend: Supabase-first backend for auth, Postgres, RLS, and edge functions
+- Deployment: simple Expo-compatible app delivery for V0, with backend configuration managed separately
 - Future integration: Telegram support in V1
 
 The exact implementation can still be refined, but the repo should be structured as a real product rather than a throwaway prototype.
@@ -49,7 +49,7 @@ Flare has a relatively simple V0 data model, but the product may later require:
 
 The stack should support:
 
-- fast mobile-friendly UI
+- fast mobile-first UI
 - simple login/account management
 - persistent user configuration
 - Recovery Memory storage
@@ -65,15 +65,15 @@ The stack should support:
 A reasonable starting architecture:
 
 ```text
-client app
-  -> app API
+mobile client
+  -> app API / backend services
     -> auth/session layer
     -> database
     -> future integration adapters
 Core app areas:
 
 frontend/
-  app screens and components
+  Expo app routes, screens, and components
 
 backend/ or server/
   API routes
@@ -154,6 +154,6 @@ whether to add community/group discovery
 whether to support organization accounts
 Current Working Assumption
 
-Build V0 as a focused solo-user web app.
+Build V0 as a focused solo-user mobile-first app.
 
-Make the core loop excellent before expanding into Telegram, community, or subscription complexity.
+Make the core loop excellent before expanding into Telegram, community, web dashboard, or subscription complexity.
