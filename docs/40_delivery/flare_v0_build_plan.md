@@ -1,4 +1,5 @@
-﻿
+<!-- @context: { "kind": "delivery.plan", "layer": "docs", "name": "Flare V0 Build Plan", "domains": ["delivery", "v0", "planning"] } -->
+
 Flare V0 Build Plan
 
 Status: draft
@@ -27,6 +28,7 @@ Make Recovery Memory feel personal and useful.
 Avoid social/support integrations until V1.
 Keep the data model understandable.
 Ship in thin vertical slices.
+Preserve existing lightweight `@context` headers on durable docs and add them to future `docs/` Markdown files where applicable.
 Build Slice 1: Project Skeleton
 
 Set up the repo and app foundation.

@@ -1,3 +1,5 @@
+<!-- @context: { "kind": "architecture.contract", "layer": "docs", "name": "Flare Repo Structure and Conventions", "domains": ["architecture", "governance", "repo-structure"] } -->
+
 # Flare Repo Structure and Conventions
 
 Status: draft
@@ -111,6 +113,79 @@ Conventions for usage:
 - Each durable doc should include `Status`, `Doc Type`, and `Role` near the top.
 
 When a doc becomes a durable source of truth for future implementation, keep it concise, explicit, and named for the decision or contract it owns.
+
+## Lightweight `@context` Header Conventions
+
+Flare V0 adopts a lightweight `@context` header convention for durable Markdown documentation files under `docs/`.
+
+This convention is intentionally narrow for scaffold work:
+
+- It applies to durable Markdown documentation files under `docs/`.
+- It does not yet require source files to carry file-level `@context` headers.
+- Source files may adopt broader file-level governance later, but that is outside Flare V0 scaffold scope.
+
+Required base fields for Flare V0 documentation headers:
+
+- `kind`
+- `layer`
+- `name`
+- `domains`
+
+Expected Markdown placement and format:
+
+- The header should be a leading HTML comment block.
+- It should be the first logical content in the file.
+- The payload inside the comment should be valid JSON.
+
+Expected shape:
+
+```markdown
+<!-- @context: { "kind": "example.kind", "layer": "docs", "name": "Human Readable Name", "domains": ["domain-a", "domain-b"] } -->
+```
+
+Example headers by durable doc type:
+
+Product doc:
+
+```markdown
+<!-- @context: { "kind": "product.brief", "layer": "docs", "name": "Flare Vision Direction", "domains": ["product", "recovery", "behavior-change"] } -->
+```
+
+Design doc:
+
+```markdown
+<!-- @context: { "kind": "design.spec", "layer": "docs", "name": "Flare Recovery Flow Design", "domains": ["design", "ux", "recovery-flow"] } -->
+```
+
+Architecture contract:
+
+```markdown
+<!-- @context: { "kind": "architecture.contract", "layer": "docs", "name": "Flare Repo Structure and Conventions", "domains": ["architecture", "governance", "repo-structure"] } -->
+```
+
+Research note:
+
+```markdown
+<!-- @context: { "kind": "research.note", "layer": "docs", "name": "Recovery Prompt Research Notes", "domains": ["research", "recovery", "prompts"] } -->
+```
+
+Delivery or build plan:
+
+```markdown
+<!-- @context: { "kind": "delivery.plan", "layer": "docs", "name": "Flare V0 Build Plan", "domains": ["delivery", "v0", "planning"] } -->
+```
+
+AI task-summary archive artifact:
+
+```markdown
+<!-- @context: { "kind": "archive.task_summary", "layer": "docs", "name": "Initial Flare V0 App Scaffold Run Summary", "domains": ["archive", "ai-run", "scaffold"] } -->
+```
+
+Agent handling guidance:
+
+- Codex and other agents should preserve existing `@context` headers unless a task explicitly requires changing them.
+- Codex and other agents should avoid whole-document rewrites when a targeted section edit is sufficient.
+- When adding a new durable Markdown doc under `docs/`, include a lightweight `@context` header when the file is intended to remain a durable reference.
 
 ## Environment and Secrets Conventions
 
