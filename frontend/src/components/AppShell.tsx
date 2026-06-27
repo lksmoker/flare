@@ -20,17 +20,22 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.headerCard}>
-          <View style={styles.headerCopy}>
-            <Text style={styles.appTitle}>Flare</Text>
-            <Text style={styles.screenLabel}>{screenLabel}</Text>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        style={styles.scrollView}
+      >
+        <View style={styles.inner}>
+          <View style={styles.headerCard}>
+            <View style={styles.headerCopy}>
+              <Text style={styles.appTitle}>Flare</Text>
+              <Text style={styles.screenLabel}>{screenLabel}</Text>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.subtitle}>{subtitle}</Text>
+            </View>
+            <AppNavigation currentPath={currentPath} />
           </View>
-          <AppNavigation currentPath={currentPath} />
+          {children}
         </View>
-        {children}
       </ScrollView>
     </SafeAreaView>
   );
@@ -41,13 +46,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f3ede2",
   },
+  scrollView: {
+    flex: 1,
+  },
   content: {
-    padding: 20,
-    gap: 18,
+    padding: 16,
+  },
+  inner: {
+    width: "100%",
+    maxWidth: 720,
+    alignSelf: "center",
+    gap: 16,
   },
   headerCard: {
     gap: 18,
-    padding: 20,
+    padding: 18,
     borderRadius: 28,
     backgroundColor: "#fff9f1",
     borderWidth: 1,
@@ -70,8 +83,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   title: {
-    fontSize: 28,
-    lineHeight: 32,
+    fontSize: 26,
+    lineHeight: 30,
     fontWeight: "800",
     color: "#1f2937",
   },

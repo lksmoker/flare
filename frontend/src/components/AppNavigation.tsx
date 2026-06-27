@@ -43,10 +43,12 @@ export function AppNavigation({ currentPath }: AppNavigationProps) {
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 10,
   },
   tab: {
     flex: 1,
+    minWidth: 0,
     minHeight: 46,
     alignItems: "center",
     justifyContent: "center",

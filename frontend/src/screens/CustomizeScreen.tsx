@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   },
   cardHeader: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "flex-start",
     justifyContent: "space-between",
     gap: 10,
@@ -124,8 +125,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7efe3",
   },
   cardTitle: {
+    flexShrink: 1,
     color: "#1f2937",
-    fontSize: 20,
+    fontSize: 19,
     lineHeight: 24,
     fontWeight: "700",
   },

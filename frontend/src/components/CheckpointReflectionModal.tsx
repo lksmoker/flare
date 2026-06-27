@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
@@ -46,15 +39,42 @@ export function CheckpointReflectionModal({
 
   return (
     <PlaceholderModal
+      footer={
+        <View style={styles.footer}>
+          <Text style={styles.supportingCopy}>
+            Save requires an active event plus the main reflection fields.
+          </Text>
+          <View style={styles.footerActions}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={onClose}
+              style={styles.cancelButton}
+            >
+              <Text style={styles.cancelButtonLabel}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              disabled={saveDisabled}
+              onPress={() => {
+                saveCheckpointReflection(draft);
+                onClose();
+              }}
+              style={[
+                styles.saveButton,
+                saveDisabled ? styles.saveButtonDisabled : null,
+              ]}
+            >
+              <Text style={styles.saveButtonLabel}>Save Reflection</Text>
+            </Pressable>
+          </View>
+        </View>
+      }
       onClose={onClose}
       subtitle="Keep the reflection lightweight and attach it to the current in-memory event."
       title="Checkpoint / Reflection"
       visible={visible}
     >
-      <ScrollView
-        contentContainerStyle={styles.form}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={styles.form}>
         {flareEvent ? (
           <View style={styles.contextCard}>
             <Text style={styles.contextLabel}>Attaching to current event</Text>
@@ -144,27 +164,7 @@ export function CheckpointReflectionModal({
             value={draft.note}
           />
         </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.supportingCopy}>
-            Save requires an active event plus the main reflection fields.
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            disabled={saveDisabled}
-            onPress={() => {
-              saveCheckpointReflection(draft);
-              onClose();
-            }}
-            style={[
-              styles.saveButton,
-              saveDisabled ? styles.saveButtonDisabled : null,
-            ]}
-          >
-            <Text style={styles.saveButtonLabel}>Save Reflection</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+      </View>
     </PlaceholderModal>
   );
 }
@@ -214,7 +214,28 @@ const styles = StyleSheet.create({
   },
   footer: {
     gap: 10,
-    paddingTop: 6,
+  },
+  footerActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  cancelButton: {
+    flexGrow: 1,
+    minHeight: 48,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#dccfb8",
+    backgroundColor: "#fff9f1",
+    paddingHorizontal: 18,
+  },
+  cancelButtonLabel: {
+    color: "#5b4635",
+    fontSize: 15,
+    fontWeight: "700",
   },
   supportingCopy: {
     color: "#5d6b7b",
@@ -222,7 +243,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   saveButton: {
+    flexGrow: 2,
     minHeight: 48,
+    minWidth: 180,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,

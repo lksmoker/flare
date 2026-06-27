@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 import { AppShell } from "../components/AppShell";
 import { FlareEventHistoryList } from "../components/FlareEventHistoryList";
@@ -14,7 +14,7 @@ export function HistoryScreen() {
       subtitle="A lightweight in-memory list of recent Flare Events and attached Checkpoint / Reflection notes."
       title="History stays chronological and light"
     >
-      <Text>
+      <Text style={styles.intro}>
         V0 keeps History local-only. No persistence, analytics, or Telegram data
         is included here.
       </Text>
@@ -22,3 +22,11 @@ export function HistoryScreen() {
     </AppShell>
   );
 }
+
+const styles = StyleSheet.create({
+  intro: {
+    color: "#526071",
+    fontSize: 14,
+    lineHeight: 20,
+  },
+});

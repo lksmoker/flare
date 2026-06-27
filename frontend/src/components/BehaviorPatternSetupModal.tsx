@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
@@ -40,15 +33,42 @@ export function BehaviorPatternSetupModal({
 
   return (
     <PlaceholderModal
+      footer={
+        <View style={styles.footer}>
+          <Text style={styles.helperCopy}>
+            Save requires a behavior name and at least one recovery action.
+          </Text>
+          <View style={styles.footerActions}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={onClose}
+              style={styles.cancelButton}
+            >
+              <Text style={styles.cancelButtonLabel}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              disabled={saveDisabled}
+              onPress={() => {
+                saveBehaviorPattern(draft);
+                onClose();
+              }}
+              style={[
+                styles.saveButton,
+                saveDisabled ? styles.saveButtonDisabled : null,
+              ]}
+            >
+              <Text style={styles.saveButtonLabel}>Save Behavior Pattern</Text>
+            </Pressable>
+          </View>
+        </View>
+      }
       onClose={onClose}
       subtitle="Keep it concrete enough to interrupt the pattern, but light enough to edit anytime."
       title="Behavior Pattern Setup"
       visible={visible}
     >
-      <ScrollView
-        contentContainerStyle={styles.form}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={styles.form}>
         <Text style={styles.intro}>
           Capture the pattern you want Flare to help interrupt. This stays
           local and editable in V0.
@@ -132,27 +152,7 @@ export function BehaviorPatternSetupModal({
             value={draft.preferredRecoveryActions}
           />
         </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.helperCopy}>
-            Save requires a behavior name and at least one recovery action.
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            disabled={saveDisabled}
-            onPress={() => {
-              saveBehaviorPattern(draft);
-              onClose();
-            }}
-            style={[
-              styles.saveButton,
-              saveDisabled ? styles.saveButtonDisabled : null,
-            ]}
-          >
-            <Text style={styles.saveButtonLabel}>Save Behavior Pattern</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+      </View>
     </PlaceholderModal>
   );
 }
@@ -191,7 +191,28 @@ const styles = StyleSheet.create({
   },
   footer: {
     gap: 10,
-    paddingTop: 6,
+  },
+  footerActions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  cancelButton: {
+    flexGrow: 1,
+    minHeight: 48,
+    minWidth: 120,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#dccfb8",
+    backgroundColor: "#fff9f1",
+    paddingHorizontal: 18,
+  },
+  cancelButtonLabel: {
+    color: "#5b4635",
+    fontSize: 15,
+    fontWeight: "700",
   },
   helperCopy: {
     color: "#6a7685",
@@ -199,7 +220,9 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   saveButton: {
+    flexGrow: 2,
     minHeight: 48,
+    minWidth: 180,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,

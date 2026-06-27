@@ -1,16 +1,30 @@
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { PropsWithChildren } from "react";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-type PlaceholderModalProps = {
-  children: React.ReactNode;
+type PlaceholderModalProps = PropsWithChildren<{
+  footer?: React.ReactNode;
   onClose: () => void;
+  scrollContentContainerStyle?: StyleProp<ViewStyle>;
   subtitle: string;
   title: string;
   visible: boolean;
-};
+}>;
 
 export function PlaceholderModal({
   children,
+  footer,
   onClose,
+  scrollContentContainerStyle,
   subtitle,
   title,
   visible,
@@ -23,7 +37,7 @@ export function PlaceholderModal({
       transparent
       visible={visible}
     >
-      <View style={styles.overlay}>
+      <SafeAreaView edges={["top", "bottom"]} style={styles.overlay}>
         <View style={styles.sheet}>
           <View style={styles.header}>
             <View style={styles.headerCopy}>
@@ -38,9 +52,19 @@ export function PlaceholderModal({
               <Text style={styles.closeButtonLabel}>Close</Text>
             </Pressable>
           </View>
-          <View style={styles.content}>{children}</View>
+          <ScrollView
+            contentContainerStyle={[
+              styles.contentContainer,
+              scrollContentContainerStyle,
+            ]}
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollBody}
+          >
+            <View style={styles.content}>{children}</View>
+          </ScrollView>
+          {footer ? <View style={styles.footer}>{footer}</View> : null}
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }
@@ -52,24 +76,27 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(31, 41, 55, 0.4)",
   },
   sheet: {
-    gap: 18,
-    minHeight: "58%",
+    maxHeight: "92%",
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     backgroundColor: "#fffaf4",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 28,
+    overflow: "hidden",
   },
   header: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
     gap: 12,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#efe3d3",
   },
   headerCopy: {
     flex: 1,
     gap: 6,
+    minWidth: 0,
   },
   title: {
     fontSize: 24,
@@ -95,7 +122,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
   },
+  scrollBody: {
+    flexGrow: 0,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingTop: 18,
+    paddingBottom: 20,
+  },
   content: {
     gap: 12,
+  },
+  footer: {
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingTop: 14,
+    paddingBottom: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#efe3d3",
+    backgroundColor: "#fffaf4",
   },
 });
