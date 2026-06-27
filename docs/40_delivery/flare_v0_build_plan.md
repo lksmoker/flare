@@ -31,6 +31,8 @@ Build Slice 1: Project Skeleton
 
 Set up the repo and app foundation.
 
+Note: the repo structure and conventions contract now lives at `docs/20_architecture/flare_repo_structure_conventions.md` and should guide scaffold selection and initial folder layout.
+
 Deliverables:
 
 app scaffold
