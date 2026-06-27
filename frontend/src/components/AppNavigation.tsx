@@ -16,13 +16,14 @@ export function AppNavigation({ currentPath }: AppNavigationProps) {
     <View style={styles.row}>
       {navigationItems.map((item) => {
         const isActive = item.href === currentPath;
+        const tabStyle = StyleSheet.flatten([
+          styles.tab,
+          isActive ? styles.activeTab : styles.inactiveTab,
+        ]);
 
         return (
           <Link key={item.href} href={item.href} asChild>
-            <Pressable
-              accessibilityRole="button"
-              style={[styles.tab, isActive ? styles.activeTab : styles.inactiveTab]}
-            >
+            <Pressable accessibilityRole="button" style={tabStyle}>
               <Text
                 style={[
                   styles.tabLabel,
