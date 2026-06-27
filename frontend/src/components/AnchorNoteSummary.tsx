@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { RecoveryMemory } from "../state/RecoveryMemoryContext";
+import { AnchorNote } from "../state/AnchorNoteContext";
 
-type RecoveryMemorySummaryProps = {
-  recoveryMemory: RecoveryMemory | null;
+type AnchorNoteSummaryProps = {
+  anchorNote: AnchorNote | null;
 };
 
 const fieldLabels: Array<{
-  key: keyof RecoveryMemory;
+  key: keyof AnchorNote;
   label: string;
 }> = [
   { key: "interruptionReasons", label: "Why interrupt" },
@@ -17,15 +17,13 @@ const fieldLabels: Array<{
   { key: "supportivePhrase", label: "Supportive phrase" },
 ];
 
-export function RecoveryMemorySummary({
-  recoveryMemory,
-}: RecoveryMemorySummaryProps) {
-  if (!recoveryMemory) {
+export function AnchorNoteSummary({ anchorNote }: AnchorNoteSummaryProps) {
+  if (!anchorNote) {
     return (
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>Not configured yet</Text>
         <Text style={styles.emptyCopy}>
-          Save a few grounded reminders so Recovery Response can show them
+          Save a few grounded reminders so Flare Response can show them
           immediately during a flare.
         </Text>
       </View>
@@ -35,7 +33,7 @@ export function RecoveryMemorySummary({
   return (
     <View style={styles.summaryCard}>
       {fieldLabels.map((field) => {
-        const value = recoveryMemory[field.key];
+        const value = anchorNote[field.key];
 
         if (!value) {
           return null;

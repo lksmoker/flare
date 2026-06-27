@@ -1,4 +1,4 @@
-ï»¿# Flare Vision Direction
+# Flare Vision Direction
 
 Status: draft
 Doc Type: product vision
@@ -34,7 +34,7 @@ The app exists to help in the specific moment where insight alone is not enough.
 
 The primary product moment is:
 
-> â€œI am about to do the thing I do not want to do.â€
+> “I am about to do the thing I do not want to do.”
 
 The user should be able to open Flare quickly, press a single clear action, and immediately receive support.
 
@@ -57,14 +57,14 @@ The core loop is:
    - The app gives the user a specific recovery action, prompt, or next step.
 
 5. **Remember**
-   - The app surfaces the userâ€™s own clear-minded Recovery Memory.
+   - The app surfaces the user’s own clear-minded Anchor Note.
 
 6. **Checkpoint**
    - The app optionally records what happened and helps the user notice patterns over time.
 
-## Recovery Memory
+## Anchor Note
 
-Recovery Memory is a core part of the product.
+Anchor Note is a core part of the product.
 
 The user should be able to set up, while clear-minded, a personal memory bank that includes:
 
@@ -76,7 +76,7 @@ The user should be able to set up, while clear-minded, a personal memory bank th
 
 During craving mode, Flare should return these prompts to the user.
 
-The setup should be optional, but strongly encouraged. The product should communicate that the more honest, specific, and personal the Recovery Memory is, the more useful Flare becomes in the moment.
+The setup should be optional, but strongly encouraged. The product should communicate that the more honest, specific, and personal the Anchor Note is, the more useful Flare becomes in the moment.
 
 ## V0 Direction
 
@@ -88,7 +88,7 @@ V0 should include:
 - behavior or pattern configuration
 - a simple Send Flare action
 - predefined disruptive actions
-- Recovery Memory setup
+- Anchor Note setup
 - recovery prompts surfaced during a flare
 - lightweight flare history
 - basic reflection/checkpointing
@@ -132,7 +132,8 @@ Longer-term directions may include:
 - The user is not bad for struggling.
 - The app should reduce shame, not increase it.
 - The urgent moment should require almost no thinking.
-- The userâ€™s own clear-minded words should matter more than generic advice.
+- The user’s own clear-minded words should matter more than generic advice.
 - Support should be configurable and consent-based.
 - V0 should be useful without social features.
 - The product should be small, direct, and emotionally safe.
+

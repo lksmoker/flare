@@ -1,4 +1,4 @@
-﻿<!-- @context: { "kind": "architecture.contract", "layer": "docs", "name": "Flare V0 Data and Persistence Contract", "domains": ["architecture", "data-model", "persistence", "privacy", "v0"] } -->
+<!-- @context: { "kind": "architecture.contract", "layer": "docs", "name": "Flare V0 Data and Persistence Contract", "domains": ["architecture", "data-model", "persistence", "privacy", "v0"] } -->
 
 # Flare V0 Data and Persistence Contract
 
@@ -58,7 +58,7 @@ This contract does not define:
 Flare V0 is a solo-user product centered on one urgent recovery loop:
 
 1. define a `BehaviorPattern`
-2. define `RecoveryMemory`
+2. define `AnchorNote`
 3. create a `FlareEvent` with `Send Flare`
 4. surface recovery support
 5. optionally attach a `CheckpointReflection`
@@ -70,7 +70,7 @@ Future support and messaging concepts remain explicitly outside that V0 loop eve
 ### V0 Durable Entities
 
 - `BehaviorPattern`
-- `RecoveryMemory`
+- `AnchorNote`
 - `FlareEvent`
 - `CheckpointReflection`
 
@@ -148,7 +148,7 @@ Each `FlareEvent` should retain a behavior snapshot sufficient to preserve histo
 
 Trigger lists and recovery-action lists do not need to be fully duplicated into every event unless the product later proves that history needs them.
 
-### `RecoveryMemory`
+### `AnchorNote`
 
 ### Purpose
 
@@ -181,8 +181,8 @@ At least one of the content-bearing fields below should be present before a reco
 
 ### Relationships
 
-- One user may own one or more `RecoveryMemory` records in future persisted V0, though the product may expose only one active memory at first.
-- One `RecoveryMemory` may be used by many `FlareEvent` records.
+- One user may own one or more `AnchorNote` records in future persisted V0, though the product may expose only one active note at first.
+- One `AnchorNote` may be used by many `FlareEvent` records.
 
 ### Lifecycle
 
@@ -191,13 +191,14 @@ At least one of the content-bearing fields below should be present before a reco
 
 ### Snapshot vs Live Reference
 
-`FlareEvent` may reference the current `RecoveryMemory`, but V0 should avoid unnecessary duplication of full recovery text into every event because this content is highly sensitive.
+`FlareEvent` may reference the current `AnchorNote`, but V0 should avoid unnecessary duplication of full recovery text into every event because this content is highly sensitive.
 
 Recommended V0 baseline:
 
-- persist `recoveryMemoryId` when a memory was available
-- persist a `recoveryMemoryVersion` or equivalent revision marker when available
-- do not require full-text recovery-memory snapshots per event
+- persist `anchorNoteId` when an anchor note was available
+- persist an `anchorNoteVersion` or equivalent revision marker when available
+- do not require full-text anchor-note snapshots per event
+- if SQL tables are introduced later, map this entity toward `anchor_notes` rather than legacy `recovery_memories` naming
 
 If future product behavior needs event-level proof of exactly what the user saw, prefer a minimal displayed-content snapshot over storing the entire recovery record. Any such snapshot should be narrowly scoped to the content intentionally surfaced during that flare.
 
@@ -223,8 +224,8 @@ This is the central historical event in V0.
 - `updatedAt`
 - `behaviorPatternId`
 - `behaviorDescriptionSnapshot`
-- `recoveryMemoryId`
-- `recoveryMemoryVersion`
+- `anchorNoteId`
+- `anchorNoteVersion`
 - `recoveryActionShown`
 - `recoveryActionTaken`
 - `responseMode`
@@ -237,7 +238,7 @@ This is the central historical event in V0.
 ### Relationships
 
 - Many `FlareEvent` records may reference one `BehaviorPattern`.
-- Many `FlareEvent` records may reference one `RecoveryMemory`.
+- Many `FlareEvent` records may reference one `AnchorNote`.
 - One `FlareEvent` may have zero or one `CheckpointReflection`.
 
 ### Lifecycle
@@ -255,11 +256,11 @@ Implementations may add internal workflow states later, but these V0 user-meanin
 Required snapshot expectations:
 
 - behavior identity should be historically reconstructable from event-local snapshot fields
-- recovery-memory linkage should preserve which memory version supported the flare when that information is available
+- anchor-note linkage should preserve which note version supported the flare when that information is available
 
 Not required in V0:
 
-- full copy of all recovery-memory text
+- full copy of all anchor-note text
 - full trigger taxonomy snapshot
 - support-contact or Telegram data
 
@@ -375,7 +376,7 @@ Represents a trusted group or shared support destination in a later version.
 
 Telegram-related setup is future-scoped and should remain separate from V0 durable entities.
 
-Do not model Telegram setup as hidden optional fields on `BehaviorPattern`, `RecoveryMemory`, or `FlareEvent`.
+Do not model Telegram setup as hidden optional fields on `BehaviorPattern`, `AnchorNote`, or `FlareEvent`.
 
 Future Telegram persistence may later require distinct artifacts such as:
 
@@ -410,7 +411,7 @@ Local or in-memory state should own:
 Durable persistence should own:
 
 - saved `BehaviorPattern` records
-- saved `RecoveryMemory` records
+- saved `AnchorNote` records
 - created `FlareEvent` history
 - saved `CheckpointReflection` records
 - archived versus active status for durable records
@@ -425,7 +426,7 @@ Durable persistence should own:
 
 ## Privacy and Sensitivity Expectations
 
-`BehaviorPattern`, `RecoveryMemory`, `FlareEvent`, and `CheckpointReflection` may all contain sensitive personal content.
+`BehaviorPattern`, `AnchorNote`, `FlareEvent`, and `CheckpointReflection` may all contain sensitive personal content.
 
 Examples include:
 
@@ -440,7 +441,7 @@ Examples include:
 - Collect only data needed for the V0 product loop.
 - Avoid duplicating sensitive text across entities unless history meaning truly requires it.
 - Do not log raw recovery content, reflection content, or freeform user notes unnecessarily.
-- Do not include recovery-memory text or reflection text in telemetry.
+- Do not include anchor-note text or reflection text in telemetry.
 - Treat debug logging of user-authored content as a defect unless there is an explicit, justified safe-development exception.
 
 ### Telemetry Guidance
@@ -455,7 +456,7 @@ Telemetry, if added later, should prefer non-content metadata such as:
 Telemetry should not capture:
 
 - full behavior descriptions
-- full recovery-memory text
+- full anchor-note text
 - reflection note bodies
 - trigger lists
 - costs, reminders, or supportive phrases in raw form
@@ -532,7 +533,7 @@ The current app state is local and in-memory. Future persistence work should mig
 ### Readiness Guidance
 
 - Keep domain state shapes separate from view-only state.
-- Use explicit domain names in code and storage design: `BehaviorPattern`, `RecoveryMemory`, `FlareEvent`, `CheckpointReflection`.
+- Use explicit domain names in code and storage design: `BehaviorPattern`, `AnchorNote`, `FlareEvent`, `CheckpointReflection`.
 - Introduce stable ids before relying on durable lists or editing flows.
 - Add revision markers where future snapshots depend on historical meaning.
 - Preserve the difference between active setup records and event history.
@@ -541,7 +542,7 @@ The current app state is local and in-memory. Future persistence work should mig
 
 When persistent storage is introduced later:
 
-1. Map the current local setup forms into explicit `BehaviorPattern` and `RecoveryMemory` save operations.
+1. Map the current local setup forms into explicit `BehaviorPattern` and `AnchorNote` save operations.
 2. Ensure `Send Flare` creates a `FlareEvent` record with a behavior snapshot rather than only a mutable pointer.
 3. Keep reflection save separate from flare creation so unfinished reflections do not appear as completed history.
 4. Decide explicitly whether device-local drafts exist before implementing autosave behavior.
@@ -553,7 +554,7 @@ When persistent storage is introduced later:
 - deriving database tables directly from component names
 - storing the full screen state as one generic JSON blob
 - mixing Telegram setup fields into V0 recovery entities
-- duplicating full recovery-memory text into every flare event by default
+- duplicating full anchor-note text into every flare event by default
 - persisting reflection drafts without explicit product intent
 
 ## Minimal Acceptance Criteria for Future Durable Storage
@@ -561,7 +562,7 @@ When persistent storage is introduced later:
 Future persistence work is aligned with this contract when:
 
 - the four V0 entities exist as distinct durable concepts
-- `BehaviorPattern`, `RecoveryMemory`, `FlareEvent`, and `CheckpointReflection` are not collapsed into one generic record type
+- `BehaviorPattern`, `AnchorNote`, `FlareEvent`, and `CheckpointReflection` are not collapsed into one generic record type
 - `FlareEvent` preserves historical meaning through required behavior snapshot fields
 - `CheckpointReflection` is optional and linked to a `FlareEvent`
 - recovery content is stored with privacy-aware boundaries and is excluded from telemetry payloads
@@ -577,7 +578,7 @@ When durable storage is later implemented, validation should include more than s
 Minimum expected validation:
 
 - save and reload a `BehaviorPattern`
-- save and reload a `RecoveryMemory`
+- save and reload a `AnchorNote`
 - create a `FlareEvent` and confirm its behavior snapshot remains meaningful after the source `BehaviorPattern` is edited
 - save a `CheckpointReflection` and confirm it remains linked to the correct `FlareEvent`
 - verify sensitive content is not emitted through telemetry or unnecessary logs
@@ -588,8 +589,8 @@ Minimum expected validation:
 These decisions remain intentionally open for later implementation slices:
 
 - whether V0 persists one active `BehaviorPattern` or multiple patterns
-- whether V0 persists one active `RecoveryMemory` or multiple revisions surfaced in UI
-- whether event detail views need a minimal displayed-content snapshot from `RecoveryMemory`
+- whether V0 persists one active `AnchorNote` or multiple revisions surfaced in UI
+- whether event detail views need a minimal displayed-content snapshot from `AnchorNote`
 - whether local encrypted draft storage is needed for offline resilience
 - whether future cloud writes are direct-to-provider or mediated by a backend API layer
 - hard-delete versus soft-delete/archive behavior for each durable entity
@@ -598,4 +599,5 @@ These decisions remain intentionally open for later implementation slices:
 - how locally cached/offline records are cleared when deletion or sign-out exists
 
 Those decisions can be resolved later without collapsing the entity boundaries defined here.
+
 

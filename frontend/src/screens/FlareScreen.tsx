@@ -3,23 +3,19 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
 import { CheckpointReflectionModal } from "../components/CheckpointReflectionModal";
+import { FlareResponse } from "../components/FlareResponse";
 import { PlaceholderModal } from "../components/PlaceholderModal";
-import { RecoveryResponse } from "../components/RecoveryResponse";
 import { SendFlareButton } from "../components/SendFlareButton";
+import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
-import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
 
 export function FlareScreen() {
-  const [isRecoveryResponseVisible, setIsRecoveryResponseVisible] =
-    useState(false);
+  const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
-  const {
-    isConfigured: isRecoveryMemoryConfigured,
-    recoveryMemory,
-  } = useRecoveryMemory();
+  const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
 
   const readinessItems = [
     {
@@ -29,16 +25,16 @@ export function FlareScreen() {
         : "Ready to define",
     },
     {
-      label: "Recovery Memory",
-      status: isRecoveryMemoryConfigured
-        ? `Configured: ${recoveryMemory?.supportivePhrase}`
+      label: "Anchor Note",
+      status: isAnchorNoteConfigured
+        ? `Configured: ${anchorNote?.supportivePhrase}`
         : "Ready to define",
     },
     { label: "Telegram Support", status: "Coming in V1" },
   ];
 
   const openCheckpoint = () => {
-    setIsRecoveryResponseVisible(false);
+    setIsFlareResponseVisible(false);
     setIsCheckpointVisible(true);
   };
   const eventForResponse = activeEvent ?? currentEvent;
@@ -57,7 +53,7 @@ export function FlareScreen() {
             behaviorSummary: behaviorPattern?.shortDescription,
           });
           setIsCheckpointVisible(false);
-          setIsRecoveryResponseVisible(true);
+          setIsFlareResponseVisible(true);
         }}
       />
 
@@ -85,12 +81,12 @@ export function FlareScreen() {
       </View>
 
       <PlaceholderModal
-        onClose={() => setIsRecoveryResponseVisible(false)}
+        onClose={() => setIsFlareResponseVisible(false)}
         subtitle="This V0 sheet opens immediately and stays attached to the current in-memory Flare Event."
-        title="Recovery Response"
-        visible={isRecoveryResponseVisible}
+        title="Flare Response"
+        visible={isFlareResponseVisible}
       >
-        <RecoveryResponse
+        <FlareResponse
           flareEvent={eventForResponse}
           onOpenCheckpoint={openCheckpoint}
         />

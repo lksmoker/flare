@@ -4,9 +4,9 @@ import { PropsWithChildren, ReactNode } from "react";
 import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
+import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
-import { RecoveryMemoryProvider } from "../../state/RecoveryMemoryContext";
 
 jest.mock("expo-router", () => ({
   Link: ({ children }: { children: ReactNode }) => children,
@@ -15,9 +15,9 @@ jest.mock("expo-router", () => ({
 function TestProviders({ children }: PropsWithChildren) {
   return (
     <BehaviorPatternProvider>
-      <RecoveryMemoryProvider>
+      <AnchorNoteProvider>
         <FlareEventProvider>{children}</FlareEventProvider>
-      </RecoveryMemoryProvider>
+      </AnchorNoteProvider>
     </BehaviorPatternProvider>
   );
 }
@@ -49,16 +49,16 @@ describe("V0 app shell", () => {
     expect(readinessIndex).toBeGreaterThan(checkpointIndex);
   });
 
-  it("shows Recovery Response immediately when Send Flare is pressed", () => {
+  it("shows Flare Response immediately when Send Flare is pressed", () => {
     const { getByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
-    expect(queryByText("Recovery Response")).toBeNull();
+    expect(queryByText("Flare Response")).toBeNull();
 
     fireEvent.press(getByText("Send Flare"));
 
-    expect(getByText("Recovery Response")).toBeTruthy();
+    expect(getByText("Flare Response")).toBeTruthy();
     expect(getByText("Current Flare Event")).toBeTruthy();
     expect(getByText(/status: active/i)).toBeTruthy();
     expect(getByText("You already interrupted the spiral.")).toBeTruthy();
@@ -90,7 +90,7 @@ describe("V0 app shell", () => {
     });
 
     expect(getByText("Behavior Pattern Setup")).toBeTruthy();
-    expect(getByText("Recovery Memory Setup")).toBeTruthy();
+    expect(getByText("Anchor Note Setup")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
     expect(getByText("Coming in V1")).toBeTruthy();
   });
@@ -109,18 +109,18 @@ describe("V0 app shell", () => {
     expect(getByText("Save Behavior Pattern")).toBeTruthy();
 
     fireEvent.press(getByText("Close"));
-    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
     expect(
       getByText(
         "Capture grounded words you will want available when the hard moment lands.",
       ),
     ).toBeTruthy();
-    expect(getByText("Save Recovery Memory")).toBeTruthy();
+    expect(getByText("Save Anchor Note")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
     expect(getByText("Coming in V1")).toBeTruthy();
   });
 
-  it("saves Recovery Memory and shows the summary on Customize", () => {
+  it("saves Anchor Note and shows the summary on Customize", () => {
     const { getAllByText, getByLabelText, getByText, queryByText } = render(
       <CustomizeScreen />,
       {
@@ -128,7 +128,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
 
     fireEvent.changeText(
       getByLabelText("Why interrupt this pattern?"),
@@ -147,13 +147,13 @@ describe("V0 app shell", () => {
       "Put the phone away, drink water, and go outside.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during recovery"),
+      getByLabelText("Supportive phrase to show during a flare"),
       "Pause now. Protect tomorrow.",
     );
 
-    fireEvent.press(getByText("Save Recovery Memory"));
+    fireEvent.press(getByText("Save Anchor Note"));
 
-    expect(queryByText("Save Recovery Memory")).toBeNull();
+    expect(queryByText("Save Anchor Note")).toBeNull();
     expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
     expect(getByText("Pause now. Protect tomorrow.")).toBeTruthy();
     expect(
@@ -231,7 +231,7 @@ describe("V0 app shell", () => {
     expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("updates the Flare readiness indicator after Recovery Memory is saved", () => {
+  it("updates the Flare readiness indicator after Anchor Note is saved", () => {
     const { getAllByText, getByLabelText, getByText } = render(
       <>
         <CustomizeScreen />
@@ -244,21 +244,21 @@ describe("V0 app shell", () => {
 
     expect(getAllByText("Ready to define").length).toBeGreaterThanOrEqual(2);
 
-    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
     fireEvent.changeText(
       getByLabelText("Why interrupt this pattern?"),
       "This urge is not worth the fallout.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during recovery"),
+      getByLabelText("Supportive phrase to show during a flare"),
       "Hold the line for ten minutes.",
     );
-    fireEvent.press(getByText("Save Recovery Memory"));
+    fireEvent.press(getByText("Save Anchor Note"));
 
     expect(getByText("Configured: Hold the line for ten minutes.")).toBeTruthy();
   });
 
-  it("shows saved Recovery Memory immediately in Recovery Response after Send Flare", () => {
+  it("shows saved Anchor Note immediately in Flare Response after Send Flare", () => {
     const { getAllByText, getByLabelText, getByText } = render(
       <>
         <CustomizeScreen />
@@ -269,7 +269,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Recovery Memory Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
     fireEvent.changeText(
       getByLabelText("Why interrupt this pattern?"),
       "I want tomorrow morning back.",
@@ -283,23 +283,27 @@ describe("V0 app shell", () => {
       "Leave the room and drink water.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during recovery"),
+      getByLabelText("Supportive phrase to show during a flare"),
       "Pause now. You already chose differently.",
     );
-    fireEvent.press(getByText("Save Recovery Memory"));
+    fireEvent.press(getByText("Save Anchor Note"));
 
     fireEvent.press(getByText("Send Flare"));
 
-    expect(getByText("Recovery Response")).toBeTruthy();
+    expect(getByText("Flare Response")).toBeTruthy();
     expect(getByText("Current Flare Event")).toBeTruthy();
     expect(
       getAllByText("Pause now. You already chose differently.").length,
     ).toBeGreaterThanOrEqual(2);
-    expect(getAllByText("I want tomorrow morning back.").length).toBeGreaterThanOrEqual(2);
+    expect(
+      getAllByText("I want tomorrow morning back.").length,
+    ).toBeGreaterThanOrEqual(2);
     expect(
       getAllByText("You do not need to obey this feeling.").length,
     ).toBeGreaterThanOrEqual(2);
-    expect(getAllByText("Leave the room and drink water.").length).toBeGreaterThanOrEqual(2);
+    expect(
+      getAllByText("Leave the room and drink water.").length,
+    ).toBeGreaterThanOrEqual(2);
   });
 
   it("creates a flare event tied to the current behavior pattern and shows it in History", () => {
@@ -374,11 +378,21 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Save Reflection"));
 
     expect(queryByText("Save Reflection")).toBeNull();
-    expect(getByText(/What happened: I felt the spike right after finishing work\./)).toBeTruthy();
-    expect(getByText(/What helped: I left the room and drank cold water\./)).toBeTruthy();
-    expect(getByText(/How I feel now: Less flooded and more steady\./)).toBeTruthy();
-    expect(getByText(/Outcome: The urge passed enough for me to reset\./)).toBeTruthy();
-    expect(getByText(/Note: The first minute was the hardest part\./)).toBeTruthy();
+    expect(
+      getByText(/What happened: I felt the spike right after finishing work\./),
+    ).toBeTruthy();
+    expect(
+      getByText(/What helped: I left the room and drank cold water\./),
+    ).toBeTruthy();
+    expect(
+      getByText(/How I feel now: Less flooded and more steady\./),
+    ).toBeTruthy();
+    expect(
+      getByText(/Outcome: The urge passed enough for me to reset\./),
+    ).toBeTruthy();
+    expect(
+      getByText(/Note: The first minute was the hardest part\./),
+    ).toBeTruthy();
     expect(getByText(/Reflected event/i)).toBeTruthy();
   });
 

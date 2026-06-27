@@ -1,0 +1,137 @@
+<!-- @context: { "kind": "archive.task_summary", "layer": "docs", "name": "Run name: Remove Recovery Language", "domains": ["archive", "ai-run", "admin-config"] } -->
+
+# Build Run Summary
+
+## Phase 1 - Implementation
+- scope: Renamed the V0 `Recovery Memory` concept to `Anchor Note` and the immediate post-`Send Flare` `Recovery Response` concept to `Flare Response` across the scoped frontend code, tests, and durable V0 product/design/architecture docs before any persistence or schema work begins.
+- files changed:
+  - `docs/00_product/flare_anchor_note_checkpoint.md`
+  - `docs/00_product/flare_depression_anxiety_expansion_checkpoint.md`
+  - `docs/00_product/flare_mvp_scope.md`
+  - `docs/00_product/flare_vision_direction.md`
+  - `docs/10_design/flare_v0_app_structure_navigation.md`
+  - `docs/20_architecture/flare_repo_structure_conventions.md`
+  - `docs/20_architecture/flare_stack_decision.md`
+  - `docs/20_architecture/flare_v0_data_persistence_contract.md`
+  - `docs/40_delivery/flare_v0_build_plan.md`
+  - `frontend/app/_layout.tsx`
+  - `frontend/src/components/AnchorNoteSetupModal.tsx`
+  - `frontend/src/components/AnchorNoteSummary.tsx`
+  - `frontend/src/components/FlareResponse.tsx`
+  - `frontend/src/components/SendFlareButton.tsx`
+  - `frontend/src/screens/CustomizeScreen.tsx`
+  - `frontend/src/screens/FlareScreen.tsx`
+  - `frontend/src/screens/__tests__/app_shell.test.tsx`
+  - `frontend/src/state/AnchorNoteContext.tsx`
+- tests run: none yet in Phase 1; validation commands run in Phase 2.
+- initial result: In-memory V0 behavior remains unchanged, but the canonical product, UI, and future-persistence terminology now moves toward `Anchor Note` / `AnchorNote` and `Flare Response` instead of `Recovery Memory` / `Recovery Response`.
+
+## Phase 2 - Review and Gap Closure
+- compared against:
+  - `docs/10_design/flare_v0_app_structure_navigation.md`
+  - `docs/20_architecture/flare_v0_data_persistence_contract.md`
+  - `docs/20_architecture/flare_repo_structure_conventions.md`
+  - `docs/40_delivery/flare_v0_build_plan.md`
+  - build prompt scope, migration guidance, validation requirements, and the global governance excerpts included in the run prompt
+- gaps identified:
+  - The first Phase 1 summary file list still referenced the pre-rename checkpoint filename and missed two product docs that were updated during the broader terminology cleanup.
+  - The persistence contract still had a few residual "memory" phrasings after the bulk rename and needed explicit future table guidance toward `anchor_notes`.
+  - The renamed product checkpoint doc still used a `Send Flare Response` heading and "recovery protocol" wording that no longer matched the canonical V0 vocabulary.
+- fixes applied:
+  - Corrected the summary artifact so Phase 1 reflects the actual renamed files and the full durable-doc scope touched in this run.
+  - Finished the contract-language cleanup in `docs/20_architecture/flare_v0_data_persistence_contract.md`, including `AnchorNote`, `anchorNoteId`, `anchorNoteVersion`, privacy wording updates, and explicit future naming guidance toward `anchor_notes`.
+  - Updated the frontend file/class/function vocabulary to `AnchorNote*`, `useAnchorNote`, `AnchorNoteProvider`, and `FlareResponse`, while preserving the same in-memory behavior and modal/sheet flow.
+  - Updated user-visible copy and tests so `Customize` owns `Anchor Note Setup`, `Send Flare` opens `Flare Response` immediately, readiness shows `Anchor Note`, and saved anchor-note content still appears in the immediate post-flare experience.
+  - Updated scoped product, design, architecture, and delivery docs so `Anchor Note` / `AnchorNote` is the canonical V0 concept and `Flare Response` is the canonical post-`Send Flare` experience.
+  - Verified no persistence, Supabase schema work, auth, real Telegram support, package/dependency changes, or repo-local `.env` files were added.
+  - Validation commands run from repo root:
+    - `npm run lint`
+    - `npm run test`
+    - `npm run typecheck`
+    - `npm run build`
+  - Validation results:
+    - `npm run lint`: passed
+    - `npm run test`: passed (`15` tests)
+    - `npm run typecheck`: passed
+    - `npm run build`: passed (`expo export --platform web`)
+  - Diff / file-change summary:
+    - git status shape: `13` modified, `5` deleted old-name files, `6` added new-name files/artifacts
+    - tracked diff stat from `git diff --stat`: `18` tracked files changed, `214` insertions, `927` deletions
+    - renamed/frontend replacements were represented in git status as delete-plus-add pairs because the new files are currently unstaged
+- remaining gaps:
+  - No runtime manual tap-through outside the automated test/build flow was run in this session.
+  - Historical archive docs under `docs/90_archive/` still contain the prior terminology by design and were not rewritten.
+- final assessment:
+  - The requested terminology migration is complete within scope. Canonical V0 language in the active frontend and scoped durable docs is now `Behavior Pattern`, `Anchor Note`, `Send Flare`, `Flare Response`, `Checkpoint / Reflection`, and `History`.
+  - The future persistence contract now points toward `AnchorNote`, `anchorNoteId`, `anchorNoteVersion`, and `anchor_notes`, while keeping anchor-note content explicitly privacy-sensitive.
+  - Required validation passed with no behavior regressions detected, and the run stayed within constraints: no persistence, no schema/migrations, no auth, no real Telegram implementation, no dependency changes, and no repo-local secret files.
+  - Final files changed:
+    - `docs/00_product/flare_anchor_note_checkpoint.md`
+    - `docs/00_product/flare_depression_anxiety_expansion_checkpoint.md`
+    - `docs/00_product/flare_mvp_scope.md`
+    - `docs/00_product/flare_recovery_memory_checkpoint.md` (renamed to `flare_anchor_note_checkpoint.md`)
+    - `docs/00_product/flare_vision_direction.md`
+    - `docs/10_design/flare_v0_app_structure_navigation.md`
+    - `docs/20_architecture/flare_repo_structure_conventions.md`
+    - `docs/20_architecture/flare_stack_decision.md`
+    - `docs/20_architecture/flare_v0_data_persistence_contract.md`
+    - `docs/40_delivery/flare_v0_build_plan.md`
+    - `docs/90_archive/task_summary/AI/task_20260627_223731__admin-config__remove-recovery-language__run_6140.md`
+    - `frontend/app/_layout.tsx`
+    - `frontend/src/components/AnchorNoteSetupModal.tsx`
+    - `frontend/src/components/AnchorNoteSummary.tsx`
+    - `frontend/src/components/FlareResponse.tsx`
+    - `frontend/src/components/RecoveryMemorySetupModal.tsx` (renamed to `AnchorNoteSetupModal.tsx`)
+    - `frontend/src/components/RecoveryMemorySummary.tsx` (renamed to `AnchorNoteSummary.tsx`)
+    - `frontend/src/components/RecoveryResponse.tsx` (renamed to `FlareResponse.tsx`)
+    - `frontend/src/components/SendFlareButton.tsx`
+    - `frontend/src/screens/CustomizeScreen.tsx`
+    - `frontend/src/screens/FlareScreen.tsx`
+    - `frontend/src/screens/__tests__/app_shell.test.tsx`
+    - `frontend/src/state/AnchorNoteContext.tsx`
+    - `frontend/src/state/RecoveryMemoryContext.tsx` (renamed to `AnchorNoteContext.tsx`)
+
+## Learning Candidates
+- status: none
+- reason: Evaluated repeated failures, schema/constraint drift, path/env issues, diagnostics gaps, and test gaps; no reusable, scoped, evidence-backed learning candidate emerged from this run.
+
+## Diff
+- terminal_state_snapshot: failed
+- files_changed: 20
+- insertions: 487
+- deletions: 342
+- note: terminal_state_snapshot reflects the run state when diff metadata was captured.
+- changed_files:
+  - docs/00_product/flare_anchor_note_checkpoint.md
+  - docs/00_product/flare_depression_anxiety_expansion_checkpoint.md
+  - docs/00_product/flare_mvp_scope.md
+  - docs/00_product/flare_vision_direction.md
+  - docs/10_design/flare_v0_app_structure_navigation.md
+  - docs/20_architecture/flare_repo_structure_conventions.md
+  - docs/20_architecture/flare_stack_decision.md
+  - docs/20_architecture/flare_v0_data_persistence_contract.md
+  - docs/40_delivery/flare_v0_build_plan.md
+  - docs/90_archive/task_summary/AI/task_20260627_223731__admin-config__remove-recovery-language__run_6140.md
+  - frontend/app/_layout.tsx
+  - frontend/src/components/AnchorNoteSetupModal.tsx
+  - frontend/src/components/AnchorNoteSummary.tsx
+  - frontend/src/components/FlareResponse.tsx
+  - frontend/src/components/SendFlareButton.tsx
+  - frontend/src/screens/CustomizeScreen.tsx
+  - frontend/src/screens/FlareScreen.tsx
+  - frontend/src/screens/__tests__/app_shell.test.tsx
+  - frontend/src/state/AnchorNoteContext.tsx
+  - frontend/src/state/RecoveryMemoryContext.tsx
+## Validation Summary
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: <none>
+- summary: Validation details were derived from the Build Run Summary body.
+## Final Run State
+- terminal_state: failed
+- summary_written: true
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: <none>

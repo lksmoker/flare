@@ -81,7 +81,7 @@ Use these initial domain terms consistently across docs, routes, services, schem
 - `User`
 - `Flare Profile`
 - `Behavior Pattern`
-- `Recovery Memory`
+- `Anchor Note`
 - `Flare Event`
 - `Recovery Action`
 - `Checkpoint` / `Reflection`
@@ -92,13 +92,13 @@ Conventions for usage:
 
 - Prefer explicit domain names over invented synonyms.
 - Keep `Send Flare` as the user-facing primary action label.
-- Treat `Recovery Memory` as a first-class concept, not an optional helper artifact hidden inside generic profile data.
+- Treat `Anchor Note` as a first-class concept, not an optional helper artifact hidden inside generic profile data.
 - Reserve support-oriented terms for later phases unless a document is explicitly discussing V1 or beyond.
 
 ## File Naming Conventions
 
 - Prefer lowercase snake_case for durable documentation files.
-- Prefer clear component names for UI files such as `SendFlareButton` or `RecoveryMemoryScreen`.
+- Prefer clear component names for UI files such as `SendFlareButton` or `AnchorNoteSetupModal`.
 - Prefer explicit service or domain names such as `flare_event_service` over generic names such as `helpers` or `misc`.
 - Avoid vague files such as `utils.js` unless the scope is tight, obvious, and local to one area.
 - Name files after the domain behavior they own, not after temporary implementation details.
@@ -209,14 +209,14 @@ The expected local development pattern is:
 - Domain behavior should be tested separately from UI rendering where practical.
 - API or server behavior should be testable without requiring the full UI.
 - UI tests should focus on user-visible behavior in the urgent moment, not only component internals.
-- V0 smoke tests should cover the full loop: behavior setup -> Recovery Memory setup -> Send Flare -> recovery response -> checkpoint/history.
+- V0 smoke tests should cover the full loop: behavior setup -> Anchor Note setup -> Send Flare -> flare response -> checkpoint/history.
 
 Testing should stay proportional to V0 scope, but the core loop must remain verifiable end to end.
 
 ## Implementation Principles
 
 - Keep the urgent `Send Flare` moment simple.
-- Keep `Recovery Memory` first-class.
+- Keep `Anchor Note` first-class.
 - Keep V0 solo-user first.
 - Do not prematurely build Telegram or support-group features.
 - Avoid overengineering before the core loop is proven.
@@ -234,3 +234,4 @@ These decisions remain intentionally open at the repo-structure stage:
 - whether frontend and backend live as separate top-level folders or a unified app structure
 
 These can be resolved later without changing the separation-of-concerns rules defined in this document.
+

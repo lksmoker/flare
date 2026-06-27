@@ -1,4 +1,4 @@
-﻿# Flare App - Recovery Memory Checkpoint
+# Flare App - Anchor Note Checkpoint
 
 ## Core Insight
 
@@ -8,15 +8,15 @@ Flare should restore that access.
 
 ## Named Concept
 
-**Recovery Memory**
+**Anchor Note**
 
 ## Product Principle
 
-Recovery Memory preserves the user's clear-minded commitments and returns them during the craving window.
+Anchor Note preserves the user's clear-minded commitments and returns them during the craving window.
 
-## Send Flare Response
+## Flare Response
 
-When the user taps **Send Flare**, the app should do more than notify others. It should activate an immediate recovery protocol.
+When the user taps **Send Flare**, the app should do more than notify others. It should activate an immediate support protocol.
 
 Recommended order:
 
@@ -69,7 +69,7 @@ Example:
 
 > If I continue, I usually lose time, feel ashamed, isolate, sleep worse, and make the next craving stronger.
 
-The goal is not punishment. The goal is restoring long-term memory during a short-term impulse state.
+The goal is not punishment. The goal is restoring access to the user's clear-minded perspective during a short-term impulse state.
 
 ### 5. Next 10 Minutes Commitment
 
@@ -82,7 +82,7 @@ Examples:
 
 ## Onboarding / Setup
 
-Recovery Memory should be optional, not forced.
+Anchor Note should be optional, not forced.
 
 The app should explain:
 
@@ -115,12 +115,13 @@ V0 should support three paths:
 
 ## Product Framing
 
-**Send Flare -> Activate Recovery Memory**
+**Send Flare -> Activate Anchor Note**
 
 Alternative product line:
 
-> When craving narrows your thinking, Flare brings your recovery memory back.
+> When craving narrows your thinking, Flare brings your anchor note back.
 
 ## Status
 
 Checkpointed as an early product direction for the Flare App.
+

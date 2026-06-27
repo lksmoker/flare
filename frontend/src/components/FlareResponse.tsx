@@ -4,18 +4,18 @@ import {
   FlareEvent,
   formatFlareEventTimestamp,
 } from "../state/FlareEventContext";
-import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
+import { useAnchorNote } from "../state/AnchorNoteContext";
 
-type RecoveryResponseProps = {
+type FlareResponseProps = {
   flareEvent: FlareEvent | null;
   onOpenCheckpoint: () => void;
 };
 
-export function RecoveryResponse({
+export function FlareResponse({
   flareEvent,
   onOpenCheckpoint,
-}: RecoveryResponseProps) {
-  const { recoveryMemory } = useRecoveryMemory();
+}: FlareResponseProps) {
+  const { anchorNote } = useAnchorNote();
 
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ export function RecoveryResponse({
         <Text style={styles.eventTitle}>
           {flareEvent?.status === "reflected"
             ? "Reflection saved for this event"
-            : "Recovery is open for this event"}
+            : "Flare support is open for this event"}
         </Text>
         <Text style={styles.eventCopy}>
           {flareEvent
@@ -38,31 +38,31 @@ export function RecoveryResponse({
         ) : null}
       </View>
       <View style={styles.callout}>
-        <Text style={styles.calloutLabel}>Recovery Memory</Text>
+        <Text style={styles.calloutLabel}>Anchor Note</Text>
         <Text style={styles.calloutTitle}>
-          {recoveryMemory?.supportivePhrase || "You already interrupted the spiral."}
+          {anchorNote?.supportivePhrase || "You already interrupted the spiral."}
         </Text>
         <Text style={styles.calloutCopy}>
-          {recoveryMemory?.interruptionReasons ||
-            "This V0 placeholder now surfaces saved Recovery Memory immediately after `Send Flare`, even before persistence exists."}
+          {anchorNote?.interruptionReasons ||
+            "This V0 placeholder now surfaces the saved Anchor Note immediately after `Send Flare`, even before persistence exists."}
         </Text>
-        {recoveryMemory?.groundedReminders ? (
+        {anchorNote?.groundedReminders ? (
           <View style={styles.memorySection}>
             <Text style={styles.memoryLabel}>Grounded reminder</Text>
-            <Text style={styles.memoryCopy}>{recoveryMemory.groundedReminders}</Text>
+            <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
           </View>
         ) : null}
-        {recoveryMemory?.continuingCosts ? (
+        {anchorNote?.continuingCosts ? (
           <View style={styles.memorySection}>
             <Text style={styles.memoryLabel}>If I keep going</Text>
-            <Text style={styles.memoryCopy}>{recoveryMemory.continuingCosts}</Text>
+            <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
           </View>
         ) : null}
       </View>
       <View style={styles.actionCard}>
         <Text style={styles.actionTitle}>Try one next step</Text>
         <Text style={styles.actionCopy}>
-          {recoveryMemory?.emergencyActions ||
+          {anchorNote?.emergencyActions ||
             "Step away from the trigger for two minutes, drink water, and breathe before deciding what comes next."}
         </Text>
       </View>

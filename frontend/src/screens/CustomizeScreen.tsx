@@ -2,22 +2,19 @@ import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
+import { AnchorNoteSetupModal } from "../components/AnchorNoteSetupModal";
+import { AnchorNoteSummary } from "../components/AnchorNoteSummary";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
-import { RecoveryMemorySummary } from "../components/RecoveryMemorySummary";
-import { RecoveryMemorySetupModal } from "../components/RecoveryMemorySetupModal";
+import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
-import { useRecoveryMemory } from "../state/RecoveryMemoryContext";
 
 export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
-  const [isRecoveryMemoryVisible, setIsRecoveryMemoryVisible] = useState(false);
+  const [isAnchorNoteVisible, setIsAnchorNoteVisible] = useState(false);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
-  const {
-    isConfigured: isRecoveryMemoryConfigured,
-    recoveryMemory,
-  } = useRecoveryMemory();
+  const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
 
   return (
     <AppShell
@@ -52,27 +49,25 @@ export function CustomizeScreen() {
 
         <Pressable
           accessibilityRole="button"
-          onPress={() => setIsRecoveryMemoryVisible(true)}
+          onPress={() => setIsAnchorNoteVisible(true)}
           style={styles.card}
         >
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Recovery Memory Setup</Text>
+            <Text style={styles.cardTitle}>Anchor Note Setup</Text>
             <Text
               style={[
                 styles.statusBadge,
-                isRecoveryMemoryConfigured
-                  ? styles.readyBadge
-                  : styles.pendingBadge,
+                isAnchorNoteConfigured ? styles.readyBadge : styles.pendingBadge,
               ]}
             >
-              {isRecoveryMemoryConfigured ? "Configured" : "Needs setup"}
+              {isAnchorNoteConfigured ? "Configured" : "Needs setup"}
             </Text>
           </View>
           <Text style={styles.cardCopy}>
             Capture grounded reminders, costs, and phrases that belong in the
-            future Recovery Response.
+            future Flare Response.
           </Text>
-          <RecoveryMemorySummary recoveryMemory={recoveryMemory} />
+          <AnchorNoteSummary anchorNote={anchorNote} />
         </Pressable>
 
         <View style={styles.comingSoonCard}>
@@ -89,9 +84,9 @@ export function CustomizeScreen() {
         onClose={() => setIsBehaviorPatternVisible(false)}
         visible={isBehaviorPatternVisible}
       />
-      <RecoveryMemorySetupModal
-        onClose={() => setIsRecoveryMemoryVisible(false)}
-        visible={isRecoveryMemoryVisible}
+      <AnchorNoteSetupModal
+        onClose={() => setIsAnchorNoteVisible(false)}
+        visible={isAnchorNoteVisible}
       />
     </AppShell>
   );

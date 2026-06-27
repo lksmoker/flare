@@ -3,29 +3,29 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
-  createEmptyRecoveryMemory,
-  useRecoveryMemory,
-} from "../state/RecoveryMemoryContext";
+  createEmptyAnchorNote,
+  useAnchorNote,
+} from "../state/AnchorNoteContext";
 
-type RecoveryMemorySetupModalProps = {
+type AnchorNoteSetupModalProps = {
   onClose: () => void;
   visible: boolean;
 };
 
-export function RecoveryMemorySetupModal({
+export function AnchorNoteSetupModal({
   onClose,
   visible,
-}: RecoveryMemorySetupModalProps) {
-  const { recoveryMemory, saveRecoveryMemory } = useRecoveryMemory();
-  const [draft, setDraft] = useState(createEmptyRecoveryMemory);
+}: AnchorNoteSetupModalProps) {
+  const { anchorNote, saveAnchorNote } = useAnchorNote();
+  const [draft, setDraft] = useState(createEmptyAnchorNote);
 
   useEffect(() => {
     if (!visible) {
       return;
     }
 
-    setDraft(recoveryMemory ?? createEmptyRecoveryMemory());
-  }, [recoveryMemory, visible]);
+    setDraft(anchorNote ?? createEmptyAnchorNote());
+  }, [anchorNote, visible]);
 
   const saveDisabled =
     draft.interruptionReasons.trim().length === 0 ||
@@ -50,7 +50,7 @@ export function RecoveryMemorySetupModal({
               accessibilityRole="button"
               disabled={saveDisabled}
               onPress={() => {
-                saveRecoveryMemory(draft);
+                saveAnchorNote(draft);
                 onClose();
               }}
               style={[
@@ -58,14 +58,14 @@ export function RecoveryMemorySetupModal({
                 saveDisabled ? styles.saveButtonDisabled : null,
               ]}
             >
-              <Text style={styles.saveButtonLabel}>Save Recovery Memory</Text>
+              <Text style={styles.saveButtonLabel}>Save Anchor Note</Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
       subtitle="Capture grounded words you will want available when the hard moment lands."
-      title="Recovery Memory Setup"
+      title="Anchor Note Setup"
       visible={visible}
     >
       <View style={styles.form}>
@@ -135,9 +135,9 @@ export function RecoveryMemorySetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Supportive phrase to show during recovery</Text>
+          <Text style={styles.label}>Supportive phrase to show during a flare</Text>
           <TextInput
-            accessibilityLabel="Supportive phrase to show during recovery"
+            accessibilityLabel="Supportive phrase to show during a flare"
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, supportivePhrase: value }))
             }

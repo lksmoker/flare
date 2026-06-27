@@ -1,4 +1,4 @@
-ï»¿# Flare Stack Decision
+# Flare Stack Decision
 
 > Canonical stack decision record.
 > Source notes: `docs/00_product/flare_stack_decision_checkpoint.md`.
@@ -23,7 +23,7 @@ The exact implementation can still be refined, but the repo should be structured
 
 ## Context
 
-Flare is intended to sit alongside the userâ€™s other portfolio projects.
+Flare is intended to sit alongside the user’s other portfolio projects.
 
 That means the stack should:
 
@@ -52,7 +52,7 @@ The stack should support:
 - fast mobile-first UI
 - simple login/account management
 - persistent user configuration
-- Recovery Memory storage
+- Anchor Note storage
 - Flare Event history
 - checkpoints/reflections
 - future Telegram connection
@@ -95,7 +95,7 @@ The stack should be able to support these core concepts:
 User
 Flare Profile
 Behavior Pattern
-Recovery Memory
+Anchor Note
 Flare Event
 Recovery Action
 Checkpoint / Reflection
@@ -129,7 +129,7 @@ practical backend capabilities
 future integrations
 easy deployment
 
-Because Flareâ€™s core value is product experience, not infrastructure novelty, the stack should avoid overengineering.
+Because Flare’s core value is product experience, not infrastructure novelty, the stack should avoid overengineering.
 
 Risks / Tradeoffs
 
@@ -157,3 +157,4 @@ Current Working Assumption
 Build V0 as a focused solo-user mobile-first app.
 
 Make the core loop excellent before expanding into Telegram, community, web dashboard, or subscription complexity.
+

@@ -44,7 +44,7 @@ These labels are the canonical V0 navigation labels.
 | ----------- | ---------------------------------------------------------------------------- |
 | `Flare`     | Primary urgent action surface. Home of `Send Flare`.                         |
 | `History`   | Review past Flare Events, checkpoints, and reflections.                      |
-| `Customize` | Configure the behavior pattern, Recovery Memory, and future support options. |
+| `Customize` | Configure the behavior pattern, Anchor Note, and future support options. |
 
 ### Navigation Principles
 
@@ -108,8 +108,8 @@ Expected design flow:
 ```text
 User taps Send Flare
 → Flare Event starts
-→ Recovery Response opens immediately
-→ User sees Recovery Memory and recovery actions
+→ Flare Response opens immediately
+→ User sees Anchor Note and recovery actions
 → User can continue to checkpoint/reflection when ready
 ```
 
@@ -136,7 +136,7 @@ The `Flare` screen may include:
 The `Flare` screen may show lightweight readiness indicators such as:
 
 * Behavior Pattern configured
-* Recovery Memory configured
+* Anchor Note configured
 * Telegram Support not active / coming later
 
 These indicators should be small and supportive. They should not clutter the urgent action surface.
@@ -163,33 +163,33 @@ The `Flare` screen does not own:
 
 ---
 
-## Recovery Response Experience
+## Flare Response Experience
 
-The Recovery Response experience begins immediately after `Send Flare`.
+The Flare Response experience begins immediately after `Send Flare`.
 
 This may be implemented as a dedicated screen, modal, route, or focused recovery state, but it should feel immediate and interruptive.
 
-### Recovery Response Responsibilities
+### Flare Response Responsibilities
 
-Recovery Response owns:
+Flare Response owns:
 
-* presenting the user’s Recovery Memory
+* presenting the user’s Anchor Note
 * presenting clear recovery actions
 * helping the user create distance from the behavior pattern
 * giving the user a next safe step
 * offering a path into checkpoint/reflection when appropriate
 
-### Recovery Response Non-Responsibilities
+### Flare Response Non-Responsibilities
 
-Recovery Response does not own:
+Flare Response does not own:
 
-* editing the full Recovery Memory
+* editing the full Anchor Note
 * configuring Telegram support
 * historical analysis
 * long-form journaling by default
 * account management
 
-### Recovery Response Design Principles
+### Flare Response Design Principles
 
 * Keep copy short and direct.
 * Prefer action over explanation.
@@ -203,7 +203,7 @@ Recovery Response does not own:
 
 `Checkpoint / Reflection` is a secondary flow.
 
-It should likely open as a modal or sheet from the `Flare` screen or from the Recovery Response experience.
+It should likely open as a modal or sheet from the `Flare` screen or from the Flare Response experience.
 
 ### Checkpoint / Reflection Responsibilities
 
@@ -220,7 +220,7 @@ Checkpoint / Reflection owns:
 Checkpoint / Reflection does not own:
 
 * primary emergency interruption
-* Recovery Memory setup
+* Anchor Note setup
 * Behavior Pattern setup
 * Telegram setup
 * trend analysis in V0
@@ -292,7 +292,7 @@ Setup flows should live here so they do not compete with the urgent `Send Flare`
 Customize owns:
 
 * Behavior Pattern Setup
-* Recovery Memory Setup
+* Anchor Note Setup
 * Telegram Support visibility for future support configuration
 * lightweight status for setup completeness
 
@@ -301,7 +301,7 @@ Customize owns:
 Customize does not own:
 
 * sending a flare
-* active recovery response
+* active flare response
 * historical review
 * reflection after a flare
 * analytics-heavy reporting
@@ -327,7 +327,7 @@ Behavior Pattern Setup owns:
 Behavior Pattern Setup does not own:
 
 * active flare response
-* Recovery Memory content
+* Anchor Note content
 * checkpoint/reflection
 * Telegram setup
 * history review
@@ -346,25 +346,25 @@ The fields should be simple and editable.
 
 ---
 
-## Recovery Memory Setup
+## Anchor Note Setup
 
-Recovery Memory Setup should open as a modal or sheet from `Customize`.
+Anchor Note Setup should open as a modal or sheet from `Customize`.
 
-Recovery Memory is a first-class concept in Flare.
+Anchor Note is a first-class concept in Flare.
 
-### Recovery Memory Setup Responsibilities
+### Anchor Note Setup Responsibilities
 
-Recovery Memory Setup owns:
+Anchor Note Setup owns:
 
 * clear-minded reasons for quitting, reducing, delaying, or interrupting the behavior
 * consequences or costs of continuing the behavior
 * reminders from the user’s more grounded self
 * emergency actions or commitments
-* phrases that should be shown during the recovery response
+* phrases that should be shown during the flare response
 
-### Recovery Memory Setup Non-Responsibilities
+### Anchor Note Setup Non-Responsibilities
 
-Recovery Memory Setup does not own:
+Anchor Note Setup does not own:
 
 * active flare event creation
 * behavior pattern definition
@@ -372,14 +372,14 @@ Recovery Memory Setup does not own:
 * history browsing
 * Telegram setup
 
-### Recovery Memory Design Principles
+### Anchor Note Design Principles
 
 * Encourage specificity.
 * Encourage honesty.
 * Encourage personal language.
 * Avoid shame-heavy framing.
 * Keep content easy to revisit and edit.
-* Make clear that better Recovery Memory improves the recovery response.
+* Make clear that better Anchor Note improves the flare response.
 
 ---
 
@@ -428,7 +428,7 @@ V0 should prefer modals or sheets for secondary flows.
 
 * Checkpoint / Reflection
 * Behavior Pattern Setup
-* Recovery Memory Setup
+* Anchor Note Setup
 * Telegram Support preview
 
 ### Modal / Sheet Principles
@@ -452,7 +452,7 @@ First-run should help the user understand:
 
 * what `Send Flare` does
 * why Behavior Pattern setup matters
-* why Recovery Memory matters
+* why Anchor Note matters
 * that setup can be improved over time
 
 ### First-Run Non-Goals
@@ -472,7 +472,7 @@ An acceptable V0 pattern:
 Open app
 → Show Flare screen
 → Show setup readiness indicators
-→ Encourage Behavior Pattern and Recovery Memory setup
+→ Encourage Behavior Pattern and Anchor Note setup
 → Allow user to continue without completing everything
 ```
 
@@ -529,11 +529,11 @@ Prefer domain-aligned names such as:
 
 * `FlareScreen`
 * `SendFlareButton`
-* `RecoveryResponse`
+* `FlareResponse`
 * `CheckpointReflectionModal`
 * `CustomizeScreen`
 * `BehaviorPatternSetupModal`
-* `RecoveryMemorySetupModal`
+* `AnchorNoteSetupModal`
 * `HistoryScreen`
 
 Avoid names such as:
@@ -548,7 +548,7 @@ Avoid names such as:
 
 Early V0 may use local or in-memory state while product behavior is being shaped.
 
-When persistence is added, Flare Events, Recovery Memory, Behavior Pattern, and Checkpoints should remain distinct domain concepts.
+When persistence is added, Flare Events, Anchor Note, Behavior Pattern, and Checkpoints should remain distinct domain concepts.
 
 ---
 
@@ -558,11 +558,11 @@ The V0 app structure is aligned with this contract when:
 
 * top-level navigation is `Flare | History | Customize`
 * `Send Flare` is the primary action on the `Flare` screen
-* `Send Flare` has no confirmation step before Recovery Response
-* Recovery Response begins immediately after `Send Flare`
+* `Send Flare` has no confirmation step before Flare Response
+* Flare Response begins immediately after `Send Flare`
 * Checkpoint / Reflection is secondary and likely modal/sheet-based
 * Behavior Pattern Setup lives under `Customize`
-* Recovery Memory Setup lives under `Customize`
+* Anchor Note Setup lives under `Customize`
 * Telegram Support is visible but future-scoped for V1
 * History starts as a simple list of past events and reflections
 * setup flows do not compete with the urgent Flare action
@@ -575,7 +575,7 @@ The V0 app structure is aligned with this contract when:
 These decisions remain open for implementation:
 
 * exact mobile navigation component
-* whether Recovery Response is a route, modal, or focused screen state
+* whether Flare Response is a route, modal, or focused screen state
 * exact first-run copy
 * exact readiness indicator design
 * exact History list item shape
@@ -583,3 +583,4 @@ These decisions remain open for implementation:
 * exact local state shape before persistence
 
 These decisions should be resolved in implementation slices without changing the core navigation contract unless the product direction changes.
+

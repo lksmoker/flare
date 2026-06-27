@@ -1,13 +1,14 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+
+import { AnchorNoteProvider } from "../src/state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../src/state/BehaviorPatternContext";
 import { FlareEventProvider } from "../src/state/FlareEventContext";
-import { RecoveryMemoryProvider } from "../src/state/RecoveryMemoryContext";
 
 export default function RootLayout() {
   return (
     <BehaviorPatternProvider>
-      <RecoveryMemoryProvider>
+      <AnchorNoteProvider>
         <FlareEventProvider>
           <>
             <StatusBar style="dark" />
@@ -25,7 +26,7 @@ export default function RootLayout() {
             </Stack>
           </>
         </FlareEventProvider>
-      </RecoveryMemoryProvider>
+      </AnchorNoteProvider>
     </BehaviorPatternProvider>
   );
 }

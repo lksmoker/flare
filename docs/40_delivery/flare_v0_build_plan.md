@@ -13,7 +13,7 @@ Build the first usable version of Flare.
 V0 should prove that a user can:
 
 define a behavior pattern they want to interrupt
-create meaningful Recovery Memory
+create meaningful Anchor Note
 press Send Flare during a real urge or spiral
 receive immediate, useful interruption support
 optionally checkpoint what happened afterward
@@ -33,9 +33,9 @@ Required V0 navigation and structure constraints:
 
 - top-level navigation labels must remain `Flare | History | Customize`
 - `Flare` is the primary screen and owns the dominant `Send Flare` action
-- `Send Flare` must enter Recovery Response immediately with no confirmation step
+- `Send Flare` must enter Flare Response immediately with no confirmation step
 - `Checkpoint / Reflection` must remain a secondary modal or sheet flow rather than a top-level destination
-- `Behavior Pattern Setup` and `Recovery Memory Setup` must live under `Customize`
+- `Behavior Pattern Setup` and `Anchor Note Setup` must live under `Customize`
 - `Telegram Support` should be visible under `Customize` but explicitly future-scoped for V1
 
 If an implementation slice cannot satisfy these constraints, the slice should be re-scoped or blocked until the contract mismatch is resolved in docs first.
@@ -46,11 +46,11 @@ Before implementation of durable storage, local database state, local device per
 
 - `docs/20_architecture/flare_v0_data_persistence_contract.md`
 
-This gate is required for all future implementation slices that create or save durable `Behavior Pattern`, `Recovery Memory`, `Flare Event`, or `Checkpoint / Reflection` data.
+This gate is required for all future implementation slices that create or save durable `Behavior Pattern`, `Anchor Note`, `Flare Event`, or `Checkpoint / Reflection` data.
 
 Required persistence constraints:
 
-- V0 durable entities must remain distinct: `BehaviorPattern`, `RecoveryMemory`, `FlareEvent`, `CheckpointReflection`
+- V0 durable entities must remain distinct: `BehaviorPattern`, `AnchorNote`, `FlareEvent`, `CheckpointReflection`
 - `FlareEvent` history must preserve behavior meaning through snapshot fields rather than only live mutable references
 - local UI state, drafts, and modal state must not be treated as durable records by default
 - privacy-sensitive recovery content must stay out of telemetry and unnecessary logs
@@ -62,7 +62,7 @@ Build Principles
 Build the solo-user loop first.
 Keep the urgent moment extremely simple.
 Prefer plain language over clinical language.
-Make Recovery Memory feel personal and useful.
+Make Anchor Note feel personal and useful.
 Avoid social/support integrations until V1.
 Keep the data model understandable.
 Ship in thin vertical slices.
@@ -129,7 +129,7 @@ Acceptance:
 user can name the pattern in their own words
 pattern is available during Send Flare flow
 setup remains visually secondary to the urgent `Flare` screen
-Build Slice 4: Recovery Memory Setup
+Build Slice 4: Anchor Note Setup
 
 Create the clear-minded memory bank.
 
@@ -137,7 +137,7 @@ This setup flow belongs under `Customize` and should be implemented as a seconda
 
 Deliverables:
 
-Recovery Memory setup screen
+Anchor Note setup screen
 guided prompts
 save/edit behavior
 optional completion state
@@ -153,7 +153,7 @@ What emergency action should I try first?
 
 Acceptance:
 
-user can save meaningful Recovery Memory
+user can save meaningful Anchor Note
 saved memory can be surfaced later during a flare
 setup is optional but encouraged
 setup remains visually secondary to the urgent `Flare` screen
@@ -167,23 +167,23 @@ Deliverables:
 `Flare` screen with primary `Send Flare` button
 create Flare Event
 choose/use active behavior pattern
-transition into Recovery Response immediately with no confirmation step
+transition into Flare Response immediately with no confirmation step
 
 Acceptance:
 
 user can press Send Flare with minimal friction
 a durable flare event is created
 response appears immediately
-the app does not insert a confirmation step before Recovery Response
+the app does not insert a confirmation step before Flare Response
 Note: any durable event-creation implementation must follow `docs/20_architecture/flare_v0_data_persistence_contract.md`, including behavior snapshot requirements.
-Build Slice 6: Recovery Response Screen
+Build Slice 6: Flare Response Screen
 
 Give the user useful support in the moment.
 
 Deliverables:
 
 show one recommended recovery action
-show selected Recovery Memory content
+show selected Anchor Note content
 offer simple alternatives
 allow user to mark action as taken
 allow user to exit safely
@@ -203,7 +203,7 @@ Acceptance:
 
 screen is calm and not crowded
 user gets one clear next step
-Recovery Memory appears in the moment
+Anchor Note appears in the moment
 the experience feels immediate from `Send Flare`
 Build Slice 7: Flare Event History
 
@@ -227,7 +227,7 @@ Build Slice 8: Basic Checkpoints
 
 Allow reflection after a flare.
 
-`Checkpoint / Reflection` should remain a secondary modal or sheet flow launched from the `Flare` screen or Recovery Response, not a top-level navigation destination.
+`Checkpoint / Reflection` should remain a secondary modal or sheet flow launched from the `Flare` screen or Flare Response, not a top-level navigation destination.
 
 Deliverables:
 
@@ -258,7 +258,7 @@ Deliverables:
 
 `Customize` screen
 entry points for `Behavior Pattern Setup`
-entry points for `Recovery Memory Setup`
+entry points for `Anchor Note Setup`
 visible `Telegram Support` placeholder labeled as future-scoped for V1
 lightweight setup readiness indicators where useful
 
@@ -295,13 +295,13 @@ Can the user understand what Flare does within 30 seconds?
 Is the top-level navigation clearly `Flare | History | Customize`?
 Is `Send Flare` obviously the primary action on the `Flare` screen?
 Can the user configure a behavior without friction?
-Does Recovery Memory feel worth filling out?
+Does Anchor Note feel worth filling out?
 Is Send Flare fast enough for a low-capacity moment?
-Does Recovery Response start immediately with no confirmation barrier?
+Does Flare Response start immediately with no confirmation barrier?
 Does `Checkpoint / Reflection` feel secondary rather than competing with the urgent action?
-Is `Customize` the clear home for Behavior Pattern Setup and Recovery Memory Setup?
+Is `Customize` the clear home for Behavior Pattern Setup and Anchor Note Setup?
 Is Telegram Support visible as future-scoped V1 direction without inflating V0 scope?
-Does the recovery response feel supportive rather than annoying?
+Does the flare response feel supportive rather than annoying?
 Does the user want to use it again after the first test?
 Candidate V1 Build Slices
 
@@ -317,8 +317,9 @@ subscription/billing experiment
 Open Questions
 Should V0 allow multiple behavior patterns?
 What is the best default action after Send Flare?
-Should the first session force Recovery Memory setup or defer it?
+Should the first session force Anchor Note setup or defer it?
 What tone should the app use during a flare?
 Should history emphasize streaks, events, or learning?
 What is the minimum useful subscription version?
 What safety/privacy language is needed before broader testing?
+

@@ -1,4 +1,4 @@
-﻿# Flare Checkpoint: Depression / Anxiety Expansion
+# Flare Checkpoint: Depression / Anxiety Expansion
 
 Date: 2026-06-26
 Status: Product direction checkpoint
@@ -93,9 +93,9 @@ A user should be able to define different flare reasons over time, such as:
 
 But V0 should prioritize the addiction / compulsion / recovery use case first.
 
-## Recovery Memory Implication
+## Anchor Note Implication
 
-The existing Recovery Memory concept remains valuable and may generalize well.
+The existing Anchor Note concept remains valuable and may generalize well.
 
 For depression/anxiety, a future version might include a similar "Clear-Minded Memory" or "Grounding Memory" that captures:
 
@@ -131,3 +131,4 @@ Checkpoint decision:
 - Do not market V0 as a depression/anxiety app.
 - Consider "moment-of-need support activator" as the broader long-term category.
 - Treat mood/anxiety expansion as a later product lane, not the initial wedge.
+
