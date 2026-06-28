@@ -2,9 +2,19 @@ import {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
+import {
+  type AnchorNoteRepository,
+  getAnchorNoteRepository,
+  type PersistedAnchorNote,
+} from "../services/anchorNoteRepository";
+import {
+  resolveFlareSupabaseAuthState,
+  type FlareSupabaseAuthState,
+} from "../services/flareSupabaseAuth";
 
 export type AnchorNote = {
   interruptionReasons: string;
@@ -17,7 +27,7 @@ export type AnchorNote = {
 type AnchorNoteContextValue = {
   isConfigured: boolean;
   anchorNote: AnchorNote | null;
-  saveAnchorNote: (nextAnchorNote: AnchorNote) => void;
+  saveAnchorNote: (nextAnchorNote: AnchorNote) => Promise<void>;
 };
 
 const AnchorNoteContext = createContext<AnchorNoteContextValue | undefined>(
@@ -56,18 +66,108 @@ export function createEmptyAnchorNote(): AnchorNote {
   };
 }
 
-export function AnchorNoteProvider({ children }: PropsWithChildren) {
-  const [anchorNote, setAnchorNote] = useState<AnchorNote | null>(null);
+type AnchorNoteProviderProps = PropsWithChildren<{
+  anchorNoteRepository?: AnchorNoteRepository;
+  resolveAuthState?: () => Promise<FlareSupabaseAuthState>;
+}>;
+
+const defaultAnchorNoteRepository: AnchorNoteRepository = {
+  loadActiveAnchorNote(userId) {
+    return getAnchorNoteRepository().loadActiveAnchorNote(userId);
+  },
+  saveAnchorNote(input) {
+    return getAnchorNoteRepository().saveAnchorNote(input);
+  },
+};
+
+function createLocalRecord(
+  anchorNote: AnchorNote,
+  currentRecord: PersistedAnchorNote | null,
+): PersistedAnchorNote {
+  const timestamp = currentRecord?.createdAt ?? new Date().toISOString();
+
+  return {
+    anchorNote,
+    createdAt: timestamp,
+    id: currentRecord?.id ?? "local-only-anchor-note",
+    updatedAt: new Date().toISOString(),
+    userId: currentRecord?.userId ?? "local-only",
+    version: currentRecord?.version ?? 0,
+  };
+}
+
+export function AnchorNoteProvider({
+  anchorNoteRepository = defaultAnchorNoteRepository,
+  children,
+  resolveAuthState = resolveFlareSupabaseAuthState,
+}: AnchorNoteProviderProps) {
+  const [record, setRecord] = useState<PersistedAnchorNote | null>(null);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadAnchorNote() {
+      try {
+        const authState = await resolveAuthState();
+
+        if (authState.kind !== "authenticated") {
+          return;
+        }
+
+        const persistedRecord = await anchorNoteRepository.loadActiveAnchorNote(
+          authState.userId,
+        );
+
+        if (isActive && persistedRecord) {
+          setRecord(persistedRecord);
+        }
+      } catch (error) {
+        console.warn("Failed to load persisted Anchor Note.", error);
+      }
+    }
+
+    void loadAnchorNote();
+
+    return () => {
+      isActive = false;
+    };
+  }, [anchorNoteRepository, resolveAuthState]);
+
+  const anchorNote = record?.anchorNote ?? null;
 
   const value = useMemo<AnchorNoteContextValue>(
     () => ({
       isConfigured: isAnchorNoteConfigured(anchorNote),
       anchorNote,
-      saveAnchorNote: (nextAnchorNote) => {
-        setAnchorNote(normalizeAnchorNote(nextAnchorNote));
+      saveAnchorNote: async (nextAnchorNote) => {
+        const normalizedAnchorNote = normalizeAnchorNote(nextAnchorNote);
+        const localRecord = createLocalRecord(normalizedAnchorNote, record);
+
+        setRecord(localRecord);
+
+        try {
+          const authState = await resolveAuthState();
+
+          if (authState.kind !== "authenticated") {
+            return;
+          }
+
+          const persistedRecord = await anchorNoteRepository.saveAnchorNote({
+            anchorNote: normalizedAnchorNote,
+            currentRecordId:
+              record?.userId === authState.userId ? record.id : null,
+            currentVersion:
+              record?.userId === authState.userId ? record.version : null,
+            userId: authState.userId,
+          });
+
+          setRecord(persistedRecord);
+        } catch (error) {
+          console.warn("Failed to persist Anchor Note.", error);
+        }
       },
     }),
-    [anchorNote],
+    [anchorNote, anchorNoteRepository, record, resolveAuthState],
   );
 
   return (
