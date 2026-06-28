@@ -66,6 +66,8 @@ npm run build
 - Keep real secrets outside the repo.
 - Do not create or commit repo-local `.env` files.
 - Use `.env.example` for variable names only.
+- Frontend-safe Expo variables are `EXPO_PUBLIC_FLARE_SUPABASE_URL` and `EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY`.
+- Server/admin-only Supabase variables must stay outside frontend code: `FLARE_SUPABASE_URL`, `FLARE_SUPABASE_PROJECT_ID`, `FLARE_SUPABASE_SERVICE_ROLE_KEY`, and `FLARE_SUPABASE_DB_URL`.
 - For local development, load runtime variables from `C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env` or from the current process environment before starting Expo.
 
 Example PowerShell session:
