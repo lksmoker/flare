@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { AppShell } from "../components/AppShell";
 import { AnchorNoteSetupModal } from "../components/AnchorNoteSetupModal";
 import { AnchorNoteSummary } from "../components/AnchorNoteSummary";
+import { AuthStatusCard } from "../components/AuthStatusCard";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
 import { useAnchorNote } from "../state/AnchorNoteContext";
@@ -24,6 +25,8 @@ export function CustomizeScreen() {
       title="Customize what supports you in the moment"
     >
       <View style={styles.stack}>
+        <AuthStatusCard />
+
         <Pressable
           accessibilityRole="button"
           onPress={() => setIsBehaviorPatternVisible(true)}

@@ -6,6 +6,7 @@ import { CheckpointReflectionModal } from "../components/CheckpointReflectionMod
 import { FlareResponse } from "../components/FlareResponse";
 import { PlaceholderModal } from "../components/PlaceholderModal";
 import { SendFlareButton } from "../components/SendFlareButton";
+import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
@@ -16,8 +17,22 @@ export function FlareScreen() {
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
+  const { authState, authStatus } = useFlareAuth();
+
+  const persistenceStatus =
+    authStatus === "loading"
+      ? "Checking for a real session"
+      : authState.kind === "authenticated"
+        ? `Connected: ${authState.userEmail ?? authState.userId}`
+        : authState.kind === "client-unavailable"
+          ? "Local-only until public Supabase config is loaded"
+          : "Local-only until sign in";
 
   const readinessItems = [
+    {
+      label: "Setup persistence",
+      status: persistenceStatus,
+    },
     {
       label: "Behavior Pattern",
       status: isConfigured

@@ -87,6 +87,7 @@ describe("setup persistence providers", () => {
         behaviorPatternRepository={behaviorPatternRepository}
         resolveAuthState={async () => ({
           kind: "authenticated",
+          userEmail: null,
           userId: "user-123",
         })}
       >
@@ -98,6 +99,10 @@ describe("setup persistence providers", () => {
       expect(getByText("Loaded behavior")).toBeTruthy();
       expect(getByText("configured")).toBeTruthy();
     });
+
+    expect(behaviorPatternRepository.loadActiveBehaviorPattern).toHaveBeenCalledWith(
+      "user-123",
+    );
   });
 
   it("keeps local-only Behavior Pattern behavior when no auth session exists", async () => {
@@ -148,6 +153,7 @@ describe("setup persistence providers", () => {
         behaviorPatternRepository={behaviorPatternRepository}
         resolveAuthState={async () => ({
           kind: "authenticated",
+          userEmail: null,
           userId: "user-123",
         })}
       >
@@ -162,6 +168,17 @@ describe("setup persistence providers", () => {
     });
 
     expect(queryByText("Draft behavior")).toBeNull();
+    expect(behaviorPatternRepository.saveBehaviorPattern).toHaveBeenCalledWith({
+      behaviorPattern: {
+        behaviorName: "Draft behavior",
+        shortDescription: "Draft description",
+        commonTriggers: "Draft trigger",
+        riskTimesOrSituations: "Draft risk",
+        preferredRecoveryActions: "Draft action",
+      },
+      currentRecordId: null,
+      userId: "user-123",
+    });
   });
 
   it("loads the active Anchor Note on mount for an authenticated user", async () => {
@@ -190,6 +207,7 @@ describe("setup persistence providers", () => {
         anchorNoteRepository={anchorNoteRepository}
         resolveAuthState={async () => ({
           kind: "authenticated",
+          userEmail: null,
           userId: "user-123",
         })}
       >
@@ -201,6 +219,10 @@ describe("setup persistence providers", () => {
       expect(getByText("Loaded phrase")).toBeTruthy();
       expect(getByText("configured")).toBeTruthy();
     });
+
+    expect(anchorNoteRepository.loadActiveAnchorNote).toHaveBeenCalledWith(
+      "user-123",
+    );
   });
 
   it("keeps local-only Anchor Note behavior when no auth session exists", async () => {
@@ -252,6 +274,7 @@ describe("setup persistence providers", () => {
         anchorNoteRepository={anchorNoteRepository}
         resolveAuthState={async () => ({
           kind: "authenticated",
+          userEmail: null,
           userId: "user-123",
         })}
       >
@@ -266,5 +289,67 @@ describe("setup persistence providers", () => {
     });
 
     expect(queryByText("Draft phrase")).toBeNull();
+    expect(anchorNoteRepository.saveAnchorNote).toHaveBeenCalledWith({
+      anchorNote: {
+        interruptionReasons: "Draft reason",
+        continuingCosts: "Draft cost",
+        groundedReminders: "Draft reminder",
+        emergencyActions: "Draft action",
+        supportivePhrase: "Draft phrase",
+      },
+      currentRecordId: null,
+      currentVersion: null,
+      userId: "user-123",
+    });
+  });
+
+  it("clears the persisted Behavior Pattern when auth becomes unauthenticated", async () => {
+    const behaviorPatternRepository: BehaviorPatternRepository = {
+      loadActiveBehaviorPattern: jest.fn().mockResolvedValue({
+        behaviorPattern: {
+          behaviorName: "Loaded behavior",
+          shortDescription: "Loaded description",
+          commonTriggers: "Loaded trigger",
+          riskTimesOrSituations: "Loaded risk",
+          preferredRecoveryActions: "Loaded action",
+        },
+        createdAt: "2026-06-28T01:00:00.000Z",
+        id: "pattern-1",
+        updatedAt: "2026-06-28T02:00:00.000Z",
+        userId: "user-123",
+      }),
+      saveBehaviorPattern: jest.fn(),
+    };
+
+    const { getByText, queryByText, rerender } = render(
+      <BehaviorPatternProvider
+        authState={{
+          kind: "authenticated",
+          userEmail: "flare@example.com",
+          userId: "user-123",
+        }}
+        behaviorPatternRepository={behaviorPatternRepository}
+      >
+        <BehaviorPatternHarness />
+      </BehaviorPatternProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("Loaded behavior")).toBeTruthy();
+    });
+
+    rerender(
+      <BehaviorPatternProvider
+        authState={{ kind: "no-session" }}
+        behaviorPatternRepository={behaviorPatternRepository}
+      >
+        <BehaviorPatternHarness />
+      </BehaviorPatternProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("no behavior pattern")).toBeTruthy();
+      expect(queryByText("Loaded behavior")).toBeNull();
+    });
   });
 });

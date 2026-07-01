@@ -6,6 +6,7 @@ import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
 import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
+import { FlareAuthProvider } from "../../state/FlareAuthContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
 
 jest.mock("expo-router", () => ({
@@ -14,11 +15,17 @@ jest.mock("expo-router", () => ({
 
 function TestProviders({ children }: PropsWithChildren) {
   return (
-    <BehaviorPatternProvider>
-      <AnchorNoteProvider>
-        <FlareEventProvider>{children}</FlareEventProvider>
-      </AnchorNoteProvider>
-    </BehaviorPatternProvider>
+    <FlareAuthProvider
+      initialAuthState={{ kind: "no-session" }}
+      resolveAuthState={async () => ({ kind: "no-session" })}
+      subscribe={() => null}
+    >
+      <BehaviorPatternProvider>
+        <AnchorNoteProvider>
+          <FlareEventProvider>{children}</FlareEventProvider>
+        </AnchorNoteProvider>
+      </BehaviorPatternProvider>
+    </FlareAuthProvider>
   );
 }
 
@@ -89,6 +96,8 @@ describe("V0 app shell", () => {
       wrapper: TestProviders,
     });
 
+    expect(getByText("Setup persistence")).toBeTruthy();
+    expect(getByText("Local-only")).toBeTruthy();
     expect(getByText("Behavior Pattern Setup")).toBeTruthy();
     expect(getByText("Anchor Note Setup")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
@@ -217,6 +226,7 @@ describe("V0 app shell", () => {
       },
     );
 
+    expect(getByText("Local-only until sign in")).toBeTruthy();
     expect(getAllByText("Ready to define").length).toBeGreaterThanOrEqual(2);
 
     fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);

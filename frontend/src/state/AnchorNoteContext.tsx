@@ -15,6 +15,7 @@ import {
   resolveFlareSupabaseAuthState,
   type FlareSupabaseAuthState,
 } from "../services/flareSupabaseAuth";
+import { useOptionalFlareAuth } from "./FlareAuthContext";
 
 export type AnchorNote = {
   interruptionReasons: string;
@@ -69,6 +70,7 @@ export function createEmptyAnchorNote(): AnchorNote {
 type AnchorNoteProviderProps = PropsWithChildren<{
   anchorNoteRepository?: AnchorNoteRepository;
   resolveAuthState?: () => Promise<FlareSupabaseAuthState>;
+  authState?: FlareSupabaseAuthState;
 }>;
 
 const defaultAnchorNoteRepository: AnchorNoteRepository = {
@@ -91,7 +93,7 @@ function createLocalRecord(
     createdAt: timestamp,
     id: currentRecord?.id ?? "local-only-anchor-note",
     updatedAt: new Date().toISOString(),
-    userId: currentRecord?.userId ?? "local-only",
+    userId: currentRecord?.userId ?? null,
     version: currentRecord?.version ?? 0,
   };
 }
@@ -100,25 +102,32 @@ export function AnchorNoteProvider({
   anchorNoteRepository = defaultAnchorNoteRepository,
   children,
   resolveAuthState = resolveFlareSupabaseAuthState,
+  authState: authStateOverride,
 }: AnchorNoteProviderProps) {
+  const authContext = useOptionalFlareAuth();
   const [record, setRecord] = useState<PersistedAnchorNote | null>(null);
 
   useEffect(() => {
     let isActive = true;
 
     async function loadAnchorNote() {
-      try {
-        const authState = await resolveAuthState();
+      const activeAuthState =
+        authStateOverride ?? authContext?.authState ?? (await resolveAuthState());
 
-        if (authState.kind !== "authenticated") {
-          return;
+      if (activeAuthState.kind !== "authenticated") {
+        if (isActive) {
+          setRecord(null);
         }
 
+        return;
+      }
+
+      try {
         const persistedRecord = await anchorNoteRepository.loadActiveAnchorNote(
-          authState.userId,
+          activeAuthState.userId,
         );
 
-        if (isActive && persistedRecord) {
+        if (isActive) {
           setRecord(persistedRecord);
         }
       } catch (error) {
@@ -131,7 +140,12 @@ export function AnchorNoteProvider({
     return () => {
       isActive = false;
     };
-  }, [anchorNoteRepository, resolveAuthState]);
+  }, [
+    anchorNoteRepository,
+    authContext?.authState,
+    authStateOverride,
+    resolveAuthState,
+  ]);
 
   const anchorNote = record?.anchorNote ?? null;
 
@@ -146,7 +160,10 @@ export function AnchorNoteProvider({
         setRecord(localRecord);
 
         try {
-          const authState = await resolveAuthState();
+          const authState =
+            authStateOverride ??
+            authContext?.authState ??
+            (await resolveAuthState());
 
           if (authState.kind !== "authenticated") {
             return;
@@ -167,7 +184,14 @@ export function AnchorNoteProvider({
         }
       },
     }),
-    [anchorNote, anchorNoteRepository, record, resolveAuthState],
+    [
+      anchorNote,
+      anchorNoteRepository,
+      authContext?.authState,
+      authStateOverride,
+      record,
+      resolveAuthState,
+    ],
   );
 
   return (

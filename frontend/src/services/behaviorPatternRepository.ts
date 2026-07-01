@@ -21,7 +21,7 @@ export type PersistedBehaviorPattern = {
   createdAt: string;
   id: string;
   updatedAt: string;
-  userId: string;
+  userId: string | null;
 };
 
 export type SaveBehaviorPatternInput = {

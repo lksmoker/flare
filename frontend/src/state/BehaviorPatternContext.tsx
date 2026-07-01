@@ -15,6 +15,7 @@ import {
   resolveFlareSupabaseAuthState,
   type FlareSupabaseAuthState,
 } from "../services/flareSupabaseAuth";
+import { useOptionalFlareAuth } from "./FlareAuthContext";
 
 export type BehaviorPattern = {
   behaviorName: string;
@@ -71,6 +72,7 @@ export function createEmptyBehaviorPattern(): BehaviorPattern {
 type BehaviorPatternProviderProps = PropsWithChildren<{
   behaviorPatternRepository?: BehaviorPatternRepository;
   resolveAuthState?: () => Promise<FlareSupabaseAuthState>;
+  authState?: FlareSupabaseAuthState;
 }>;
 
 const defaultBehaviorPatternRepository: BehaviorPatternRepository = {
@@ -93,7 +95,7 @@ function createLocalRecord(
     createdAt: timestamp,
     id: currentRecord?.id ?? "local-only-behavior-pattern",
     updatedAt: new Date().toISOString(),
-    userId: currentRecord?.userId ?? "local-only",
+    userId: currentRecord?.userId ?? null,
   };
 }
 
@@ -101,26 +103,33 @@ export function BehaviorPatternProvider({
   behaviorPatternRepository = defaultBehaviorPatternRepository,
   children,
   resolveAuthState = resolveFlareSupabaseAuthState,
+  authState: authStateOverride,
 }: BehaviorPatternProviderProps) {
+  const authContext = useOptionalFlareAuth();
   const [record, setRecord] = useState<PersistedBehaviorPattern | null>(null);
 
   useEffect(() => {
     let isActive = true;
 
     async function loadBehaviorPattern() {
-      try {
-        const authState = await resolveAuthState();
+      const activeAuthState =
+        authStateOverride ?? authContext?.authState ?? (await resolveAuthState());
 
-        if (authState.kind !== "authenticated") {
-          return;
+      if (activeAuthState.kind !== "authenticated") {
+        if (isActive) {
+          setRecord(null);
         }
 
+        return;
+      }
+
+      try {
         const persistedRecord =
           await behaviorPatternRepository.loadActiveBehaviorPattern(
-            authState.userId,
+            activeAuthState.userId,
           );
 
-        if (isActive && persistedRecord) {
+        if (isActive) {
           setRecord(persistedRecord);
         }
       } catch (error) {
@@ -133,7 +142,12 @@ export function BehaviorPatternProvider({
     return () => {
       isActive = false;
     };
-  }, [behaviorPatternRepository, resolveAuthState]);
+  }, [
+    authContext?.authState,
+    authStateOverride,
+    behaviorPatternRepository,
+    resolveAuthState,
+  ]);
 
   const behaviorPattern = record?.behaviorPattern ?? null;
 
@@ -148,7 +162,10 @@ export function BehaviorPatternProvider({
         setRecord(localRecord);
 
         try {
-          const authState = await resolveAuthState();
+          const authState =
+            authStateOverride ??
+            authContext?.authState ??
+            (await resolveAuthState());
 
           if (authState.kind !== "authenticated") {
             return;
@@ -168,7 +185,14 @@ export function BehaviorPatternProvider({
         }
       },
     }),
-    [behaviorPattern, behaviorPatternRepository, record, resolveAuthState],
+    [
+      authContext?.authState,
+      authStateOverride,
+      behaviorPattern,
+      behaviorPatternRepository,
+      record,
+      resolveAuthState,
+    ],
   );
 
   return (

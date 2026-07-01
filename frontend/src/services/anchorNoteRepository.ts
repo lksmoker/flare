@@ -23,7 +23,7 @@ export type PersistedAnchorNote = {
   createdAt: string;
   id: string;
   updatedAt: string;
-  userId: string;
+  userId: string | null;
   version: number;
 };
 
