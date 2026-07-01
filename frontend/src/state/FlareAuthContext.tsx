@@ -9,6 +9,7 @@ import {
 
 import {
   type FlareSupabaseAuthState,
+  type FlareSupabaseAuthSubscription,
   resolveFlareSupabaseAuthState,
   sendFlareSupabaseMagicLink,
   signInToFlareSupabaseWithPassword,
@@ -39,6 +40,46 @@ type FlareAuthProviderProps = PropsWithChildren<{
 
 const FlareAuthContext = createContext<FlareAuthContextValue | null>(null);
 
+const DEFAULT_INITIAL_AUTH_STATE: FlareSupabaseAuthState = {
+  kind: "no-session",
+};
+
+const defaultResolveAuthState = () => resolveFlareSupabaseAuthState();
+
+const defaultSignInWithPasswordRequest = (email: string, password: string) =>
+  signInToFlareSupabaseWithPassword({ email, password });
+
+const defaultSubscribe = (
+  onChange: (authState: FlareSupabaseAuthState) => void,
+): FlareSupabaseAuthSubscription | null =>
+  subscribeToFlareSupabaseAuthState((authState) => {
+    onChange(authState);
+  });
+
+function areAuthStatesEqual(
+  left: FlareSupabaseAuthState,
+  right: FlareSupabaseAuthState,
+) {
+  if (left.kind !== right.kind) {
+    return false;
+  }
+
+  if (left.kind === "authenticated" && right.kind === "authenticated") {
+    return (
+      left.userId === right.userId && left.userEmail === right.userEmail
+    );
+  }
+
+  if (
+    left.kind === "client-unavailable" &&
+    right.kind === "client-unavailable"
+  ) {
+    return left.reason === right.reason;
+  }
+
+  return true;
+}
+
 function getErrorMessage(error: unknown) {
   if (error instanceof Error && error.message.trim().length > 0) {
     return error.message;
@@ -50,20 +91,21 @@ function getErrorMessage(error: unknown) {
 export function FlareAuthProvider({
   children,
   initialAuthState,
-  resolveAuthState = resolveFlareSupabaseAuthState,
-  sendMagicLinkRequest = sendFlareSupabaseMagicLink,
-  signInWithPasswordRequest = (email, password) =>
-    signInToFlareSupabaseWithPassword({ email, password }),
-  signOutRequest = signOutFromFlareSupabase,
-  subscribe = (onChange) =>
-    subscribeToFlareSupabaseAuthState((authState) => {
-      onChange(authState);
-    }),
+  resolveAuthState,
+  sendMagicLinkRequest,
+  signInWithPasswordRequest,
+  signOutRequest,
+  subscribe,
 }: FlareAuthProviderProps) {
+  const effectiveResolveAuthState = resolveAuthState ?? defaultResolveAuthState;
+  const effectiveSendMagicLinkRequest =
+    sendMagicLinkRequest ?? sendFlareSupabaseMagicLink;
+  const effectiveSignInWithPasswordRequest =
+    signInWithPasswordRequest ?? defaultSignInWithPasswordRequest;
+  const effectiveSignOutRequest = signOutRequest ?? signOutFromFlareSupabase;
+  const effectiveSubscribe = subscribe ?? defaultSubscribe;
   const [authState, setAuthState] = useState<FlareSupabaseAuthState>(
-    initialAuthState ?? {
-      kind: "no-session",
-    },
+    initialAuthState ?? DEFAULT_INITIAL_AUTH_STATE,
   );
   const [authStatus, setAuthStatus] = useState<"loading" | "ready">(
     initialAuthState ? "ready" : "loading",
@@ -78,10 +120,14 @@ export function FlareAuthProvider({
 
     async function initializeAuth() {
       try {
-        const nextAuthState = await resolveAuthState();
+        const nextAuthState = await effectiveResolveAuthState();
 
         if (isActive) {
-          setAuthState(nextAuthState);
+          setAuthState((currentAuthState) =>
+            areAuthStatesEqual(currentAuthState, nextAuthState)
+              ? currentAuthState
+              : nextAuthState,
+          );
         }
       } finally {
         if (isActive) {
@@ -94,12 +140,16 @@ export function FlareAuthProvider({
       void initializeAuth();
     }
 
-    const subscription = subscribe((nextAuthState) => {
+    const subscription = effectiveSubscribe((nextAuthState) => {
       if (!isActive) {
         return;
       }
 
-      setAuthState(nextAuthState);
+      setAuthState((currentAuthState) =>
+        areAuthStatesEqual(currentAuthState, nextAuthState)
+          ? currentAuthState
+          : nextAuthState,
+      );
       setAuthStatus("ready");
       setErrorMessage(null);
       setPendingAction(null);
@@ -109,7 +159,7 @@ export function FlareAuthProvider({
       isActive = false;
       subscription?.unsubscribe();
     };
-  }, [initialAuthState, resolveAuthState, subscribe]);
+  }, [effectiveResolveAuthState, effectiveSubscribe, initialAuthState]);
 
   const value = useMemo<FlareAuthContextValue>(
     () => ({
@@ -122,7 +172,7 @@ export function FlareAuthProvider({
         setPendingAction("magic-link");
 
         try {
-          await sendMagicLinkRequest(email);
+          await effectiveSendMagicLinkRequest(email);
         } catch (error) {
           setErrorMessage(getErrorMessage(error));
           throw error;
@@ -137,7 +187,7 @@ export function FlareAuthProvider({
         setPendingAction("password");
 
         try {
-          await signInWithPasswordRequest(email, password);
+          await effectiveSignInWithPasswordRequest(email, password);
         } catch (error) {
           setErrorMessage(getErrorMessage(error));
           throw error;
@@ -152,7 +202,7 @@ export function FlareAuthProvider({
         setPendingAction("sign-out");
 
         try {
-          await signOutRequest();
+          await effectiveSignOutRequest();
           setAuthState({ kind: "no-session" });
         } catch (error) {
           setErrorMessage(getErrorMessage(error));
@@ -169,9 +219,9 @@ export function FlareAuthProvider({
       authStatus,
       errorMessage,
       pendingAction,
-      sendMagicLinkRequest,
-      signInWithPasswordRequest,
-      signOutRequest,
+      effectiveSendMagicLinkRequest,
+      effectiveSignInWithPasswordRequest,
+      effectiveSignOutRequest,
     ],
   );
 

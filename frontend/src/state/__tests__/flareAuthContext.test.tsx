@@ -1,6 +1,7 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import { Pressable, Text, View } from "react-native";
 
+import * as flareSupabaseAuth from "../../services/flareSupabaseAuth";
 import { FlareAuthProvider, useFlareAuth } from "../FlareAuthContext";
 
 function AuthHarness() {
@@ -40,6 +41,10 @@ function AuthHarness() {
 }
 
 describe("FlareAuthProvider", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("handles the no-session case during initialization", async () => {
     const { getByText } = render(
       <FlareAuthProvider
@@ -54,6 +59,56 @@ describe("FlareAuthProvider", () => {
       expect(getByText("auth status: ready")).toBeTruthy();
       expect(getByText("auth kind: no-session")).toBeTruthy();
     });
+  });
+
+  it("initializes and subscribes once with the default runtime helpers", async () => {
+    const resolveAuthState = jest
+      .spyOn(flareSupabaseAuth, "resolveFlareSupabaseAuthState")
+      .mockResolvedValue({ kind: "no-session" });
+    const unsubscribe = jest.fn();
+    let authChangeHandler:
+      | Parameters<typeof flareSupabaseAuth.subscribeToFlareSupabaseAuthState>[0]
+      | null = null;
+    const subscribe = jest
+      .spyOn(flareSupabaseAuth, "subscribeToFlareSupabaseAuthState")
+      .mockImplementation((onChange) => {
+        authChangeHandler = onChange;
+        return { unsubscribe };
+      });
+
+    const { getByText, unmount } = render(
+      <FlareAuthProvider>
+        <AuthHarness />
+      </FlareAuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("auth status: ready")).toBeTruthy();
+    });
+
+    expect(resolveAuthState).toHaveBeenCalledTimes(1);
+    expect(subscribe).toHaveBeenCalledTimes(1);
+    expect(authChangeHandler).not.toBeNull();
+
+    await act(async () => {
+      authChangeHandler?.({
+        kind: "authenticated",
+        userEmail: "flare@example.com",
+        userId: "user-123",
+      } as flareSupabaseAuth.FlareSupabaseAuthState, "SIGNED_IN", null);
+    });
+
+    await waitFor(() => {
+      expect(getByText("auth kind: authenticated")).toBeTruthy();
+      expect(getByText("auth user: user-123")).toBeTruthy();
+    });
+
+    expect(resolveAuthState).toHaveBeenCalledTimes(1);
+    expect(subscribe).toHaveBeenCalledTimes(1);
+
+    unmount();
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
   it("calls the password sign-in request", async () => {

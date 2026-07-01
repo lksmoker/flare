@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { PropsWithChildren, ReactNode } from "react";
 
 import { CustomizeScreen } from "../CustomizeScreen";
@@ -30,6 +30,10 @@ function TestProviders({ children }: PropsWithChildren) {
 }
 
 describe("V0 app shell", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("renders the top-level navigation labels and dominant Send Flare action", () => {
     const { getAllByText, getByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
@@ -423,5 +427,41 @@ describe("V0 app shell", () => {
     expect(
       getByText(/No real setup or integration behavior exists in V0\./),
     ).toBeTruthy();
+  });
+
+  it("settles without a maximum update depth error while auth initializes", async () => {
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            resolveAuthState={async () => ({ kind: "no-session" })}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("Local-only until sign in")).toBeTruthy();
+    });
+
+    expect(
+      consoleError.mock.calls.some((call) =>
+        call.some(
+          (arg) =>
+            typeof arg === "string" &&
+            arg.includes("Maximum update depth exceeded"),
+        ),
+      ),
+    ).toBe(false);
   });
 });
