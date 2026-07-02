@@ -22,6 +22,7 @@ type CheckpointReflectionRow = {
 type FlareEventRow = {
   anchor_note_id: string | null;
   anchor_note_version: number | null;
+  archived_at: string | null;
   behavior_description_snapshot: string | null;
   behavior_label_snapshot: string;
   behavior_pattern_id: string | null;
@@ -53,6 +54,10 @@ export type PersistedFlareEvent = {
   userId: string;
 };
 
+export type LoadFlareEventsOptions = {
+  includeArchived?: boolean;
+};
+
 export type CreateFlareEventMutationInput = {
   anchorNoteId?: string | null;
   anchorNoteVersion?: number | null;
@@ -73,11 +78,31 @@ export type UpdateFlareEventStatusInput = {
   userId: string;
 };
 
+export type ArchiveFlareEventInput = {
+  archivedAt?: string;
+  eventId: string;
+  userId: string;
+};
+
+export type RestoreFlareEventInput = {
+  eventId: string;
+  userId: string;
+};
+
 export type FlareEventRepository = {
+  archiveFlareEvent: (
+    input: ArchiveFlareEventInput,
+  ) => Promise<PersistedFlareEvent>;
   createFlareEvent: (
     input: CreateFlareEventMutationInput,
   ) => Promise<PersistedFlareEvent>;
-  loadFlareEvents: (userId: string) => Promise<PersistedFlareEvent[]>;
+  loadFlareEvents: (
+    userId: string,
+    options?: LoadFlareEventsOptions,
+  ) => Promise<PersistedFlareEvent[]>;
+  restoreFlareEvent: (
+    input: RestoreFlareEventInput,
+  ) => Promise<PersistedFlareEvent>;
   updateFlareEventStatus: (
     input: UpdateFlareEventStatusInput,
   ) => Promise<PersistedFlareEvent>;
@@ -124,6 +149,7 @@ export function mapFlareEventRowToRecord(row: FlareEventRow): PersistedFlareEven
     flareEvent: {
       anchorNoteId: row.anchor_note_id,
       anchorNoteVersion: row.anchor_note_version,
+      archivedAt: row.archived_at,
       behaviorDescriptionSnapshot: row.behavior_description_snapshot,
       behaviorLabelSnapshot: row.behavior_label_snapshot,
       behaviorPatternId: row.behavior_pattern_id,
@@ -175,10 +201,46 @@ export function mapUpdateFlareEventStatusInputToSupabaseMutation(
   };
 }
 
+export function mapArchiveFlareEventInputToSupabaseMutation(
+  input: ArchiveFlareEventInput,
+) {
+  return {
+    archived_at: input.archivedAt ?? new Date().toISOString(),
+  };
+}
+
+export function mapRestoreFlareEventInputToSupabaseMutation() {
+  return {
+    archived_at: null,
+  };
+}
+
 export function createFlareEventRepository(
   client: FlareSupabaseClient,
 ): FlareEventRepository {
   return {
+    async archiveFlareEvent({ archivedAt, eventId, userId }) {
+      const { data, error } = await client
+        .from("flare_events")
+        .update(
+          mapArchiveFlareEventInputToSupabaseMutation({
+            archivedAt,
+            eventId,
+            userId,
+          }),
+        )
+        .eq("id", eventId)
+        .eq("user_id", userId)
+        .select("*, checkpoint_reflections(*)")
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      return mapFlareEventRowToRecord(data as FlareEventRow);
+    },
+
     async createFlareEvent(input) {
       const { data, error } = await client
         .from("flare_events")
@@ -193,18 +255,40 @@ export function createFlareEventRepository(
       return mapFlareEventRowToRecord(data as FlareEventRow);
     },
 
-    async loadFlareEvents(userId) {
-      const { data, error } = await client
+    async loadFlareEvents(userId, options) {
+      let query = client
         .from("flare_events")
         .select("*, checkpoint_reflections(*)")
         .eq("user_id", userId)
         .order("created_at", { ascending: false });
+
+      if (!options?.includeArchived) {
+        query = query.is("archived_at", null);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         throw error;
       }
 
       return (data as FlareEventRow[]).map(mapFlareEventRowToRecord);
+    },
+
+    async restoreFlareEvent({ eventId, userId }) {
+      const { data, error } = await client
+        .from("flare_events")
+        .update(mapRestoreFlareEventInputToSupabaseMutation())
+        .eq("id", eventId)
+        .eq("user_id", userId)
+        .select("*, checkpoint_reflections(*)")
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      return mapFlareEventRowToRecord(data as FlareEventRow);
     },
 
     async updateFlareEventStatus({

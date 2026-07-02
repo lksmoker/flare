@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import {
   FlareEvent,
@@ -6,10 +6,17 @@ import {
 } from "../state/FlareEventContext";
 
 type FlareEventHistoryListProps = {
+  emptyCopy?: string;
+  emptyTitle?: string;
   flareEvents: FlareEvent[];
+  onSelectFlareEvent?: (flareEvent: FlareEvent) => void;
 };
 
 function getStatusLabel(flareEvent: FlareEvent) {
+  if (flareEvent.archivedAt) {
+    return "Archived event";
+  }
+
   switch (flareEvent.status) {
     case "active":
       return "Active event";
@@ -21,16 +28,20 @@ function getStatusLabel(flareEvent: FlareEvent) {
 }
 
 export function FlareEventHistoryList({
+  emptyCopy,
+  emptyTitle,
   flareEvents,
+  onSelectFlareEvent,
 }: FlareEventHistoryListProps) {
   if (flareEvents.length === 0) {
     return (
       <View style={styles.emptyCard}>
-        <Text style={styles.emptyTitle}>No Flare Events yet</Text>
+        <Text style={styles.emptyTitle}>
+          {emptyTitle ?? "No Flare Events yet"}
+        </Text>
         <Text style={styles.emptyCopy}>
-          Send Flare to create the first event. Authenticated sessions reload
-          persisted events and reflections here; signed-out sessions stay
-          local-only.
+          {emptyCopy ??
+            "Send Flare to create the first event. Authenticated sessions reload persisted events and reflections here; signed-out sessions stay local-only."}
         </Text>
       </View>
     );
@@ -39,7 +50,14 @@ export function FlareEventHistoryList({
   return (
     <View style={styles.list}>
       {flareEvents.map((flareEvent) => (
-        <View key={flareEvent.id} style={styles.card}>
+        <Pressable
+          accessibilityRole="button"
+          key={flareEvent.id}
+          onPress={
+            onSelectFlareEvent ? () => onSelectFlareEvent(flareEvent) : undefined
+          }
+          style={styles.card}
+        >
           <Text style={styles.cardTitle}>Flare Event</Text>
           <Text style={styles.cardDetail}>
             {getStatusLabel(flareEvent)} |{" "}
@@ -77,7 +95,7 @@ export function FlareEventHistoryList({
               ) : null}
             </View>
           ) : null}
-        </View>
+        </Pressable>
       ))}
     </View>
   );

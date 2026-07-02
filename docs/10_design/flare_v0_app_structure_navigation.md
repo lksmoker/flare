@@ -266,6 +266,10 @@ Each item may show:
 * brief outcome/status
 * optional note preview
 
+V0 History may also include lightweight search and archive-aware filters so the
+default view stays focused on non-archived events while older events remain
+restorable from an archived view.
+
 ### History Non-Responsibilities
 
 History does not own:

@@ -44,6 +44,7 @@ export type FlareEventStatus = "active" | "reflected" | "closed";
 export type FlareEvent = {
   anchorNoteId: string | null;
   anchorNoteVersion: number | null;
+  archivedAt: string | null;
   behaviorDescriptionSnapshot: string | null;
   behaviorLabelSnapshot: string | null;
   behaviorPatternId: string | null;
@@ -76,9 +77,11 @@ export type SaveCheckpointReflectionInput = {
 
 type FlareEventContextValue = {
   activeEvent: FlareEvent | null;
+  archiveFlareEvent: (eventId: string) => void;
   currentEvent: FlareEvent | null;
   flareEvents: FlareEvent[];
   createFlareEvent: (input: CreateFlareEventInput) => FlareEvent;
+  restoreFlareEvent: (eventId: string) => void;
   saveCheckpointReflection: (input: SaveCheckpointReflectionInput) => void;
 };
 
@@ -97,11 +100,17 @@ let nextFlareEventId = 1;
 let nextCheckpointReflectionId = 1;
 
 const defaultFlareEventRepository: FlareEventRepository = {
+  archiveFlareEvent(input) {
+    return getFlareEventRepository().archiveFlareEvent(input);
+  },
   createFlareEvent(input) {
     return getFlareEventRepository().createFlareEvent(input);
   },
-  loadFlareEvents(userId) {
-    return getFlareEventRepository().loadFlareEvents(userId);
+  loadFlareEvents(userId, options) {
+    return getFlareEventRepository().loadFlareEvents(userId, options);
+  },
+  restoreFlareEvent(input) {
+    return getFlareEventRepository().restoreFlareEvent(input);
   },
   updateFlareEventStatus(input) {
     return getFlareEventRepository().updateFlareEventStatus(input);
@@ -132,6 +141,7 @@ function createLocalFlareEventRecord(
   return {
     anchorNoteId: input.anchorNoteId ?? null,
     anchorNoteVersion: input.anchorNoteVersion ?? null,
+    archivedAt: null,
     behaviorDescriptionSnapshot: input.behaviorDescriptionSnapshot?.trim() || null,
     behaviorLabelSnapshot: input.behaviorLabelSnapshot?.trim() || null,
     behaviorPatternId: input.behaviorPatternId ?? null,
@@ -177,6 +187,21 @@ function replaceFlareEvent(
   return currentEvents.map((flareEvent) =>
     flareEvent.id === targetId ? nextEvent : flareEvent,
   );
+}
+
+function isArchivedFlareEvent(flareEvent: FlareEvent) {
+  return flareEvent.archivedAt !== null;
+}
+
+function applyArchiveState(
+  flareEvent: FlareEvent,
+  archivedAt: string | null,
+): FlareEvent {
+  return {
+    ...flareEvent,
+    archivedAt,
+    updatedAt: archivedAt ?? new Date().toISOString(),
+  };
 }
 
 function mergePersistedFlareEvent(
@@ -264,6 +289,7 @@ export function FlareEventProvider({
       try {
         const persistedEvents = await flareEventRepository.loadFlareEvents(
           activeAuthState.userId,
+          { includeArchived: true },
         );
 
         if (isActive) {
@@ -309,18 +335,77 @@ export function FlareEventProvider({
   ]);
 
   const value = useMemo<FlareEventContextValue>(() => {
-    const currentEvent = flareEvents[0] ?? null;
+    const currentEvent =
+      flareEvents.find((flareEvent) => !isArchivedFlareEvent(flareEvent)) ?? null;
     const activeEvent =
-      flareEvents.find((flareEvent) => flareEvent.status === "active") ?? null;
+      flareEvents.find(
+        (flareEvent) =>
+          flareEvent.status === "active" && !isArchivedFlareEvent(flareEvent),
+      ) ?? null;
 
     return {
       activeEvent,
+      archiveFlareEvent: (eventId) => {
+        const archivedAt = new Date().toISOString();
+        let targetEvent: FlareEvent | null = null;
+
+        setFlareEvents((currentEvents) =>
+          currentEvents.map((flareEvent) => {
+            if (flareEvent.id !== eventId) {
+              return flareEvent;
+            }
+
+            targetEvent = flareEvent;
+
+            return applyArchiveState(flareEvent, archivedAt);
+          }),
+        );
+
+        void (async () => {
+          try {
+            const authState =
+              authStateOverride ??
+              authContext?.authState ??
+              (await resolveAuthState());
+
+            if (authState.kind !== "authenticated") {
+              return;
+            }
+
+            const localTargetEvent =
+              targetEvent ??
+              flareEventsRef.current.find((flareEvent) => flareEvent.id === eventId) ??
+              null;
+
+            if (!localTargetEvent) {
+              return;
+            }
+
+            const persistedRecord = await flareEventRepository.archiveFlareEvent({
+              archivedAt,
+              eventId,
+              userId: authState.userId,
+            });
+
+            setFlareEvents((currentEvents) =>
+              replaceFlareEvent(
+                currentEvents,
+                localTargetEvent.id,
+                mergePersistedFlareEvent(localTargetEvent, persistedRecord),
+              ),
+            );
+          } catch (error) {
+            console.warn("Failed to archive Flare Event.", error);
+          }
+        })();
+      },
       currentEvent,
       flareEvents,
       createFlareEvent: (input) => {
         const previousActiveEvent =
           flareEventsRef.current.find(
-            (flareEvent) => flareEvent.status === "active",
+            (flareEvent) =>
+              flareEvent.status === "active" && !isArchivedFlareEvent(flareEvent),
           ) ?? null;
         const nextEvent = createLocalFlareEventRecord({
           anchorNoteId: anchorNoteRecord?.id ?? null,
@@ -349,6 +434,7 @@ export function FlareEventProvider({
           nextEvent,
           ...currentEvents.map((flareEvent) =>
             flareEvent.status === "active"
+              && !isArchivedFlareEvent(flareEvent)
               ? {
                   ...flareEvent,
                   closedAt: flareEvent.closedAt ?? new Date().toISOString(),
@@ -428,13 +514,66 @@ export function FlareEventProvider({
 
         return nextEvent;
       },
+      restoreFlareEvent: (eventId) => {
+        let targetEvent: FlareEvent | null = null;
+
+        setFlareEvents((currentEvents) =>
+          currentEvents.map((flareEvent) => {
+            if (flareEvent.id !== eventId) {
+              return flareEvent;
+            }
+
+            targetEvent = flareEvent;
+
+            return applyArchiveState(flareEvent, null);
+          }),
+        );
+
+        void (async () => {
+          try {
+            const authState =
+              authStateOverride ??
+              authContext?.authState ??
+              (await resolveAuthState());
+
+            if (authState.kind !== "authenticated") {
+              return;
+            }
+
+            const localTargetEvent =
+              targetEvent ??
+              flareEventsRef.current.find((flareEvent) => flareEvent.id === eventId) ??
+              null;
+
+            if (!localTargetEvent) {
+              return;
+            }
+
+            const persistedRecord = await flareEventRepository.restoreFlareEvent({
+              eventId,
+              userId: authState.userId,
+            });
+
+            setFlareEvents((currentEvents) =>
+              replaceFlareEvent(
+                currentEvents,
+                localTargetEvent.id,
+                mergePersistedFlareEvent(localTargetEvent, persistedRecord),
+              ),
+            );
+          } catch (error) {
+            console.warn("Failed to restore Flare Event.", error);
+          }
+        })();
+      },
       saveCheckpointReflection: (input) => {
         const checkpoint = createCheckpointReflectionRecord(input);
         let targetEvent: FlareEvent | null = null;
 
         setFlareEvents((currentEvents) => {
           const currentActiveEvent = currentEvents.find(
-            (flareEvent) => flareEvent.status === "active",
+            (flareEvent) =>
+              flareEvent.status === "active" && !isArchivedFlareEvent(flareEvent),
           );
 
           if (!currentActiveEvent) {
@@ -470,8 +609,9 @@ export function FlareEventProvider({
               targetEvent ??
               flareEventsRef.current.find(
                 (flareEvent) =>
-                  flareEvent.status === "active" ||
-                  flareEvent.status === "reflected",
+                  ((flareEvent.status === "active" ||
+                    flareEvent.status === "reflected") &&
+                    !isArchivedFlareEvent(flareEvent)),
               ) ??
               null;
 

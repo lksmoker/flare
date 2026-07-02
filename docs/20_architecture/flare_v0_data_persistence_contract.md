@@ -222,6 +222,7 @@ This is the central historical event in V0.
 ### Optional Fields
 
 - `updatedAt`
+- `archivedAt`
 - `behaviorPatternId`
 - `behaviorDescriptionSnapshot`
 - `anchorNoteId`
@@ -246,6 +247,10 @@ This is the central historical event in V0.
 - `active`: flare created and recovery flow started
 - `reflected`: a checkpoint/reflection was recorded
 - `closed`: the event is considered complete even if no reflection exists
+
+Archive state should remain separate from the event-status lifecycle. A
+`FlareEvent` may be archived for History visibility without redefining whether
+the event was `active`, `reflected`, or `closed` when it was recorded.
 
 Implementations may add internal workflow states later, but these V0 user-meaningful states should remain understandable.
 

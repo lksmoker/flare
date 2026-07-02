@@ -24,8 +24,14 @@ import {
 import type { FlareSupabaseAuthState } from "../../services/flareSupabaseAuth";
 
 function FlareEventHarness() {
-  const { activeEvent, createFlareEvent, flareEvents, saveCheckpointReflection } =
-    useFlareEvents();
+  const {
+    activeEvent,
+    archiveFlareEvent,
+    createFlareEvent,
+    flareEvents,
+    restoreFlareEvent,
+    saveCheckpointReflection,
+  } = useFlareEvents();
 
   return (
     <View>
@@ -42,6 +48,12 @@ function FlareEventHarness() {
         event checkpoints:{" "}
         {flareEvents
           .map((event) => event.checkpoint?.whatHappened ?? "none")
+          .join(",")}
+      </Text>
+      <Text>
+        event archived:{" "}
+        {flareEvents
+          .map((event) => (event.archivedAt ? "archived" : "active"))
           .join(",")}
       </Text>
       <Pressable
@@ -63,6 +75,28 @@ function FlareEventHarness() {
         }}
       >
         <Text>save reflection</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          const firstEvent = flareEvents[0];
+
+          if (firstEvent) {
+            archiveFlareEvent(firstEvent.id);
+          }
+        }}
+      >
+        <Text>archive event</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          const archivedEvent = flareEvents.find((event) => event.archivedAt);
+
+          if (archivedEvent) {
+            restoreFlareEvent(archivedEvent.id);
+          }
+        }}
+      >
+        <Text>restore event</Text>
       </Pressable>
     </View>
   );
@@ -155,6 +189,7 @@ describe("FlareEventProvider persistence", () => {
       flareEvent: {
         anchorNoteId: "anchor-1",
         anchorNoteVersion: 4,
+        archivedAt: null,
         behaviorDescriptionSnapshot:
           "I start checking feeds when I feel depleted.",
         behaviorLabelSnapshot: "Late-night scrolling",
@@ -175,8 +210,10 @@ describe("FlareEventProvider persistence", () => {
       userId: "user-123",
     });
     const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
       createFlareEvent,
       loadFlareEvents: jest.fn().mockResolvedValue([]),
+      restoreFlareEvent: jest.fn(),
       updateFlareEventStatus: jest.fn(),
     };
 
@@ -222,8 +259,10 @@ describe("FlareEventProvider persistence", () => {
 
   it("keeps send flare local-only and skips repository writes when there is no session", async () => {
     const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
       createFlareEvent: jest.fn(),
       loadFlareEvents: jest.fn(),
+      restoreFlareEvent: jest.fn(),
       updateFlareEventStatus: jest.fn(),
     };
 
@@ -248,6 +287,7 @@ describe("FlareEventProvider persistence", () => {
       flareEvent: {
         anchorNoteId: "anchor-1",
         anchorNoteVersion: 4,
+        archivedAt: null,
         behaviorDescriptionSnapshot:
           "I start checking feeds when I feel depleted.",
         behaviorLabelSnapshot: "Late-night scrolling",
@@ -272,6 +312,7 @@ describe("FlareEventProvider persistence", () => {
       flareEvent: {
         anchorNoteId: "anchor-1",
         anchorNoteVersion: 4,
+        archivedAt: null,
         behaviorDescriptionSnapshot:
           "I start checking feeds when I feel depleted.",
         behaviorLabelSnapshot: "Late-night scrolling",
@@ -310,8 +351,10 @@ describe("FlareEventProvider persistence", () => {
       userId: "user-123",
     });
     const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
       createFlareEvent,
       loadFlareEvents: jest.fn().mockResolvedValue([]),
+      restoreFlareEvent: jest.fn(),
       updateFlareEventStatus,
     };
     const checkpointReflectionRepository: CheckpointReflectionRepository = {
@@ -367,6 +410,7 @@ describe("FlareEventProvider persistence", () => {
 
   it("loads persisted authenticated history with related reflections", async () => {
     const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
       createFlareEvent: jest.fn(),
       loadFlareEvents: jest.fn().mockResolvedValue([
         {
@@ -374,6 +418,7 @@ describe("FlareEventProvider persistence", () => {
           flareEvent: {
             anchorNoteId: "anchor-1",
             anchorNoteVersion: 4,
+            archivedAt: null,
             behaviorDescriptionSnapshot:
               "I start checking feeds when I feel depleted.",
             behaviorLabelSnapshot: "Late-night scrolling",
@@ -405,6 +450,7 @@ describe("FlareEventProvider persistence", () => {
           userId: "user-123",
         },
       ]),
+      restoreFlareEvent: jest.fn(),
       updateFlareEventStatus: jest.fn(),
     };
 
@@ -431,6 +477,7 @@ describe("FlareEventProvider persistence", () => {
 
   it("clears authenticated persisted history when auth changes to signed out", async () => {
     const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
       createFlareEvent: jest.fn(),
       loadFlareEvents: jest.fn().mockResolvedValue([
         {
@@ -438,6 +485,7 @@ describe("FlareEventProvider persistence", () => {
           flareEvent: {
             anchorNoteId: null,
             anchorNoteVersion: null,
+            archivedAt: null,
             behaviorDescriptionSnapshot: null,
             behaviorLabelSnapshot: "Late-night scrolling",
             behaviorPatternId: null,
@@ -457,6 +505,7 @@ describe("FlareEventProvider persistence", () => {
           userId: "user-123",
         },
       ]),
+      restoreFlareEvent: jest.fn(),
       updateFlareEventStatus: jest.fn(),
     };
 
@@ -488,6 +537,42 @@ describe("FlareEventProvider persistence", () => {
 
     await waitFor(() => {
       expect(getByText("event count: 0")).toBeTruthy();
+    });
+  });
+
+  it("supports local-only archive and restore without Supabase writes", async () => {
+    const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
+      createFlareEvent: jest.fn(),
+      loadFlareEvents: jest.fn(),
+      restoreFlareEvent: jest.fn(),
+      updateFlareEventStatus: jest.fn(),
+    };
+
+    const { getByText } = renderWithProviders({
+      authState: { kind: "no-session" },
+      flareEventRepository,
+    });
+
+    fireEvent.press(getByText("send flare"));
+
+    await waitFor(() => {
+      expect(getByText("event archived: active")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("archive event"));
+
+    await waitFor(() => {
+      expect(getByText("event archived: archived")).toBeTruthy();
+      expect(getByText("active event: none")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("restore event"));
+
+    await waitFor(() => {
+      expect(getByText("event archived: active")).toBeTruthy();
+      expect(flareEventRepository.archiveFlareEvent).not.toHaveBeenCalled();
+      expect(flareEventRepository.restoreFlareEvent).not.toHaveBeenCalled();
     });
   });
 });
