@@ -1,6 +1,7 @@
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 import {
+  hydrateFlareSupabaseSessionFromUrl,
   PUBLIC_AUTH_REDIRECT_URL_ENV_NAME,
   readFlareAuthRedirectUrl,
   resolveFlareSupabaseAuthState,
@@ -34,6 +35,12 @@ function createClientStub(overrides?: Partial<Record<string, unknown>>) {
         .mockResolvedValue({ data: { session: null }, error: null }),
       getUser: jest.fn().mockResolvedValue({ data: { user: null }, error: null }),
       onAuthStateChange,
+      exchangeCodeForSession: jest
+        .fn()
+        .mockResolvedValue({ data: { session: null }, error: null }),
+      setSession: jest
+        .fn()
+        .mockResolvedValue({ data: { session: null }, error: null }),
       signInWithOtp: jest.fn().mockResolvedValue({ error: null }),
       signInWithPassword: jest.fn().mockResolvedValue({ error: null }),
       signUp: jest.fn().mockResolvedValue({ error: null }),
@@ -50,7 +57,51 @@ createClientStub.lastAuthCallback = null as ((
   session: Session | null,
 ) => void) | null;
 
+const originalWindow = globalThis.window;
+
+function installMockWindow(url: string) {
+  const parsedUrl = new URL(url, "http://localhost");
+  const mockWindow = {
+    location: {
+      hash: parsedUrl.hash,
+      pathname: parsedUrl.pathname,
+      search: parsedUrl.search,
+    },
+    history: {
+      state: null as unknown,
+      replaceState(state: unknown, _unused: string, nextUrl: string) {
+        this.state = state;
+        const resolvedUrl = new URL(nextUrl, "http://localhost");
+
+        mockWindow.location.pathname = resolvedUrl.pathname;
+        mockWindow.location.search = resolvedUrl.search;
+        mockWindow.location.hash = resolvedUrl.hash;
+      },
+    },
+  };
+
+  Object.defineProperty(globalThis, "window", {
+    configurable: true,
+    value: mockWindow,
+    writable: true,
+  });
+
+  return mockWindow;
+}
+
 describe("flareSupabaseAuth", () => {
+  beforeEach(() => {
+    installMockWindow("/customize");
+  });
+
+  afterAll(() => {
+    Object.defineProperty(globalThis, "window", {
+      configurable: true,
+      value: originalWindow,
+      writable: true,
+    });
+  });
+
   it("returns no-session when neither session nor user exists", async () => {
     const { client } = createClientStub();
 
@@ -85,6 +136,78 @@ describe("flareSupabaseAuth", () => {
       userEmail: "flare@example.com",
       userId: "user-123",
     });
+  });
+
+  it("hydrates an authenticated session from web hash tokens and clears the hash", async () => {
+    installMockWindow(
+      "/customize#access_token=access-123&refresh_token=refresh-456&type=magiclink",
+    );
+    const { client } = createClientStub({
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        setSession: jest.fn().mockResolvedValue({
+          data: {
+            session: {
+              user: {
+                email: "flare@example.com",
+                id: "user-123",
+              },
+            },
+          },
+          error: null,
+        }),
+      },
+    });
+
+    await expect(
+      resolveFlareSupabaseAuthState(client as never),
+    ).resolves.toEqual({
+      kind: "authenticated",
+      userEmail: "flare@example.com",
+      userId: "user-123",
+    });
+
+    expect(client.auth.setSession).toHaveBeenCalledWith({
+      access_token: "access-123",
+      refresh_token: "refresh-456",
+    });
+    expect(window.location.hash).toBe("");
+  });
+
+  it("hydrates an authenticated session from the PKCE code path and clears the query param", async () => {
+    installMockWindow("/customize?code=pkce-123");
+    const { client } = createClientStub({
+      auth: {
+        exchangeCodeForSession: jest.fn().mockResolvedValue({
+          data: {
+            session: {
+              user: {
+                email: "flare@example.com",
+                id: "user-123",
+              },
+            },
+          },
+          error: null,
+        }),
+      },
+    });
+
+    await expect(
+      hydrateFlareSupabaseSessionFromUrl(client as never),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        user: expect.objectContaining({
+          email: "flare@example.com",
+          id: "user-123",
+        }),
+      }),
+    );
+
+    expect(client.auth.exchangeCodeForSession).toHaveBeenCalledWith("pkce-123");
+    expect(window.location.search).toBe("");
   });
 
   it("signs in with password through the Supabase auth client", async () => {

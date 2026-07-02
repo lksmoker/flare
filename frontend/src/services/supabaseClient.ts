@@ -4,6 +4,7 @@ export const PUBLIC_SUPABASE_URL_ENV_NAME =
   "EXPO_PUBLIC_FLARE_SUPABASE_URL";
 export const PUBLIC_SUPABASE_ANON_KEY_ENV_NAME =
   "EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY";
+export const FLARE_SUPABASE_AUTH_STORAGE_KEY = "flare-auth-token";
 
 type RuntimeEnv = Record<string, string | undefined>;
 
@@ -65,9 +66,10 @@ export function getSupabaseClient(
 
   const client = createClient(url, anonKey, {
     auth: {
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-      persistSession: false,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      persistSession: true,
+      storageKey: FLARE_SUPABASE_AUTH_STORAGE_KEY,
     },
   });
 

@@ -9,6 +9,7 @@ import {
   type PersistedBehaviorPattern,
   type BehaviorPatternRepository,
 } from "../../services/behaviorPatternRepository";
+import { FlareAuthProvider } from "../FlareAuthContext";
 import { AnchorNoteProvider, useAnchorNote } from "../AnchorNoteContext";
 import { BehaviorPatternProvider, useBehaviorPattern } from "../BehaviorPatternContext";
 
@@ -62,6 +63,36 @@ function AnchorNoteHarness() {
 }
 
 describe("setup persistence providers", () => {
+  it("receives the hydrated auth user id through FlareAuthProvider", async () => {
+    const behaviorPatternRepository: BehaviorPatternRepository = {
+      loadActiveBehaviorPattern: jest.fn().mockResolvedValue(null),
+      saveBehaviorPattern: jest.fn(),
+    };
+
+    render(
+      <FlareAuthProvider
+        resolveAuthState={async () => ({
+          kind: "authenticated",
+          userEmail: null,
+          userId: "user-123",
+        })}
+        subscribe={() => null}
+      >
+        <BehaviorPatternProvider
+          behaviorPatternRepository={behaviorPatternRepository}
+        >
+          <BehaviorPatternHarness />
+        </BehaviorPatternProvider>
+      </FlareAuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(
+        behaviorPatternRepository.loadActiveBehaviorPattern,
+      ).toHaveBeenCalledWith("user-123");
+    });
+  });
+
   it("loads the active Behavior Pattern on mount for an authenticated user", async () => {
     const behaviorPatternRepository: BehaviorPatternRepository = {
       loadActiveBehaviorPattern: jest

@@ -4,6 +4,7 @@ import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
 import {
+  FLARE_SUPABASE_AUTH_STORAGE_KEY,
   getSupabaseClient,
   MissingSupabaseConfigError,
   PUBLIC_SUPABASE_ANON_KEY_ENV_NAME,
@@ -68,9 +69,10 @@ describe("supabaseClient boundary", () => {
       "public-anon-key",
       {
         auth: {
-          autoRefreshToken: false,
-          detectSessionInUrl: false,
-          persistSession: false,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          persistSession: true,
+          storageKey: FLARE_SUPABASE_AUTH_STORAGE_KEY,
         },
       },
     );
