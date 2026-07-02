@@ -31,58 +31,58 @@
     "states": {
       "loading": {
         "checkingConnection": "Checking connection",
-        "checkingSession": "Checking for a real session"
+        "checkingSession": "Checking session"
       },
       "empty": {
-        "notConfiguredTitle": "Not configured yet"
+        "notConfiguredTitle": "Not set up yet"
       },
       "error": {
-        "missingRedirectUrl": "Current redirect URL: not configured. Supabase may redirect to the project Site URL instead."
+        "missingRedirectUrl": "Redirect URL is not configured. Supabase may use the project Site URL instead."
       }
     }
   },
   "safety": {
     "selfSupportBoundary": "Flare is a self-support tool. It does not monitor you in real time or contact anyone for you.",
-    "notCrisisCare": "Flare is for self-support and reflection. It is not a crisis service, therapy replacement, or medical treatment.",
+    "notCrisisCare": "Flare is for self-support and reflection. It is not therapy, medical treatment, or a crisis service.",
     "noEmergencyResponse": "Flare does not monitor urgent risk or provide emergency response.",
-    "urgentHelp": "Flare is a self-support tool. If you may hurt yourself or someone else, or you need immediate help, contact local emergency services or a crisis hotline now."
+    "urgentHelp": "If you may hurt yourself or someone else, or need immediate help, contact local emergency services or a crisis hotline now."
   },
   "auth": {
-    "cardTitle": "Setup persistence",
+    "cardTitle": "Save your setup",
     "status": {
       "connected": "Connected",
       "localOnly": "Local-only"
     },
     "loading": {
-      "copy": "Checking whether a real Supabase session is available for setup persistence."
+      "copy": "Checking whether your setup can be saved to Supabase."
     },
     "authenticated": {
-      "copy": "Your setup can now reload on this device because Behavior Pattern and Anchor Note save to your signed-in Supabase account.",
+      "copy": "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",
       "signedInAs": "Signed in as",
       "signOut": "Sign out",
       "signingOut": "Signing out..."
     },
     "clientUnavailable": {
-      "copy": "Setup persistence is local-only because the public Supabase URL and anon key are not loaded into the Expo runtime."
+      "copy": "Your setup is local-only because the public Supabase URL and anon key are not loaded into the Expo runtime."
     },
     "noSession": {
-      "copy": "Setup saves still work locally in memory, but they will not reload from Supabase until you authenticate.",
+      "copy": "Your setup can work locally for now. Sign in to save and reload it with Supabase.",
       "form": {
-        "emailAccessibilityLabel": "Auth email",
-        "passwordAccessibilityLabel": "Auth password",
+        "emailAccessibilityLabel": "Email address",
+        "passwordAccessibilityLabel": "Password",
         "emailPlaceholder": "you@example.com",
-        "passwordPlaceholder": "Password for direct sign-in"
+        "passwordPlaceholder": "Password"
       },
       "modes": {
         "existingAccount": "Existing account",
         "firstTimeSetup": "First-time setup",
-        "existingAccountDetail": "Sign in is for an existing Supabase account on this project.",
-        "firstTimeSetupDetail": "Create account is the first-time setup path for a new Supabase user."
+        "existingAccountDetail": "Sign in with an existing Supabase account for this project.",
+        "firstTimeSetupDetail": "Create an account if this is your first time setting up Flare."
       },
-      "passwordHint": "Password sign-in uses the current Supabase project settings. Magic link requires the configured redirect URL to be allowed in Supabase.",
+      "passwordHint": "Password sign-in uses the current Supabase project settings. Magic link sign-in requires an allowed redirect URL.",
       "redirectLabel": "Current redirect URL:",
-      "redirectMagicLinkPrefix": "Magic link sent if email auth is enabled. It should return to",
-      "redirectMagicLinkFallback": "Magic link sent if email auth is enabled. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase falls back to the project Site URL.",
+      "redirectMagicLinkPrefix": "Magic link sent. It should return to",
+      "redirectMagicLinkFallback": "Magic link sent. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase may fall back to the project Site URL.",
       "signUpNotice": "Account created if sign-up is enabled. Check your email if confirmation is required.",
       "buttons": {
         "signIn": "Sign in",
@@ -97,35 +97,35 @@
   "screens": {
     "customize": {
       "screenLabel": "Setup",
-      "title": "Customize what helps you pause and reflect",
-      "subtitle": "Keep your personal setup separate from the in-the-moment flow."
+      "title": "Customize what helps you pause",
+      "subtitle": "Set up the words and next steps you want available during a flare."
     },
     "flare": {
-      "screenLabel": "Urgent action",
-      "title": "Use Flare to pause, regroup, and choose a next step",
-      "subtitle": "Keep the flow simple: one main action, one secondary reflection entry, and lightweight readiness cues.",
+      "screenLabel": "In-the-moment support",
+      "title": "Pause, remember your reasons, and choose a next step",
+      "subtitle": "Use one simple action to open your saved support words and mark the moment.",
       "readiness": {
         "title": "Readiness",
-        "setupPersistence": "Setup persistence",
+        "setupPersistence": "Setup saving",
         "behaviorPattern": "Behavior Pattern",
         "anchorNote": "Anchor Note",
         "telegram": "Telegram Support",
         "configuredPrefix": "Configured:",
-        "readyToDefine": "Ready to define",
+        "readyToDefine": "Ready to set up",
         "localOnlyUntilSignIn": "Local-only until sign in",
-        "localOnlyUntilConfigLoaded": "Local-only until public Supabase config is loaded",
+        "localOnlyUntilConfigLoaded": "Local-only until Supabase config is loaded",
         "connectedPrefix": "Connected:"
       },
       "secondaryAction": {
         "label": "Checkpoint / Reflection",
-        "copy": "Open a lightweight reflection sheet without leaving this screen."
+        "copy": "Open a short reflection without leaving this screen."
       }
     },
     "history": {
       "screenLabel": "Past moments",
-      "title": "Review past flares without turning this into analytics",
-      "subtitle": "A lightweight chronological list of past Flare Events and attached Checkpoint / Reflection notes.",
-      "intro": "Signed-in sessions load your own saved event history. Signed-out sessions stay local-only. Flare does not monitor you in real time or score your behavior.",
+      "title": "Review past flares",
+      "subtitle": "A simple timeline of Flare Events and saved Checkpoint Reflections.",
+      "intro": "Signed-in sessions can reload saved event history. Signed-out sessions stay local-only. Flare does not monitor you in real time or score your behavior.",
       "controls": {
         "title": "Find a past moment",
         "searchAccessibilityLabel": "Search Flare Event history",
@@ -140,33 +140,33 @@
       "empty": {
         "search": {
           "title": "No matching Flare Events",
-          "copy": "Try a different search term from the behavior snapshot or reflection notes."
+          "copy": "Try a different word from the behavior snapshot or reflection notes."
         },
         "archived": {
           "title": "No archived Flare Events",
-          "copy": "Archive keeps older events out of the default view without deleting them."
+          "copy": "Archived events stay saved, but are hidden from the default view."
         },
         "reflected": {
           "title": "No reflected Flare Events",
-          "copy": "Checkpoint / Reflection entries appear here after you save a reflection."
+          "copy": "Saved Checkpoint Reflections will appear here."
         },
         "default": {
           "title": "No Flare Events yet",
-          "copy": "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only."
+          "copy": "Send Flare to log your first event. Signed-in sessions can reload saved events here."
         }
       }
     }
   },
   "components": {
     "behaviorPattern": {
-      "cardTitle": "Behavior Pattern Setup",
-      "cardCopy": "Define the pattern, likely triggers, and the next step you want handy when you are trying to interrupt an urge.",
-      "modalTitle": "Behavior Pattern Setup",
-      "modalSubtitle": "Keep it concrete enough to interrupt the pattern, but light enough to update anytime.",
-      "intro": "Capture the pattern you want Flare to help you interrupt and reflect on. This stays editable in V0.",
+      "cardTitle": "Behavior Pattern",
+      "cardCopy": "Name the pattern you want help interrupting, along with common triggers and useful next steps.",
+      "modalTitle": "Behavior Pattern",
+      "modalSubtitle": "Keep it concrete enough to recognize, and simple enough to update.",
+      "intro": "Describe the pattern you want Flare to help you pause and reflect on.",
       "helperCopy": "Save requires a behavior name and at least one next step.",
       "saveButton": "Save Behavior Pattern",
-      "summaryEmptyCopy": "Add one lightweight pattern so Flare can show that your setup is ready.",
+      "summaryEmptyCopy": "Add a lightweight pattern so Flare knows what you are trying to pause.",
       "fields": {
         "behaviorName": {
           "label": "Behavior name",
@@ -174,7 +174,7 @@
         },
         "shortDescription": {
           "label": "Short description",
-          "placeholder": "What the spiral feels like when it starts."
+          "placeholder": "What it feels like when the loop starts."
         },
         "commonTriggers": {
           "label": "Common triggers",
@@ -197,86 +197,86 @@
       }
     },
     "anchorNote": {
-      "cardTitle": "Anchor Note Setup",
-      "cardCopy": "Capture grounded reminders, costs, and phrases you want Flare to show back to you during a flare.",
-      "modalTitle": "Anchor Note Setup",
-      "modalSubtitle": "Capture grounded words you want available when you are trying to pause.",
-      "intro": "Keep it honest, specific, and easy to revisit. This note is for self-support, not treatment.",
+      "cardTitle": "Anchor Note",
+      "cardCopy": "Save the reminders, costs, and phrases you want Flare to show when you need a pause.",
+      "modalTitle": "Anchor Note",
+      "modalSubtitle": "Write grounded words you want available during a flare.",
+      "intro": "Keep this honest, specific, and easy to revisit. This note is for self-support.",
       "helperCopy": "Save requires one reason to pause and one supportive phrase.",
       "saveButton": "Save Anchor Note",
-      "summaryEmptyCopy": "Save a few grounded reminders so Flare Response can show them immediately during a flare.",
+      "summaryEmptyCopy": "Save a few grounded reminders so Flare can show them during a flare.",
       "fields": {
         "interruptionReasons": {
-          "label": "Why interrupt this pattern?",
+          "label": "Why pause this pattern?",
           "placeholder": "I want to stop before I lose the rest of tonight."
         },
         "continuingCosts": {
-          "label": "Costs or consequences of continuing",
+          "label": "Costs of continuing",
           "placeholder": "I will feel foggy tomorrow and break trust with myself again."
         },
         "groundedReminders": {
           "label": "Reminder from grounded self",
-          "placeholder": "This urge peaks fast. You do not need to obey it."
+          "placeholder": "This urge rises and passes. I do not have to obey it."
         },
         "emergencyActions": {
-          "label": "Immediate action or commitment",
+          "label": "Immediate next step",
           "placeholder": "Put the phone in the kitchen, drink water, and walk outside."
         },
         "supportivePhrase": {
-          "label": "Supportive phrase to show during a flare",
+          "label": "Supportive phrase",
           "placeholder": "Pause now. Protect tomorrow."
         }
       },
       "summaryLabels": {
-        "interruptionReasons": "Why interrupt",
+        "interruptionReasons": "Why pause",
         "continuingCosts": "Costs of continuing",
         "groundedReminders": "Grounded reminder",
-        "emergencyActions": "Immediate action",
+        "emergencyActions": "Immediate next step",
         "supportivePhrase": "Supportive phrase"
       }
     },
     "telegramSupport": {
       "title": "Telegram Support",
       "badge": "Coming in V1",
-      "copy": "Visible here as future-scoped direction only. V0 does not send messages, alerts, or outreach on your behalf."
+      "copy": "Future direction only. V0 does not send messages, alerts, or outreach on your behalf."
     },
     "sendFlare": {
       "label": "Send Flare",
-      "hint": "Starts a new Flare Event and opens Flare Response right away.",
-      "copy": "Mark this moment, open your saved support copy, and pick a next step with no extra confirmation screen."
+      "hint": "Starts a new Flare Event and opens Flare Response.",
+      "copy": "Mark this moment, open your saved support words, and choose a next step."
     },
     "flareResponse": {
       "modalTitle": "Flare Response",
-      "modalSubtitle": "This V0 sheet opens immediately and stays attached to the current Flare Event.",
+      "modalSubtitle": "Your saved support words are attached to this Flare Event.",
       "eventLabel": "Current Flare Event",
-      "eventTitleActive": "Your self-support screen is open",
+      "eventTitleActive": "You paused the pattern",
       "eventTitleReflected": "Reflection saved for this event",
-      "noActiveEvent": "No in-memory event is active.",
+      "noActiveEvent": "No active event is open.",
       "eventStartedPrefix": "Started",
       "eventStatusPrefix": "status:",
       "behaviorPatternPrefix": "Behavior Pattern:",
       "anchorNoteLabel": "Anchor Note",
-      "defaultSupportivePhrase": "You already paused the pattern.",
-      "defaultInterruptionReason": "Flare shows your saved Anchor Note right after Send Flare so your own words are close at hand.",
+      "defaultSupportivePhrase": "You already created a pause.",
+      "defaultInterruptionReason": "Flare shows your Anchor Note right after Send Flare so your own words are close at hand.",
       "groundedReminderLabel": "Grounded reminder",
       "continuingCostsLabel": "If I keep going",
-      "safety": "Flare is a self-support tool. If you may hurt yourself or someone else, or you need immediate help, contact local emergency services or a crisis hotline now.",
+      "safety": "If you may hurt yourself or someone else, or need immediate help, contact local emergency services or a crisis hotline now.",
       "nextStepTitle": "Try one next step",
       "defaultNextStep": "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next.",
       "checkpointButton": "Checkpoint / Reflection"
     },
     "checkpointReflection": {
       "modalTitle": "Checkpoint / Reflection",
-      "modalSubtitle": "Keep the reflection lightweight and attach it to the current event.",
-      "helperCopy": "Save requires an active event plus the main reflection fields.",
+      "modalSubtitle": "Keep it short and attach it to the current event.",
+      "helperCopy": "Save requires an active event and the main reflection fields.",
       "saveButton": "Save Reflection",
       "context": {
         "activeLabel": "Attaching to current event",
-        "activeCopy": "This reflection will update the event you started from Send Flare.",
+        "activeCopy": "This reflection will be saved to the event you started from Send Flare.",
         "missingLabel": "No active Flare Event",
-        "missingCopy": "Send Flare first to create the current event, then save a brief reflection here."
+        "missingCopy": "Send Flare first to create an event, then save a reflection here."
       },
-      "intro": "Use this space to notice what happened and what helped. Flare does not provide therapy, medical advice, or crisis response.",
+      "intro": "Notice what happened, what helped, and what you want to remember next time.",
       "fields": {
         "whatHappened": {
           "label": "What happened?",
@@ -292,7 +292,7 @@
         },
         "outcome": {
           "label": "Outcome",
-          "placeholder": "Urge dropped enough to keep moving."
+          "placeholder": "The urge dropped enough to keep moving."
         },
         "note": {
           "label": "Optional note",
@@ -304,7 +304,7 @@
       "list": {
         "cardTitle": "Flare Event",
         "behaviorPatternConfiguredPrefix": "Behavior Pattern:",
-        "behaviorPatternNotConfigured": "Behavior Pattern: Not configured yet",
+        "behaviorPatternNotConfigured": "Behavior Pattern: Not set up yet",
         "reflectionTitle": "Checkpoint / Reflection",
         "reflectionFields": {
           "whatHappened": "What happened:",
@@ -316,7 +316,7 @@
       },
       "detailModal": {
         "title": "Flare Event details",
-        "subtitle": "Review the saved behavior snapshot and any attached reflection before deciding whether to archive or restore it."
+        "subtitle": "Review the saved behavior snapshot and attached reflection."
       },
       "detail": {
         "labels": {
@@ -337,7 +337,7 @@
           "note": "Note"
         },
         "statusArchived": "Archived",
-        "behaviorPatternNotConfigured": "Behavior pattern not configured"
+        "behaviorPatternNotConfigured": "Behavior Pattern not set up"
       }
     }
   }
