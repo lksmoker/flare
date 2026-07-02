@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import flareContent from "../content/flareContent.json";
+
 type PlaceholderModalProps = PropsWithChildren<{
   footer?: React.ReactNode;
   onClose: () => void;
@@ -49,7 +51,9 @@ export function PlaceholderModal({
               onPress={onClose}
               style={styles.closeButton}
             >
-              <Text style={styles.closeButtonLabel}>Close</Text>
+              <Text style={styles.closeButtonLabel}>
+                {flareContent.app.modal.close}
+              </Text>
             </Pressable>
           </View>
           <ScrollView

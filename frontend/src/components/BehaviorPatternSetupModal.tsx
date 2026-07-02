@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
   createEmptyBehaviorPattern,
@@ -36,7 +37,7 @@ export function BehaviorPatternSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            Save requires a behavior name and at least one next step.
+            {flareContent.setup.behaviorPattern.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -44,7 +45,9 @@ export function BehaviorPatternSetupModal({
               onPress={onClose}
               style={styles.cancelButton}
             >
-              <Text style={styles.cancelButtonLabel}>Cancel</Text>
+              <Text style={styles.cancelButtonLabel}>
+                {flareContent.actions.cancel}
+              </Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -58,44 +61,55 @@ export function BehaviorPatternSetupModal({
                 saveDisabled ? styles.saveButtonDisabled : null,
               ]}
             >
-              <Text style={styles.saveButtonLabel}>Save Behavior Pattern</Text>
+              <Text style={styles.saveButtonLabel}>
+                {flareContent.setup.behaviorPattern.saveButton}
+              </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle="Keep it concrete enough to interrupt the pattern, but light enough to update anytime."
-      title="Behavior Pattern Setup"
+      subtitle={flareContent.setup.behaviorPattern.modalSubtitle}
+      title={flareContent.setup.behaviorPattern.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
-        <Text style={styles.intro}>
-          Capture the pattern you want Flare to help you interrupt and reflect
-          on. This stays editable in V0.
-        </Text>
+        <Text style={styles.intro}>{flareContent.setup.behaviorPattern.intro}</Text>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Behavior name</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.behaviorPattern.fields.behaviorName.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Behavior name"
+            accessibilityLabel={
+              flareContent.setup.behaviorPattern.fields.behaviorName.label
+            }
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, behaviorName: value }))
             }
-            placeholder="Doomscrolling after work"
+            placeholder={
+              flareContent.setup.behaviorPattern.fields.behaviorName.placeholder
+            }
             style={styles.input}
             value={draft.behaviorName}
           />
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Short description</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.behaviorPattern.fields.shortDescription.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Short description"
+            accessibilityLabel={
+              flareContent.setup.behaviorPattern.fields.shortDescription.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, shortDescription: value }))
             }
-            placeholder="What the spiral feels like when it starts."
+            placeholder={
+              flareContent.setup.behaviorPattern.fields.shortDescription.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.shortDescription}
@@ -103,14 +117,20 @@ export function BehaviorPatternSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Common triggers</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.behaviorPattern.fields.commonTriggers.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Common triggers"
+            accessibilityLabel={
+              flareContent.setup.behaviorPattern.fields.commonTriggers.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, commonTriggers: value }))
             }
-            placeholder="Stress, boredom, being alone, an argument."
+            placeholder={
+              flareContent.setup.behaviorPattern.fields.commonTriggers.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.commonTriggers}
@@ -118,9 +138,16 @@ export function BehaviorPatternSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Risk times or situations</Text>
+          <Text style={styles.label}>
+            {
+              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations
+                .label
+            }
+          </Text>
           <TextInput
-            accessibilityLabel="Risk times or situations"
+            accessibilityLabel={
+              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({
@@ -128,7 +155,10 @@ export function BehaviorPatternSetupModal({
                 riskTimesOrSituations: value,
               }))
             }
-            placeholder="Late nights, payday, after a setback."
+            placeholder={
+              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations
+                .placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.riskTimesOrSituations}
@@ -136,9 +166,17 @@ export function BehaviorPatternSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Preferred next steps</Text>
+          <Text style={styles.label}>
+            {
+              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
+                .label
+            }
+          </Text>
           <TextInput
-            accessibilityLabel="Preferred next steps"
+            accessibilityLabel={
+              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
+                .label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({
@@ -146,7 +184,10 @@ export function BehaviorPatternSetupModal({
                 preferredRecoveryActions: value,
               }))
             }
-            placeholder="Put the phone down, stand up, drink water, step outside."
+            placeholder={
+              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
+                .placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.preferredRecoveryActions}

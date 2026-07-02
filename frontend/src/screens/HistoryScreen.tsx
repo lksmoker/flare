@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { AppShell } from "../components/AppShell";
 import { FlareEventHistoryList } from "../components/FlareEventHistoryList";
 import { PlaceholderModal } from "../components/PlaceholderModal";
+import flareContent from "../content/flareContent.json";
 import {
   FlareEvent,
   formatFlareEventTimestamp,
@@ -13,10 +14,10 @@ import {
 type HistoryFilter = "active" | "all" | "archived" | "reflected";
 
 const HISTORY_FILTERS: Array<{ label: string; value: HistoryFilter }> = [
-  { label: "Active", value: "active" },
-  { label: "Reflected", value: "reflected" },
-  { label: "Archived", value: "archived" },
-  { label: "All", value: "all" },
+  { label: flareContent.history.filters.active, value: "active" },
+  { label: flareContent.history.filters.reflected, value: "reflected" },
+  { label: flareContent.history.filters.archived, value: "archived" },
+  { label: flareContent.history.filters.all, value: "all" },
 ];
 
 function normalizeSearchText(value: string | null | undefined) {
@@ -54,30 +55,26 @@ function matchesFilter(flareEvent: FlareEvent, filter: HistoryFilter) {
 function getHistoryEmptyState(filter: HistoryFilter, searchQuery: string) {
   if (searchQuery.trim().length > 0) {
     return {
-      title: "No matching Flare Events",
-      copy:
-        "Try a different search term from the behavior snapshot or reflection notes.",
+      title: flareContent.history.empty.search.title,
+      copy: flareContent.history.empty.search.copy,
     };
   }
 
   switch (filter) {
     case "archived":
       return {
-        title: "No archived Flare Events",
-        copy:
-          "Archive keeps older events out of the default view without deleting them.",
+        title: flareContent.history.empty.archived.title,
+        copy: flareContent.history.empty.archived.copy,
       };
     case "reflected":
       return {
-        title: "No reflected Flare Events",
-        copy:
-          "Checkpoint / Reflection entries appear here after you save a reflection.",
+        title: flareContent.history.empty.reflected.title,
+        copy: flareContent.history.empty.reflected.copy,
       };
     default:
       return {
-        title: "No Flare Events yet",
-        copy:
-          "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only.",
+        title: flareContent.history.empty.default.title,
+        copy: flareContent.history.empty.default.copy,
       };
   }
 }
@@ -132,21 +129,17 @@ export function HistoryScreen() {
   return (
     <AppShell
       currentPath="/history"
-      screenLabel="Past moments"
-      subtitle="A lightweight chronological list of past Flare Events and attached Checkpoint / Reflection notes."
-      title="Review past flares without turning this into analytics"
+      screenLabel={flareContent.history.screenLabel}
+      subtitle={flareContent.history.subtitle}
+      title={flareContent.history.title}
     >
-      <Text style={styles.intro}>
-        Signed-in sessions load your own saved event history. Signed-out
-        sessions stay local-only. Flare does not monitor you in real time or
-        score your behavior.
-      </Text>
+      <Text style={styles.intro}>{flareContent.history.intro}</Text>
       <View style={styles.controlsCard}>
-        <Text style={styles.controlsTitle}>Find a past moment</Text>
+        <Text style={styles.controlsTitle}>{flareContent.history.controlsTitle}</Text>
         <TextInput
-          accessibilityLabel="Search Flare Event history"
+          accessibilityLabel={flareContent.history.searchAccessibilityLabel}
           onChangeText={setSearchQuery}
-          placeholder="Search behavior or reflection notes"
+          placeholder={flareContent.history.searchPlaceholder}
           placeholderTextColor="#8c97a5"
           style={styles.searchInput}
           value={searchQuery}
@@ -186,26 +179,26 @@ export function HistoryScreen() {
       />
       <PlaceholderModal
         onClose={() => setSelectedEvent(null)}
-        subtitle="Review the saved behavior snapshot and any attached reflection before deciding whether to archive or restore it."
-        title="Flare Event details"
+        subtitle={flareContent.history.detailModal.subtitle}
+        title={flareContent.history.detailModal.title}
         visible={resolvedSelectedEvent !== null}
       >
         {resolvedSelectedEvent ? (
           <View style={styles.detailContent}>
             <DetailRow
-              label="Created"
+              label={flareContent.history.detail.labels.created}
               value={formatFlareEventTimestamp(resolvedSelectedEvent.createdAt)}
             />
             <DetailRow
-              label="Status"
+              label={flareContent.history.detail.labels.status}
               value={
                 resolvedSelectedEvent.archivedAt
-                  ? "Archived"
+                  ? flareContent.history.detail.statusArchived
                   : resolvedSelectedEvent.status
               }
             />
             <DetailRow
-              label="Archived"
+              label={flareContent.history.detail.labels.archived}
               value={
                 resolvedSelectedEvent.archivedAt
                   ? formatFlareEventTimestamp(resolvedSelectedEvent.archivedAt)
@@ -213,55 +206,55 @@ export function HistoryScreen() {
               }
             />
             <DetailRow
-              label="Behavior Pattern"
+              label={flareContent.history.detail.labels.behaviorPattern}
               value={
                 resolvedSelectedEvent.behaviorLabelSnapshot ??
-                "Behavior pattern not configured"
+                flareContent.history.detail.behaviorPatternNotConfigured
               }
             />
             <DetailRow
-              label="Behavior Snapshot"
+              label={flareContent.history.detail.labels.behaviorSnapshot}
               value={resolvedSelectedEvent.behaviorDescriptionSnapshot}
             />
             <DetailRow
-              label="Response mode"
+              label={flareContent.history.detail.labels.responseMode}
               value={resolvedSelectedEvent.responseMode}
             />
             <DetailRow
-              label="Support action shown"
+              label={flareContent.history.detail.labels.supportActionShown}
               value={resolvedSelectedEvent.supportActionShown}
             />
             <DetailRow
-              label="Support action taken"
+              label={flareContent.history.detail.labels.supportActionTaken}
               value={resolvedSelectedEvent.supportActionTaken}
             />
             {resolvedSelectedEvent.checkpoint ? (
               <View style={styles.reflectionSection}>
                 <Text style={styles.reflectionSectionTitle}>
-                  Checkpoint / Reflection
+                  {flareContent.history.detail.labels.checkpointReflection}
                 </Text>
                 <DetailRow
-                  label="What happened"
+                  label={flareContent.history.detail.labels.whatHappened}
                   value={resolvedSelectedEvent.checkpoint.whatHappened}
                 />
                 <DetailRow
-                  label="What helped"
+                  label={flareContent.history.detail.labels.whatHelped}
                   value={resolvedSelectedEvent.checkpoint.whatHelped}
                 />
                 <DetailRow
-                  label="How I feel now"
+                  label={flareContent.history.detail.labels.howIFeelNow}
                   value={resolvedSelectedEvent.checkpoint.howIFeelNow}
                 />
                 <DetailRow
-                  label="Outcome"
+                  label={flareContent.history.detail.labels.outcome}
                   value={resolvedSelectedEvent.checkpoint.outcome}
                 />
                 <DetailRow
-                  label="Action taken"
+                  label={flareContent.history.detail.labels.actionTaken}
                   value={resolvedSelectedEvent.checkpoint.actionTaken}
                 />
                 <DetailRow
-                  label="Note"
+                  label={flareContent.history.detail.labels.note}
                   value={resolvedSelectedEvent.checkpoint.note}
                 />
               </View>
@@ -287,7 +280,9 @@ export function HistoryScreen() {
               ]}
             >
               <Text style={styles.eventActionButtonLabel}>
-                {resolvedSelectedEvent.archivedAt ? "Restore event" : "Archive event"}
+                {resolvedSelectedEvent.archivedAt
+                  ? flareContent.actions.restoreEvent
+                  : flareContent.actions.archiveEvent}
               </Text>
             </Pressable>
           </View>

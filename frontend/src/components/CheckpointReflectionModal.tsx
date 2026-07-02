@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
   createEmptyCheckpointReflection,
@@ -42,7 +43,7 @@ export function CheckpointReflectionModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.supportingCopy}>
-            Save requires an active event plus the main reflection fields.
+            {flareContent.checkpoint.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -50,7 +51,9 @@ export function CheckpointReflectionModal({
               onPress={onClose}
               style={styles.cancelButton}
             >
-              <Text style={styles.cancelButtonLabel}>Cancel</Text>
+              <Text style={styles.cancelButtonLabel}>
+                {flareContent.actions.cancel}
+              </Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -64,47 +67,53 @@ export function CheckpointReflectionModal({
                 saveDisabled ? styles.saveButtonDisabled : null,
               ]}
             >
-              <Text style={styles.saveButtonLabel}>Save Reflection</Text>
+              <Text style={styles.saveButtonLabel}>
+                {flareContent.checkpoint.saveButton}
+              </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle="Keep the reflection lightweight and attach it to the current event."
-      title="Checkpoint / Reflection"
+      subtitle={flareContent.checkpoint.modalSubtitle}
+      title={flareContent.checkpoint.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
         {flareEvent ? (
           <View style={styles.contextCard}>
-            <Text style={styles.contextLabel}>Attaching to current event</Text>
+            <Text style={styles.contextLabel}>
+              {flareContent.checkpoint.context.activeLabel}
+            </Text>
             <Text style={styles.contextCopy}>
-              This reflection will update the event you started from Send Flare.
+              {flareContent.checkpoint.context.activeCopy}
             </Text>
           </View>
         ) : (
           <View style={styles.contextCard}>
-            <Text style={styles.contextLabel}>No active Flare Event</Text>
+            <Text style={styles.contextLabel}>
+              {flareContent.checkpoint.context.missingLabel}
+            </Text>
             <Text style={styles.contextCopy}>
-              Send Flare first to create the current event, then save a brief
-              reflection here.
+              {flareContent.checkpoint.context.missingCopy}
             </Text>
           </View>
         )}
-        <Text style={styles.intro}>
-          Use this space to notice what happened and what helped. Flare does
-          not provide therapy, medical advice, or crisis response.
-        </Text>
+        <Text style={styles.intro}>{flareContent.checkpoint.intro}</Text>
 
         <View style={styles.field}>
-          <Text style={styles.label}>What happened?</Text>
+          <Text style={styles.label}>
+            {flareContent.checkpoint.fields.whatHappened.label}
+          </Text>
           <TextInput
-            accessibilityLabel="What happened?"
+            accessibilityLabel={flareContent.checkpoint.fields.whatHappened.label}
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, whatHappened: value }))
             }
-            placeholder="I hit the urge after getting home and started pacing."
+            placeholder={
+              flareContent.checkpoint.fields.whatHappened.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.whatHappened}
@@ -112,14 +121,16 @@ export function CheckpointReflectionModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>What helped?</Text>
+          <Text style={styles.label}>
+            {flareContent.checkpoint.fields.whatHelped.label}
+          </Text>
           <TextInput
-            accessibilityLabel="What helped?"
+            accessibilityLabel={flareContent.checkpoint.fields.whatHelped.label}
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, whatHelped: value }))
             }
-            placeholder="I stepped outside and texted a friend instead."
+            placeholder={flareContent.checkpoint.fields.whatHelped.placeholder}
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.whatHelped}
@@ -127,14 +138,16 @@ export function CheckpointReflectionModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>How do I feel now?</Text>
+          <Text style={styles.label}>
+            {flareContent.checkpoint.fields.howIFeelNow.label}
+          </Text>
           <TextInput
-            accessibilityLabel="How do I feel now?"
+            accessibilityLabel={flareContent.checkpoint.fields.howIFeelNow.label}
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, howIFeelNow: value }))
             }
-            placeholder="Still activated, but less locked in."
+            placeholder={flareContent.checkpoint.fields.howIFeelNow.placeholder}
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.howIFeelNow}
@@ -142,27 +155,31 @@ export function CheckpointReflectionModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Outcome</Text>
+          <Text style={styles.label}>
+            {flareContent.checkpoint.fields.outcome.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Outcome"
+            accessibilityLabel={flareContent.checkpoint.fields.outcome.label}
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, outcome: value }))
             }
-            placeholder="Urge dropped enough to keep moving."
+            placeholder={flareContent.checkpoint.fields.outcome.placeholder}
             style={styles.input}
             value={draft.outcome}
           />
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Optional note</Text>
+          <Text style={styles.label}>
+            {flareContent.checkpoint.fields.note.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Optional note"
+            accessibilityLabel={flareContent.checkpoint.fields.note.label}
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, note: value }))
             }
-            placeholder="The first two minutes were the hardest."
+            placeholder={flareContent.checkpoint.fields.note.placeholder}
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.note}

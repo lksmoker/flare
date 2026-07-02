@@ -1,14 +1,16 @@
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
+
 type AppNavigationProps = {
   currentPath: "/" | "/history" | "/customize";
 };
 
 const navigationItems = [
-  { href: "/" as const, label: "Flare" },
-  { href: "/history" as const, label: "History" },
-  { href: "/customize" as const, label: "Customize" },
+  { href: "/" as const, label: flareContent.app.navigation.flare },
+  { href: "/history" as const, label: flareContent.app.navigation.history },
+  { href: "/customize" as const, label: flareContent.app.navigation.customize },
 ];
 
 export function AppNavigation({ currentPath }: AppNavigationProps) {

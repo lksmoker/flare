@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import {
   FlareEvent,
   formatFlareEventTimestamp,
@@ -14,16 +15,16 @@ type FlareEventHistoryListProps = {
 
 function getStatusLabel(flareEvent: FlareEvent) {
   if (flareEvent.archivedAt) {
-    return "Archived event";
+    return flareContent.history.list.status.archived;
   }
 
   switch (flareEvent.status) {
     case "active":
-      return "Active event";
+      return flareContent.history.list.status.active;
     case "reflected":
-      return "Reflected event";
+      return flareContent.history.list.status.reflected;
     default:
-      return "Closed event";
+      return flareContent.history.list.status.closed;
   }
 }
 
@@ -37,11 +38,10 @@ export function FlareEventHistoryList({
     return (
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>
-          {emptyTitle ?? "No Flare Events yet"}
+          {emptyTitle ?? flareContent.history.empty.default.title}
         </Text>
         <Text style={styles.emptyCopy}>
-          {emptyCopy ??
-            "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only."}
+          {emptyCopy ?? flareContent.history.empty.default.copy}
         </Text>
       </View>
     );
@@ -58,15 +58,15 @@ export function FlareEventHistoryList({
           }
           style={styles.card}
         >
-          <Text style={styles.cardTitle}>Flare Event</Text>
+          <Text style={styles.cardTitle}>{flareContent.history.list.cardTitle}</Text>
           <Text style={styles.cardDetail}>
             {getStatusLabel(flareEvent)} |{" "}
             {formatFlareEventTimestamp(flareEvent.createdAt)}
           </Text>
           <Text style={styles.cardNote}>
             {flareEvent.behaviorLabelSnapshot
-              ? `Behavior Pattern: ${flareEvent.behaviorLabelSnapshot}`
-              : "Behavior Pattern: Not configured yet"}
+              ? `${flareContent.history.list.behaviorPatternConfiguredPrefix} ${flareEvent.behaviorLabelSnapshot}`
+              : flareContent.history.list.behaviorPatternNotConfigured}
           </Text>
           {flareEvent.behaviorDescriptionSnapshot ? (
             <Text style={styles.cardNote}>
@@ -75,22 +75,29 @@ export function FlareEventHistoryList({
           ) : null}
           {flareEvent.checkpoint ? (
             <View style={styles.reflectionCard}>
-              <Text style={styles.reflectionTitle}>Checkpoint / Reflection</Text>
-              <Text style={styles.reflectionCopy}>
-                What happened: {flareEvent.checkpoint.whatHappened}
+              <Text style={styles.reflectionTitle}>
+                {flareContent.history.list.reflectionTitle}
               </Text>
               <Text style={styles.reflectionCopy}>
-                What helped: {flareEvent.checkpoint.whatHelped}
+                {flareContent.history.list.reflectionFields.whatHappened}{" "}
+                {flareEvent.checkpoint.whatHappened}
               </Text>
               <Text style={styles.reflectionCopy}>
-                How I feel now: {flareEvent.checkpoint.howIFeelNow}
+                {flareContent.history.list.reflectionFields.whatHelped}{" "}
+                {flareEvent.checkpoint.whatHelped}
               </Text>
               <Text style={styles.reflectionCopy}>
-                Outcome: {flareEvent.checkpoint.outcome}
+                {flareContent.history.list.reflectionFields.howIFeelNow}{" "}
+                {flareEvent.checkpoint.howIFeelNow}
+              </Text>
+              <Text style={styles.reflectionCopy}>
+                {flareContent.history.list.reflectionFields.outcome}{" "}
+                {flareEvent.checkpoint.outcome}
               </Text>
               {flareEvent.checkpoint.note ? (
                 <Text style={styles.reflectionCopy}>
-                  Note: {flareEvent.checkpoint.note}
+                  {flareContent.history.list.reflectionFields.note}{" "}
+                  {flareEvent.checkpoint.note}
                 </Text>
               ) : null}
             </View>

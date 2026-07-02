@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
   createEmptyAnchorNote,
@@ -36,7 +37,7 @@ export function AnchorNoteSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            Save requires one reason to pause and one supportive phrase.
+            {flareContent.setup.anchorNote.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -44,7 +45,9 @@ export function AnchorNoteSetupModal({
               onPress={onClose}
               style={styles.cancelButton}
             >
-              <Text style={styles.cancelButtonLabel}>Cancel</Text>
+              <Text style={styles.cancelButtonLabel}>
+                {flareContent.actions.cancel}
+              </Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -58,31 +61,36 @@ export function AnchorNoteSetupModal({
                 saveDisabled ? styles.saveButtonDisabled : null,
               ]}
             >
-              <Text style={styles.saveButtonLabel}>Save Anchor Note</Text>
+              <Text style={styles.saveButtonLabel}>
+                {flareContent.setup.anchorNote.saveButton}
+              </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle="Capture grounded words you want available when you are trying to pause."
-      title="Anchor Note Setup"
+      subtitle={flareContent.setup.anchorNote.modalSubtitle}
+      title={flareContent.setup.anchorNote.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
-        <Text style={styles.intro}>
-          Keep it honest, specific, and easy to revisit. This note is for
-          self-support, not treatment.
-        </Text>
+        <Text style={styles.intro}>{flareContent.setup.anchorNote.intro}</Text>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Why interrupt this pattern?</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.anchorNote.fields.interruptionReasons.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Why interrupt this pattern?"
+            accessibilityLabel={
+              flareContent.setup.anchorNote.fields.interruptionReasons.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, interruptionReasons: value }))
             }
-            placeholder="I want to stop before I lose the rest of tonight."
+            placeholder={
+              flareContent.setup.anchorNote.fields.interruptionReasons.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.interruptionReasons}
@@ -90,14 +98,20 @@ export function AnchorNoteSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Costs or consequences of continuing</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.anchorNote.fields.continuingCosts.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Costs or consequences of continuing"
+            accessibilityLabel={
+              flareContent.setup.anchorNote.fields.continuingCosts.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, continuingCosts: value }))
             }
-            placeholder="I will feel foggy tomorrow and break trust with myself again."
+            placeholder={
+              flareContent.setup.anchorNote.fields.continuingCosts.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.continuingCosts}
@@ -105,14 +119,20 @@ export function AnchorNoteSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Reminder from grounded self</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.anchorNote.fields.groundedReminders.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Reminder from grounded self"
+            accessibilityLabel={
+              flareContent.setup.anchorNote.fields.groundedReminders.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, groundedReminders: value }))
             }
-            placeholder="This urge peaks fast. You do not need to obey it."
+            placeholder={
+              flareContent.setup.anchorNote.fields.groundedReminders.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.groundedReminders}
@@ -120,14 +140,20 @@ export function AnchorNoteSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Immediate action or commitment</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.anchorNote.fields.emergencyActions.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Immediate action or commitment"
+            accessibilityLabel={
+              flareContent.setup.anchorNote.fields.emergencyActions.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, emergencyActions: value }))
             }
-            placeholder="Put the phone in the kitchen, drink water, and walk outside."
+            placeholder={
+              flareContent.setup.anchorNote.fields.emergencyActions.placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.emergencyActions}
@@ -135,13 +161,19 @@ export function AnchorNoteSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Supportive phrase to show during a flare</Text>
+          <Text style={styles.label}>
+            {flareContent.setup.anchorNote.fields.supportivePhrase.label}
+          </Text>
           <TextInput
-            accessibilityLabel="Supportive phrase to show during a flare"
+            accessibilityLabel={
+              flareContent.setup.anchorNote.fields.supportivePhrase.label
+            }
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, supportivePhrase: value }))
             }
-            placeholder="Pause now. Protect tomorrow."
+            placeholder={
+              flareContent.setup.anchorNote.fields.supportivePhrase.placeholder
+            }
             style={styles.input}
             value={draft.supportivePhrase}
           />

@@ -7,6 +7,7 @@ import { AnchorNoteSummary } from "../components/AnchorNoteSummary";
 import { AuthStatusCard } from "../components/AuthStatusCard";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
+import flareContent from "../content/flareContent.json";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 
@@ -20,9 +21,9 @@ export function CustomizeScreen() {
   return (
     <AppShell
       currentPath="/customize"
-      screenLabel="Setup"
-      subtitle="Keep your personal setup separate from the in-the-moment flow."
-      title="Customize what helps you pause and reflect"
+      screenLabel={flareContent.setup.screenLabel}
+      subtitle={flareContent.setup.subtitle}
+      title={flareContent.setup.title}
     >
       <View style={styles.stack}>
         <AuthStatusCard />
@@ -33,19 +34,22 @@ export function CustomizeScreen() {
           style={styles.card}
         >
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Behavior Pattern Setup</Text>
+            <Text style={styles.cardTitle}>
+              {flareContent.setup.behaviorPattern.cardTitle}
+            </Text>
             <Text
               style={[
                 styles.statusBadge,
                 isConfigured ? styles.readyBadge : styles.pendingBadge,
               ]}
             >
-              {isConfigured ? "Configured" : "Needs setup"}
+              {isConfigured
+                ? flareContent.setup.status.configured
+                : flareContent.setup.status.needsSetup}
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            Define the pattern, likely triggers, and the next step you want
-            handy when you are trying to interrupt an urge.
+            {flareContent.setup.behaviorPattern.cardCopy}
           </Text>
           <BehaviorPatternSummary behaviorPattern={behaviorPattern} />
         </Pressable>
@@ -56,30 +60,30 @@ export function CustomizeScreen() {
           style={styles.card}
         >
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Anchor Note Setup</Text>
+            <Text style={styles.cardTitle}>
+              {flareContent.setup.anchorNote.cardTitle}
+            </Text>
             <Text
               style={[
                 styles.statusBadge,
                 isAnchorNoteConfigured ? styles.readyBadge : styles.pendingBadge,
               ]}
             >
-              {isAnchorNoteConfigured ? "Configured" : "Needs setup"}
+              {isAnchorNoteConfigured
+                ? flareContent.setup.status.configured
+                : flareContent.setup.status.needsSetup}
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            Capture grounded reminders, costs, and phrases you want Flare to
-            show back to you during a flare.
+            {flareContent.setup.anchorNote.cardCopy}
           </Text>
           <AnchorNoteSummary anchorNote={anchorNote} />
         </Pressable>
 
         <View style={styles.comingSoonCard}>
-          <Text style={styles.cardTitle}>Telegram Support</Text>
-          <Text style={styles.comingSoonBadge}>Coming in V1</Text>
-          <Text style={styles.cardCopy}>
-            Visible here as future-scoped direction only. V0 does not send
-            messages, alerts, or outreach on your behalf.
-          </Text>
+          <Text style={styles.cardTitle}>{flareContent.setup.telegram.title}</Text>
+          <Text style={styles.comingSoonBadge}>{flareContent.setup.telegram.badge}</Text>
+          <Text style={styles.cardCopy}>{flareContent.setup.telegram.copy}</Text>
         </View>
       </View>
 

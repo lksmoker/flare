@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { AnchorNote } from "../state/AnchorNoteContext";
 
 type AnchorNoteSummaryProps = {
@@ -10,21 +11,37 @@ const fieldLabels: Array<{
   key: keyof AnchorNote;
   label: string;
 }> = [
-  { key: "interruptionReasons", label: "Why interrupt" },
-  { key: "continuingCosts", label: "Costs of continuing" },
-  { key: "groundedReminders", label: "Grounded reminder" },
-  { key: "emergencyActions", label: "Immediate action" },
-  { key: "supportivePhrase", label: "Supportive phrase" },
+  {
+    key: "interruptionReasons",
+    label: flareContent.setup.anchorNote.summaryLabels.interruptionReasons,
+  },
+  {
+    key: "continuingCosts",
+    label: flareContent.setup.anchorNote.summaryLabels.continuingCosts,
+  },
+  {
+    key: "groundedReminders",
+    label: flareContent.setup.anchorNote.summaryLabels.groundedReminders,
+  },
+  {
+    key: "emergencyActions",
+    label: flareContent.setup.anchorNote.summaryLabels.emergencyActions,
+  },
+  {
+    key: "supportivePhrase",
+    label: flareContent.setup.anchorNote.summaryLabels.supportivePhrase,
+  },
 ];
 
 export function AnchorNoteSummary({ anchorNote }: AnchorNoteSummaryProps) {
   if (!anchorNote) {
     return (
       <View style={styles.emptyCard}>
-        <Text style={styles.emptyTitle}>Not configured yet</Text>
+        <Text style={styles.emptyTitle}>
+          {flareContent.states.empty.notConfiguredTitle}
+        </Text>
         <Text style={styles.emptyCopy}>
-          Save a few grounded reminders so Flare Response can show them
-          immediately during a flare.
+          {flareContent.setup.anchorNote.summaryEmptyCopy}
         </Text>
       </View>
     );

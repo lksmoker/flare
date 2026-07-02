@@ -2,6 +2,7 @@ import { PropsWithChildren } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import flareContent from "../content/flareContent.json";
 import { AppNavigation } from "./AppNavigation";
 
 type AppShellProps = PropsWithChildren<{
@@ -27,7 +28,7 @@ export function AppShell({
         <View style={styles.inner}>
           <View style={styles.headerCard}>
             <View style={styles.headerCopy}>
-              <Text style={styles.appTitle}>Flare</Text>
+              <Text style={styles.appTitle}>{flareContent.app.name}</Text>
               <Text style={styles.screenLabel}>{screenLabel}</Text>
               <Text style={styles.title}>{title}</Text>
               <Text style={styles.subtitle}>{subtitle}</Text>

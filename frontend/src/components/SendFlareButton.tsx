@@ -1,5 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
+import flareContent from "../content/flareContent.json";
+
 type SendFlareButtonProps = {
   onPress: () => void;
 };
@@ -7,15 +9,14 @@ type SendFlareButtonProps = {
 export function SendFlareButton({ onPress }: SendFlareButtonProps) {
   return (
     <Pressable
-      accessibilityHint="Starts a new Flare Event and opens Flare Response right away."
+      accessibilityHint={flareContent.flare.sendButton.hint}
       accessibilityRole="button"
       onPress={onPress}
       style={styles.button}
     >
-      <Text style={styles.label}>Send Flare</Text>
+      <Text style={styles.label}>{flareContent.flare.sendButton.label}</Text>
       <Text style={styles.supportingCopy}>
-        Mark this moment, open your saved support copy, and pick a next step
-        with no extra confirmation screen.
+        {flareContent.flare.sendButton.copy}
       </Text>
     </Pressable>
   );

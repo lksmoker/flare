@@ -6,6 +6,7 @@ import { CheckpointReflectionModal } from "../components/CheckpointReflectionMod
 import { FlareResponse } from "../components/FlareResponse";
 import { PlaceholderModal } from "../components/PlaceholderModal";
 import { SendFlareButton } from "../components/SendFlareButton";
+import flareContent from "../content/flareContent.json";
 import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
@@ -21,31 +22,34 @@ export function FlareScreen() {
 
   const persistenceStatus =
     authStatus === "loading"
-      ? "Checking for a real session"
+      ? flareContent.states.loading.checkingSession
       : authState.kind === "authenticated"
-        ? `Connected: ${authState.userEmail ?? authState.userId}`
+        ? `${flareContent.flare.readiness.connectedPrefix} ${authState.userEmail ?? authState.userId}`
         : authState.kind === "client-unavailable"
-          ? "Local-only until public Supabase config is loaded"
-          : "Local-only until sign in";
+          ? flareContent.flare.readiness.localOnlyUntilConfigLoaded
+          : flareContent.flare.readiness.localOnlyUntilSignIn;
 
   const readinessItems = [
     {
-      label: "Setup persistence",
+      label: flareContent.flare.readiness.setupPersistence,
       status: persistenceStatus,
     },
     {
-      label: "Behavior Pattern",
+      label: flareContent.flare.readiness.behaviorPattern,
       status: isConfigured
-        ? `Configured: ${behaviorPattern?.behaviorName}`
-        : "Ready to define",
+        ? `${flareContent.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
+        : flareContent.flare.readiness.readyToDefine,
     },
     {
-      label: "Anchor Note",
+      label: flareContent.flare.readiness.anchorNote,
       status: isAnchorNoteConfigured
-        ? `Configured: ${anchorNote?.supportivePhrase}`
-        : "Ready to define",
+        ? `${flareContent.flare.readiness.configuredPrefix} ${anchorNote?.supportivePhrase}`
+        : flareContent.flare.readiness.readyToDefine,
     },
-    { label: "Telegram Support", status: "Coming in V1" },
+    {
+      label: flareContent.flare.readiness.telegram,
+      status: flareContent.flare.readiness.comingSoon,
+    },
   ];
 
   const openCheckpoint = () => {
@@ -57,9 +61,9 @@ export function FlareScreen() {
   return (
     <AppShell
       currentPath="/"
-      screenLabel="Urgent action"
-      subtitle="Keep the flow simple: one main action, one secondary reflection entry, and lightweight readiness cues."
-      title="Use Flare to pause, regroup, and choose a next step"
+      screenLabel={flareContent.flare.screenLabel}
+      subtitle={flareContent.flare.subtitle}
+      title={flareContent.flare.title}
     >
       <SendFlareButton
         onPress={() => {
@@ -78,14 +82,16 @@ export function FlareScreen() {
         onPress={() => setIsCheckpointVisible(true)}
         style={styles.secondaryButton}
       >
-        <Text style={styles.secondaryButtonLabel}>Checkpoint / Reflection</Text>
+        <Text style={styles.secondaryButtonLabel}>
+          {flareContent.flare.secondaryAction.label}
+        </Text>
         <Text style={styles.secondaryButtonCopy}>
-          Open a lightweight reflection sheet without leaving this screen.
+          {flareContent.flare.secondaryAction.copy}
         </Text>
       </Pressable>
 
       <View style={styles.readinessCard}>
-        <Text style={styles.sectionTitle}>Readiness</Text>
+        <Text style={styles.sectionTitle}>{flareContent.flare.readiness.title}</Text>
         <View style={styles.readinessList}>
           {readinessItems.map((item) => (
             <View key={item.label} style={styles.readinessPill}>
@@ -98,8 +104,8 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
-        subtitle="This V0 sheet opens immediately and stays attached to the current Flare Event."
-        title="Flare Response"
+        subtitle={flareContent.flare.responseModal.subtitle}
+        title={flareContent.flare.responseModal.title}
         visible={isFlareResponseVisible}
       >
         <FlareResponse

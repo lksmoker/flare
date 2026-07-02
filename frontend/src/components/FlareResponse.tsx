@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import {
   FlareEvent,
   formatFlareEventTimestamp,
@@ -20,55 +21,61 @@ export function FlareResponse({
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventLabel}>Current Flare Event</Text>
+        <Text style={styles.eventLabel}>{flareContent.flare.response.eventLabel}</Text>
         <Text style={styles.eventTitle}>
           {flareEvent?.status === "reflected"
-            ? "Reflection saved for this event"
-            : "Your self-support screen is open"}
+            ? flareContent.flare.response.eventTitleReflected
+            : flareContent.flare.response.eventTitleActive}
         </Text>
         <Text style={styles.eventCopy}>
           {flareEvent
-            ? `Started ${formatFlareEventTimestamp(flareEvent.createdAt)} | status: ${flareEvent.status}`
-            : "No in-memory event is active."}
+            ? `${flareContent.flare.response.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.flare.response.eventStatusPrefix} ${flareEvent.status}`
+            : flareContent.flare.response.noActiveEvent}
         </Text>
         {flareEvent?.behaviorLabelSnapshot ? (
           <Text style={styles.eventCopy}>
-            Behavior Pattern: {flareEvent.behaviorLabelSnapshot}
+            {flareContent.flare.response.behaviorPatternPrefix}{" "}
+            {flareEvent.behaviorLabelSnapshot}
           </Text>
         ) : null}
       </View>
       <View style={styles.callout}>
-        <Text style={styles.calloutLabel}>Anchor Note</Text>
+        <Text style={styles.calloutLabel}>
+          {flareContent.flare.response.anchorNoteLabel}
+        </Text>
         <Text style={styles.calloutTitle}>
-          {anchorNote?.supportivePhrase || "You already paused the pattern."}
+          {anchorNote?.supportivePhrase ||
+            flareContent.flare.response.defaultSupportivePhrase}
         </Text>
         <Text style={styles.calloutCopy}>
           {anchorNote?.interruptionReasons ||
-            "Flare shows your saved Anchor Note right after Send Flare so your own words are close at hand."}
+            flareContent.flare.response.defaultInterruptionReason}
         </Text>
         {anchorNote?.groundedReminders ? (
           <View style={styles.memorySection}>
-            <Text style={styles.memoryLabel}>Grounded reminder</Text>
+            <Text style={styles.memoryLabel}>
+              {flareContent.flare.response.groundedReminderLabel}
+            </Text>
             <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
           </View>
         ) : null}
         {anchorNote?.continuingCosts ? (
           <View style={styles.memorySection}>
-            <Text style={styles.memoryLabel}>If I keep going</Text>
+            <Text style={styles.memoryLabel}>
+              {flareContent.flare.response.continuingCostsLabel}
+            </Text>
             <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
           </View>
         ) : null}
-        <Text style={styles.safetyCopy}>
-          Flare is a self-support tool. If you may hurt yourself or someone
-          else, or you need immediate help, contact local emergency services or
-          a crisis hotline now.
-        </Text>
+        <Text style={styles.safetyCopy}>{flareContent.flare.response.safety}</Text>
       </View>
       <View style={styles.actionCard}>
-        <Text style={styles.actionTitle}>Try one next step</Text>
+        <Text style={styles.actionTitle}>
+          {flareContent.flare.response.nextStepTitle}
+        </Text>
         <Text style={styles.actionCopy}>
           {anchorNote?.emergencyActions ||
-            "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next."}
+            flareContent.flare.response.defaultNextStep}
         </Text>
       </View>
       <Pressable
@@ -76,7 +83,9 @@ export function FlareResponse({
         onPress={onOpenCheckpoint}
         style={styles.secondaryButton}
       >
-        <Text style={styles.secondaryButtonLabel}>Checkpoint / Reflection</Text>
+        <Text style={styles.secondaryButtonLabel}>
+          {flareContent.flare.response.checkpointButton}
+        </Text>
       </Pressable>
     </View>
   );

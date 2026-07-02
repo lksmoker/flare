@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { BehaviorPattern } from "../state/BehaviorPatternContext";
 
 type BehaviorPatternSummaryProps = {
@@ -10,10 +11,24 @@ const fieldLabels: Array<{
   key: keyof BehaviorPattern;
   label: string;
 }> = [
-  { key: "shortDescription", label: "Description" },
-  { key: "commonTriggers", label: "Triggers" },
-  { key: "riskTimesOrSituations", label: "Risk moments" },
-  { key: "preferredRecoveryActions", label: "Next steps" },
+  {
+    key: "shortDescription",
+    label: flareContent.setup.behaviorPattern.summaryLabels.shortDescription,
+  },
+  {
+    key: "commonTriggers",
+    label: flareContent.setup.behaviorPattern.summaryLabels.commonTriggers,
+  },
+  {
+    key: "riskTimesOrSituations",
+    label:
+      flareContent.setup.behaviorPattern.summaryLabels.riskTimesOrSituations,
+  },
+  {
+    key: "preferredRecoveryActions",
+    label:
+      flareContent.setup.behaviorPattern.summaryLabels.preferredRecoveryActions,
+  },
 ];
 
 export function BehaviorPatternSummary({
@@ -22,10 +37,11 @@ export function BehaviorPatternSummary({
   if (!behaviorPattern) {
     return (
       <View style={styles.emptyCard}>
-        <Text style={styles.emptyTitle}>Not configured yet</Text>
+        <Text style={styles.emptyTitle}>
+          {flareContent.states.empty.notConfiguredTitle}
+        </Text>
         <Text style={styles.emptyCopy}>
-          Add one lightweight pattern so Flare can show that your setup is
-          ready.
+          {flareContent.setup.behaviorPattern.summaryEmptyCopy}
         </Text>
       </View>
     );

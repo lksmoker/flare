@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import flareContent from "../content/flareContent.json";
 import { readFlareAuthRedirectUrl } from "../services/flareSupabaseAuth";
 import { useFlareAuth } from "../state/FlareAuthContext";
 
@@ -9,14 +10,14 @@ function getConnectionLabel(
   authState: ReturnType<typeof useFlareAuth>["authState"],
 ) {
   if (authStatus === "loading") {
-    return "Checking connection";
+    return flareContent.states.loading.checkingConnection;
   }
 
   if (authState.kind === "authenticated") {
-    return "Connected";
+    return flareContent.auth.status.connected;
   }
 
-  return "Local-only";
+  return flareContent.auth.status.localOnly;
 }
 
 export function AuthStatusCard() {
@@ -48,7 +49,7 @@ export function AuthStatusCard() {
   return (
     <View style={styles.card}>
       <View style={styles.headerRow}>
-        <Text style={styles.title}>Setup persistence</Text>
+        <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
         <Text
           style={[
             styles.statusBadge,
@@ -63,24 +64,20 @@ export function AuthStatusCard() {
 
       {authStatus === "loading" ? (
         <Text style={styles.copy}>
-          Checking whether a real Supabase session is available for setup
-          persistence.
+          {flareContent.auth.loadingCopy}
         </Text>
       ) : null}
 
       {authStatus === "ready" && authState.kind === "authenticated" ? (
         <>
           <Text style={styles.copy}>
-            Your setup can now reload on this device because Behavior Pattern
-            and Anchor Note save to your signed-in Supabase account.
+            {flareContent.auth.authenticated.copy}
           </Text>
           <Text style={styles.detail}>
-            Signed in as {authState.userEmail ?? authState.userId}
+            {flareContent.auth.authenticated.signedInAs}{" "}
+            {authState.userEmail ?? authState.userId}
           </Text>
-          <Text style={styles.detail}>
-            Flare is a self-support tool. It does not monitor you in real time
-            or contact anyone for you.
-          </Text>
+          <Text style={styles.detail}>{flareContent.auth.authenticated.safety}</Text>
           <Pressable
             accessibilityRole="button"
             onPress={() => {
@@ -90,7 +87,9 @@ export function AuthStatusCard() {
             style={[styles.button, styles.secondaryButton]}
           >
             <Text style={styles.secondaryButtonLabel}>
-              {pendingAction === "sign-out" ? "Signing out..." : "Sign out"}
+              {pendingAction === "sign-out"
+                ? flareContent.auth.authenticated.signingOut
+                : flareContent.auth.authenticated.signOut}
             </Text>
           </Pressable>
         </>
@@ -99,25 +98,18 @@ export function AuthStatusCard() {
       {authStatus === "ready" && authState.kind === "client-unavailable" ? (
         <>
           <Text style={styles.copy}>
-            Setup persistence is local-only because the public Supabase URL and
-            anon key are not loaded into the Expo runtime.
+            {flareContent.auth.clientUnavailable.copy}
           </Text>
-          <Text style={styles.detail}>
-            Flare does not monitor urgent risk or provide emergency response.
-          </Text>
+          <Text style={styles.detail}>{flareContent.auth.clientUnavailable.safety}</Text>
         </>
       ) : null}
 
       {authStatus === "ready" && authState.kind === "no-session" ? (
         <>
           <Text style={styles.copy}>
-            Setup saves still work locally in memory, but they will not reload
-            from Supabase until you authenticate.
+            {flareContent.auth.noSession.copy}
           </Text>
-          <Text style={styles.detail}>
-            Flare is for self-support and reflection. It is not a crisis
-            service, therapy replacement, or medical treatment.
-          </Text>
+          <Text style={styles.detail}>{flareContent.auth.noSession.safety}</Text>
           <View style={styles.modeRow}>
             <Pressable
               accessibilityRole="button"
@@ -136,7 +128,7 @@ export function AuthStatusCard() {
                   mode === "sign-in" ? styles.modeButtonLabelActive : null,
                 ]}
               >
-                Existing account
+                {flareContent.auth.noSession.modes.existingAccount}
               </Text>
             </Pressable>
             <Pressable
@@ -156,29 +148,29 @@ export function AuthStatusCard() {
                   mode === "sign-up" ? styles.modeButtonLabelActive : null,
                 ]}
               >
-                First-time setup
+                {flareContent.auth.noSession.modes.firstTimeSetup}
               </Text>
             </Pressable>
           </View>
           <Text style={styles.detail}>
             {mode === "sign-in"
-              ? "Sign in is for an existing Supabase account on this project."
-              : "Create account is the first-time setup path for a new Supabase user."}
+              ? flareContent.auth.noSession.modes.existingAccountDetail
+              : flareContent.auth.noSession.modes.firstTimeSetupDetail}
           </Text>
           <TextInput
-            accessibilityLabel="Auth email"
+            accessibilityLabel={flareContent.auth.noSession.emailAccessibilityLabel}
             autoCapitalize="none"
             keyboardType="email-address"
             onChangeText={setEmail}
-            placeholder="you@example.com"
+            placeholder={flareContent.auth.noSession.emailPlaceholder}
             style={styles.input}
             value={email}
           />
           <TextInput
-            accessibilityLabel="Auth password"
+            accessibilityLabel={flareContent.auth.noSession.passwordAccessibilityLabel}
             autoCapitalize="none"
             onChangeText={setPassword}
-            placeholder="Password for direct sign-in"
+            placeholder={flareContent.auth.noSession.passwordPlaceholder}
             secureTextEntry
             style={styles.input}
             value={password}
@@ -195,7 +187,7 @@ export function AuthStatusCard() {
                 }
 
                 setNotice(
-                  "Account created if sign-up is enabled. Check your email if confirmation is required.",
+                  flareContent.auth.noSession.signUpNotice,
                 );
                 void signUp(email, password);
               }}
@@ -207,12 +199,12 @@ export function AuthStatusCard() {
             >
               <Text style={styles.primaryButtonLabel}>
                 {pendingAction === "password"
-                  ? "Signing in..."
+                  ? flareContent.auth.noSession.buttons.signingIn
                   : pendingAction === "sign-up"
-                    ? "Creating..."
+                    ? flareContent.auth.noSession.buttons.creating
                     : mode === "sign-in"
-                      ? "Sign in"
-                      : "Create account"}
+                      ? flareContent.auth.noSession.buttons.signIn
+                      : flareContent.auth.noSession.buttons.createAccount}
               </Text>
             </Pressable>
             <Pressable
@@ -221,8 +213,8 @@ export function AuthStatusCard() {
               onPress={() => {
                 setNotice(
                   redirectUrl
-                    ? `Magic link sent if email auth is enabled. It should return to ${redirectUrl}.`
-                    : "Magic link sent if email auth is enabled. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase falls back to the project Site URL.",
+                    ? `${flareContent.auth.noSession.redirectMagicLinkPrefix} ${redirectUrl}.`
+                    : flareContent.auth.noSession.redirectMagicLinkFallback,
                 );
                 void sendMagicLink(email);
               }}
@@ -234,19 +226,16 @@ export function AuthStatusCard() {
             >
               <Text style={styles.secondaryButtonLabel}>
                 {pendingAction === "magic-link"
-                  ? "Sending..."
-                  : "Send magic link"}
+                  ? flareContent.auth.noSession.buttons.sending
+                  : flareContent.auth.noSession.buttons.sendMagicLink}
               </Text>
             </Pressable>
           </View>
-          <Text style={styles.detail}>
-            Password sign-in uses the current Supabase project settings. Magic
-            link requires the configured redirect URL to be allowed in Supabase.
-          </Text>
+          <Text style={styles.detail}>{flareContent.auth.noSession.passwordHint}</Text>
           <Text style={styles.detail}>
             {redirectUrl
-              ? `Current redirect URL: ${redirectUrl}`
-              : "Current redirect URL: not configured. Supabase may redirect to the project Site URL instead."}
+              ? `${flareContent.auth.noSession.redirectLabel} ${redirectUrl}`
+              : flareContent.states.error.missingRedirectUrl}
           </Text>
         </>
       ) : null}
