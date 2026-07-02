@@ -5,8 +5,14 @@ import * as flareSupabaseAuth from "../../services/flareSupabaseAuth";
 import { FlareAuthProvider, useFlareAuth } from "../FlareAuthContext";
 
 function AuthHarness() {
-  const { authState, authStatus, sendMagicLink, signInWithPassword, signOut } =
-    useFlareAuth();
+  const {
+    authState,
+    authStatus,
+    sendMagicLink,
+    signInWithPassword,
+    signOut,
+    signUp,
+  } = useFlareAuth();
 
   return (
     <View>
@@ -28,6 +34,13 @@ function AuthHarness() {
         }}
       >
         <Text>magic link sign in</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          void signUp("flare@example.com", "password-123");
+        }}
+      >
+        <Text>create account</Text>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -128,6 +141,29 @@ describe("FlareAuthProvider", () => {
 
     await waitFor(() => {
       expect(signInWithPasswordRequest).toHaveBeenCalledWith(
+        "flare@example.com",
+        "password-123",
+      );
+    });
+  });
+
+  it("calls the sign-up request", async () => {
+    const signUpRequest = jest.fn().mockResolvedValue(undefined);
+
+    const { getByText } = render(
+      <FlareAuthProvider
+        resolveAuthState={async () => ({ kind: "no-session" })}
+        signUpRequest={signUpRequest}
+        subscribe={() => null}
+      >
+        <AuthHarness />
+      </FlareAuthProvider>,
+    );
+
+    fireEvent.press(getByText("create account"));
+
+    await waitFor(() => {
+      expect(signUpRequest).toHaveBeenCalledWith(
         "flare@example.com",
         "password-123",
       );

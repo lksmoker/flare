@@ -66,9 +66,16 @@ npm run build
 - Keep real secrets outside the repo.
 - Do not create or commit repo-local `.env` files.
 - Use `.env.example` for variable names only.
-- Frontend-safe Expo variables are `EXPO_PUBLIC_FLARE_SUPABASE_URL` and `EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY`.
+- Frontend-safe Expo variables are `EXPO_PUBLIC_FLARE_SUPABASE_URL`, `EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY`, and `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL`.
 - Server/admin-only Supabase variables must stay outside frontend code: `FLARE_SUPABASE_URL`, `FLARE_SUPABASE_PROJECT_ID`, `FLARE_SUPABASE_SERVICE_ROLE_KEY`, and `FLARE_SUPABASE_DB_URL`.
 - For local development, load runtime variables from `C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env` or from the current process environment before starting Expo.
+
+## Local auth note
+
+- Define `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` in your external env file before starting Expo.
+- For Tailscale or other mobile web testing, set it to the Expo web URL you are actually using, for example `http://<tailscale-ip>:8081`.
+- In the Supabase Dashboard, add the same URL to the allowed Auth redirect URLs.
+- If the Supabase project Site URL still points to `http://localhost`, magic links may still send users back to localhost when the redirect URL is missing or not allowed.
 
 Example PowerShell session:
 

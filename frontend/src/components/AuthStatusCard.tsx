@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { readFlareAuthRedirectUrl } from "../services/flareSupabaseAuth";
 import { useFlareAuth } from "../state/FlareAuthContext";
 
 function getConnectionLabel(
@@ -19,17 +20,30 @@ function getConnectionLabel(
 }
 
 export function AuthStatusCard() {
-  const { authState, authStatus, errorMessage, pendingAction, sendMagicLink, signInWithPassword, signOut } =
-    useFlareAuth();
+  const {
+    authState,
+    authStatus,
+    errorMessage,
+    pendingAction,
+    sendMagicLink,
+    signInWithPassword,
+    signOut,
+    signUp,
+  } = useFlareAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [notice, setNotice] = useState<string | null>(null);
+  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   const connectionLabel = useMemo(
     () => getConnectionLabel(authStatus, authState),
     [authState, authStatus],
   );
+  const redirectUrl = useMemo(() => readFlareAuthRedirectUrl(), []);
   const isBusy = pendingAction !== null;
+  const canSubmitPassword =
+    !isBusy && email.trim().length > 0 && password.length > 0;
+  const canSendMagicLink = !isBusy && email.trim().length > 0;
 
   return (
     <View style={styles.card}>
@@ -91,6 +105,53 @@ export function AuthStatusCard() {
             Setup saves still work locally in memory, but they will not reload
             from Supabase until you authenticate.
           </Text>
+          <View style={styles.modeRow}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                setMode("sign-in");
+                setNotice(null);
+              }}
+              style={[
+                styles.modeButton,
+                mode === "sign-in" ? styles.modeButtonActive : null,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modeButtonLabel,
+                  mode === "sign-in" ? styles.modeButtonLabelActive : null,
+                ]}
+              >
+                Existing account
+              </Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                setMode("sign-up");
+                setNotice(null);
+              }}
+              style={[
+                styles.modeButton,
+                mode === "sign-up" ? styles.modeButtonActive : null,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modeButtonLabel,
+                  mode === "sign-up" ? styles.modeButtonLabelActive : null,
+                ]}
+              >
+                First-time setup
+              </Text>
+            </Pressable>
+          </View>
+          <Text style={styles.detail}>
+            {mode === "sign-in"
+              ? "Sign in is for an existing Supabase account on this project."
+              : "Create account is the first-time setup path for a new Supabase user."}
+          </Text>
           <TextInput
             accessibilityLabel="Auth email"
             autoCapitalize="none"
@@ -112,33 +173,50 @@ export function AuthStatusCard() {
           <View style={styles.actionsRow}>
             <Pressable
               accessibilityRole="button"
-              disabled={isBusy || email.trim().length === 0 || password.length === 0}
+              disabled={!canSubmitPassword}
               onPress={() => {
                 setNotice(null);
-                void signInWithPassword(email, password);
+                if (mode === "sign-in") {
+                  void signInWithPassword(email, password);
+                  return;
+                }
+
+                setNotice(
+                  "Account created if sign-up is enabled. Check your email if confirmation is required.",
+                );
+                void signUp(email, password);
               }}
               style={[
                 styles.button,
                 styles.primaryButton,
-                (isBusy || email.trim().length === 0 || password.length === 0) &&
-                  styles.disabledButton,
+                !canSubmitPassword && styles.disabledButton,
               ]}
             >
               <Text style={styles.primaryButtonLabel}>
-                {pendingAction === "password" ? "Signing in..." : "Sign in"}
+                {pendingAction === "password"
+                  ? "Signing in..."
+                  : pendingAction === "sign-up"
+                    ? "Creating..."
+                    : mode === "sign-in"
+                      ? "Sign in"
+                      : "Create account"}
               </Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              disabled={isBusy || email.trim().length === 0}
+              disabled={!canSendMagicLink}
               onPress={() => {
-                setNotice("Magic link sent if email auth is enabled.");
+                setNotice(
+                  redirectUrl
+                    ? `Magic link sent if email auth is enabled. It should return to ${redirectUrl}.`
+                    : "Magic link sent if email auth is enabled. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase falls back to the project Site URL.",
+                );
                 void sendMagicLink(email);
               }}
               style={[
                 styles.button,
                 styles.secondaryButton,
-                (isBusy || email.trim().length === 0) && styles.disabledButton,
+                !canSendMagicLink && styles.disabledButton,
               ]}
             >
               <Text style={styles.secondaryButtonLabel}>
@@ -150,7 +228,12 @@ export function AuthStatusCard() {
           </View>
           <Text style={styles.detail}>
             Password sign-in uses the current Supabase project settings. Magic
-            link is available as a minimal fallback if email auth is enabled.
+            link requires the configured redirect URL to be allowed in Supabase.
+          </Text>
+          <Text style={styles.detail}>
+            {redirectUrl
+              ? `Current redirect URL: ${redirectUrl}`
+              : "Current redirect URL: not configured. Supabase may redirect to the project Site URL instead."}
           </Text>
         </>
       ) : null}
@@ -224,6 +307,31 @@ const styles = StyleSheet.create({
   localOnlyBadge: {
     backgroundColor: "#efe3d3",
     color: "#7a5430",
+  },
+  modeButton: {
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#dccfb8",
+    backgroundColor: "#fff9f1",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  modeButtonActive: {
+    borderColor: "#d6693d",
+    backgroundColor: "#fbe6dd",
+  },
+  modeButtonLabel: {
+    color: "#5b4635",
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  modeButtonLabelActive: {
+    color: "#8e3d17",
+  },
+  modeRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
   },
   notice: {
     color: "#24553a",

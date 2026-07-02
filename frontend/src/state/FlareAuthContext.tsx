@@ -12,6 +12,7 @@ import {
   type FlareSupabaseAuthSubscription,
   resolveFlareSupabaseAuthState,
   sendFlareSupabaseMagicLink,
+  signUpForFlareSupabase,
   signInToFlareSupabaseWithPassword,
   signOutFromFlareSupabase,
   subscribeToFlareSupabaseAuthState,
@@ -21,9 +22,10 @@ type FlareAuthContextValue = {
   authState: FlareSupabaseAuthState;
   authStatus: "loading" | "ready";
   errorMessage: string | null;
-  pendingAction: "magic-link" | "password" | "sign-out" | null;
+  pendingAction: "magic-link" | "password" | "sign-out" | "sign-up" | null;
   sendMagicLink: (email: string) => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -32,6 +34,7 @@ type FlareAuthProviderProps = PropsWithChildren<{
   resolveAuthState?: () => Promise<FlareSupabaseAuthState>;
   sendMagicLinkRequest?: (email: string) => Promise<void>;
   signInWithPasswordRequest?: (email: string, password: string) => Promise<void>;
+  signUpRequest?: (email: string, password: string) => Promise<void>;
   signOutRequest?: () => Promise<void>;
   subscribe?: (
     onChange: (authState: FlareSupabaseAuthState) => void,
@@ -48,6 +51,9 @@ const defaultResolveAuthState = () => resolveFlareSupabaseAuthState();
 
 const defaultSignInWithPasswordRequest = (email: string, password: string) =>
   signInToFlareSupabaseWithPassword({ email, password });
+
+const defaultSignUpRequest = (email: string, password: string) =>
+  signUpForFlareSupabase({ email, password });
 
 const defaultSubscribe = (
   onChange: (authState: FlareSupabaseAuthState) => void,
@@ -94,6 +100,7 @@ export function FlareAuthProvider({
   resolveAuthState,
   sendMagicLinkRequest,
   signInWithPasswordRequest,
+  signUpRequest,
   signOutRequest,
   subscribe,
 }: FlareAuthProviderProps) {
@@ -102,6 +109,7 @@ export function FlareAuthProvider({
     sendMagicLinkRequest ?? sendFlareSupabaseMagicLink;
   const effectiveSignInWithPasswordRequest =
     signInWithPasswordRequest ?? defaultSignInWithPasswordRequest;
+  const effectiveSignUpRequest = signUpRequest ?? defaultSignUpRequest;
   const effectiveSignOutRequest = signOutRequest ?? signOutFromFlareSupabase;
   const effectiveSubscribe = subscribe ?? defaultSubscribe;
   const [authState, setAuthState] = useState<FlareSupabaseAuthState>(
@@ -112,7 +120,7 @@ export function FlareAuthProvider({
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<
-    "magic-link" | "password" | "sign-out" | null
+    "magic-link" | "password" | "sign-out" | "sign-up" | null
   >(null);
 
   useEffect(() => {
@@ -197,6 +205,21 @@ export function FlareAuthProvider({
           );
         }
       },
+      async signUp(email, password) {
+        setErrorMessage(null);
+        setPendingAction("sign-up");
+
+        try {
+          await effectiveSignUpRequest(email, password);
+        } catch (error) {
+          setErrorMessage(getErrorMessage(error));
+          throw error;
+        } finally {
+          setPendingAction((current) =>
+            current === "sign-up" ? null : current,
+          );
+        }
+      },
       async signOut() {
         setErrorMessage(null);
         setPendingAction("sign-out");
@@ -221,6 +244,7 @@ export function FlareAuthProvider({
       pendingAction,
       effectiveSendMagicLinkRequest,
       effectiveSignInWithPasswordRequest,
+      effectiveSignUpRequest,
       effectiveSignOutRequest,
     ],
   );

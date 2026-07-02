@@ -1,8 +1,11 @@
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 import {
+  PUBLIC_AUTH_REDIRECT_URL_ENV_NAME,
+  readFlareAuthRedirectUrl,
   resolveFlareSupabaseAuthState,
   sendFlareSupabaseMagicLink,
+  signUpForFlareSupabase,
   signInToFlareSupabaseWithPassword,
   signOutFromFlareSupabase,
   subscribeToFlareSupabaseAuthState,
@@ -33,6 +36,7 @@ function createClientStub(overrides?: Partial<Record<string, unknown>>) {
       onAuthStateChange,
       signInWithOtp: jest.fn().mockResolvedValue({ error: null }),
       signInWithPassword: jest.fn().mockResolvedValue({ error: null }),
+      signUp: jest.fn().mockResolvedValue({ error: null }),
       signOut: jest.fn().mockResolvedValue({ error: null }),
       ...(overrides?.auth as object),
     },
@@ -100,11 +104,56 @@ describe("flareSupabaseAuth", () => {
   it("sends a magic link through the Supabase auth client", async () => {
     const { client } = createClientStub();
 
-    await sendFlareSupabaseMagicLink(" flare@example.com ", client as never);
+    await sendFlareSupabaseMagicLink(" flare@example.com ", client as never, {
+      [PUBLIC_AUTH_REDIRECT_URL_ENV_NAME]: "http://100.64.0.10:8081",
+    });
 
     expect(client.auth.signInWithOtp).toHaveBeenCalledWith({
       email: "flare@example.com",
+      options: {
+        emailRedirectTo: "http://100.64.0.10:8081",
+      },
     });
+  });
+
+  it("omits the magic-link redirect option when the public redirect env is missing", async () => {
+    const { client } = createClientStub();
+
+    await sendFlareSupabaseMagicLink(" flare@example.com ", client as never, {});
+
+    expect(client.auth.signInWithOtp).toHaveBeenCalledWith({
+      email: "flare@example.com",
+      options: undefined,
+    });
+  });
+
+  it("signs up through the Supabase auth client with the configured redirect URL", async () => {
+    const { client } = createClientStub();
+
+    await signUpForFlareSupabase(
+      { email: " flare@example.com ", password: "password-123" },
+      client as never,
+      {
+        [PUBLIC_AUTH_REDIRECT_URL_ENV_NAME]: "http://100.64.0.10:8081",
+      },
+    );
+
+    expect(client.auth.signUp).toHaveBeenCalledWith({
+      email: "flare@example.com",
+      password: "password-123",
+      options: {
+        emailRedirectTo: "http://100.64.0.10:8081",
+      },
+    });
+  });
+
+  it("reads the public auth redirect env predictably", () => {
+    expect(
+      readFlareAuthRedirectUrl({
+        [PUBLIC_AUTH_REDIRECT_URL_ENV_NAME]: " http://100.64.0.10:8081 ",
+      }),
+    ).toBe("http://100.64.0.10:8081");
+    expect(readFlareAuthRedirectUrl({})).toBeNull();
   });
 
   it("signs out through the Supabase auth client", async () => {
