@@ -13,7 +13,7 @@ const fieldLabels: Array<{
   { key: "interruptionReasons", label: "Why interrupt" },
   { key: "continuingCosts", label: "Costs of continuing" },
   { key: "groundedReminders", label: "Grounded reminder" },
-  { key: "emergencyActions", label: "Emergency action" },
+  { key: "emergencyActions", label: "Immediate action" },
   { key: "supportivePhrase", label: "Supportive phrase" },
 ];
 

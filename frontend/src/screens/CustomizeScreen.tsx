@@ -21,8 +21,8 @@ export function CustomizeScreen() {
     <AppShell
       currentPath="/customize"
       screenLabel="Setup"
-      subtitle="Keep configuration distinct from the urgent recovery path."
-      title="Customize what supports you in the moment"
+      subtitle="Keep your personal setup separate from the in-the-moment flow."
+      title="Customize what helps you pause and reflect"
     >
       <View style={styles.stack}>
         <AuthStatusCard />
@@ -44,8 +44,8 @@ export function CustomizeScreen() {
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            Define the pattern, likely triggers, and the replacement action you
-            want available during a flare.
+            Define the pattern, likely triggers, and the next step you want
+            handy when you are trying to interrupt an urge.
           </Text>
           <BehaviorPatternSummary behaviorPattern={behaviorPattern} />
         </Pressable>
@@ -67,8 +67,8 @@ export function CustomizeScreen() {
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            Capture grounded reminders, costs, and phrases that belong in the
-            future Flare Response.
+            Capture grounded reminders, costs, and phrases you want Flare to
+            show back to you during a flare.
           </Text>
           <AnchorNoteSummary anchorNote={anchorNote} />
         </Pressable>
@@ -77,8 +77,8 @@ export function CustomizeScreen() {
           <Text style={styles.cardTitle}>Telegram Support</Text>
           <Text style={styles.comingSoonBadge}>Coming in V1</Text>
           <Text style={styles.cardCopy}>
-            Visible here as future-scoped support direction only. No real setup
-            or integration behavior exists in V0.
+            Visible here as future-scoped direction only. V0 does not send
+            messages, alerts, or outreach on your behalf.
           </Text>
         </View>
       </View>

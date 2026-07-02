@@ -7,15 +7,15 @@ type SendFlareButtonProps = {
 export function SendFlareButton({ onPress }: SendFlareButtonProps) {
   return (
     <Pressable
-      accessibilityHint="Starts a new Flare Event and opens Flare Response immediately."
+      accessibilityHint="Starts a new Flare Event and opens Flare Response right away."
       accessibilityRole="button"
       onPress={onPress}
       style={styles.button}
     >
       <Text style={styles.label}>Send Flare</Text>
       <Text style={styles.supportingCopy}>
-        Create the current Flare Event and enter Flare Response with no
-        confirmation step.
+        Mark this moment, open your saved support copy, and pick a next step
+        with no extra confirmation screen.
       </Text>
     </Pressable>
   );

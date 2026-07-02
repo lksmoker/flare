@@ -56,7 +56,7 @@ function getHistoryEmptyState(filter: HistoryFilter, searchQuery: string) {
     return {
       title: "No matching Flare Events",
       copy:
-        "Try a different search term from the behavior snapshot or reflection details.",
+        "Try a different search term from the behavior snapshot or reflection notes.",
     };
   }
 
@@ -71,13 +71,13 @@ function getHistoryEmptyState(filter: HistoryFilter, searchQuery: string) {
       return {
         title: "No reflected Flare Events",
         copy:
-          "Checkpoint / Reflection entries will appear here once an event is reflected.",
+          "Checkpoint / Reflection entries appear here after you save a reflection.",
       };
     default:
       return {
         title: "No Flare Events yet",
         copy:
-          "Send Flare to create the first event. Authenticated sessions reload persisted events and reflections here; signed-out sessions stay local-only.",
+          "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only.",
       };
   }
 }
@@ -133,19 +133,20 @@ export function HistoryScreen() {
     <AppShell
       currentPath="/history"
       screenLabel="Past moments"
-      subtitle="A lightweight chronological list of recent Flare Events and attached Checkpoint / Reflection notes."
-      title="History stays chronological and light"
+      subtitle="A lightweight chronological list of past Flare Events and attached Checkpoint / Reflection notes."
+      title="Review past flares without turning this into analytics"
     >
       <Text style={styles.intro}>
-        Authenticated sessions load your own persisted event history. Signed-out
-        sessions stay local-only, with no analytics or Telegram data shown here.
+        Signed-in sessions load your own saved event history. Signed-out
+        sessions stay local-only. Flare does not monitor you in real time or
+        score your behavior.
       </Text>
       <View style={styles.controlsCard}>
         <Text style={styles.controlsTitle}>Find a past moment</Text>
         <TextInput
           accessibilityLabel="Search Flare Event history"
           onChangeText={setSearchQuery}
-          placeholder="Search behavior or reflection text"
+          placeholder="Search behavior or reflection notes"
           placeholderTextColor="#8c97a5"
           style={styles.searchInput}
           value={searchQuery}

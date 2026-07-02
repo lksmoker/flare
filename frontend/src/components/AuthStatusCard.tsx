@@ -71,11 +71,15 @@ export function AuthStatusCard() {
       {authStatus === "ready" && authState.kind === "authenticated" ? (
         <>
           <Text style={styles.copy}>
-            Behavior Pattern and Anchor Note now save against your authenticated
-            Supabase user instead of staying local-only for this app session.
+            Your setup can now reload on this device because Behavior Pattern
+            and Anchor Note save to your signed-in Supabase account.
           </Text>
           <Text style={styles.detail}>
             Signed in as {authState.userEmail ?? authState.userId}
+          </Text>
+          <Text style={styles.detail}>
+            Flare is a self-support tool. It does not monitor you in real time
+            or contact anyone for you.
           </Text>
           <Pressable
             accessibilityRole="button"
@@ -93,10 +97,15 @@ export function AuthStatusCard() {
       ) : null}
 
       {authStatus === "ready" && authState.kind === "client-unavailable" ? (
-        <Text style={styles.copy}>
-          Setup persistence is local-only because the public Supabase URL and
-          anon key are not loaded into the Expo runtime.
-        </Text>
+        <>
+          <Text style={styles.copy}>
+            Setup persistence is local-only because the public Supabase URL and
+            anon key are not loaded into the Expo runtime.
+          </Text>
+          <Text style={styles.detail}>
+            Flare does not monitor urgent risk or provide emergency response.
+          </Text>
+        </>
       ) : null}
 
       {authStatus === "ready" && authState.kind === "no-session" ? (
@@ -104,6 +113,10 @@ export function AuthStatusCard() {
           <Text style={styles.copy}>
             Setup saves still work locally in memory, but they will not reload
             from Supabase until you authenticate.
+          </Text>
+          <Text style={styles.detail}>
+            Flare is for self-support and reflection. It is not a crisis
+            service, therapy replacement, or medical treatment.
           </Text>
           <View style={styles.modeRow}>
             <Pressable

@@ -58,8 +58,8 @@ export function FlareScreen() {
     <AppShell
       currentPath="/"
       screenLabel="Urgent action"
-      subtitle="Keep the recovery path simple: one dominant action, one secondary reflection entry, and lightweight readiness cues."
-      title="Immediate support for the hard moment"
+      subtitle="Keep the flow simple: one main action, one secondary reflection entry, and lightweight readiness cues."
+      title="Use Flare to pause, regroup, and choose a next step"
     >
       <SendFlareButton
         onPress={() => {
@@ -80,7 +80,7 @@ export function FlareScreen() {
       >
         <Text style={styles.secondaryButtonLabel}>Checkpoint / Reflection</Text>
         <Text style={styles.secondaryButtonCopy}>
-          Open a lightweight reflection sheet without leaving the Flare screen.
+          Open a lightweight reflection sheet without leaving this screen.
         </Text>
       </Pressable>
 

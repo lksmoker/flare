@@ -24,11 +24,11 @@ export function FlareResponse({
         <Text style={styles.eventTitle}>
           {flareEvent?.status === "reflected"
             ? "Reflection saved for this event"
-            : "Flare support is open for this event"}
+            : "Your self-support screen is open"}
         </Text>
         <Text style={styles.eventCopy}>
           {flareEvent
-            ? `Started ${formatFlareEventTimestamp(flareEvent.createdAt)} • status: ${flareEvent.status}`
+            ? `Started ${formatFlareEventTimestamp(flareEvent.createdAt)} | status: ${flareEvent.status}`
             : "No in-memory event is active."}
         </Text>
         {flareEvent?.behaviorLabelSnapshot ? (
@@ -40,11 +40,11 @@ export function FlareResponse({
       <View style={styles.callout}>
         <Text style={styles.calloutLabel}>Anchor Note</Text>
         <Text style={styles.calloutTitle}>
-          {anchorNote?.supportivePhrase || "You already interrupted the spiral."}
+          {anchorNote?.supportivePhrase || "You already paused the pattern."}
         </Text>
         <Text style={styles.calloutCopy}>
           {anchorNote?.interruptionReasons ||
-            "This V0 placeholder now surfaces the saved Anchor Note immediately after `Send Flare`, even before persistence exists."}
+            "Flare shows your saved Anchor Note right after Send Flare so your own words are close at hand."}
         </Text>
         {anchorNote?.groundedReminders ? (
           <View style={styles.memorySection}>
@@ -58,12 +58,17 @@ export function FlareResponse({
             <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
           </View>
         ) : null}
+        <Text style={styles.safetyCopy}>
+          Flare is a self-support tool. If you may hurt yourself or someone
+          else, or you need immediate help, contact local emergency services or
+          a crisis hotline now.
+        </Text>
       </View>
       <View style={styles.actionCard}>
         <Text style={styles.actionTitle}>Try one next step</Text>
         <Text style={styles.actionCopy}>
           {anchorNote?.emergencyActions ||
-            "Step away from the trigger for two minutes, drink water, and breathe before deciding what comes next."}
+            "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next."}
         </Text>
       </View>
       <Pressable
@@ -146,6 +151,11 @@ const styles = StyleSheet.create({
     color: "#e5edf5",
     fontSize: 14,
     lineHeight: 20,
+  },
+  safetyCopy: {
+    color: "#f9e8c8",
+    fontSize: 13,
+    lineHeight: 18,
   },
   actionCard: {
     gap: 6,

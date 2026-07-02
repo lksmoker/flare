@@ -72,7 +72,7 @@ describe("V0 app shell", () => {
     expect(getByText("Flare Response")).toBeTruthy();
     expect(getByText("Current Flare Event")).toBeTruthy();
     expect(getByText(/status: active/i)).toBeTruthy();
-    expect(getByText("You already interrupted the spiral.")).toBeTruthy();
+    expect(getByText("You already paused the pattern.")).toBeTruthy();
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
@@ -116,7 +116,7 @@ describe("V0 app shell", () => {
     fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
     expect(
       getByText(
-        "Capture the pattern you want Flare to help interrupt. This stays local and editable in V0.",
+        "Capture the pattern you want Flare to help you interrupt and reflect on. This stays editable in V0.",
       ),
     ).toBeTruthy();
     expect(getByText("Save Behavior Pattern")).toBeTruthy();
@@ -125,7 +125,7 @@ describe("V0 app shell", () => {
     fireEvent.press(getAllByText("Anchor Note Setup")[0]);
     expect(
       getByText(
-        "Capture grounded words you will want available when the hard moment lands.",
+        "Capture grounded words you want available when you are trying to pause.",
       ),
     ).toBeTruthy();
     expect(getByText("Save Anchor Note")).toBeTruthy();
@@ -156,7 +156,7 @@ describe("V0 app shell", () => {
       "The urge peaks fast and passes if I move.",
     );
     fireEvent.changeText(
-      getByLabelText("Emergency action or commitment"),
+      getByLabelText("Immediate action or commitment"),
       "Put the phone away, drink water, and go outside.",
     );
     fireEvent.changeText(
@@ -204,7 +204,7 @@ describe("V0 app shell", () => {
       "Late nights",
     );
     fireEvent.changeText(
-      getByLabelText("Preferred recovery actions"),
+      getByLabelText("Preferred next steps"),
       "Put the phone in another room and walk outside",
     );
 
@@ -236,7 +236,7 @@ describe("V0 app shell", () => {
     fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
     fireEvent.changeText(getByLabelText("Behavior name"), "Weekend drinking");
     fireEvent.changeText(
-      getByLabelText("Preferred recovery actions"),
+      getByLabelText("Preferred next steps"),
       "Leave the bar and call my brother",
     );
     fireEvent.press(getByText("Save Behavior Pattern"));
@@ -293,7 +293,7 @@ describe("V0 app shell", () => {
       "You do not need to obey this feeling.",
     );
     fireEvent.changeText(
-      getByLabelText("Emergency action or commitment"),
+      getByLabelText("Immediate action or commitment"),
       "Leave the room and drink water.",
     );
     fireEvent.changeText(
@@ -339,7 +339,7 @@ describe("V0 app shell", () => {
       "I start checking feeds when I feel depleted.",
     );
     fireEvent.changeText(
-      getByLabelText("Preferred recovery actions"),
+      getByLabelText("Preferred next steps"),
       "Leave the room and put the phone away",
     );
     fireEvent.press(getByText("Save Behavior Pattern"));
@@ -425,7 +425,9 @@ describe("V0 app shell", () => {
     expect(getAllByText("Telegram Support").length).toBeGreaterThanOrEqual(2);
     expect(getAllByText("Coming in V1").length).toBeGreaterThanOrEqual(1);
     expect(
-      getByText(/No real setup or integration behavior exists in V0\./),
+      getByText(
+        /Visible here as future-scoped direction only\. V0 does not send messages, alerts, or outreach on your behalf\./,
+      ),
     ).toBeTruthy();
   });
 

@@ -1,6 +1,10 @@
 # Flare
 
-Flare is a mobile-first recovery-support app scaffold focused on helping a user interrupt a compulsive or high-risk moment with clear recovery prompts and a simple urgent flow.
+Flare is a mobile-first self-support app scaffold focused on helping a user interrupt an urge, reconnect with their reasons, record a flare event, and reflect afterward.
+
+Flare V0 is not a crisis service, therapy replacement, medical treatment, emergency response system, or guaranteed relapse-prevention tool. If someone may hurt themselves or someone else, or needs immediate help, they should contact local emergency services or a crisis hotline now.
+
+Release positioning, limitations, and pre-launch notes live in `docs/40_delivery/flare_v0_release_positioning.md`.
 
 ## Current stage
 

@@ -13,7 +13,7 @@ const fieldLabels: Array<{
   { key: "shortDescription", label: "Description" },
   { key: "commonTriggers", label: "Triggers" },
   { key: "riskTimesOrSituations", label: "Risk moments" },
-  { key: "preferredRecoveryActions", label: "Recovery actions" },
+  { key: "preferredRecoveryActions", label: "Next steps" },
 ];
 
 export function BehaviorPatternSummary({

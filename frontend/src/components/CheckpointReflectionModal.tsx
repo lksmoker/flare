@@ -86,11 +86,15 @@ export function CheckpointReflectionModal({
           <View style={styles.contextCard}>
             <Text style={styles.contextLabel}>No active Flare Event</Text>
             <Text style={styles.contextCopy}>
-              Send Flare first to create the current event, then save the
-              reflection from here.
+              Send Flare first to create the current event, then save a brief
+              reflection here.
             </Text>
           </View>
         )}
+        <Text style={styles.intro}>
+          Use this space to notice what happened and what helped. Flare does
+          not provide therapy, medical advice, or crisis response.
+        </Text>
 
         <View style={styles.field}>
           <Text style={styles.label}>What happened?</Text>
@@ -179,6 +183,11 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 18,
     backgroundColor: "#f7efe3",
+  },
+  intro: {
+    color: "#526071",
+    fontSize: 14,
+    lineHeight: 20,
   },
   contextLabel: {
     color: "#5b4635",

@@ -36,7 +36,7 @@ export function AnchorNoteSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            Save requires one interruption reason and one supportive phrase.
+            Save requires one reason to pause and one supportive phrase.
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -64,14 +64,14 @@ export function AnchorNoteSetupModal({
         </View>
       }
       onClose={onClose}
-      subtitle="Capture grounded words you will want available when the hard moment lands."
+      subtitle="Capture grounded words you want available when you are trying to pause."
       title="Anchor Note Setup"
       visible={visible}
     >
       <View style={styles.form}>
         <Text style={styles.intro}>
-          Keep it honest, specific, and easy to revisit. This stays local and
-          editable in V0.
+          Keep it honest, specific, and easy to revisit. This note is for
+          self-support, not treatment.
         </Text>
 
         <View style={styles.field}>
@@ -120,9 +120,9 @@ export function AnchorNoteSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Emergency action or commitment</Text>
+          <Text style={styles.label}>Immediate action or commitment</Text>
           <TextInput
-            accessibilityLabel="Emergency action or commitment"
+            accessibilityLabel="Immediate action or commitment"
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, emergencyActions: value }))

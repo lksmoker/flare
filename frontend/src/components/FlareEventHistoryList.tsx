@@ -41,7 +41,7 @@ export function FlareEventHistoryList({
         </Text>
         <Text style={styles.emptyCopy}>
           {emptyCopy ??
-            "Send Flare to create the first event. Authenticated sessions reload persisted events and reflections here; signed-out sessions stay local-only."}
+            "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only."}
         </Text>
       </View>
     );

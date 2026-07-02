@@ -36,7 +36,7 @@ export function BehaviorPatternSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            Save requires a behavior name and at least one recovery action.
+            Save requires a behavior name and at least one next step.
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -64,14 +64,14 @@ export function BehaviorPatternSetupModal({
         </View>
       }
       onClose={onClose}
-      subtitle="Keep it concrete enough to interrupt the pattern, but light enough to edit anytime."
+      subtitle="Keep it concrete enough to interrupt the pattern, but light enough to update anytime."
       title="Behavior Pattern Setup"
       visible={visible}
     >
       <View style={styles.form}>
         <Text style={styles.intro}>
-          Capture the pattern you want Flare to help interrupt. This stays
-          local and editable in V0.
+          Capture the pattern you want Flare to help you interrupt and reflect
+          on. This stays editable in V0.
         </Text>
 
         <View style={styles.field}>
@@ -136,9 +136,9 @@ export function BehaviorPatternSetupModal({
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Preferred recovery actions</Text>
+          <Text style={styles.label}>Preferred next steps</Text>
           <TextInput
-            accessibilityLabel="Preferred recovery actions"
+            accessibilityLabel="Preferred next steps"
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({
@@ -146,7 +146,7 @@ export function BehaviorPatternSetupModal({
                 preferredRecoveryActions: value,
               }))
             }
-            placeholder="Put the phone down, stand up, text a friend, drink water."
+            placeholder="Put the phone down, stand up, drink water, step outside."
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.preferredRecoveryActions}
