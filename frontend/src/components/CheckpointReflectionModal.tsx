@@ -43,7 +43,7 @@ export function CheckpointReflectionModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.supportingCopy}>
-            {flareContent.checkpoint.helperCopy}
+            {flareContent.components.checkpointReflection.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -52,7 +52,7 @@ export function CheckpointReflectionModal({
               style={styles.cancelButton}
             >
               <Text style={styles.cancelButtonLabel}>
-                {flareContent.actions.cancel}
+                {flareContent.common.actions.cancel}
               </Text>
             </Pressable>
             <Pressable
@@ -68,51 +68,57 @@ export function CheckpointReflectionModal({
               ]}
             >
               <Text style={styles.saveButtonLabel}>
-                {flareContent.checkpoint.saveButton}
+                {flareContent.components.checkpointReflection.saveButton}
               </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle={flareContent.checkpoint.modalSubtitle}
-      title={flareContent.checkpoint.modalTitle}
+      subtitle={flareContent.components.checkpointReflection.modalSubtitle}
+      title={flareContent.components.checkpointReflection.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
         {flareEvent ? (
           <View style={styles.contextCard}>
             <Text style={styles.contextLabel}>
-              {flareContent.checkpoint.context.activeLabel}
+              {flareContent.components.checkpointReflection.context.activeLabel}
             </Text>
             <Text style={styles.contextCopy}>
-              {flareContent.checkpoint.context.activeCopy}
+              {flareContent.components.checkpointReflection.context.activeCopy}
             </Text>
           </View>
         ) : (
           <View style={styles.contextCard}>
             <Text style={styles.contextLabel}>
-              {flareContent.checkpoint.context.missingLabel}
+              {flareContent.components.checkpointReflection.context.missingLabel}
             </Text>
             <Text style={styles.contextCopy}>
-              {flareContent.checkpoint.context.missingCopy}
+              {flareContent.components.checkpointReflection.context.missingCopy}
             </Text>
           </View>
         )}
-        <Text style={styles.intro}>{flareContent.checkpoint.intro}</Text>
+        <Text style={styles.intro}>
+          {flareContent.components.checkpointReflection.intro}
+        </Text>
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.checkpoint.fields.whatHappened.label}
+            {flareContent.components.checkpointReflection.fields.whatHappened.label}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.checkpoint.fields.whatHappened.label}
+            accessibilityLabel={
+              flareContent.components.checkpointReflection.fields.whatHappened
+                .label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, whatHappened: value }))
             }
             placeholder={
-              flareContent.checkpoint.fields.whatHappened.placeholder
+              flareContent.components.checkpointReflection.fields.whatHappened
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -122,15 +128,21 @@ export function CheckpointReflectionModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.checkpoint.fields.whatHelped.label}
+            {flareContent.components.checkpointReflection.fields.whatHelped.label}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.checkpoint.fields.whatHelped.label}
+            accessibilityLabel={
+              flareContent.components.checkpointReflection.fields.whatHelped
+                .label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, whatHelped: value }))
             }
-            placeholder={flareContent.checkpoint.fields.whatHelped.placeholder}
+            placeholder={
+              flareContent.components.checkpointReflection.fields.whatHelped
+                .placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.whatHelped}
@@ -139,15 +151,21 @@ export function CheckpointReflectionModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.checkpoint.fields.howIFeelNow.label}
+            {flareContent.components.checkpointReflection.fields.howIFeelNow.label}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.checkpoint.fields.howIFeelNow.label}
+            accessibilityLabel={
+              flareContent.components.checkpointReflection.fields.howIFeelNow
+                .label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, howIFeelNow: value }))
             }
-            placeholder={flareContent.checkpoint.fields.howIFeelNow.placeholder}
+            placeholder={
+              flareContent.components.checkpointReflection.fields.howIFeelNow
+                .placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.howIFeelNow}
@@ -156,14 +174,19 @@ export function CheckpointReflectionModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.checkpoint.fields.outcome.label}
+            {flareContent.components.checkpointReflection.fields.outcome.label}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.checkpoint.fields.outcome.label}
+            accessibilityLabel={
+              flareContent.components.checkpointReflection.fields.outcome.label
+            }
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, outcome: value }))
             }
-            placeholder={flareContent.checkpoint.fields.outcome.placeholder}
+            placeholder={
+              flareContent.components.checkpointReflection.fields.outcome
+                .placeholder
+            }
             style={styles.input}
             value={draft.outcome}
           />
@@ -171,15 +194,20 @@ export function CheckpointReflectionModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.checkpoint.fields.note.label}
+            {flareContent.components.checkpointReflection.fields.note.label}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.checkpoint.fields.note.label}
+            accessibilityLabel={
+              flareContent.components.checkpointReflection.fields.note.label
+            }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, note: value }))
             }
-            placeholder={flareContent.checkpoint.fields.note.placeholder}
+            placeholder={
+              flareContent.components.checkpointReflection.fields.note
+                .placeholder
+            }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
             value={draft.note}

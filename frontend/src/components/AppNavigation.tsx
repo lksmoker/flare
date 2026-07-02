@@ -8,9 +8,9 @@ type AppNavigationProps = {
 };
 
 const navigationItems = [
-  { href: "/" as const, label: flareContent.app.navigation.flare },
-  { href: "/history" as const, label: flareContent.app.navigation.history },
-  { href: "/customize" as const, label: flareContent.app.navigation.customize },
+  { href: "/" as const, label: flareContent.navigation.flare },
+  { href: "/history" as const, label: flareContent.navigation.history },
+  { href: "/customize" as const, label: flareContent.navigation.customize },
 ];
 
 export function AppNavigation({ currentPath }: AppNavigationProps) {

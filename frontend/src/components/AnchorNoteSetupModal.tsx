@@ -37,7 +37,7 @@ export function AnchorNoteSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            {flareContent.setup.anchorNote.helperCopy}
+            {flareContent.components.anchorNote.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -46,7 +46,7 @@ export function AnchorNoteSetupModal({
               style={styles.cancelButton}
             >
               <Text style={styles.cancelButtonLabel}>
-                {flareContent.actions.cancel}
+                {flareContent.common.actions.cancel}
               </Text>
             </Pressable>
             <Pressable
@@ -62,34 +62,35 @@ export function AnchorNoteSetupModal({
               ]}
             >
               <Text style={styles.saveButtonLabel}>
-                {flareContent.setup.anchorNote.saveButton}
+                {flareContent.components.anchorNote.saveButton}
               </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle={flareContent.setup.anchorNote.modalSubtitle}
-      title={flareContent.setup.anchorNote.modalTitle}
+      subtitle={flareContent.components.anchorNote.modalSubtitle}
+      title={flareContent.components.anchorNote.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
-        <Text style={styles.intro}>{flareContent.setup.anchorNote.intro}</Text>
+        <Text style={styles.intro}>{flareContent.components.anchorNote.intro}</Text>
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.anchorNote.fields.interruptionReasons.label}
+            {flareContent.components.anchorNote.fields.interruptionReasons.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.anchorNote.fields.interruptionReasons.label
+              flareContent.components.anchorNote.fields.interruptionReasons.label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, interruptionReasons: value }))
             }
             placeholder={
-              flareContent.setup.anchorNote.fields.interruptionReasons.placeholder
+              flareContent.components.anchorNote.fields.interruptionReasons
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -99,18 +100,19 @@ export function AnchorNoteSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.anchorNote.fields.continuingCosts.label}
+            {flareContent.components.anchorNote.fields.continuingCosts.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.anchorNote.fields.continuingCosts.label
+              flareContent.components.anchorNote.fields.continuingCosts.label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, continuingCosts: value }))
             }
             placeholder={
-              flareContent.setup.anchorNote.fields.continuingCosts.placeholder
+              flareContent.components.anchorNote.fields.continuingCosts
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -120,18 +122,19 @@ export function AnchorNoteSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.anchorNote.fields.groundedReminders.label}
+            {flareContent.components.anchorNote.fields.groundedReminders.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.anchorNote.fields.groundedReminders.label
+              flareContent.components.anchorNote.fields.groundedReminders.label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, groundedReminders: value }))
             }
             placeholder={
-              flareContent.setup.anchorNote.fields.groundedReminders.placeholder
+              flareContent.components.anchorNote.fields.groundedReminders
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -141,18 +144,19 @@ export function AnchorNoteSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.anchorNote.fields.emergencyActions.label}
+            {flareContent.components.anchorNote.fields.emergencyActions.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.anchorNote.fields.emergencyActions.label
+              flareContent.components.anchorNote.fields.emergencyActions.label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, emergencyActions: value }))
             }
             placeholder={
-              flareContent.setup.anchorNote.fields.emergencyActions.placeholder
+              flareContent.components.anchorNote.fields.emergencyActions
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -162,17 +166,18 @@ export function AnchorNoteSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.anchorNote.fields.supportivePhrase.label}
+            {flareContent.components.anchorNote.fields.supportivePhrase.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.anchorNote.fields.supportivePhrase.label
+              flareContent.components.anchorNote.fields.supportivePhrase.label
             }
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, supportivePhrase: value }))
             }
             placeholder={
-              flareContent.setup.anchorNote.fields.supportivePhrase.placeholder
+              flareContent.components.anchorNote.fields.supportivePhrase
+                .placeholder
             }
             style={styles.input}
             value={draft.supportivePhrase}

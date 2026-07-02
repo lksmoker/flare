@@ -13,23 +13,23 @@ const fieldLabels: Array<{
 }> = [
   {
     key: "interruptionReasons",
-    label: flareContent.setup.anchorNote.summaryLabels.interruptionReasons,
+    label: flareContent.components.anchorNote.summaryLabels.interruptionReasons,
   },
   {
     key: "continuingCosts",
-    label: flareContent.setup.anchorNote.summaryLabels.continuingCosts,
+    label: flareContent.components.anchorNote.summaryLabels.continuingCosts,
   },
   {
     key: "groundedReminders",
-    label: flareContent.setup.anchorNote.summaryLabels.groundedReminders,
+    label: flareContent.components.anchorNote.summaryLabels.groundedReminders,
   },
   {
     key: "emergencyActions",
-    label: flareContent.setup.anchorNote.summaryLabels.emergencyActions,
+    label: flareContent.components.anchorNote.summaryLabels.emergencyActions,
   },
   {
     key: "supportivePhrase",
-    label: flareContent.setup.anchorNote.summaryLabels.supportivePhrase,
+    label: flareContent.components.anchorNote.summaryLabels.supportivePhrase,
   },
 ];
 
@@ -38,10 +38,10 @@ export function AnchorNoteSummary({ anchorNote }: AnchorNoteSummaryProps) {
     return (
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>
-          {flareContent.states.empty.notConfiguredTitle}
+          {flareContent.common.states.empty.notConfiguredTitle}
         </Text>
         <Text style={styles.emptyCopy}>
-          {flareContent.setup.anchorNote.summaryEmptyCopy}
+          {flareContent.components.anchorNote.summaryEmptyCopy}
         </Text>
       </View>
     );

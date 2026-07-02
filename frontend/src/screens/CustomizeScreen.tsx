@@ -21,9 +21,9 @@ export function CustomizeScreen() {
   return (
     <AppShell
       currentPath="/customize"
-      screenLabel={flareContent.setup.screenLabel}
-      subtitle={flareContent.setup.subtitle}
-      title={flareContent.setup.title}
+      screenLabel={flareContent.screens.customize.screenLabel}
+      subtitle={flareContent.screens.customize.subtitle}
+      title={flareContent.screens.customize.title}
     >
       <View style={styles.stack}>
         <AuthStatusCard />
@@ -35,7 +35,7 @@ export function CustomizeScreen() {
         >
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>
-              {flareContent.setup.behaviorPattern.cardTitle}
+              {flareContent.components.behaviorPattern.cardTitle}
             </Text>
             <Text
               style={[
@@ -44,12 +44,12 @@ export function CustomizeScreen() {
               ]}
             >
               {isConfigured
-                ? flareContent.setup.status.configured
-                : flareContent.setup.status.needsSetup}
+                ? flareContent.common.status.configured
+                : flareContent.common.status.needsSetup}
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            {flareContent.setup.behaviorPattern.cardCopy}
+            {flareContent.components.behaviorPattern.cardCopy}
           </Text>
           <BehaviorPatternSummary behaviorPattern={behaviorPattern} />
         </Pressable>
@@ -61,7 +61,7 @@ export function CustomizeScreen() {
         >
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>
-              {flareContent.setup.anchorNote.cardTitle}
+              {flareContent.components.anchorNote.cardTitle}
             </Text>
             <Text
               style={[
@@ -70,20 +70,26 @@ export function CustomizeScreen() {
               ]}
             >
               {isAnchorNoteConfigured
-                ? flareContent.setup.status.configured
-                : flareContent.setup.status.needsSetup}
+                ? flareContent.common.status.configured
+                : flareContent.common.status.needsSetup}
             </Text>
           </View>
           <Text style={styles.cardCopy}>
-            {flareContent.setup.anchorNote.cardCopy}
+            {flareContent.components.anchorNote.cardCopy}
           </Text>
           <AnchorNoteSummary anchorNote={anchorNote} />
         </Pressable>
 
         <View style={styles.comingSoonCard}>
-          <Text style={styles.cardTitle}>{flareContent.setup.telegram.title}</Text>
-          <Text style={styles.comingSoonBadge}>{flareContent.setup.telegram.badge}</Text>
-          <Text style={styles.cardCopy}>{flareContent.setup.telegram.copy}</Text>
+          <Text style={styles.cardTitle}>
+            {flareContent.components.telegramSupport.title}
+          </Text>
+          <Text style={styles.comingSoonBadge}>
+            {flareContent.components.telegramSupport.badge}
+          </Text>
+          <Text style={styles.cardCopy}>
+            {flareContent.components.telegramSupport.copy}
+          </Text>
         </View>
       </View>
 

@@ -14,10 +14,10 @@ import {
 type HistoryFilter = "active" | "all" | "archived" | "reflected";
 
 const HISTORY_FILTERS: Array<{ label: string; value: HistoryFilter }> = [
-  { label: flareContent.history.filters.active, value: "active" },
-  { label: flareContent.history.filters.reflected, value: "reflected" },
-  { label: flareContent.history.filters.archived, value: "archived" },
-  { label: flareContent.history.filters.all, value: "all" },
+  { label: flareContent.screens.history.filters.active, value: "active" },
+  { label: flareContent.screens.history.filters.reflected, value: "reflected" },
+  { label: flareContent.screens.history.filters.archived, value: "archived" },
+  { label: flareContent.screens.history.filters.all, value: "all" },
 ];
 
 function normalizeSearchText(value: string | null | undefined) {
@@ -55,26 +55,26 @@ function matchesFilter(flareEvent: FlareEvent, filter: HistoryFilter) {
 function getHistoryEmptyState(filter: HistoryFilter, searchQuery: string) {
   if (searchQuery.trim().length > 0) {
     return {
-      title: flareContent.history.empty.search.title,
-      copy: flareContent.history.empty.search.copy,
+      title: flareContent.screens.history.empty.search.title,
+      copy: flareContent.screens.history.empty.search.copy,
     };
   }
 
   switch (filter) {
     case "archived":
       return {
-        title: flareContent.history.empty.archived.title,
-        copy: flareContent.history.empty.archived.copy,
+        title: flareContent.screens.history.empty.archived.title,
+        copy: flareContent.screens.history.empty.archived.copy,
       };
     case "reflected":
       return {
-        title: flareContent.history.empty.reflected.title,
-        copy: flareContent.history.empty.reflected.copy,
+        title: flareContent.screens.history.empty.reflected.title,
+        copy: flareContent.screens.history.empty.reflected.copy,
       };
     default:
       return {
-        title: flareContent.history.empty.default.title,
-        copy: flareContent.history.empty.default.copy,
+        title: flareContent.screens.history.empty.default.title,
+        copy: flareContent.screens.history.empty.default.copy,
       };
   }
 }
@@ -129,17 +129,21 @@ export function HistoryScreen() {
   return (
     <AppShell
       currentPath="/history"
-      screenLabel={flareContent.history.screenLabel}
-      subtitle={flareContent.history.subtitle}
-      title={flareContent.history.title}
+      screenLabel={flareContent.screens.history.screenLabel}
+      subtitle={flareContent.screens.history.subtitle}
+      title={flareContent.screens.history.title}
     >
-      <Text style={styles.intro}>{flareContent.history.intro}</Text>
+      <Text style={styles.intro}>{flareContent.screens.history.intro}</Text>
       <View style={styles.controlsCard}>
-        <Text style={styles.controlsTitle}>{flareContent.history.controlsTitle}</Text>
+        <Text style={styles.controlsTitle}>
+          {flareContent.screens.history.controls.title}
+        </Text>
         <TextInput
-          accessibilityLabel={flareContent.history.searchAccessibilityLabel}
+          accessibilityLabel={
+            flareContent.screens.history.controls.searchAccessibilityLabel
+          }
           onChangeText={setSearchQuery}
-          placeholder={flareContent.history.searchPlaceholder}
+          placeholder={flareContent.screens.history.controls.searchPlaceholder}
           placeholderTextColor="#8c97a5"
           style={styles.searchInput}
           value={searchQuery}
@@ -179,26 +183,26 @@ export function HistoryScreen() {
       />
       <PlaceholderModal
         onClose={() => setSelectedEvent(null)}
-        subtitle={flareContent.history.detailModal.subtitle}
-        title={flareContent.history.detailModal.title}
+        subtitle={flareContent.components.flareEventHistory.detailModal.subtitle}
+        title={flareContent.components.flareEventHistory.detailModal.title}
         visible={resolvedSelectedEvent !== null}
       >
         {resolvedSelectedEvent ? (
           <View style={styles.detailContent}>
             <DetailRow
-              label={flareContent.history.detail.labels.created}
+              label={flareContent.components.flareEventHistory.detail.labels.created}
               value={formatFlareEventTimestamp(resolvedSelectedEvent.createdAt)}
             />
             <DetailRow
-              label={flareContent.history.detail.labels.status}
+              label={flareContent.components.flareEventHistory.detail.labels.status}
               value={
                 resolvedSelectedEvent.archivedAt
-                  ? flareContent.history.detail.statusArchived
+                  ? flareContent.components.flareEventHistory.detail.statusArchived
                   : resolvedSelectedEvent.status
               }
             />
             <DetailRow
-              label={flareContent.history.detail.labels.archived}
+              label={flareContent.components.flareEventHistory.detail.labels.archived}
               value={
                 resolvedSelectedEvent.archivedAt
                   ? formatFlareEventTimestamp(resolvedSelectedEvent.archivedAt)
@@ -206,55 +210,89 @@ export function HistoryScreen() {
               }
             />
             <DetailRow
-              label={flareContent.history.detail.labels.behaviorPattern}
+              label={
+                flareContent.components.flareEventHistory.detail.labels
+                  .behaviorPattern
+              }
               value={
                 resolvedSelectedEvent.behaviorLabelSnapshot ??
-                flareContent.history.detail.behaviorPatternNotConfigured
+                flareContent.components.flareEventHistory.detail
+                  .behaviorPatternNotConfigured
               }
             />
             <DetailRow
-              label={flareContent.history.detail.labels.behaviorSnapshot}
+              label={
+                flareContent.components.flareEventHistory.detail.labels
+                  .behaviorSnapshot
+              }
               value={resolvedSelectedEvent.behaviorDescriptionSnapshot}
             />
             <DetailRow
-              label={flareContent.history.detail.labels.responseMode}
+              label={
+                flareContent.components.flareEventHistory.detail.labels
+                  .responseMode
+              }
               value={resolvedSelectedEvent.responseMode}
             />
             <DetailRow
-              label={flareContent.history.detail.labels.supportActionShown}
+              label={
+                flareContent.components.flareEventHistory.detail.labels
+                  .supportActionShown
+              }
               value={resolvedSelectedEvent.supportActionShown}
             />
             <DetailRow
-              label={flareContent.history.detail.labels.supportActionTaken}
+              label={
+                flareContent.components.flareEventHistory.detail.labels
+                  .supportActionTaken
+              }
               value={resolvedSelectedEvent.supportActionTaken}
             />
             {resolvedSelectedEvent.checkpoint ? (
               <View style={styles.reflectionSection}>
                 <Text style={styles.reflectionSectionTitle}>
-                  {flareContent.history.detail.labels.checkpointReflection}
+                  {
+                    flareContent.components.flareEventHistory.detail.labels
+                      .checkpointReflection
+                  }
                 </Text>
                 <DetailRow
-                  label={flareContent.history.detail.labels.whatHappened}
+                  label={
+                    flareContent.components.flareEventHistory.detail.labels
+                      .whatHappened
+                  }
                   value={resolvedSelectedEvent.checkpoint.whatHappened}
                 />
                 <DetailRow
-                  label={flareContent.history.detail.labels.whatHelped}
+                  label={
+                    flareContent.components.flareEventHistory.detail.labels
+                      .whatHelped
+                  }
                   value={resolvedSelectedEvent.checkpoint.whatHelped}
                 />
                 <DetailRow
-                  label={flareContent.history.detail.labels.howIFeelNow}
+                  label={
+                    flareContent.components.flareEventHistory.detail.labels
+                      .howIFeelNow
+                  }
                   value={resolvedSelectedEvent.checkpoint.howIFeelNow}
                 />
                 <DetailRow
-                  label={flareContent.history.detail.labels.outcome}
+                  label={
+                    flareContent.components.flareEventHistory.detail.labels
+                      .outcome
+                  }
                   value={resolvedSelectedEvent.checkpoint.outcome}
                 />
                 <DetailRow
-                  label={flareContent.history.detail.labels.actionTaken}
+                  label={
+                    flareContent.components.flareEventHistory.detail.labels
+                      .actionTaken
+                  }
                   value={resolvedSelectedEvent.checkpoint.actionTaken}
                 />
                 <DetailRow
-                  label={flareContent.history.detail.labels.note}
+                  label={flareContent.components.flareEventHistory.detail.labels.note}
                   value={resolvedSelectedEvent.checkpoint.note}
                 />
               </View>
@@ -281,8 +319,8 @@ export function HistoryScreen() {
             >
               <Text style={styles.eventActionButtonLabel}>
                 {resolvedSelectedEvent.archivedAt
-                  ? flareContent.actions.restoreEvent
-                  : flareContent.actions.archiveEvent}
+                  ? flareContent.common.actions.restoreEvent
+                  : flareContent.common.actions.archiveEvent}
               </Text>
             </Pressable>
           </View>

@@ -13,21 +13,23 @@ const fieldLabels: Array<{
 }> = [
   {
     key: "shortDescription",
-    label: flareContent.setup.behaviorPattern.summaryLabels.shortDescription,
+    label: flareContent.components.behaviorPattern.summaryLabels.shortDescription,
   },
   {
     key: "commonTriggers",
-    label: flareContent.setup.behaviorPattern.summaryLabels.commonTriggers,
+    label: flareContent.components.behaviorPattern.summaryLabels.commonTriggers,
   },
   {
     key: "riskTimesOrSituations",
     label:
-      flareContent.setup.behaviorPattern.summaryLabels.riskTimesOrSituations,
+      flareContent.components.behaviorPattern.summaryLabels
+        .riskTimesOrSituations,
   },
   {
     key: "preferredRecoveryActions",
     label:
-      flareContent.setup.behaviorPattern.summaryLabels.preferredRecoveryActions,
+      flareContent.components.behaviorPattern.summaryLabels
+        .preferredRecoveryActions,
   },
 ];
 
@@ -38,10 +40,10 @@ export function BehaviorPatternSummary({
     return (
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>
-          {flareContent.states.empty.notConfiguredTitle}
+          {flareContent.common.states.empty.notConfiguredTitle}
         </Text>
         <Text style={styles.emptyCopy}>
-          {flareContent.setup.behaviorPattern.summaryEmptyCopy}
+          {flareContent.components.behaviorPattern.summaryEmptyCopy}
         </Text>
       </View>
     );

@@ -1,0 +1,85 @@
+# Build Run Summary
+## Phase 1 - Implementation
+- scope: Refactored `frontend/src/content/flareContent.json` into the requested top-level groups and updated Flare frontend consumers to the new content paths without intentionally changing copy or behavior.
+- files changed:
+  - `frontend/src/content/flareContent.json`
+  - `frontend/src/components/AppNavigation.tsx`
+  - `frontend/src/components/PlaceholderModal.tsx`
+  - `frontend/src/components/SendFlareButton.tsx`
+  - `frontend/src/components/AuthStatusCard.tsx`
+  - `frontend/src/components/BehaviorPatternSetupModal.tsx`
+  - `frontend/src/components/AnchorNoteSetupModal.tsx`
+  - `frontend/src/components/BehaviorPatternSummary.tsx`
+  - `frontend/src/components/AnchorNoteSummary.tsx`
+  - `frontend/src/components/CheckpointReflectionModal.tsx`
+  - `frontend/src/components/FlareResponse.tsx`
+  - `frontend/src/components/FlareEventHistoryList.tsx`
+  - `frontend/src/screens/CustomizeScreen.tsx`
+  - `frontend/src/screens/FlareScreen.tsx`
+  - `frontend/src/screens/HistoryScreen.tsx`
+- tests run: Not run yet in Phase 1. Validation deferred to Phase 2 per run contract.
+- initial result: New content structure is in place, duplicate close action was removed in favor of `common.modal.close`, and safety copy was centralized where practical through the new `safety` group.
+## Phase 2 - Review and Gap Closure
+- compared against:
+  - Run task goal, scope, refactor rules, acceptance criteria, and validation checklist
+  - Feature contract for `admin-config`
+  - Toolbox constitution requirements for minimal change, validation-first execution, and mobile-first frontend discipline
+- gaps identified:
+  - After the initial implementation pass, auth connection labels had been moved out of the requested `auth.status` grouping.
+  - Shared safety strings were still duplicated in auth-specific content branches instead of being consumed from the centralized `safety` group where the copy matched exactly.
+  - Manual UI inspection items from the prompt were not executed in this CLI run.
+- fixes applied:
+  - Restored `connected` and `localOnly` under `auth.status` and updated `AuthStatusCard` to read from that group.
+  - Switched matching auth safety rendering to use centralized `safety.selfSupportBoundary`, `safety.notCrisisCare`, and `safety.noEmergencyResponse`.
+  - Re-ran the full required frontend validation after the Phase 2 cleanup:
+    - `npm run lint`
+    - `npm run typecheck`
+    - `npm run test`
+    - `$env:EXPO_NO_TELEMETRY='1'; npm run build`
+- remaining gaps:
+  - Manual inspection of navigation, auth, customize, flare, modal, and history flows was not performed in this run.
+- final assessment:
+  - Requested content-file regrouping is complete in a single file.
+  - Visible copy was preserved aside from structural relocation.
+  - Consumer key paths were updated without introducing undefined content lookups in automated validation.
+  - Automated validation passed: lint, typecheck, 13/13 test suites, and Expo web build.
+## Learning Candidates
+- status: none
+- reason: Evaluated repeated failures, schema/constraint drift, path/env issues, diagnostics gaps, and test gaps; no reusable, scoped, evidence-backed learning candidate emerged from this run.
+
+## Diff
+- terminal_state_snapshot: completed
+- files_changed: 16
+- insertions: 594
+- deletions: 380
+- note: terminal_state_snapshot reflects the run state when diff metadata was captured.
+- changed_files:
+  - docs/90_archive/task_summary/AI/task_20260702_162757__admin-config__flare-v0-content-file-structure-refactor__run_b66a.md
+  - frontend/src/components/AnchorNoteSetupModal.tsx
+  - frontend/src/components/AnchorNoteSummary.tsx
+  - frontend/src/components/AppNavigation.tsx
+  - frontend/src/components/AuthStatusCard.tsx
+  - frontend/src/components/BehaviorPatternSetupModal.tsx
+  - frontend/src/components/BehaviorPatternSummary.tsx
+  - frontend/src/components/CheckpointReflectionModal.tsx
+  - frontend/src/components/FlareEventHistoryList.tsx
+  - frontend/src/components/FlareResponse.tsx
+  - frontend/src/components/PlaceholderModal.tsx
+  - frontend/src/components/SendFlareButton.tsx
+  - frontend/src/content/flareContent.json
+  - frontend/src/screens/CustomizeScreen.tsx
+  - frontend/src/screens/FlareScreen.tsx
+  - frontend/src/screens/HistoryScreen.tsx
+## Validation Summary
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: <none>
+- summary: Validation details were derived from the Build Run Summary body.
+## Final Run State
+- terminal_state: completed
+- summary_written: true
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: <none>

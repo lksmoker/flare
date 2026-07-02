@@ -9,14 +9,14 @@ type SendFlareButtonProps = {
 export function SendFlareButton({ onPress }: SendFlareButtonProps) {
   return (
     <Pressable
-      accessibilityHint={flareContent.flare.sendButton.hint}
+      accessibilityHint={flareContent.components.sendFlare.hint}
       accessibilityRole="button"
       onPress={onPress}
       style={styles.button}
     >
-      <Text style={styles.label}>{flareContent.flare.sendButton.label}</Text>
+      <Text style={styles.label}>{flareContent.components.sendFlare.label}</Text>
       <Text style={styles.supportingCopy}>
-        {flareContent.flare.sendButton.copy}
+        {flareContent.components.sendFlare.copy}
       </Text>
     </Pressable>
   );

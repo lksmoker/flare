@@ -15,16 +15,16 @@ type FlareEventHistoryListProps = {
 
 function getStatusLabel(flareEvent: FlareEvent) {
   if (flareEvent.archivedAt) {
-    return flareContent.history.list.status.archived;
+    return flareContent.common.status.archivedEvent;
   }
 
   switch (flareEvent.status) {
     case "active":
-      return flareContent.history.list.status.active;
+      return flareContent.common.status.activeEvent;
     case "reflected":
-      return flareContent.history.list.status.reflected;
+      return flareContent.common.status.reflectedEvent;
     default:
-      return flareContent.history.list.status.closed;
+      return flareContent.common.status.closedEvent;
   }
 }
 
@@ -38,10 +38,10 @@ export function FlareEventHistoryList({
     return (
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>
-          {emptyTitle ?? flareContent.history.empty.default.title}
+          {emptyTitle ?? flareContent.screens.history.empty.default.title}
         </Text>
         <Text style={styles.emptyCopy}>
-          {emptyCopy ?? flareContent.history.empty.default.copy}
+          {emptyCopy ?? flareContent.screens.history.empty.default.copy}
         </Text>
       </View>
     );
@@ -58,15 +58,17 @@ export function FlareEventHistoryList({
           }
           style={styles.card}
         >
-          <Text style={styles.cardTitle}>{flareContent.history.list.cardTitle}</Text>
+          <Text style={styles.cardTitle}>
+            {flareContent.components.flareEventHistory.list.cardTitle}
+          </Text>
           <Text style={styles.cardDetail}>
             {getStatusLabel(flareEvent)} |{" "}
             {formatFlareEventTimestamp(flareEvent.createdAt)}
           </Text>
           <Text style={styles.cardNote}>
             {flareEvent.behaviorLabelSnapshot
-              ? `${flareContent.history.list.behaviorPatternConfiguredPrefix} ${flareEvent.behaviorLabelSnapshot}`
-              : flareContent.history.list.behaviorPatternNotConfigured}
+              ? `${flareContent.components.flareEventHistory.list.behaviorPatternConfiguredPrefix} ${flareEvent.behaviorLabelSnapshot}`
+              : flareContent.components.flareEventHistory.list.behaviorPatternNotConfigured}
           </Text>
           {flareEvent.behaviorDescriptionSnapshot ? (
             <Text style={styles.cardNote}>
@@ -76,27 +78,39 @@ export function FlareEventHistoryList({
           {flareEvent.checkpoint ? (
             <View style={styles.reflectionCard}>
               <Text style={styles.reflectionTitle}>
-                {flareContent.history.list.reflectionTitle}
+                {flareContent.components.flareEventHistory.list.reflectionTitle}
               </Text>
               <Text style={styles.reflectionCopy}>
-                {flareContent.history.list.reflectionFields.whatHappened}{" "}
+                {
+                  flareContent.components.flareEventHistory.list.reflectionFields
+                    .whatHappened
+                }{" "}
                 {flareEvent.checkpoint.whatHappened}
               </Text>
               <Text style={styles.reflectionCopy}>
-                {flareContent.history.list.reflectionFields.whatHelped}{" "}
+                {
+                  flareContent.components.flareEventHistory.list.reflectionFields
+                    .whatHelped
+                }{" "}
                 {flareEvent.checkpoint.whatHelped}
               </Text>
               <Text style={styles.reflectionCopy}>
-                {flareContent.history.list.reflectionFields.howIFeelNow}{" "}
+                {
+                  flareContent.components.flareEventHistory.list.reflectionFields
+                    .howIFeelNow
+                }{" "}
                 {flareEvent.checkpoint.howIFeelNow}
               </Text>
               <Text style={styles.reflectionCopy}>
-                {flareContent.history.list.reflectionFields.outcome}{" "}
+                {
+                  flareContent.components.flareEventHistory.list.reflectionFields
+                    .outcome
+                }{" "}
                 {flareEvent.checkpoint.outcome}
               </Text>
               {flareEvent.checkpoint.note ? (
                 <Text style={styles.reflectionCopy}>
-                  {flareContent.history.list.reflectionFields.note}{" "}
+                  {flareContent.components.flareEventHistory.list.reflectionFields.note}{" "}
                   {flareEvent.checkpoint.note}
                 </Text>
               ) : null}

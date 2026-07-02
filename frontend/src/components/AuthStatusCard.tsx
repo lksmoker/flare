@@ -10,7 +10,7 @@ function getConnectionLabel(
   authState: ReturnType<typeof useFlareAuth>["authState"],
 ) {
   if (authStatus === "loading") {
-    return flareContent.states.loading.checkingConnection;
+    return flareContent.common.states.loading.checkingConnection;
   }
 
   if (authState.kind === "authenticated") {
@@ -64,7 +64,7 @@ export function AuthStatusCard() {
 
       {authStatus === "loading" ? (
         <Text style={styles.copy}>
-          {flareContent.auth.loadingCopy}
+          {flareContent.auth.loading.copy}
         </Text>
       ) : null}
 
@@ -77,7 +77,9 @@ export function AuthStatusCard() {
             {flareContent.auth.authenticated.signedInAs}{" "}
             {authState.userEmail ?? authState.userId}
           </Text>
-          <Text style={styles.detail}>{flareContent.auth.authenticated.safety}</Text>
+          <Text style={styles.detail}>
+            {flareContent.safety.selfSupportBoundary}
+          </Text>
           <Pressable
             accessibilityRole="button"
             onPress={() => {
@@ -100,7 +102,9 @@ export function AuthStatusCard() {
           <Text style={styles.copy}>
             {flareContent.auth.clientUnavailable.copy}
           </Text>
-          <Text style={styles.detail}>{flareContent.auth.clientUnavailable.safety}</Text>
+          <Text style={styles.detail}>
+            {flareContent.safety.noEmergencyResponse}
+          </Text>
         </>
       ) : null}
 
@@ -109,7 +113,7 @@ export function AuthStatusCard() {
           <Text style={styles.copy}>
             {flareContent.auth.noSession.copy}
           </Text>
-          <Text style={styles.detail}>{flareContent.auth.noSession.safety}</Text>
+          <Text style={styles.detail}>{flareContent.safety.notCrisisCare}</Text>
           <View style={styles.modeRow}>
             <Pressable
               accessibilityRole="button"
@@ -158,19 +162,23 @@ export function AuthStatusCard() {
               : flareContent.auth.noSession.modes.firstTimeSetupDetail}
           </Text>
           <TextInput
-            accessibilityLabel={flareContent.auth.noSession.emailAccessibilityLabel}
+            accessibilityLabel={
+              flareContent.auth.noSession.form.emailAccessibilityLabel
+            }
             autoCapitalize="none"
             keyboardType="email-address"
             onChangeText={setEmail}
-            placeholder={flareContent.auth.noSession.emailPlaceholder}
+            placeholder={flareContent.auth.noSession.form.emailPlaceholder}
             style={styles.input}
             value={email}
           />
           <TextInput
-            accessibilityLabel={flareContent.auth.noSession.passwordAccessibilityLabel}
+            accessibilityLabel={
+              flareContent.auth.noSession.form.passwordAccessibilityLabel
+            }
             autoCapitalize="none"
             onChangeText={setPassword}
-            placeholder={flareContent.auth.noSession.passwordPlaceholder}
+            placeholder={flareContent.auth.noSession.form.passwordPlaceholder}
             secureTextEntry
             style={styles.input}
             value={password}
@@ -235,7 +243,7 @@ export function AuthStatusCard() {
           <Text style={styles.detail}>
             {redirectUrl
               ? `${flareContent.auth.noSession.redirectLabel} ${redirectUrl}`
-              : flareContent.states.error.missingRedirectUrl}
+              : flareContent.common.states.error.missingRedirectUrl}
           </Text>
         </>
       ) : null}

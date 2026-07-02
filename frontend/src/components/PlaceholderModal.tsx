@@ -52,7 +52,7 @@ export function PlaceholderModal({
               style={styles.closeButton}
             >
               <Text style={styles.closeButtonLabel}>
-                {flareContent.app.modal.close}
+                {flareContent.common.modal.close}
               </Text>
             </Pressable>
           </View>

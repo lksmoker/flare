@@ -22,33 +22,33 @@ export function FlareScreen() {
 
   const persistenceStatus =
     authStatus === "loading"
-      ? flareContent.states.loading.checkingSession
+      ? flareContent.common.states.loading.checkingSession
       : authState.kind === "authenticated"
-        ? `${flareContent.flare.readiness.connectedPrefix} ${authState.userEmail ?? authState.userId}`
+        ? `${flareContent.screens.flare.readiness.connectedPrefix} ${authState.userEmail ?? authState.userId}`
         : authState.kind === "client-unavailable"
-          ? flareContent.flare.readiness.localOnlyUntilConfigLoaded
-          : flareContent.flare.readiness.localOnlyUntilSignIn;
+          ? flareContent.screens.flare.readiness.localOnlyUntilConfigLoaded
+          : flareContent.screens.flare.readiness.localOnlyUntilSignIn;
 
   const readinessItems = [
     {
-      label: flareContent.flare.readiness.setupPersistence,
+      label: flareContent.screens.flare.readiness.setupPersistence,
       status: persistenceStatus,
     },
     {
-      label: flareContent.flare.readiness.behaviorPattern,
+      label: flareContent.screens.flare.readiness.behaviorPattern,
       status: isConfigured
-        ? `${flareContent.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
-        : flareContent.flare.readiness.readyToDefine,
+        ? `${flareContent.screens.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
+        : flareContent.screens.flare.readiness.readyToDefine,
     },
     {
-      label: flareContent.flare.readiness.anchorNote,
+      label: flareContent.screens.flare.readiness.anchorNote,
       status: isAnchorNoteConfigured
-        ? `${flareContent.flare.readiness.configuredPrefix} ${anchorNote?.supportivePhrase}`
-        : flareContent.flare.readiness.readyToDefine,
+        ? `${flareContent.screens.flare.readiness.configuredPrefix} ${anchorNote?.supportivePhrase}`
+        : flareContent.screens.flare.readiness.readyToDefine,
     },
     {
-      label: flareContent.flare.readiness.telegram,
-      status: flareContent.flare.readiness.comingSoon,
+      label: flareContent.screens.flare.readiness.telegram,
+      status: flareContent.common.status.comingSoon,
     },
   ];
 
@@ -61,9 +61,9 @@ export function FlareScreen() {
   return (
     <AppShell
       currentPath="/"
-      screenLabel={flareContent.flare.screenLabel}
-      subtitle={flareContent.flare.subtitle}
-      title={flareContent.flare.title}
+      screenLabel={flareContent.screens.flare.screenLabel}
+      subtitle={flareContent.screens.flare.subtitle}
+      title={flareContent.screens.flare.title}
     >
       <SendFlareButton
         onPress={() => {
@@ -83,15 +83,17 @@ export function FlareScreen() {
         style={styles.secondaryButton}
       >
         <Text style={styles.secondaryButtonLabel}>
-          {flareContent.flare.secondaryAction.label}
+          {flareContent.screens.flare.secondaryAction.label}
         </Text>
         <Text style={styles.secondaryButtonCopy}>
-          {flareContent.flare.secondaryAction.copy}
+          {flareContent.screens.flare.secondaryAction.copy}
         </Text>
       </Pressable>
 
       <View style={styles.readinessCard}>
-        <Text style={styles.sectionTitle}>{flareContent.flare.readiness.title}</Text>
+        <Text style={styles.sectionTitle}>
+          {flareContent.screens.flare.readiness.title}
+        </Text>
         <View style={styles.readinessList}>
           {readinessItems.map((item) => (
             <View key={item.label} style={styles.readinessPill}>
@@ -104,8 +106,8 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
-        subtitle={flareContent.flare.responseModal.subtitle}
-        title={flareContent.flare.responseModal.title}
+        subtitle={flareContent.components.flareResponse.modalSubtitle}
+        title={flareContent.components.flareResponse.modalTitle}
         visible={isFlareResponseVisible}
       >
         <FlareResponse

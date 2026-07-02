@@ -1,33 +1,51 @@
 {
   "app": {
-    "name": "Flare",
-    "navigation": {
-      "flare": "Flare",
-      "history": "History",
-      "customize": "Customize"
+    "name": "Flare"
+  },
+  "navigation": {
+    "flare": "Flare",
+    "history": "History",
+    "customize": "Customize"
+  },
+  "common": {
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "archiveEvent": "Archive event",
+      "restoreEvent": "Restore event"
     },
     "modal": {
       "close": "Close"
+    },
+    "status": {
+      "configured": "Configured",
+      "needsSetup": "Needs setup",
+      "connected": "Connected",
+      "localOnly": "Local-only",
+      "comingSoon": "Coming in V1",
+      "archivedEvent": "Archived event",
+      "activeEvent": "Active event",
+      "reflectedEvent": "Reflected event",
+      "closedEvent": "Closed event"
+    },
+    "states": {
+      "loading": {
+        "checkingConnection": "Checking connection",
+        "checkingSession": "Checking for a real session"
+      },
+      "empty": {
+        "notConfiguredTitle": "Not configured yet"
+      },
+      "error": {
+        "missingRedirectUrl": "Current redirect URL: not configured. Supabase may redirect to the project Site URL instead."
+      }
     }
   },
-  "actions": {
-    "cancel": "Cancel",
-    "save": "Save",
-    "archiveEvent": "Archive event",
-    "restoreEvent": "Restore event",
-    "close": "Close"
-  },
-  "states": {
-    "loading": {
-      "checkingConnection": "Checking connection",
-      "checkingSession": "Checking for a real session"
-    },
-    "empty": {
-      "notConfiguredTitle": "Not configured yet"
-    },
-    "error": {
-      "missingRedirectUrl": "Current redirect URL: not configured. Supabase may redirect to the project Site URL instead."
-    }
+  "safety": {
+    "selfSupportBoundary": "Flare is a self-support tool. It does not monitor you in real time or contact anyone for you.",
+    "notCrisisCare": "Flare is for self-support and reflection. It is not a crisis service, therapy replacement, or medical treatment.",
+    "noEmergencyResponse": "Flare does not monitor urgent risk or provide emergency response.",
+    "urgentHelp": "Flare is a self-support tool. If you may hurt yourself or someone else, or you need immediate help, contact local emergency services or a crisis hotline now."
   },
   "auth": {
     "cardTitle": "Setup persistence",
@@ -35,31 +53,32 @@
       "connected": "Connected",
       "localOnly": "Local-only"
     },
-    "loadingCopy": "Checking whether a real Supabase session is available for setup persistence.",
+    "loading": {
+      "copy": "Checking whether a real Supabase session is available for setup persistence."
+    },
     "authenticated": {
       "copy": "Your setup can now reload on this device because Behavior Pattern and Anchor Note save to your signed-in Supabase account.",
       "signedInAs": "Signed in as",
-      "safety": "Flare is a self-support tool. It does not monitor you in real time or contact anyone for you.",
       "signOut": "Sign out",
       "signingOut": "Signing out..."
     },
     "clientUnavailable": {
-      "copy": "Setup persistence is local-only because the public Supabase URL and anon key are not loaded into the Expo runtime.",
-      "safety": "Flare does not monitor urgent risk or provide emergency response."
+      "copy": "Setup persistence is local-only because the public Supabase URL and anon key are not loaded into the Expo runtime."
     },
     "noSession": {
       "copy": "Setup saves still work locally in memory, but they will not reload from Supabase until you authenticate.",
-      "safety": "Flare is for self-support and reflection. It is not a crisis service, therapy replacement, or medical treatment.",
-      "emailAccessibilityLabel": "Auth email",
-      "passwordAccessibilityLabel": "Auth password",
+      "form": {
+        "emailAccessibilityLabel": "Auth email",
+        "passwordAccessibilityLabel": "Auth password",
+        "emailPlaceholder": "you@example.com",
+        "passwordPlaceholder": "Password for direct sign-in"
+      },
       "modes": {
         "existingAccount": "Existing account",
         "firstTimeSetup": "First-time setup",
         "existingAccountDetail": "Sign in is for an existing Supabase account on this project.",
         "firstTimeSetupDetail": "Create account is the first-time setup path for a new Supabase user."
       },
-      "emailPlaceholder": "you@example.com",
-      "passwordPlaceholder": "Password for direct sign-in",
       "passwordHint": "Password sign-in uses the current Supabase project settings. Magic link requires the configured redirect URL to be allowed in Supabase.",
       "redirectLabel": "Current redirect URL:",
       "redirectMagicLinkPrefix": "Magic link sent if email auth is enabled. It should return to",
@@ -75,14 +94,70 @@
       }
     }
   },
-  "setup": {
-    "screenLabel": "Setup",
-    "title": "Customize what helps you pause and reflect",
-    "subtitle": "Keep your personal setup separate from the in-the-moment flow.",
-    "status": {
-      "configured": "Configured",
-      "needsSetup": "Needs setup"
+  "screens": {
+    "customize": {
+      "screenLabel": "Setup",
+      "title": "Customize what helps you pause and reflect",
+      "subtitle": "Keep your personal setup separate from the in-the-moment flow."
     },
+    "flare": {
+      "screenLabel": "Urgent action",
+      "title": "Use Flare to pause, regroup, and choose a next step",
+      "subtitle": "Keep the flow simple: one main action, one secondary reflection entry, and lightweight readiness cues.",
+      "readiness": {
+        "title": "Readiness",
+        "setupPersistence": "Setup persistence",
+        "behaviorPattern": "Behavior Pattern",
+        "anchorNote": "Anchor Note",
+        "telegram": "Telegram Support",
+        "configuredPrefix": "Configured:",
+        "readyToDefine": "Ready to define",
+        "localOnlyUntilSignIn": "Local-only until sign in",
+        "localOnlyUntilConfigLoaded": "Local-only until public Supabase config is loaded",
+        "connectedPrefix": "Connected:"
+      },
+      "secondaryAction": {
+        "label": "Checkpoint / Reflection",
+        "copy": "Open a lightweight reflection sheet without leaving this screen."
+      }
+    },
+    "history": {
+      "screenLabel": "Past moments",
+      "title": "Review past flares without turning this into analytics",
+      "subtitle": "A lightweight chronological list of past Flare Events and attached Checkpoint / Reflection notes.",
+      "intro": "Signed-in sessions load your own saved event history. Signed-out sessions stay local-only. Flare does not monitor you in real time or score your behavior.",
+      "controls": {
+        "title": "Find a past moment",
+        "searchAccessibilityLabel": "Search Flare Event history",
+        "searchPlaceholder": "Search behavior or reflection notes"
+      },
+      "filters": {
+        "active": "Active",
+        "reflected": "Reflected",
+        "archived": "Archived",
+        "all": "All"
+      },
+      "empty": {
+        "search": {
+          "title": "No matching Flare Events",
+          "copy": "Try a different search term from the behavior snapshot or reflection notes."
+        },
+        "archived": {
+          "title": "No archived Flare Events",
+          "copy": "Archive keeps older events out of the default view without deleting them."
+        },
+        "reflected": {
+          "title": "No reflected Flare Events",
+          "copy": "Checkpoint / Reflection entries appear here after you save a reflection."
+        },
+        "default": {
+          "title": "No Flare Events yet",
+          "copy": "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only."
+        }
+      }
+    }
+  },
+  "components": {
     "behaviorPattern": {
       "cardTitle": "Behavior Pattern Setup",
       "cardCopy": "Define the pattern, likely triggers, and the next step you want handy when you are trying to interrupt an urge.",
@@ -160,43 +235,19 @@
         "supportivePhrase": "Supportive phrase"
       }
     },
-    "telegram": {
+    "telegramSupport": {
       "title": "Telegram Support",
       "badge": "Coming in V1",
       "copy": "Visible here as future-scoped direction only. V0 does not send messages, alerts, or outreach on your behalf."
-    }
-  },
-  "flare": {
-    "screenLabel": "Urgent action",
-    "title": "Use Flare to pause, regroup, and choose a next step",
-    "subtitle": "Keep the flow simple: one main action, one secondary reflection entry, and lightweight readiness cues.",
-    "sendButton": {
+    },
+    "sendFlare": {
       "label": "Send Flare",
       "hint": "Starts a new Flare Event and opens Flare Response right away.",
       "copy": "Mark this moment, open your saved support copy, and pick a next step with no extra confirmation screen."
     },
-    "secondaryAction": {
-      "label": "Checkpoint / Reflection",
-      "copy": "Open a lightweight reflection sheet without leaving this screen."
-    },
-    "readiness": {
-      "title": "Readiness",
-      "setupPersistence": "Setup persistence",
-      "behaviorPattern": "Behavior Pattern",
-      "anchorNote": "Anchor Note",
-      "telegram": "Telegram Support",
-      "configuredPrefix": "Configured:",
-      "readyToDefine": "Ready to define",
-      "comingSoon": "Coming in V1",
-      "localOnlyUntilSignIn": "Local-only until sign in",
-      "localOnlyUntilConfigLoaded": "Local-only until public Supabase config is loaded",
-      "connectedPrefix": "Connected:"
-    },
-    "responseModal": {
-      "title": "Flare Response",
-      "subtitle": "This V0 sheet opens immediately and stays attached to the current Flare Event."
-    },
-    "response": {
+    "flareResponse": {
+      "modalTitle": "Flare Response",
+      "modalSubtitle": "This V0 sheet opens immediately and stays attached to the current Flare Event.",
       "eventLabel": "Current Flare Event",
       "eventTitleActive": "Your self-support screen is open",
       "eventTitleReflected": "Reflection saved for this event",
@@ -213,118 +264,81 @@
       "nextStepTitle": "Try one next step",
       "defaultNextStep": "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next.",
       "checkpointButton": "Checkpoint / Reflection"
-    }
-  },
-  "checkpoint": {
-    "modalTitle": "Checkpoint / Reflection",
-    "modalSubtitle": "Keep the reflection lightweight and attach it to the current event.",
-    "helperCopy": "Save requires an active event plus the main reflection fields.",
-    "saveButton": "Save Reflection",
-    "context": {
-      "activeLabel": "Attaching to current event",
-      "activeCopy": "This reflection will update the event you started from Send Flare.",
-      "missingLabel": "No active Flare Event",
-      "missingCopy": "Send Flare first to create the current event, then save a brief reflection here."
     },
-    "intro": "Use this space to notice what happened and what helped. Flare does not provide therapy, medical advice, or crisis response.",
-    "fields": {
-      "whatHappened": {
-        "label": "What happened?",
-        "placeholder": "I hit the urge after getting home and started pacing."
+    "checkpointReflection": {
+      "modalTitle": "Checkpoint / Reflection",
+      "modalSubtitle": "Keep the reflection lightweight and attach it to the current event.",
+      "helperCopy": "Save requires an active event plus the main reflection fields.",
+      "saveButton": "Save Reflection",
+      "context": {
+        "activeLabel": "Attaching to current event",
+        "activeCopy": "This reflection will update the event you started from Send Flare.",
+        "missingLabel": "No active Flare Event",
+        "missingCopy": "Send Flare first to create the current event, then save a brief reflection here."
       },
-      "whatHelped": {
-        "label": "What helped?",
-        "placeholder": "I stepped outside and texted a friend instead."
-      },
-      "howIFeelNow": {
-        "label": "How do I feel now?",
-        "placeholder": "Still activated, but less locked in."
-      },
-      "outcome": {
-        "label": "Outcome",
-        "placeholder": "Urge dropped enough to keep moving."
-      },
-      "note": {
-        "label": "Optional note",
-        "placeholder": "The first two minutes were the hardest."
-      }
-    }
-  },
-  "history": {
-    "screenLabel": "Past moments",
-    "title": "Review past flares without turning this into analytics",
-    "subtitle": "A lightweight chronological list of past Flare Events and attached Checkpoint / Reflection notes.",
-    "intro": "Signed-in sessions load your own saved event history. Signed-out sessions stay local-only. Flare does not monitor you in real time or score your behavior.",
-    "controlsTitle": "Find a past moment",
-    "searchAccessibilityLabel": "Search Flare Event history",
-    "searchPlaceholder": "Search behavior or reflection notes",
-    "filters": {
-      "active": "Active",
-      "reflected": "Reflected",
-      "archived": "Archived",
-      "all": "All"
-    },
-    "empty": {
-      "search": {
-        "title": "No matching Flare Events",
-        "copy": "Try a different search term from the behavior snapshot or reflection notes."
-      },
-      "archived": {
-        "title": "No archived Flare Events",
-        "copy": "Archive keeps older events out of the default view without deleting them."
-      },
-      "reflected": {
-        "title": "No reflected Flare Events",
-        "copy": "Checkpoint / Reflection entries appear here after you save a reflection."
-      },
-      "default": {
-        "title": "No Flare Events yet",
-        "copy": "Send Flare to log the first event. Signed-in sessions can reload saved events here, while signed-out sessions stay local-only."
+      "intro": "Use this space to notice what happened and what helped. Flare does not provide therapy, medical advice, or crisis response.",
+      "fields": {
+        "whatHappened": {
+          "label": "What happened?",
+          "placeholder": "I hit the urge after getting home and started pacing."
+        },
+        "whatHelped": {
+          "label": "What helped?",
+          "placeholder": "I stepped outside and texted a friend instead."
+        },
+        "howIFeelNow": {
+          "label": "How do I feel now?",
+          "placeholder": "Still activated, but less locked in."
+        },
+        "outcome": {
+          "label": "Outcome",
+          "placeholder": "Urge dropped enough to keep moving."
+        },
+        "note": {
+          "label": "Optional note",
+          "placeholder": "The first two minutes were the hardest."
+        }
       }
     },
-    "list": {
-      "cardTitle": "Flare Event",
-      "status": {
-        "archived": "Archived event",
-        "active": "Active event",
-        "reflected": "Reflected event",
-        "closed": "Closed event"
+    "flareEventHistory": {
+      "list": {
+        "cardTitle": "Flare Event",
+        "behaviorPatternConfiguredPrefix": "Behavior Pattern:",
+        "behaviorPatternNotConfigured": "Behavior Pattern: Not configured yet",
+        "reflectionTitle": "Checkpoint / Reflection",
+        "reflectionFields": {
+          "whatHappened": "What happened:",
+          "whatHelped": "What helped:",
+          "howIFeelNow": "How I feel now:",
+          "outcome": "Outcome:",
+          "note": "Note:"
+        }
       },
-      "behaviorPatternConfiguredPrefix": "Behavior Pattern:",
-      "behaviorPatternNotConfigured": "Behavior Pattern: Not configured yet",
-      "reflectionTitle": "Checkpoint / Reflection",
-      "reflectionFields": {
-        "whatHappened": "What happened:",
-        "whatHelped": "What helped:",
-        "howIFeelNow": "How I feel now:",
-        "outcome": "Outcome:",
-        "note": "Note:"
+      "detailModal": {
+        "title": "Flare Event details",
+        "subtitle": "Review the saved behavior snapshot and any attached reflection before deciding whether to archive or restore it."
+      },
+      "detail": {
+        "labels": {
+          "created": "Created",
+          "status": "Status",
+          "archived": "Archived",
+          "behaviorPattern": "Behavior Pattern",
+          "behaviorSnapshot": "Behavior Snapshot",
+          "responseMode": "Response mode",
+          "supportActionShown": "Support action shown",
+          "supportActionTaken": "Support action taken",
+          "checkpointReflection": "Checkpoint / Reflection",
+          "whatHappened": "What happened",
+          "whatHelped": "What helped",
+          "howIFeelNow": "How I feel now",
+          "outcome": "Outcome",
+          "actionTaken": "Action taken",
+          "note": "Note"
+        },
+        "statusArchived": "Archived",
+        "behaviorPatternNotConfigured": "Behavior pattern not configured"
       }
-    },
-    "detailModal": {
-      "title": "Flare Event details",
-      "subtitle": "Review the saved behavior snapshot and any attached reflection before deciding whether to archive or restore it."
-    },
-    "detail": {
-      "labels": {
-        "created": "Created",
-        "status": "Status",
-        "archived": "Archived",
-        "behaviorPattern": "Behavior Pattern",
-        "behaviorSnapshot": "Behavior Snapshot",
-        "responseMode": "Response mode",
-        "supportActionShown": "Support action shown",
-        "supportActionTaken": "Support action taken",
-        "checkpointReflection": "Checkpoint / Reflection",
-        "whatHappened": "What happened",
-        "whatHelped": "What helped",
-        "howIFeelNow": "How I feel now",
-        "outcome": "Outcome",
-        "actionTaken": "Action taken",
-        "note": "Note"
-      },
-      "statusArchived": "Archived",
-      "behaviorPatternNotConfigured": "Behavior pattern not configured"
     }
   }
 }

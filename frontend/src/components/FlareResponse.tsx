@@ -21,40 +21,42 @@ export function FlareResponse({
   return (
     <View style={styles.container}>
       <View style={styles.eventCard}>
-        <Text style={styles.eventLabel}>{flareContent.flare.response.eventLabel}</Text>
+        <Text style={styles.eventLabel}>
+          {flareContent.components.flareResponse.eventLabel}
+        </Text>
         <Text style={styles.eventTitle}>
           {flareEvent?.status === "reflected"
-            ? flareContent.flare.response.eventTitleReflected
-            : flareContent.flare.response.eventTitleActive}
+            ? flareContent.components.flareResponse.eventTitleReflected
+            : flareContent.components.flareResponse.eventTitleActive}
         </Text>
         <Text style={styles.eventCopy}>
           {flareEvent
-            ? `${flareContent.flare.response.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.flare.response.eventStatusPrefix} ${flareEvent.status}`
-            : flareContent.flare.response.noActiveEvent}
+            ? `${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`
+            : flareContent.components.flareResponse.noActiveEvent}
         </Text>
         {flareEvent?.behaviorLabelSnapshot ? (
           <Text style={styles.eventCopy}>
-            {flareContent.flare.response.behaviorPatternPrefix}{" "}
+            {flareContent.components.flareResponse.behaviorPatternPrefix}{" "}
             {flareEvent.behaviorLabelSnapshot}
           </Text>
         ) : null}
       </View>
       <View style={styles.callout}>
         <Text style={styles.calloutLabel}>
-          {flareContent.flare.response.anchorNoteLabel}
+          {flareContent.components.flareResponse.anchorNoteLabel}
         </Text>
         <Text style={styles.calloutTitle}>
           {anchorNote?.supportivePhrase ||
-            flareContent.flare.response.defaultSupportivePhrase}
+            flareContent.components.flareResponse.defaultSupportivePhrase}
         </Text>
         <Text style={styles.calloutCopy}>
           {anchorNote?.interruptionReasons ||
-            flareContent.flare.response.defaultInterruptionReason}
+            flareContent.components.flareResponse.defaultInterruptionReason}
         </Text>
         {anchorNote?.groundedReminders ? (
           <View style={styles.memorySection}>
             <Text style={styles.memoryLabel}>
-              {flareContent.flare.response.groundedReminderLabel}
+              {flareContent.components.flareResponse.groundedReminderLabel}
             </Text>
             <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
           </View>
@@ -62,20 +64,20 @@ export function FlareResponse({
         {anchorNote?.continuingCosts ? (
           <View style={styles.memorySection}>
             <Text style={styles.memoryLabel}>
-              {flareContent.flare.response.continuingCostsLabel}
+              {flareContent.components.flareResponse.continuingCostsLabel}
             </Text>
             <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
           </View>
         ) : null}
-        <Text style={styles.safetyCopy}>{flareContent.flare.response.safety}</Text>
+        <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
       </View>
       <View style={styles.actionCard}>
         <Text style={styles.actionTitle}>
-          {flareContent.flare.response.nextStepTitle}
+          {flareContent.components.flareResponse.nextStepTitle}
         </Text>
         <Text style={styles.actionCopy}>
           {anchorNote?.emergencyActions ||
-            flareContent.flare.response.defaultNextStep}
+            flareContent.components.flareResponse.defaultNextStep}
         </Text>
       </View>
       <Pressable
@@ -84,7 +86,7 @@ export function FlareResponse({
         style={styles.secondaryButton}
       >
         <Text style={styles.secondaryButtonLabel}>
-          {flareContent.flare.response.checkpointButton}
+          {flareContent.components.flareResponse.checkpointButton}
         </Text>
       </Pressable>
     </View>

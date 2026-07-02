@@ -37,7 +37,7 @@ export function BehaviorPatternSetupModal({
       footer={
         <View style={styles.footer}>
           <Text style={styles.helperCopy}>
-            {flareContent.setup.behaviorPattern.helperCopy}
+            {flareContent.components.behaviorPattern.helperCopy}
           </Text>
           <View style={styles.footerActions}>
             <Pressable
@@ -46,7 +46,7 @@ export function BehaviorPatternSetupModal({
               style={styles.cancelButton}
             >
               <Text style={styles.cancelButtonLabel}>
-                {flareContent.actions.cancel}
+                {flareContent.common.actions.cancel}
               </Text>
             </Pressable>
             <Pressable
@@ -62,33 +62,36 @@ export function BehaviorPatternSetupModal({
               ]}
             >
               <Text style={styles.saveButtonLabel}>
-                {flareContent.setup.behaviorPattern.saveButton}
+                {flareContent.components.behaviorPattern.saveButton}
               </Text>
             </Pressable>
           </View>
         </View>
       }
       onClose={onClose}
-      subtitle={flareContent.setup.behaviorPattern.modalSubtitle}
-      title={flareContent.setup.behaviorPattern.modalTitle}
+      subtitle={flareContent.components.behaviorPattern.modalSubtitle}
+      title={flareContent.components.behaviorPattern.modalTitle}
       visible={visible}
     >
       <View style={styles.form}>
-        <Text style={styles.intro}>{flareContent.setup.behaviorPattern.intro}</Text>
+        <Text style={styles.intro}>
+          {flareContent.components.behaviorPattern.intro}
+        </Text>
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.behaviorPattern.fields.behaviorName.label}
+            {flareContent.components.behaviorPattern.fields.behaviorName.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.behaviorPattern.fields.behaviorName.label
+              flareContent.components.behaviorPattern.fields.behaviorName.label
             }
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, behaviorName: value }))
             }
             placeholder={
-              flareContent.setup.behaviorPattern.fields.behaviorName.placeholder
+              flareContent.components.behaviorPattern.fields.behaviorName
+                .placeholder
             }
             style={styles.input}
             value={draft.behaviorName}
@@ -97,18 +100,23 @@ export function BehaviorPatternSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.behaviorPattern.fields.shortDescription.label}
+            {
+              flareContent.components.behaviorPattern.fields.shortDescription
+                .label
+            }
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.behaviorPattern.fields.shortDescription.label
+              flareContent.components.behaviorPattern.fields.shortDescription
+                .label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, shortDescription: value }))
             }
             placeholder={
-              flareContent.setup.behaviorPattern.fields.shortDescription.placeholder
+              flareContent.components.behaviorPattern.fields.shortDescription
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -118,18 +126,19 @@ export function BehaviorPatternSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
-            {flareContent.setup.behaviorPattern.fields.commonTriggers.label}
+            {flareContent.components.behaviorPattern.fields.commonTriggers.label}
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.behaviorPattern.fields.commonTriggers.label
+              flareContent.components.behaviorPattern.fields.commonTriggers.label
             }
             multiline
             onChangeText={(value) =>
               setDraft((current) => ({ ...current, commonTriggers: value }))
             }
             placeholder={
-              flareContent.setup.behaviorPattern.fields.commonTriggers.placeholder
+              flareContent.components.behaviorPattern.fields.commonTriggers
+                .placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -140,13 +149,14 @@ export function BehaviorPatternSetupModal({
         <View style={styles.field}>
           <Text style={styles.label}>
             {
-              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations
-                .label
+              flareContent.components.behaviorPattern.fields
+                .riskTimesOrSituations.label
             }
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations.label
+              flareContent.components.behaviorPattern.fields
+                .riskTimesOrSituations.label
             }
             multiline
             onChangeText={(value) =>
@@ -156,8 +166,8 @@ export function BehaviorPatternSetupModal({
               }))
             }
             placeholder={
-              flareContent.setup.behaviorPattern.fields.riskTimesOrSituations
-                .placeholder
+              flareContent.components.behaviorPattern.fields
+                .riskTimesOrSituations.placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
@@ -168,14 +178,14 @@ export function BehaviorPatternSetupModal({
         <View style={styles.field}>
           <Text style={styles.label}>
             {
-              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
-                .label
+              flareContent.components.behaviorPattern.fields
+                .preferredRecoveryActions.label
             }
           </Text>
           <TextInput
             accessibilityLabel={
-              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
-                .label
+              flareContent.components.behaviorPattern.fields
+                .preferredRecoveryActions.label
             }
             multiline
             onChangeText={(value) =>
@@ -185,8 +195,8 @@ export function BehaviorPatternSetupModal({
               }))
             }
             placeholder={
-              flareContent.setup.behaviorPattern.fields.preferredRecoveryActions
-                .placeholder
+              flareContent.components.behaviorPattern.fields
+                .preferredRecoveryActions.placeholder
             }
             style={[styles.input, styles.multilineInput]}
             textAlignVertical="top"
