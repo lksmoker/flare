@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
 import flareContent from "../content/flareContent.json";
+import { flareTheme } from "../theme/flareTheme";
 
 type SendFlareButtonProps = {
   onPress: () => void;
@@ -24,29 +25,22 @@ export function SendFlareButton({ onPress }: SendFlareButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
+    ...flareTheme.shadows.hero,
     gap: 10,
     paddingHorizontal: 20,
     paddingVertical: 24,
     borderRadius: 28,
-    backgroundColor: "#d6693d",
-    shadowColor: "#8a3f22",
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    elevation: 4,
+    backgroundColor: flareTheme.colors.primary,
   },
   label: {
-    color: "#fffaf3",
+    color: flareTheme.colors.onPrimary,
     fontSize: 28,
     lineHeight: 32,
     fontWeight: "800",
     textAlign: "center",
   },
   supportingCopy: {
-    color: "#fff4e8",
+    color: flareTheme.colors.onPrimaryMuted,
     fontSize: 15,
     lineHeight: 22,
     textAlign: "center",

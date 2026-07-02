@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import flareContent from "../content/flareContent.json";
+import { flareTheme } from "../theme/flareTheme";
 import { AppNavigation } from "./AppNavigation";
 
 type AppShellProps = PropsWithChildren<{
@@ -45,7 +46,7 @@ export function AppShell({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f3ede2",
+    backgroundColor: flareTheme.colors.background,
   },
   scrollView: {
     flex: 1,
@@ -60,12 +61,13 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   headerCard: {
+    ...flareTheme.shadows.card,
     gap: 18,
     padding: 18,
     borderRadius: 28,
-    backgroundColor: "#fff9f1",
+    backgroundColor: flareTheme.colors.surface,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
+    borderColor: flareTheme.colors.border,
   },
   headerCopy: {
     gap: 6,
@@ -74,10 +76,10 @@ const styles = StyleSheet.create({
     fontSize: 28,
     lineHeight: 32,
     fontWeight: "800",
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
   },
   screenLabel: {
-    color: "#8a5a2b",
+    color: flareTheme.colors.primaryBright,
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 1.2,
@@ -87,11 +89,11 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 30,
     fontWeight: "800",
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
   },
 });

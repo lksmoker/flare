@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import flareContent from "../content/flareContent.json";
 import { readFlareAuthRedirectUrl } from "../services/flareSupabaseAuth";
 import { useFlareAuth } from "../state/FlareAuthContext";
+import { flareTheme } from "../theme/flareTheme";
 
 function getConnectionLabel(
   authStatus: "loading" | "ready",
@@ -269,24 +270,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
+    ...flareTheme.shadows.card,
     gap: 12,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   connectedBadge: {
-    backgroundColor: "#d7eadc",
-    color: "#24553a",
+    backgroundColor: flareTheme.colors.successBg,
+    color: flareTheme.colors.successText,
   },
   copy: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   detail: {
-    color: "#7a5430",
+    color: flareTheme.colors.textMuted,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   error: {
-    color: "#a03228",
+    color: flareTheme.colors.dangerText,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -307,36 +309,36 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#dccfb8",
+    borderColor: flareTheme.colors.border,
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    backgroundColor: "#fff9f1",
-    color: "#1f2937",
+    backgroundColor: flareTheme.colors.surfaceStrong,
+    color: flareTheme.colors.textStrong,
   },
   localOnlyBadge: {
-    backgroundColor: "#efe3d3",
-    color: "#7a5430",
+    backgroundColor: flareTheme.colors.neutralBg,
+    color: flareTheme.colors.neutralText,
   },
   modeButton: {
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#dccfb8",
-    backgroundColor: "#fff9f1",
+    borderColor: flareTheme.colors.borderStrong,
+    backgroundColor: flareTheme.colors.surfaceStrong,
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
   modeButtonActive: {
-    borderColor: "#d6693d",
-    backgroundColor: "#fbe6dd",
+    borderColor: flareTheme.colors.primary,
+    backgroundColor: flareTheme.colors.primaryMuted,
   },
   modeButtonLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 13,
     fontWeight: "700",
   },
   modeButtonLabelActive: {
-    color: "#8e3d17",
+    color: flareTheme.colors.primaryStrong,
   },
   modeRow: {
     flexDirection: "row",
@@ -344,25 +346,25 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   notice: {
-    color: "#24553a",
+    color: flareTheme.colors.successText,
     fontSize: 13,
     lineHeight: 18,
   },
   primaryButton: {
-    borderColor: "#d6693d",
-    backgroundColor: "#d6693d",
+    borderColor: flareTheme.colors.primary,
+    backgroundColor: flareTheme.colors.primary,
   },
   primaryButtonLabel: {
-    color: "#fffaf3",
+    color: flareTheme.colors.onPrimary,
     fontSize: 14,
     fontWeight: "700",
   },
   secondaryButton: {
-    borderColor: "#dccfb8",
-    backgroundColor: "#fff9f1",
+    borderColor: flareTheme.colors.borderStrong,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   secondaryButtonLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -375,7 +377,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   title: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 19,
     lineHeight: 24,
     fontWeight: "700",

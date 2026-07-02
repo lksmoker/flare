@@ -11,6 +11,7 @@ import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
+import { flareTheme } from "../theme/flareTheme";
 
 export function FlareScreen() {
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
@@ -131,15 +132,16 @@ export function FlareScreen() {
 
 const styles = StyleSheet.create({
   readinessCard: {
+    ...flareTheme.shadows.card,
     gap: 14,
     padding: 18,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   sectionTitle: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 19,
     lineHeight: 24,
     fontWeight: "700",
@@ -151,34 +153,35 @@ const styles = StyleSheet.create({
     gap: 4,
     padding: 14,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   readinessLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 14,
     fontWeight: "700",
   },
   readinessStatus: {
-    color: "#6a7685",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   secondaryButton: {
+    ...flareTheme.shadows.card,
     gap: 4,
     padding: 18,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: "#dccfb8",
-    backgroundColor: "#fff9f1",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   secondaryButtonLabel: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 18,
     lineHeight: 22,
     fontWeight: "700",
   },
   secondaryButtonCopy: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },

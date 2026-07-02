@@ -10,6 +10,7 @@ import {
   formatFlareEventTimestamp,
   useFlareEvents,
 } from "../state/FlareEventContext";
+import { flareTheme } from "../theme/flareTheme";
 
 type HistoryFilter = "active" | "all" | "archived" | "reflected";
 
@@ -144,7 +145,7 @@ export function HistoryScreen() {
           }
           onChangeText={setSearchQuery}
           placeholder={flareContent.screens.history.controls.searchPlaceholder}
-          placeholderTextColor="#8c97a5"
+          placeholderTextColor={flareTheme.colors.textSubtle}
           style={styles.searchInput}
           value={searchQuery}
         />
@@ -336,20 +337,21 @@ export function HistoryScreen() {
 
 const styles = StyleSheet.create({
   intro: {
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   controlsCard: {
+    ...flareTheme.shadows.card,
     gap: 12,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   controlsTitle: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 18,
     lineHeight: 22,
     fontWeight: "700",
@@ -358,11 +360,11 @@ const styles = StyleSheet.create({
     minHeight: 48,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#d7c7ae",
-    backgroundColor: "#ffffff",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 15,
   },
   filterRow: {
@@ -376,21 +378,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#d7c7ae",
-    backgroundColor: "#fff7ea",
+    borderColor: flareTheme.colors.borderStrong,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   filterButtonActive: {
-    borderColor: "#8a5a2b",
-    backgroundColor: "#8a5a2b",
+    borderColor: flareTheme.colors.primaryStrong,
+    backgroundColor: flareTheme.colors.primary,
   },
   filterButtonLabel: {
-    color: "#6b4a24",
+    color: flareTheme.colors.textMuted,
     fontSize: 13,
     fontWeight: "700",
     textTransform: "uppercase",
   },
   filterButtonLabelActive: {
-    color: "#fffaf4",
+    color: flareTheme.colors.onPrimary,
   },
   detailContent: {
     gap: 14,
@@ -399,14 +401,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   detailLabel: {
-    color: "#8a5a2b",
+    color: flareTheme.colors.primaryBright,
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.8,
     textTransform: "uppercase",
   },
   detailValue: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 15,
     lineHeight: 22,
   },
@@ -414,10 +416,10 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 16,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   reflectionSectionTitle: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 16,
     fontWeight: "700",
   },
@@ -430,13 +432,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   archiveButton: {
-    backgroundColor: "#7a3f29",
+    backgroundColor: flareTheme.colors.primaryStrong,
   },
   restoreButton: {
-    backgroundColor: "#2f6f57",
+    backgroundColor: flareTheme.colors.primaryBright,
   },
   eventActionButtonLabel: {
-    color: "#fffaf4",
+    color: flareTheme.colors.onPrimary,
     fontSize: 15,
     fontWeight: "700",
   },

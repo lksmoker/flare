@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
+import { flareTheme } from "../theme/flareTheme";
 import { PlaceholderModal } from "./PlaceholderModal";
 import {
   createEmptyCheckpointReflection,
@@ -261,20 +262,20 @@ const styles = StyleSheet.create({
     gap: 6,
     padding: 16,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   intro: {
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   contextLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 15,
     fontWeight: "600",
   },
   contextCopy: {
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
@@ -282,20 +283,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 13,
     fontWeight: "700",
   },
   input: {
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "#dccfb8",
-    backgroundColor: "#ffffff",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
     lineHeight: 22,
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
   },
   multilineInput: {
     minHeight: 88,
@@ -316,22 +317,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#dccfb8",
-    backgroundColor: "#fff9f1",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
     paddingHorizontal: 18,
   },
   cancelButtonLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 15,
     fontWeight: "700",
   },
   supportingCopy: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   supportingText: {
-    color: "#6a7685",
+    color: flareTheme.colors.textMuted,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -346,21 +347,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#dccfb8",
-    backgroundColor: "#fff9f1",
+    borderColor: flareTheme.colors.borderStrong,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   optionButtonSelected: {
-    borderColor: "#d6693d",
-    backgroundColor: "#fbe6dd",
+    borderColor: flareTheme.colors.primary,
+    backgroundColor: flareTheme.colors.primaryMuted,
   },
   optionButtonLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 13,
     fontWeight: "700",
     textTransform: "capitalize",
   },
   optionButtonLabelSelected: {
-    color: "#8e3d17",
+    color: flareTheme.colors.primaryStrong,
   },
   saveButton: {
     flexGrow: 2,
@@ -369,14 +370,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
-    backgroundColor: "#d6693d",
+    backgroundColor: flareTheme.colors.primary,
     paddingHorizontal: 18,
   },
   saveButtonDisabled: {
-    backgroundColor: "#d8cbb8",
+    backgroundColor: flareTheme.colors.primaryMutedStrong,
   },
   saveButtonLabel: {
-    color: "#fffaf3",
+    color: flareTheme.colors.onPrimary,
     fontSize: 15,
     fontWeight: "800",
   },

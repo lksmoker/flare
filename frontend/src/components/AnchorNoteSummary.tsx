@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
 import { AnchorNote } from "../state/AnchorNoteContext";
+import { flareTheme } from "../theme/flareTheme";
 
 type AnchorNoteSummaryProps = {
   anchorNote: AnchorNote | null;
@@ -72,15 +73,15 @@ const styles = StyleSheet.create({
     gap: 6,
     padding: 14,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   emptyTitle: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 14,
     fontWeight: "700",
   },
   emptyCopy: {
-    color: "#6a7685",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
@@ -88,20 +89,20 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 14,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   summarySection: {
     gap: 4,
   },
   sectionLabel: {
-    color: "#8a5a2b",
+    color: flareTheme.colors.primaryBright,
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.8,
     textTransform: "uppercase",
   },
   sectionValue: {
-    color: "#374151",
+    color: flareTheme.colors.text,
     fontSize: 14,
     lineHeight: 20,
   },

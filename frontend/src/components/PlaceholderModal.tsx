@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import flareContent from "../content/flareContent.json";
+import { flareTheme } from "../theme/flareTheme";
 
 type PlaceholderModalProps = PropsWithChildren<{
   footer?: React.ReactNode;
@@ -77,13 +78,13 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(31, 41, 55, 0.4)",
+    backgroundColor: flareTheme.colors.overlay,
   },
   sheet: {
     maxHeight: "92%",
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
-    backgroundColor: "#fffaf4",
+    backgroundColor: flareTheme.colors.surface,
     overflow: "hidden",
   },
   header: {
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#efe3d3",
+    borderBottomColor: flareTheme.colors.border,
   },
   headerCopy: {
     flex: 1,
@@ -106,12 +107,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 28,
     fontWeight: "800",
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
   },
   subtitle: {
     fontSize: 15,
     lineHeight: 22,
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
   },
   closeButton: {
     minHeight: 40,
@@ -119,10 +120,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
-    backgroundColor: "#efe3d3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   closeButtonLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 20,
     borderTopWidth: 1,
-    borderTopColor: "#efe3d3",
-    backgroundColor: "#fffaf4",
+    borderTopColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
 });

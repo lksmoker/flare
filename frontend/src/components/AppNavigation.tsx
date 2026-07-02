@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
+import { flareTheme } from "../theme/flareTheme";
 
 type AppNavigationProps = {
   currentPath: "/" | "/history" | "/customize";
@@ -59,21 +60,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   activeTab: {
-    borderColor: "#d6693d",
-    backgroundColor: "#d6693d",
+    borderColor: flareTheme.colors.primaryStrong,
+    backgroundColor: flareTheme.colors.primary,
   },
   inactiveTab: {
-    borderColor: "#dccfb8",
-    backgroundColor: "#fffaf3",
+    borderColor: flareTheme.colors.borderStrong,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   tabLabel: {
     fontSize: 14,
     fontWeight: "700",
   },
   activeTabLabel: {
-    color: "#fffaf3",
+    color: flareTheme.colors.onPrimary,
   },
   inactiveTabLabel: {
-    color: "#5b4635",
+    color: flareTheme.colors.textMuted,
   },
 });

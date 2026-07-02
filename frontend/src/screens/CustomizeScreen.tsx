@@ -10,6 +10,7 @@ import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
 import flareContent from "../content/flareContent.json";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { flareTheme } from "../theme/flareTheme";
 
 export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
@@ -110,12 +111,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   card: {
+    ...flareTheme.shadows.card,
     gap: 8,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   cardHeader: {
     flexDirection: "row",
@@ -125,22 +127,23 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   comingSoonCard: {
+    ...flareTheme.shadows.card,
     gap: 8,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#d9cfbf",
-    backgroundColor: "#f7efe3",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   cardTitle: {
     flexShrink: 1,
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 19,
     lineHeight: 24,
     fontWeight: "700",
   },
   cardCopy: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
@@ -154,20 +157,20 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   readyBadge: {
-    backgroundColor: "#d7eadc",
-    color: "#24553a",
+    backgroundColor: flareTheme.colors.successBg,
+    color: flareTheme.colors.successText,
   },
   pendingBadge: {
-    backgroundColor: "#efe3d3",
-    color: "#7a5430",
+    backgroundColor: flareTheme.colors.neutralBg,
+    color: flareTheme.colors.neutralText,
   },
   comingSoonBadge: {
     alignSelf: "flex-start",
     borderRadius: 999,
-    backgroundColor: "#d6693d",
+    backgroundColor: flareTheme.colors.primary,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    color: "#fffaf3",
+    color: flareTheme.colors.onPrimary,
     fontSize: 12,
     fontWeight: "700",
     textTransform: "uppercase",

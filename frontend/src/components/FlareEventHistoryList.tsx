@@ -5,6 +5,7 @@ import {
   FlareEvent,
   formatFlareEventTimestamp,
 } from "../state/FlareEventContext";
+import { flareTheme } from "../theme/flareTheme";
 
 type FlareEventHistoryListProps = {
   emptyCopy?: string;
@@ -127,27 +128,28 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   card: {
+    ...flareTheme.shadows.card,
     gap: 6,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   cardTitle: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 18,
     lineHeight: 22,
     fontWeight: "700",
   },
   cardDetail: {
-    color: "#8a5a2b",
+    color: flareTheme.colors.primaryBright,
     fontSize: 13,
     fontWeight: "700",
     textTransform: "uppercase",
   },
   cardNote: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
@@ -156,34 +158,35 @@ const styles = StyleSheet.create({
     marginTop: 8,
     padding: 14,
     borderRadius: 18,
-    backgroundColor: "#f7efe3",
+    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   reflectionTitle: {
-    color: "#5b4635",
+    color: flareTheme.colors.text,
     fontSize: 15,
     fontWeight: "700",
   },
   reflectionCopy: {
-    color: "#526071",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
   emptyCard: {
+    ...flareTheme.shadows.card,
     gap: 8,
     padding: 18,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: "#e7dcc7",
-    backgroundColor: "#fffdf8",
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
   },
   emptyTitle: {
-    color: "#1f2937",
+    color: flareTheme.colors.textStrong,
     fontSize: 18,
     lineHeight: 22,
     fontWeight: "700",
   },
   emptyCopy: {
-    color: "#5d6b7b",
+    color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
   },
