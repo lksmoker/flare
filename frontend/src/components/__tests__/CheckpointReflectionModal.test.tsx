@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 
 import { CheckpointReflectionModal } from "../CheckpointReflectionModal";
 
-const saveCheckpointReflection = jest.fn();
+const mockSaveCheckpointReflection = jest.fn();
 
 jest.mock("../../state/FlareEventContext", () => ({
   createEmptyCheckpointReflection: () => ({
@@ -14,16 +14,17 @@ jest.mock("../../state/FlareEventContext", () => ({
     whatHelped: "",
   }),
   useFlareEvents: () => ({
-    saveCheckpointReflection,
+    saveCheckpointReflection: mockSaveCheckpointReflection,
   }),
 }));
 
 describe("CheckpointReflectionModal", () => {
   beforeEach(() => {
-    saveCheckpointReflection.mockReset();
+    mockSaveCheckpointReflection.mockReset();
   });
 
   it("saves an allowed outcome selection instead of freeform text", () => {
+    const onSave = jest.fn();
     const { getByText, getByLabelText } = render(
       <CheckpointReflectionModal
         flareEvent={{
@@ -45,6 +46,7 @@ describe("CheckpointReflectionModal", () => {
           userId: "user-123",
         }}
         onClose={jest.fn()}
+        onSave={onSave}
         visible
       />,
     );
@@ -56,7 +58,7 @@ describe("CheckpointReflectionModal", () => {
     fireEvent.changeText(getByLabelText("Optional note"), "Two minutes helped.");
     fireEvent.press(getByText("Save Reflection"));
 
-    expect(saveCheckpointReflection).toHaveBeenCalledWith({
+    expect(mockSaveCheckpointReflection).toHaveBeenCalledWith({
       actionTaken: "",
       howIFeelNow: "Steadier.",
       note: "Two minutes helped.",
@@ -64,5 +66,6 @@ describe("CheckpointReflectionModal", () => {
       whatHappened: "A spike hit.",
       whatHelped: "Cold water.",
     });
+    expect(onSave).toHaveBeenCalledTimes(1);
   });
 });

@@ -20,12 +20,14 @@ const OUTCOME_OPTIONS = [
 type CheckpointReflectionModalProps = {
   flareEvent: FlareEvent | null;
   onClose: () => void;
+  onSave?: () => void;
   visible: boolean;
 };
 
 export function CheckpointReflectionModal({
   flareEvent,
   onClose,
+  onSave,
   visible,
 }: CheckpointReflectionModalProps) {
   const { saveCheckpointReflection } = useFlareEvents();
@@ -68,6 +70,7 @@ export function CheckpointReflectionModal({
               disabled={saveDisabled}
               onPress={() => {
                 saveCheckpointReflection(draft);
+                onSave?.();
                 onClose();
               }}
               style={[

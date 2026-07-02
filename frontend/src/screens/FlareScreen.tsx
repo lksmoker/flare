@@ -119,6 +119,10 @@ export function FlareScreen() {
       <CheckpointReflectionModal
         flareEvent={activeEvent}
         onClose={() => setIsCheckpointVisible(false)}
+        onSave={() => {
+          setIsCheckpointVisible(false);
+          setIsFlareResponseVisible(true);
+        }}
         visible={isCheckpointVisible}
       />
     </AppShell>

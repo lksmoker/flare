@@ -25,8 +25,8 @@ describe("AuthStatusCard", () => {
       expect(getByText("Existing account")).toBeTruthy();
     });
 
-    fireEvent.changeText(getByLabelText("Auth email"), "flare@example.com");
-    fireEvent.changeText(getByLabelText("Auth password"), "password-123");
+    fireEvent.changeText(getByLabelText("Email address"), "flare@example.com");
+    fireEvent.changeText(getByLabelText("Password"), "password-123");
     fireEvent.press(getByText("Sign in"));
 
     await waitFor(() => {
@@ -55,8 +55,8 @@ describe("AuthStatusCard", () => {
     });
 
     fireEvent.press(getByText("First-time setup"));
-    fireEvent.changeText(getByLabelText("Auth email"), "flare@example.com");
-    fireEvent.changeText(getByLabelText("Auth password"), "password-123");
+    fireEvent.changeText(getByLabelText("Email address"), "flare@example.com");
+    fireEvent.changeText(getByLabelText("Password"), "password-123");
     fireEvent.press(getByText("Create account"));
 
     await waitFor(() => {
@@ -103,14 +103,14 @@ describe("AuthStatusCard", () => {
       expect(getByText("Existing account")).toBeTruthy();
     });
 
-    fireEvent.changeText(getByLabelText("Auth email"), "flare@example.com");
+    fireEvent.changeText(getByLabelText("Email address"), "flare@example.com");
     fireEvent.press(getByText("Send magic link"));
 
     await waitFor(() => {
       expect(sendMagicLinkRequest).toHaveBeenCalledWith("flare@example.com");
       expect(
         getByText(
-          "Magic link sent if email auth is enabled. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase falls back to the project Site URL.",
+          "Magic link sent. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase may fall back to the project Site URL.",
         ),
       ).toBeTruthy();
     });

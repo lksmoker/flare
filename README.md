@@ -4,7 +4,9 @@ Flare is a mobile-first self-support app scaffold focused on helping a user inte
 
 Flare V0 is not a crisis service, therapy replacement, medical treatment, emergency response system, or guaranteed relapse-prevention tool. If someone may hurt themselves or someone else, or needs immediate help, they should contact local emergency services or a crisis hotline now.
 
-Release positioning, limitations, and pre-launch notes live in `docs/40_delivery/flare_v0_release_positioning.md`.
+Release positioning and smoke-tested release notes live in `docs/40_delivery/flare_v0_release_positioning.md`.
+Known limitations live in `docs/40_delivery/flare_v0_known_limitations.md`.
+Production deployment steps and smoke checks live in `docs/40_delivery/flare_v0_production_deployment_checklist.md`.
 
 ## Current stage
 

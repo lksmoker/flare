@@ -72,7 +72,7 @@ describe("V0 app shell", () => {
     expect(getByText("Flare Response")).toBeTruthy();
     expect(getByText("Current Flare Event")).toBeTruthy();
     expect(getByText(/status: active/i)).toBeTruthy();
-    expect(getByText("You already paused the pattern.")).toBeTruthy();
+    expect(getByText("You paused the pattern")).toBeTruthy();
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
@@ -100,10 +100,10 @@ describe("V0 app shell", () => {
       wrapper: TestProviders,
     });
 
-    expect(getByText("Setup persistence")).toBeTruthy();
+    expect(getByText("Save your setup")).toBeTruthy();
     expect(getByText("Local-only")).toBeTruthy();
-    expect(getByText("Behavior Pattern Setup")).toBeTruthy();
-    expect(getByText("Anchor Note Setup")).toBeTruthy();
+    expect(getByText("Behavior Pattern")).toBeTruthy();
+    expect(getByText("Anchor Note")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
     expect(getByText("Coming in V1")).toBeTruthy();
   });
@@ -113,19 +113,19 @@ describe("V0 app shell", () => {
       wrapper: TestProviders,
     });
 
-    fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
+    fireEvent.press(getAllByText("Behavior Pattern")[0]);
     expect(
       getByText(
-        "Capture the pattern you want Flare to help you interrupt and reflect on. This stays editable in V0.",
+        "Describe the pattern you want Flare to help you pause and reflect on.",
       ),
     ).toBeTruthy();
     expect(getByText("Save Behavior Pattern")).toBeTruthy();
 
     fireEvent.press(getByText("Close"));
-    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note")[0]);
     expect(
       getByText(
-        "Capture grounded words you want available when you are trying to pause.",
+        "Keep this honest, specific, and easy to revisit. This note is for self-support.",
       ),
     ).toBeTruthy();
     expect(getByText("Save Anchor Note")).toBeTruthy();
@@ -141,14 +141,14 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note")[0]);
 
     fireEvent.changeText(
-      getByLabelText("Why interrupt this pattern?"),
+      getByLabelText("Why pause this pattern?"),
       "I want to stop before I lose the rest of tonight.",
     );
     fireEvent.changeText(
-      getByLabelText("Costs or consequences of continuing"),
+      getByLabelText("Costs of continuing"),
       "I will be numb tomorrow and break trust with myself.",
     );
     fireEvent.changeText(
@@ -156,11 +156,11 @@ describe("V0 app shell", () => {
       "The urge peaks fast and passes if I move.",
     );
     fireEvent.changeText(
-      getByLabelText("Immediate action or commitment"),
+      getByLabelText("Immediate next step"),
       "Put the phone away, drink water, and go outside.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during a flare"),
+      getByLabelText("Supportive phrase"),
       "Pause now. Protect tomorrow.",
     );
 
@@ -185,7 +185,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
+    fireEvent.press(getAllByText("Behavior Pattern")[0]);
 
     fireEvent.changeText(
       getByLabelText("Behavior name"),
@@ -231,9 +231,9 @@ describe("V0 app shell", () => {
     );
 
     expect(getByText("Local-only until sign in")).toBeTruthy();
-    expect(getAllByText("Ready to define").length).toBeGreaterThanOrEqual(2);
+    expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
 
-    fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
+    fireEvent.press(getAllByText("Behavior Pattern")[0]);
     fireEvent.changeText(getByLabelText("Behavior name"), "Weekend drinking");
     fireEvent.changeText(
       getByLabelText("Preferred next steps"),
@@ -256,15 +256,15 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getAllByText("Ready to define").length).toBeGreaterThanOrEqual(2);
+    expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
 
-    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note")[0]);
     fireEvent.changeText(
-      getByLabelText("Why interrupt this pattern?"),
+      getByLabelText("Why pause this pattern?"),
       "This urge is not worth the fallout.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during a flare"),
+      getByLabelText("Supportive phrase"),
       "Hold the line for ten minutes.",
     );
     fireEvent.press(getByText("Save Anchor Note"));
@@ -283,9 +283,9 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Anchor Note Setup")[0]);
+    fireEvent.press(getAllByText("Anchor Note")[0]);
     fireEvent.changeText(
-      getByLabelText("Why interrupt this pattern?"),
+      getByLabelText("Why pause this pattern?"),
       "I want tomorrow morning back.",
     );
     fireEvent.changeText(
@@ -293,11 +293,11 @@ describe("V0 app shell", () => {
       "You do not need to obey this feeling.",
     );
     fireEvent.changeText(
-      getByLabelText("Immediate action or commitment"),
+      getByLabelText("Immediate next step"),
       "Leave the room and drink water.",
     );
     fireEvent.changeText(
-      getByLabelText("Supportive phrase to show during a flare"),
+      getByLabelText("Supportive phrase"),
       "Pause now. You already chose differently.",
     );
     fireEvent.press(getByText("Save Anchor Note"));
@@ -332,7 +332,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    fireEvent.press(getAllByText("Behavior Pattern Setup")[0]);
+    fireEvent.press(getAllByText("Behavior Pattern")[0]);
     fireEvent.changeText(getByLabelText("Behavior name"), "Late-night scrolling");
     fireEvent.changeText(
       getByLabelText("Short description"),
@@ -381,10 +381,7 @@ describe("V0 app shell", () => {
       getByLabelText("How do I feel now?"),
       "Less flooded and more steady.",
     );
-    fireEvent.changeText(
-      getByLabelText("Outcome"),
-      "The urge passed enough for me to reset.",
-    );
+    fireEvent.press(getByText("Avoided"));
     fireEvent.changeText(
       getByLabelText("Optional note"),
       "The first minute was the hardest part.",
@@ -392,6 +389,7 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Save Reflection"));
 
     expect(queryByText("Save Reflection")).toBeNull();
+    expect(getByText("Reflection saved for this event")).toBeTruthy();
     expect(
       getByText(/What happened: I felt the spike right after finishing work\./),
     ).toBeTruthy();
@@ -401,9 +399,7 @@ describe("V0 app shell", () => {
     expect(
       getByText(/How I feel now: Less flooded and more steady\./),
     ).toBeTruthy();
-    expect(
-      getByText(/Outcome: The urge passed enough for me to reset\./),
-    ).toBeTruthy();
+    expect(getByText(/Outcome:/i)).toBeTruthy();
     expect(
       getByText(/Note: The first minute was the hardest part\./),
     ).toBeTruthy();
@@ -426,7 +422,7 @@ describe("V0 app shell", () => {
     expect(getAllByText("Coming in V1").length).toBeGreaterThanOrEqual(1);
     expect(
       getByText(
-        /Visible here as future-scoped direction only\. V0 does not send messages, alerts, or outreach on your behalf\./,
+        /Future direction only\. V0 does not send messages, alerts, or outreach on your behalf\./,
       ),
     ).toBeTruthy();
   });
