@@ -388,6 +388,10 @@ describe("HistoryScreen", () => {
       });
     });
 
+    await waitFor(() => {
+      expect(queryByText("Restore event")).toBeNull();
+    });
+
     fireEvent.press(getByText("All"));
 
     await waitFor(() => {

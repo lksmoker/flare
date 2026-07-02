@@ -302,6 +302,10 @@ export function HistoryScreen() {
               onPress={() => {
                 if (resolvedSelectedEvent.archivedAt) {
                   restoreFlareEvent(resolvedSelectedEvent.id);
+
+                  if (activeFilter === "archived") {
+                    setSelectedEvent(null);
+                  }
                 } else {
                   archiveFlareEvent(resolvedSelectedEvent.id);
 

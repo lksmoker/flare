@@ -292,7 +292,14 @@
         },
         "outcome": {
           "label": "Outcome",
-          "placeholder": "The urge dropped enough to keep moving."
+          "supportingCopy": "Choose the closest outcome for this event. Add nuance in the optional note below.",
+          "options": {
+            "avoided": "Avoided",
+            "delayed": "Delayed",
+            "reduced": "Reduced",
+            "continued": "Continued",
+            "unclear": "Unclear"
+          }
         },
         "note": {
           "label": "Optional note",

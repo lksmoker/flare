@@ -9,6 +9,14 @@ import {
   useFlareEvents,
 } from "../state/FlareEventContext";
 
+const OUTCOME_OPTIONS = [
+  "avoided",
+  "delayed",
+  "reduced",
+  "continued",
+  "unclear",
+] as const;
+
 type CheckpointReflectionModalProps = {
   flareEvent: FlareEvent | null;
   onClose: () => void;
@@ -176,20 +184,43 @@ export function CheckpointReflectionModal({
           <Text style={styles.label}>
             {flareContent.components.checkpointReflection.fields.outcome.label}
           </Text>
-          <TextInput
-            accessibilityLabel={
-              flareContent.components.checkpointReflection.fields.outcome.label
-            }
-            onChangeText={(value) =>
-              setDraft((current) => ({ ...current, outcome: value }))
-            }
-            placeholder={
+          <Text style={styles.supportingText}>
+            {
               flareContent.components.checkpointReflection.fields.outcome
-                .placeholder
+                .supportingCopy
             }
-            style={styles.input}
-            value={draft.outcome}
-          />
+          </Text>
+          <View style={styles.optionRow}>
+            {OUTCOME_OPTIONS.map((option) => {
+              const isSelected = draft.outcome === option;
+
+              return (
+                <Pressable
+                  accessibilityRole="button"
+                  key={option}
+                  onPress={() =>
+                    setDraft((current) => ({ ...current, outcome: option }))
+                  }
+                  style={[
+                    styles.optionButton,
+                    isSelected ? styles.optionButtonSelected : null,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.optionButtonLabel,
+                      isSelected ? styles.optionButtonLabelSelected : null,
+                    ]}
+                  >
+                    {
+                      flareContent.components.checkpointReflection.fields
+                        .outcome.options[option]
+                    }
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
 
         <View style={styles.field}>
@@ -295,6 +326,38 @@ const styles = StyleSheet.create({
     color: "#5d6b7b",
     fontSize: 14,
     lineHeight: 20,
+  },
+  supportingText: {
+    color: "#6a7685",
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  optionRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  optionButton: {
+    minHeight: 40,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#dccfb8",
+    backgroundColor: "#fff9f1",
+  },
+  optionButtonSelected: {
+    borderColor: "#d6693d",
+    backgroundColor: "#fbe6dd",
+  },
+  optionButtonLabel: {
+    color: "#5b4635",
+    fontSize: 13,
+    fontWeight: "700",
+    textTransform: "capitalize",
+  },
+  optionButtonLabelSelected: {
+    color: "#8e3d17",
   },
   saveButton: {
     flexGrow: 2,
