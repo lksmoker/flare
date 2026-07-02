@@ -28,6 +28,7 @@ export type AnchorNote = {
 type AnchorNoteContextValue = {
   isConfigured: boolean;
   anchorNote: AnchorNote | null;
+  anchorNoteRecord: PersistedAnchorNote | null;
   saveAnchorNote: (nextAnchorNote: AnchorNote) => Promise<void>;
 };
 
@@ -153,6 +154,7 @@ export function AnchorNoteProvider({
     () => ({
       isConfigured: isAnchorNoteConfigured(anchorNote),
       anchorNote,
+      anchorNoteRecord: record,
       saveAnchorNote: async (nextAnchorNote) => {
         const normalizedAnchorNote = normalizeAnchorNote(nextAnchorNote);
         const localRecord = createLocalRecord(normalizedAnchorNote, record);

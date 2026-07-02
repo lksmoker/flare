@@ -64,8 +64,9 @@ export function FlareScreen() {
       <SendFlareButton
         onPress={() => {
           createFlareEvent({
-            behaviorName: behaviorPattern?.behaviorName,
-            behaviorSummary: behaviorPattern?.shortDescription,
+            behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
+            behaviorLabelSnapshot: behaviorPattern?.behaviorName,
+            supportActionShown: anchorNote?.emergencyActions,
           });
           setIsCheckpointVisible(false);
           setIsFlareResponseVisible(true);
@@ -97,7 +98,7 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
-        subtitle="This V0 sheet opens immediately and stays attached to the current in-memory Flare Event."
+        subtitle="This V0 sheet opens immediately and stays attached to the current Flare Event."
         title="Flare Response"
         visible={isFlareResponseVisible}
       >

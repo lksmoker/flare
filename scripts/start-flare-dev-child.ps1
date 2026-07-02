@@ -1,6 +1,27 @@
 ﻿Set-Location "C:\dev\Flare"
 
 $envFile = "C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env"
+$port = 8081
+
+Write-Host "Checking port $port..." -ForegroundColor Cyan
+
+$connections = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+
+if ($connections) {
+  $processIds = $connections | Select-Object -ExpandProperty OwningProcess -Unique
+
+  foreach ($processId in $processIds) {
+    $proc = Get-Process -Id $processId -ErrorAction SilentlyContinue
+    if ($proc) {
+      Write-Host "Killing PID $processId on port $port ($($proc.ProcessName))" -ForegroundColor Yellow
+      Stop-Process -Id $processId -Force
+    }
+  }
+
+  Start-Sleep -Seconds 1
+} else {
+  Write-Host "No process found on port $port"
+}
 
 $allowed = @(
   "EXPO_PUBLIC_FLARE_SUPABASE_URL",
@@ -13,6 +34,9 @@ if (-not (Test-Path $envFile)) {
   Read-Host "Press Enter to close"
   exit 1
 }
+
+Write-Host ""
+Write-Host "Loading Flare public Expo env vars..." -ForegroundColor Cyan
 
 Get-Content $envFile | ForEach-Object {
   if ($_ -match '^\s*#' -or $_ -match '^\s*$') {
@@ -36,6 +60,7 @@ Get-Content $envFile | ForEach-Object {
 Write-Host ""
 Write-Host "Starting Flare dev server..." -ForegroundColor Cyan
 Write-Host "Repo: C:\dev\Flare"
+Write-Host "Port: $port"
 Write-Host ""
 
 $env:EXPO_NO_TELEMETRY = "1"

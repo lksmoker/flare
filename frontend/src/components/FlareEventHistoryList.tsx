@@ -28,8 +28,9 @@ export function FlareEventHistoryList({
       <View style={styles.emptyCard}>
         <Text style={styles.emptyTitle}>No Flare Events yet</Text>
         <Text style={styles.emptyCopy}>
-          Send Flare to create the first in-memory event. Reflections saved from
-          the active event will show up here too.
+          Send Flare to create the first event. Authenticated sessions reload
+          persisted events and reflections here; signed-out sessions stay
+          local-only.
         </Text>
       </View>
     );
@@ -41,16 +42,18 @@ export function FlareEventHistoryList({
         <View key={flareEvent.id} style={styles.card}>
           <Text style={styles.cardTitle}>Flare Event</Text>
           <Text style={styles.cardDetail}>
-            {getStatusLabel(flareEvent)} •{" "}
+            {getStatusLabel(flareEvent)} |{" "}
             {formatFlareEventTimestamp(flareEvent.createdAt)}
           </Text>
           <Text style={styles.cardNote}>
-            {flareEvent.behaviorName
-              ? `Behavior Pattern: ${flareEvent.behaviorName}`
+            {flareEvent.behaviorLabelSnapshot
+              ? `Behavior Pattern: ${flareEvent.behaviorLabelSnapshot}`
               : "Behavior Pattern: Not configured yet"}
           </Text>
-          {flareEvent.behaviorSummary ? (
-            <Text style={styles.cardNote}>{flareEvent.behaviorSummary}</Text>
+          {flareEvent.behaviorDescriptionSnapshot ? (
+            <Text style={styles.cardNote}>
+              {flareEvent.behaviorDescriptionSnapshot}
+            </Text>
           ) : null}
           {flareEvent.checkpoint ? (
             <View style={styles.reflectionCard}>

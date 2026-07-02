@@ -31,9 +31,9 @@ export function FlareResponse({
             ? `Started ${formatFlareEventTimestamp(flareEvent.createdAt)} • status: ${flareEvent.status}`
             : "No in-memory event is active."}
         </Text>
-        {flareEvent?.behaviorName ? (
+        {flareEvent?.behaviorLabelSnapshot ? (
           <Text style={styles.eventCopy}>
-            Behavior Pattern: {flareEvent.behaviorName}
+            Behavior Pattern: {flareEvent.behaviorLabelSnapshot}
           </Text>
         ) : null}
       </View>

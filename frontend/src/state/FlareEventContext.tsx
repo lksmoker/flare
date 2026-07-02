@@ -2,15 +2,39 @@ import {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
+import {
+  type CheckpointReflectionRepository,
+  getCheckpointReflectionRepository,
+} from "../services/checkpointReflectionRepository";
+import {
+  type FlareEventRepository,
+  getFlareEventRepository,
+  type PersistedCheckpointReflection,
+  type PersistedFlareEvent,
+} from "../services/flareEventRepository";
+import {
+  resolveFlareSupabaseAuthState,
+  type FlareSupabaseAuthState,
+} from "../services/flareSupabaseAuth";
+import { useAnchorNote } from "./AnchorNoteContext";
+import { useBehaviorPattern } from "./BehaviorPatternContext";
+import { useOptionalFlareAuth } from "./FlareAuthContext";
+
 export type CheckpointReflection = {
+  actionTaken: string;
   createdAt: string;
   howIFeelNow: string;
+  id: string;
   note: string;
   outcome: string;
+  updatedAt: string;
+  userId: string | null;
   whatHappened: string;
   whatHelped: string;
 };
@@ -18,20 +42,31 @@ export type CheckpointReflection = {
 export type FlareEventStatus = "active" | "reflected" | "closed";
 
 export type FlareEvent = {
-  behaviorName: string | null;
-  behaviorSummary: string | null;
+  anchorNoteId: string | null;
+  anchorNoteVersion: number | null;
+  behaviorDescriptionSnapshot: string | null;
+  behaviorLabelSnapshot: string | null;
+  behaviorPatternId: string | null;
   checkpoint: CheckpointReflection | null;
+  closedAt: string | null;
   createdAt: string;
   id: string;
+  responseMode: "configured" | "fallback-generic";
   status: FlareEventStatus;
+  supportActionShown: string | null;
+  supportActionTaken: string | null;
+  updatedAt: string;
+  userId: string | null;
 };
 
 export type CreateFlareEventInput = {
-  behaviorName?: string | null;
-  behaviorSummary?: string | null;
+  behaviorDescriptionSnapshot?: string | null;
+  behaviorLabelSnapshot?: string | null;
+  supportActionShown?: string | null;
 };
 
 export type SaveCheckpointReflectionInput = {
+  actionTaken?: string;
   howIFeelNow: string;
   note: string;
   outcome: string;
@@ -47,26 +82,69 @@ type FlareEventContextValue = {
   saveCheckpointReflection: (input: SaveCheckpointReflectionInput) => void;
 };
 
+type FlareEventProviderProps = PropsWithChildren<{
+  authState?: FlareSupabaseAuthState;
+  checkpointReflectionRepository?: CheckpointReflectionRepository;
+  flareEventRepository?: FlareEventRepository;
+  resolveAuthState?: () => Promise<FlareSupabaseAuthState>;
+}>;
+
 const FlareEventContext = createContext<FlareEventContextValue | undefined>(
   undefined,
 );
 
 let nextFlareEventId = 1;
+let nextCheckpointReflectionId = 1;
 
-function createFlareEventRecord(
-  input: CreateFlareEventInput,
+const defaultFlareEventRepository: FlareEventRepository = {
+  createFlareEvent(input) {
+    return getFlareEventRepository().createFlareEvent(input);
+  },
+  loadFlareEvents(userId) {
+    return getFlareEventRepository().loadFlareEvents(userId);
+  },
+  updateFlareEventStatus(input) {
+    return getFlareEventRepository().updateFlareEventStatus(input);
+  },
+};
+
+const defaultCheckpointReflectionRepository: CheckpointReflectionRepository = {
+  saveCheckpointReflection(input) {
+    return getCheckpointReflectionRepository().saveCheckpointReflection(input);
+  },
+};
+
+const UNCONFIGURED_BEHAVIOR_LABEL = "Behavior pattern not configured";
+
+function createLocalFlareEventRecord(
+  input: CreateFlareEventInput & {
+    anchorNoteId?: string | null;
+    anchorNoteVersion?: number | null;
+    behaviorPatternId?: string | null;
+    responseMode: "configured" | "fallback-generic";
+    userId?: string | null;
+  },
   createdAt: string = new Date().toISOString(),
 ): FlareEvent {
   const id = `flare-event-${nextFlareEventId}`;
   nextFlareEventId += 1;
 
   return {
-    behaviorName: input.behaviorName?.trim() || null,
-    behaviorSummary: input.behaviorSummary?.trim() || null,
+    anchorNoteId: input.anchorNoteId ?? null,
+    anchorNoteVersion: input.anchorNoteVersion ?? null,
+    behaviorDescriptionSnapshot: input.behaviorDescriptionSnapshot?.trim() || null,
+    behaviorLabelSnapshot: input.behaviorLabelSnapshot?.trim() || null,
+    behaviorPatternId: input.behaviorPatternId ?? null,
     checkpoint: null,
+    closedAt: null,
     createdAt,
     id,
+    responseMode: input.responseMode,
     status: "active",
+    supportActionShown: input.supportActionShown?.trim() || null,
+    supportActionTaken: null,
+    updatedAt: createdAt,
+    userId: input.userId ?? null,
   };
 }
 
@@ -74,13 +152,59 @@ function createCheckpointReflectionRecord(
   input: SaveCheckpointReflectionInput,
   createdAt: string = new Date().toISOString(),
 ): CheckpointReflection {
+  const id = `checkpoint-reflection-${nextCheckpointReflectionId}`;
+  nextCheckpointReflectionId += 1;
+
   return {
+    actionTaken: input.actionTaken?.trim() || "",
     createdAt,
     howIFeelNow: input.howIFeelNow.trim(),
+    id,
     note: input.note.trim(),
     outcome: input.outcome.trim(),
+    updatedAt: createdAt,
+    userId: null,
     whatHappened: input.whatHappened.trim(),
     whatHelped: input.whatHelped.trim(),
+  };
+}
+
+function replaceFlareEvent(
+  currentEvents: FlareEvent[],
+  targetId: string,
+  nextEvent: FlareEvent,
+) {
+  return currentEvents.map((flareEvent) =>
+    flareEvent.id === targetId ? nextEvent : flareEvent,
+  );
+}
+
+function mergePersistedFlareEvent(
+  currentEvent: FlareEvent,
+  persistedRecord: PersistedFlareEvent,
+): FlareEvent {
+  return {
+    ...persistedRecord.flareEvent,
+    checkpoint:
+      currentEvent.checkpoint ?? persistedRecord.flareEvent.checkpoint ?? null,
+    status:
+      currentEvent.status === "reflected" &&
+      persistedRecord.flareEvent.status === "active"
+        ? "reflected"
+        : persistedRecord.flareEvent.status,
+  };
+}
+
+function mergePersistedCheckpointReflection(
+  currentEvent: FlareEvent,
+  persistedCheckpointReflection: PersistedCheckpointReflection,
+): FlareEvent {
+  return {
+    ...currentEvent,
+    checkpoint: persistedCheckpointReflection.checkpointReflection,
+    status: "reflected",
+    updatedAt: persistedCheckpointReflection.updatedAt,
+    userId: persistedCheckpointReflection.userId,
   };
 }
 
@@ -93,6 +217,7 @@ export function formatFlareEventTimestamp(timestamp: string) {
 
 export function createEmptyCheckpointReflection() {
   return {
+    actionTaken: "",
     howIFeelNow: "",
     note: "",
     outcome: "",
@@ -101,8 +226,87 @@ export function createEmptyCheckpointReflection() {
   };
 }
 
-export function FlareEventProvider({ children }: PropsWithChildren) {
+export function FlareEventProvider({
+  authState: authStateOverride,
+  checkpointReflectionRepository = defaultCheckpointReflectionRepository,
+  children,
+  flareEventRepository = defaultFlareEventRepository,
+  resolveAuthState = resolveFlareSupabaseAuthState,
+}: FlareEventProviderProps) {
+  const authContext = useOptionalFlareAuth();
+  const { anchorNote, anchorNoteRecord } = useAnchorNote();
+  const { behaviorPattern, behaviorPatternRecord } = useBehaviorPattern();
   const [flareEvents, setFlareEvents] = useState<FlareEvent[]>([]);
+  const createPromisesRef = useRef(new Map<string, Promise<PersistedFlareEvent>>());
+  const flareEventsRef = useRef<FlareEvent[]>([]);
+
+  useEffect(() => {
+    flareEventsRef.current = flareEvents;
+  }, [flareEvents]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadFlareEvents() {
+      const activeAuthState =
+        authStateOverride ?? authContext?.authState ?? (await resolveAuthState());
+
+      if (activeAuthState.kind !== "authenticated") {
+        createPromisesRef.current.clear();
+
+        if (isActive) {
+          setFlareEvents([]);
+        }
+
+        return;
+      }
+
+      try {
+        const persistedEvents = await flareEventRepository.loadFlareEvents(
+          activeAuthState.userId,
+        );
+
+        if (isActive) {
+          setFlareEvents((currentEvents) => {
+            const pendingLocalEvents = currentEvents.filter((flareEvent) =>
+              createPromisesRef.current.has(flareEvent.id),
+            );
+            const persistedFlareEvents = persistedEvents.map(
+              (record) => record.flareEvent,
+            );
+
+            if (pendingLocalEvents.length === 0) {
+              return persistedFlareEvents;
+            }
+
+            return [
+              ...pendingLocalEvents,
+              ...persistedFlareEvents.filter(
+                (persistedFlareEvent) =>
+                  !pendingLocalEvents.some(
+                    (pendingFlareEvent) =>
+                      pendingFlareEvent.id === persistedFlareEvent.id,
+                  ),
+              ),
+            ];
+          });
+        }
+      } catch (error) {
+        console.warn("Failed to load persisted Flare Events.", error);
+      }
+    }
+
+    void loadFlareEvents();
+
+    return () => {
+      isActive = false;
+    };
+  }, [
+    authContext?.authState,
+    authStateOverride,
+    flareEventRepository,
+    resolveAuthState,
+  ]);
 
   const value = useMemo<FlareEventContextValue>(() => {
     const currentEvent = flareEvents[0] ?? null;
@@ -114,20 +318,120 @@ export function FlareEventProvider({ children }: PropsWithChildren) {
       currentEvent,
       flareEvents,
       createFlareEvent: (input) => {
-        const nextEvent = createFlareEventRecord(input);
+        const previousActiveEvent =
+          flareEventsRef.current.find(
+            (flareEvent) => flareEvent.status === "active",
+          ) ?? null;
+        const nextEvent = createLocalFlareEventRecord({
+          anchorNoteId: anchorNoteRecord?.id ?? null,
+          anchorNoteVersion: anchorNoteRecord?.version ?? null,
+          behaviorDescriptionSnapshot:
+            input.behaviorDescriptionSnapshot ??
+            behaviorPattern?.shortDescription ??
+            null,
+          behaviorLabelSnapshot:
+            input.behaviorLabelSnapshot ??
+            behaviorPattern?.behaviorName ??
+            UNCONFIGURED_BEHAVIOR_LABEL,
+          behaviorPatternId: behaviorPatternRecord?.id ?? null,
+          responseMode: anchorNote ? "configured" : "fallback-generic",
+          supportActionShown:
+            input.supportActionShown ?? anchorNote?.emergencyActions ?? null,
+          userId:
+            authStateOverride?.kind === "authenticated"
+              ? authStateOverride.userId
+              : authContext?.authState.kind === "authenticated"
+                ? authContext.authState.userId
+                : null,
+        });
 
         setFlareEvents((currentEvents) => [
           nextEvent,
           ...currentEvents.map((flareEvent) =>
             flareEvent.status === "active"
-              ? { ...flareEvent, status: "closed" as const }
+              ? {
+                  ...flareEvent,
+                  closedAt: flareEvent.closedAt ?? new Date().toISOString(),
+                  status: "closed" as const,
+                  updatedAt: new Date().toISOString(),
+                }
               : flareEvent,
           ),
         ]);
 
+        void (async () => {
+          try {
+            const authState =
+              authStateOverride ??
+              authContext?.authState ??
+              (await resolveAuthState());
+
+            if (authState.kind !== "authenticated") {
+              return;
+            }
+
+            if (previousActiveEvent) {
+              const previousPersistedEvent =
+                createPromisesRef.current.get(previousActiveEvent.id) ??
+                Promise.resolve({
+                  createdAt: previousActiveEvent.createdAt,
+                  flareEvent: previousActiveEvent,
+                  id: previousActiveEvent.id,
+                  updatedAt: previousActiveEvent.updatedAt,
+                  userId: authState.userId,
+                });
+              const resolvedPreviousEvent = await previousPersistedEvent;
+
+              if (
+                resolvedPreviousEvent.id &&
+                resolvedPreviousEvent.flareEvent.userId === authState.userId
+              ) {
+                await flareEventRepository.updateFlareEventStatus({
+                  closedAt: new Date().toISOString(),
+                  eventId: resolvedPreviousEvent.id,
+                  status: "closed",
+                  userId: authState.userId,
+                });
+              }
+            }
+
+            const createPromise = flareEventRepository.createFlareEvent({
+              anchorNoteId: nextEvent.anchorNoteId,
+              anchorNoteVersion: nextEvent.anchorNoteVersion,
+              behaviorDescriptionSnapshot: nextEvent.behaviorDescriptionSnapshot,
+              behaviorLabelSnapshot:
+                nextEvent.behaviorLabelSnapshot ?? UNCONFIGURED_BEHAVIOR_LABEL,
+              behaviorPatternId: nextEvent.behaviorPatternId,
+              responseMode: nextEvent.responseMode,
+              supportActionShown: nextEvent.supportActionShown,
+              supportActionTaken: nextEvent.supportActionTaken,
+              userId: authState.userId,
+            });
+            createPromisesRef.current.set(nextEvent.id, createPromise);
+            const persistedRecord = await createPromise;
+            createPromisesRef.current.set(
+              nextEvent.id,
+              Promise.resolve(persistedRecord),
+            );
+
+            setFlareEvents((currentEvents) =>
+              replaceFlareEvent(
+                currentEvents,
+                nextEvent.id,
+                mergePersistedFlareEvent(nextEvent, persistedRecord),
+              ),
+            );
+          } catch (error) {
+            console.warn("Failed to persist Flare Event.", error);
+          }
+        })();
+
         return nextEvent;
       },
       saveCheckpointReflection: (input) => {
+        const checkpoint = createCheckpointReflectionRecord(input);
+        let targetEvent: FlareEvent | null = null;
+
         setFlareEvents((currentEvents) => {
           const currentActiveEvent = currentEvents.find(
             (flareEvent) => flareEvent.status === "active",
@@ -137,7 +441,7 @@ export function FlareEventProvider({ children }: PropsWithChildren) {
             return currentEvents;
           }
 
-          const checkpoint = createCheckpointReflectionRecord(input);
+          targetEvent = currentActiveEvent;
 
           return currentEvents.map((flareEvent) =>
             flareEvent.id === currentActiveEvent.id
@@ -145,13 +449,100 @@ export function FlareEventProvider({ children }: PropsWithChildren) {
                   ...flareEvent,
                   checkpoint,
                   status: "reflected",
+                  updatedAt: checkpoint.updatedAt,
                 }
               : flareEvent,
           );
         });
+
+        void (async () => {
+          try {
+            const authState =
+              authStateOverride ??
+              authContext?.authState ??
+              (await resolveAuthState());
+
+            if (authState.kind !== "authenticated") {
+              return;
+            }
+
+            const currentActiveEvent =
+              targetEvent ??
+              flareEventsRef.current.find(
+                (flareEvent) =>
+                  flareEvent.status === "active" ||
+                  flareEvent.status === "reflected",
+              ) ??
+              null;
+
+            if (!currentActiveEvent) {
+              return;
+            }
+
+            const latestMatchingEvent =
+              flareEventsRef.current.find(
+                (flareEvent) =>
+                  flareEvent.id === currentActiveEvent.id ||
+                  flareEvent.createdAt === currentActiveEvent.createdAt,
+              ) ?? currentActiveEvent;
+
+            const persistedEvent =
+              createPromisesRef.current.get(currentActiveEvent.id) ??
+              Promise.resolve({
+                createdAt: latestMatchingEvent.createdAt,
+                flareEvent: latestMatchingEvent,
+                id: latestMatchingEvent.id,
+                updatedAt: latestMatchingEvent.updatedAt,
+                userId: authState.userId,
+              });
+            const resolvedEvent = await persistedEvent;
+            const durableEventId = resolvedEvent.id;
+            const persistedCheckpointReflection =
+              await checkpointReflectionRepository.saveCheckpointReflection({
+                checkpointReflection: input,
+                flareEventId: durableEventId,
+                userId: authState.userId,
+              });
+            const persistedFlareEvent =
+              await flareEventRepository.updateFlareEventStatus({
+                eventId: durableEventId,
+                status: "reflected",
+                userId: authState.userId,
+              });
+
+            setFlareEvents((currentEvents) =>
+              currentEvents.map((flareEvent) => {
+                if (
+                  flareEvent.id !== currentActiveEvent.id &&
+                  flareEvent.id !== durableEventId
+                ) {
+                  return flareEvent;
+                }
+
+                return mergePersistedCheckpointReflection(
+                  mergePersistedFlareEvent(flareEvent, persistedFlareEvent),
+                  persistedCheckpointReflection,
+                );
+              }),
+            );
+          } catch (error) {
+            console.warn("Failed to persist Checkpoint / Reflection.", error);
+          }
+        })();
       },
     };
-  }, [flareEvents]);
+  }, [
+    anchorNote,
+    anchorNoteRecord,
+    authContext?.authState,
+    authStateOverride,
+    behaviorPattern,
+    behaviorPatternRecord,
+    checkpointReflectionRepository,
+    flareEventRepository,
+    flareEvents,
+    resolveAuthState,
+  ]);
 
   return (
     <FlareEventContext.Provider value={value}>

@@ -11,12 +11,13 @@ export function HistoryScreen() {
     <AppShell
       currentPath="/history"
       screenLabel="Past moments"
-      subtitle="A lightweight in-memory list of recent Flare Events and attached Checkpoint / Reflection notes."
+      subtitle="A lightweight chronological list of recent Flare Events and attached Checkpoint / Reflection notes."
       title="History stays chronological and light"
     >
       <Text style={styles.intro}>
-        V0 keeps History local-only. No persistence, analytics, or Telegram data
-        is included here.
+        Authenticated sessions load your own persisted event history.
+        Signed-out sessions stay local-only, with no analytics or Telegram data
+        shown here.
       </Text>
       <FlareEventHistoryList flareEvents={flareEvents} />
     </AppShell>

@@ -70,7 +70,7 @@ export function CheckpointReflectionModal({
         </View>
       }
       onClose={onClose}
-      subtitle="Keep the reflection lightweight and attach it to the current in-memory event."
+      subtitle="Keep the reflection lightweight and attach it to the current event."
       title="Checkpoint / Reflection"
       visible={visible}
     >

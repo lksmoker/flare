@@ -27,6 +27,7 @@ export type BehaviorPattern = {
 
 type BehaviorPatternContextValue = {
   behaviorPattern: BehaviorPattern | null;
+  behaviorPatternRecord: PersistedBehaviorPattern | null;
   isConfigured: boolean;
   saveBehaviorPattern: (nextPattern: BehaviorPattern) => Promise<void>;
 };
@@ -154,6 +155,7 @@ export function BehaviorPatternProvider({
   const value = useMemo<BehaviorPatternContextValue>(
     () => ({
       behaviorPattern,
+      behaviorPatternRecord: record,
       isConfigured: isBehaviorPatternConfigured(behaviorPattern),
       saveBehaviorPattern: async (nextPattern) => {
         const normalizedPattern = normalizeBehaviorPattern(nextPattern);
@@ -189,8 +191,8 @@ export function BehaviorPatternProvider({
       authContext?.authState,
       authStateOverride,
       behaviorPattern,
-      behaviorPatternRepository,
       record,
+      behaviorPatternRepository,
       resolveAuthState,
     ],
   );

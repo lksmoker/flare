@@ -7,7 +7,7 @@ type SendFlareButtonProps = {
 export function SendFlareButton({ onPress }: SendFlareButtonProps) {
   return (
     <Pressable
-      accessibilityHint="Starts a new in-memory Flare Event and opens Flare Response immediately."
+      accessibilityHint="Starts a new Flare Event and opens Flare Response immediately."
       accessibilityRole="button"
       onPress={onPress}
       style={styles.button}
