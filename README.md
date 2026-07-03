@@ -7,6 +7,7 @@ Flare V0 is not a crisis service, therapy replacement, medical treatment, emerge
 Release positioning and smoke-tested release notes live in `docs/40_delivery/flare_v0_release_positioning.md`.
 Known limitations live in `docs/40_delivery/flare_v0_known_limitations.md`.
 Production deployment steps and smoke checks live in `docs/40_delivery/flare_v0_production_deployment_checklist.md`.
+Launch-gate status for limited external testing lives in `docs/40_delivery/flare_v0_launch_gate_status.md`.
 
 ## Current stage
 

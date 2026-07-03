@@ -13,6 +13,7 @@
 - V0 supports one lightweight `Behavior Pattern` and one lightweight `Anchor Note` per signed-in user flow.
 - `Checkpoint / Reflection` is intentionally short-form and does not provide deeper journaling, scoring, or analysis.
 - `History` supports search, archive, and restore, but not export, bulk actions, or advanced filtering.
+- V0 does not yet provide self-serve hard delete, account-wide data deletion, or user data export.
 - There are no push notifications, SMS alerts, supporter notifications, or scheduled interventions.
 
 ## Deployment limitations
@@ -30,4 +31,6 @@
 
 - Complete the production deployment checklist and operator review before broader rollout.
 - Confirm final legal/privacy copy for the production surface that hosts V0.
+- Decide and contract the first deletion/export path before promising stronger data-control guarantees.
+- Define the V1 support-network workstream separately from V0 recovery persistence before adding Telegram, support-contact, or support-group data.
 - Add release-hardening checks for deployment assets and console-noise cleanup if broader launch confidence is required.

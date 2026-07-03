@@ -40,6 +40,7 @@ Verify the production Supabase project matches these assumptions:
 - Auth provider support:
   - Email/password sign-in enabled.
   - Email OTP / magic link allowed if that path will remain visible in production.
+  - Outbound auth email delivery is configured and working for the production project.
 - Auth URLs:
   - Supabase `Site URL` set to the production app origin.
   - Supabase allowed redirect URLs include the exact `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` value.
@@ -50,6 +51,16 @@ Verify the production Supabase project matches these assumptions:
 - Secrets discipline:
   - Only the public URL, anon key, and redirect URL belong in the Expo runtime.
   - Service role and DB connection values stay in operator-only tooling.
+
+## Production auth email / SMTP verification
+
+Before limited external testing, an operator should verify the production Supabase project's auth email path end to end:
+
+1. Confirm the project is using the intended built-in or custom SMTP provider.
+2. Send a real sign-up or magic-link email from the production project.
+3. Confirm the email is delivered successfully.
+4. Confirm the link resolves back to the exact production `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` origin instead of localhost or another fallback URL.
+5. Record the verification date and account used alongside the deploy smoke notes.
 
 ## Database migrations and expected tables
 
@@ -168,6 +179,7 @@ Before declaring production ready, explicitly confirm:
 
 - production env vars are present and correct
 - Supabase auth URLs match the production origin
+- Supabase auth email delivery works for the production project
 - both checked-in migrations are applied
 - RLS/grants/policies are present on all four tables
 - the static host is serving the latest `frontend/dist` export
