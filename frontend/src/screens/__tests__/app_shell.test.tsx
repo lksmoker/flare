@@ -136,6 +136,7 @@ describe("V0 app shell", () => {
     expect(getByText("Save your setup")).toBeTruthy();
     expect(getByText("Signed in as luke.smoker@gmail.com")).toBeTruthy();
     expect(getByText("Connected")).toBeTruthy();
+    expect(getByText("Details")).toBeTruthy();
     expect(
       queryByText(
         "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",

@@ -138,6 +138,7 @@ describe("AuthStatusCard", () => {
     expect(getByText("Save your setup")).toBeTruthy();
     expect(getByText("Connected")).toBeTruthy();
     expect(getByText("Signed in as luke.smoker@gmail.com")).toBeTruthy();
+    expect(getByText("Details")).toBeTruthy();
     expect(disclosureButton.props.accessibilityState).toEqual({
       expanded: false,
     });
@@ -155,6 +156,7 @@ describe("AuthStatusCard", () => {
         expanded: true,
       },
     );
+    expect(getByText("Hide details")).toBeTruthy();
     expect(
       getByText(
         "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",
