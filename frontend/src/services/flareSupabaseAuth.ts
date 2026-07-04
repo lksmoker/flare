@@ -67,7 +67,10 @@ function mapSessionToAuthState(
 export function readFlareAuthRedirectUrl(
   env: RuntimeEnv = process.env,
 ): string | null {
-  const redirectUrl = env[PUBLIC_AUTH_REDIRECT_URL_ENV_NAME]?.trim();
+  const redirectUrl = (
+    env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL ??
+    process.env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL
+  )?.trim();
 
   return redirectUrl && redirectUrl.length > 0 ? redirectUrl : null;
 }
