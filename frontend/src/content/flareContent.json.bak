@@ -1,4 +1,4 @@
-﻿{
+{
   "app": {
     "name": "Flare"
   },
@@ -21,7 +21,7 @@
       "configured": "Configured",
       "needsSetup": "Needs setup",
       "connected": "Connected",
-      "localOnly": "Not saved yet",
+      "localOnly": "Local-only",
       "comingSoon": "Coming in V1",
       "archivedEvent": "Archived event",
       "activeEvent": "Active event",
@@ -37,7 +37,7 @@
         "notConfiguredTitle": "Not set up yet"
       },
       "error": {
-        "missingRedirectUrl": "Sign-in return URL is not configured."
+        "missingRedirectUrl": "Redirect URL is not configured. Supabase may use the project Site URL instead."
       }
     }
   },
@@ -51,10 +51,10 @@
     "cardTitle": "Save your setup",
     "status": {
       "connected": "Connected",
-      "localOnly": "Not saved yet"
+      "localOnly": "Local-only"
     },
     "loading": {
-      "copy": "Checking whether your setup can be saved."
+      "copy": "Checking whether your setup can be saved to Supabase."
     },
     "authenticated": {
       "copy": "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",
@@ -63,10 +63,10 @@
       "signingOut": "Signing out..."
     },
     "clientUnavailable": {
-      "copy": "Your setup is only saved on this device because sign-in is not fully configured."
+      "copy": "Your setup is local-only because the public Supabase URL and anon key are not loaded into the Expo runtime."
     },
     "noSession": {
-      "copy": "Your setup can work locally for now. Sign in to save it and use it across devices.",
+      "copy": "Your setup can work locally for now. Sign in to save and reload it with Supabase.",
       "form": {
         "emailAccessibilityLabel": "Email address",
         "passwordAccessibilityLabel": "Password",
@@ -76,13 +76,13 @@
       "modes": {
         "existingAccount": "Existing account",
         "firstTimeSetup": "First-time setup",
-        "existingAccountDetail": "Sign in with an existing account.",
+        "existingAccountDetail": "Sign in with an existing Supabase account for this project.",
         "firstTimeSetupDetail": "Create an account if this is your first time setting up Flare."
       },
-      "passwordHint": "Magic link sign-in will send a secure sign-in link to your email.",
-      "redirectLabel": "Sign-in return URL:",
+      "passwordHint": "Password sign-in uses the current Supabase project settings. Magic link sign-in requires an allowed redirect URL.",
+      "redirectLabel": "Current redirect URL:",
       "redirectMagicLinkPrefix": "Magic link sent. It should return to",
-      "redirectMagicLinkFallback": "Magic link sent. The sign-in link will use the configured return URL.",
+      "redirectMagicLinkFallback": "Magic link sent. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase may fall back to the project Site URL.",
       "signUpNotice": "Account created if sign-up is enabled. Check your email if confirmation is required.",
       "buttons": {
         "signIn": "Sign in",
@@ -113,7 +113,7 @@
         "configuredPrefix": "Configured:",
         "readyToDefine": "Ready to set up",
         "localOnlyUntilSignIn": "Local-only until sign in",
-        "localOnlyUntilConfigLoaded": "Not saved until sign-in is configured",
+        "localOnlyUntilConfigLoaded": "Local-only until Supabase config is loaded",
         "connectedPrefix": "Connected:"
       },
       "secondaryAction": {
@@ -349,4 +349,3 @@
     }
   }
 }
-
