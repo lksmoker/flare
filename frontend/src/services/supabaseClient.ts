@@ -36,8 +36,12 @@ function cleanRequiredEnvValue(value: string | undefined) {
 export function readPublicSupabaseConfig(
   env: RuntimeEnv = process.env,
 ): PublicSupabaseConfig {
-  const url = cleanRequiredEnvValue(env.EXPO_PUBLIC_FLARE_SUPABASE_URL);
-  const anonKey = cleanRequiredEnvValue(env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY);
+  const url = cleanRequiredEnvValue(
+    env.EXPO_PUBLIC_FLARE_SUPABASE_URL ?? env.EXPO_PUBLIC_SUPABASE_URL,
+  );
+  const anonKey = cleanRequiredEnvValue(
+    env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY ?? env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+  );
 
   if (!url || !anonKey) {
     const missingEnvNames = [
@@ -82,4 +86,5 @@ export function getSupabaseClient(
 export function resetSupabaseClientForTests() {
   cachedClient = null;
 }
+
 
