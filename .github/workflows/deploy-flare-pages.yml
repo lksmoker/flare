@@ -49,7 +49,7 @@ jobs:
       - name: Test
         run: npm run test
 
-            - name: Verify public env presence
+      - name: Verify public env presence
         run: |
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_URL"
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY"
