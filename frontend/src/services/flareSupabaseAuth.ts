@@ -1,4 +1,4 @@
-import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
+﻿import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 import {
   type FlareSupabaseClient,
@@ -67,10 +67,7 @@ function mapSessionToAuthState(
 export function readFlareAuthRedirectUrl(
   env: RuntimeEnv = process.env,
 ): string | null {
-  const redirectUrl = (
-    env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL ??
-    process.env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL
-  )?.trim();
+  const redirectUrl = env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL?.trim();
 
   return redirectUrl && redirectUrl.length > 0 ? redirectUrl : null;
 }
@@ -363,3 +360,5 @@ export async function signOutFromFlareSupabase(
     throw error;
   }
 }
+
+

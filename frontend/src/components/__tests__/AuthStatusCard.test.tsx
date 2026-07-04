@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+﻿import { fireEvent, render, waitFor } from "@testing-library/react-native";
 
 import { AuthStatusCard } from "../AuthStatusCard";
 import { FlareAuthProvider } from "../../state/FlareAuthContext";
@@ -81,7 +81,7 @@ describe("AuthStatusCard", () => {
 
     await waitFor(() => {
       expect(
-        getByText("Current redirect URL: http://100.64.0.10:8081"),
+        getByText("Sign-in return URL: http://100.64.0.10:8081"),
       ).toBeTruthy();
     });
   });
@@ -110,9 +110,11 @@ describe("AuthStatusCard", () => {
       expect(sendMagicLinkRequest).toHaveBeenCalledWith("flare@example.com");
       expect(
         getByText(
-          "Magic link sent. Without EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL, Supabase may fall back to the project Site URL.",
+          "Magic link sent. The sign-in link will use the configured return URL.",
         ),
       ).toBeTruthy();
     });
   });
 });
+
+

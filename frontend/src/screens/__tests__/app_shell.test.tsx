@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+﻿import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { PropsWithChildren, ReactNode } from "react";
 
 import { CustomizeScreen } from "../CustomizeScreen";
@@ -101,7 +101,7 @@ describe("V0 app shell", () => {
     });
 
     expect(getByText("Save your setup")).toBeTruthy();
-    expect(getByText("Local-only")).toBeTruthy();
+    expect(getByText("Not saved yet")).toBeTruthy();
     expect(getByText("Behavior Pattern")).toBeTruthy();
     expect(getByText("Anchor Note")).toBeTruthy();
     expect(getByText("Telegram Support")).toBeTruthy();
@@ -463,3 +463,4 @@ describe("V0 app shell", () => {
     ).toBe(false);
   });
 });
+
