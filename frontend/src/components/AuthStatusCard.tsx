@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
@@ -36,6 +36,7 @@ export function AuthStatusCard() {
   const [password, setPassword] = useState("");
   const [notice, setNotice] = useState<string | null>(null);
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const [isSignedInExpanded, setIsSignedInExpanded] = useState(false);
 
   const connectionLabel = useMemo(
     () => getConnectionLabel(authStatus, authState),
@@ -46,22 +47,69 @@ export function AuthStatusCard() {
   const canSubmitPassword =
     !isBusy && email.trim().length > 0 && password.length > 0;
   const canSendMagicLink = !isBusy && email.trim().length > 0;
+  const signedInUserLabel =
+    authState.kind === "authenticated"
+      ? `${flareContent.auth.authenticated.signedInAs} ${authState.userEmail ?? authState.userId}`
+      : null;
+
+  useEffect(() => {
+    if (authState.kind === "authenticated") {
+      setIsSignedInExpanded(false);
+    }
+  }, [authState.kind, authState.kind === "authenticated" ? authState.userId : null]);
 
   return (
     <View style={styles.card}>
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
-        <Text
-          style={[
-            styles.statusBadge,
-            authState.kind === "authenticated"
-              ? styles.connectedBadge
-              : styles.localOnlyBadge,
-          ]}
+      {authStatus === "ready" && authState.kind === "authenticated" ? (
+        <Pressable
+          accessibilityLabel={
+            isSignedInExpanded
+              ? flareContent.auth.authenticated.collapseAccessibilityLabel
+              : flareContent.auth.authenticated.expandAccessibilityLabel
+          }
+          accessibilityRole="button"
+          accessibilityState={{ expanded: isSignedInExpanded }}
+          aria-expanded={isSignedInExpanded}
+          onPress={() => setIsSignedInExpanded((current) => !current)}
+          style={styles.disclosureButton}
         >
-          {connectionLabel}
-        </Text>
-      </View>
+          <View style={styles.disclosureMain}>
+            <View style={styles.disclosureTitleRow}>
+              <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
+              <Text style={[styles.statusBadge, styles.connectedBadge]}>
+                {connectionLabel}
+              </Text>
+            </View>
+            {signedInUserLabel ? (
+              <Text style={styles.detail}>{signedInUserLabel}</Text>
+            ) : null}
+          </View>
+          <View style={styles.disclosureAffordance}>
+            <Text style={styles.disclosureText}>
+              {isSignedInExpanded
+                ? flareContent.auth.authenticated.hideDetails
+                : flareContent.auth.authenticated.details}
+            </Text>
+            <Text style={styles.disclosureChevron}>
+              {isSignedInExpanded ? "^" : "v"}
+            </Text>
+          </View>
+        </Pressable>
+      ) : (
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
+          <Text
+            style={[
+              styles.statusBadge,
+              authState.kind === "authenticated"
+                ? styles.connectedBadge
+                : styles.localOnlyBadge,
+            ]}
+          >
+            {connectionLabel}
+          </Text>
+        </View>
+      )}
 
       {authStatus === "loading" ? (
         <Text style={styles.copy}>
@@ -71,30 +119,30 @@ export function AuthStatusCard() {
 
       {authStatus === "ready" && authState.kind === "authenticated" ? (
         <>
-          <Text style={styles.copy}>
-            {flareContent.auth.authenticated.copy}
-          </Text>
-          <Text style={styles.detail}>
-            {flareContent.auth.authenticated.signedInAs}{" "}
-            {authState.userEmail ?? authState.userId}
-          </Text>
-          <Text style={styles.detail}>
-            {flareContent.safety.selfSupportBoundary}
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => {
-              setNotice(null);
-              void signOut();
-            }}
-            style={[styles.button, styles.secondaryButton]}
-          >
-            <Text style={styles.secondaryButtonLabel}>
-              {pendingAction === "sign-out"
-                ? flareContent.auth.authenticated.signingOut
-                : flareContent.auth.authenticated.signOut}
-            </Text>
-          </Pressable>
+          {isSignedInExpanded ? (
+            <>
+              <Text style={styles.copy}>
+                {flareContent.auth.authenticated.copy}
+              </Text>
+              <Text style={styles.detail}>
+                {flareContent.safety.selfSupportBoundary}
+              </Text>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => {
+                  setNotice(null);
+                  void signOut();
+                }}
+                style={[styles.button, styles.secondaryButton]}
+              >
+                <Text style={styles.secondaryButtonLabel}>
+                  {pendingAction === "sign-out"
+                    ? flareContent.auth.authenticated.signingOut
+                    : flareContent.auth.authenticated.signOut}
+                </Text>
+              </Pressable>
+            </>
+          ) : null}
         </>
       ) : null}
 
@@ -286,6 +334,38 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
+  },
+  disclosureAffordance: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  disclosureButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  disclosureChevron: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  disclosureMain: {
+    flex: 1,
+    gap: 4,
+  },
+  disclosureText: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  disclosureTitleRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
   },
   detail: {
     color: flareTheme.colors.textMuted,

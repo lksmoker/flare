@@ -59,6 +59,10 @@
     "authenticated": {
       "copy": "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",
       "signedInAs": "Signed in as",
+      "details": "Details",
+      "hideDetails": "Hide details",
+      "expandAccessibilityLabel": "Show saved setup details",
+      "collapseAccessibilityLabel": "Hide saved setup details",
       "signOut": "Sign out",
       "signingOut": "Signing out..."
     },

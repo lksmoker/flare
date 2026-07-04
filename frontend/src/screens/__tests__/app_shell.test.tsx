@@ -108,6 +108,42 @@ describe("V0 app shell", () => {
     expect(getByText("Coming in V1")).toBeTruthy();
   });
 
+  it("shows the signed-in setup card collapsed by default on Customize", () => {
+    const { getByLabelText, getByText, queryByText } = render(
+      <CustomizeScreen />,
+      {
+        wrapper({ children }) {
+          return (
+            <FlareAuthProvider
+              initialAuthState={{
+                kind: "authenticated",
+                userEmail: "luke.smoker@gmail.com",
+                userId: "user-123",
+              }}
+              subscribe={() => null}
+            >
+              <BehaviorPatternProvider>
+                <AnchorNoteProvider>
+                  <FlareEventProvider>{children}</FlareEventProvider>
+                </AnchorNoteProvider>
+              </BehaviorPatternProvider>
+            </FlareAuthProvider>
+          );
+        },
+      },
+    );
+
+    expect(getByText("Save your setup")).toBeTruthy();
+    expect(getByText("Signed in as luke.smoker@gmail.com")).toBeTruthy();
+    expect(getByText("Connected")).toBeTruthy();
+    expect(
+      queryByText(
+        "Your Behavior Pattern and Anchor Note can now reload when you sign in on this device.",
+      ),
+    ).toBeNull();
+    expect(getByLabelText("Show saved setup details")).toBeTruthy();
+  });
+
   it("opens Behavior Pattern Setup from Customize and keeps Telegram future-scoped", () => {
     const { getAllByText, getByText } = render(<CustomizeScreen />, {
       wrapper: TestProviders,
