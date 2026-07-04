@@ -61,40 +61,44 @@ export function AuthStatusCard() {
   return (
     <View style={styles.card}>
       {authStatus === "ready" && authState.kind === "authenticated" ? (
-        <Pressable
-          accessibilityLabel={
-            isSignedInExpanded
-              ? flareContent.auth.authenticated.collapseAccessibilityLabel
-              : flareContent.auth.authenticated.expandAccessibilityLabel
-          }
-          accessibilityRole="button"
-          accessibilityState={{ expanded: isSignedInExpanded }}
-          aria-expanded={isSignedInExpanded}
-          onPress={() => setIsSignedInExpanded((current) => !current)}
-          style={styles.disclosureButton}
-        >
-          <View style={styles.disclosureMain}>
-            <View style={styles.disclosureTitleRow}>
-              <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
-              <Text style={[styles.statusBadge, styles.connectedBadge]}>
-                {connectionLabel}
-              </Text>
-            </View>
+        <View style={styles.disclosureMain}>
+          <View style={styles.headerRow}>
+            <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
+            <Text style={[styles.statusBadge, styles.connectedBadge]}>
+              {connectionLabel}
+            </Text>
+          </View>
+          <View style={styles.disclosureMetaRow}>
             {signedInUserLabel ? (
-              <Text style={styles.detail}>{signedInUserLabel}</Text>
-            ) : null}
+              <Text style={[styles.detail, styles.signedInUserLabel]}>
+                {signedInUserLabel}
+              </Text>
+            ) : (
+              <View style={styles.disclosureMetaSpacer} />
+            )}
+            <Pressable
+              accessibilityLabel={
+                isSignedInExpanded
+                  ? flareContent.auth.authenticated.collapseAccessibilityLabel
+                  : flareContent.auth.authenticated.expandAccessibilityLabel
+              }
+              accessibilityRole="button"
+              accessibilityState={{ expanded: isSignedInExpanded }}
+              aria-expanded={isSignedInExpanded}
+              onPress={() => setIsSignedInExpanded((current) => !current)}
+              style={styles.disclosureButton}
+            >
+              <Text style={styles.disclosureText}>
+                {isSignedInExpanded
+                  ? flareContent.auth.authenticated.hideDetails
+                  : flareContent.auth.authenticated.details}
+              </Text>
+              <Text style={styles.disclosureChevron}>
+                {isSignedInExpanded ? "^" : "v"}
+              </Text>
+            </Pressable>
           </View>
-          <View style={styles.disclosureAffordance}>
-            <Text style={styles.disclosureText}>
-              {isSignedInExpanded
-                ? flareContent.auth.authenticated.hideDetails
-                : flareContent.auth.authenticated.details}
-            </Text>
-            <Text style={styles.disclosureChevron}>
-              {isSignedInExpanded ? "^" : "v"}
-            </Text>
-          </View>
-        </Pressable>
+        </View>
       ) : (
         <View style={styles.headerRow}>
           <Text style={styles.title}>{flareContent.auth.cardTitle}</Text>
@@ -335,16 +339,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  disclosureAffordance: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
   disclosureButton: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
+    gap: 6,
   },
   disclosureChevron: {
     color: flareTheme.colors.primaryStrong,
@@ -352,25 +350,26 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   disclosureMain: {
-    flex: 1,
-    gap: 4,
-  },
-  disclosureText: {
-    color: flareTheme.colors.primaryStrong,
-    fontSize: 13,
-    fontWeight: "700",
-  },
-  disclosureTitleRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 10,
+    gap: 8,
   },
   detail: {
     color: flareTheme.colors.textMuted,
     fontSize: 13,
     lineHeight: 18,
+  },
+  disclosureMetaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  disclosureMetaSpacer: {
+    flex: 1,
+  },
+  disclosureText: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 13,
+    fontWeight: "700",
   },
   disabledButton: {
     opacity: 0.5,
@@ -385,7 +384,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 10,
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   input: {
     borderWidth: 1,
@@ -430,6 +429,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
+  signedInUserLabel: {
+    flex: 1,
+  },
   primaryButton: {
     borderColor: flareTheme.colors.primary,
     backgroundColor: flareTheme.colors.primary,
@@ -449,6 +451,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   statusBadge: {
+    alignSelf: "flex-start",
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 4,
