@@ -45,12 +45,12 @@ export function readPublicSupabaseConfig(
       process.env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY,
   );
 
-  const missingEnvNames = [
-    !url ? PUBLIC_SUPABASE_URL_ENV_NAME : null,
-    !anonKey ? PUBLIC_SUPABASE_ANON_KEY_ENV_NAME : null,
-  ].filter((value): value is string => Boolean(value));
+  if (!url || !anonKey) {
+    const missingEnvNames = [
+      !url ? PUBLIC_SUPABASE_URL_ENV_NAME : null,
+      !anonKey ? PUBLIC_SUPABASE_ANON_KEY_ENV_NAME : null,
+    ].filter((value): value is string => Boolean(value));
 
-  if (missingEnvNames.length > 0) {
     throw new MissingSupabaseConfigError(missingEnvNames);
   }
 
