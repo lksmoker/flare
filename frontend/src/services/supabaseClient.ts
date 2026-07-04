@@ -1,4 +1,4 @@
-﻿import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export const PUBLIC_SUPABASE_URL_ENV_NAME =
   "EXPO_PUBLIC_FLARE_SUPABASE_URL";
@@ -7,6 +7,16 @@ export const PUBLIC_SUPABASE_ANON_KEY_ENV_NAME =
 export const FLARE_SUPABASE_AUTH_STORAGE_KEY = "flare-auth-token";
 
 type RuntimeEnv = Record<string, string | undefined>;
+
+function readDefaultRuntimeEnv(): RuntimeEnv {
+  return {
+    EXPO_PUBLIC_FLARE_SUPABASE_URL: process.env.EXPO_PUBLIC_FLARE_SUPABASE_URL,
+    EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY:
+      process.env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY,
+    EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
+    EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+  };
+}
 
 export type PublicSupabaseConfig = {
   anonKey: string;
@@ -34,7 +44,7 @@ function cleanRequiredEnvValue(value: string | undefined) {
 }
 
 export function readPublicSupabaseConfig(
-  env: RuntimeEnv = process.env,
+  env: RuntimeEnv = readDefaultRuntimeEnv(),
 ): PublicSupabaseConfig {
   const url = cleanRequiredEnvValue(
     env.EXPO_PUBLIC_FLARE_SUPABASE_URL ?? env.EXPO_PUBLIC_SUPABASE_URL,
@@ -61,7 +71,7 @@ export function readPublicSupabaseConfig(
 let cachedClient: FlareSupabaseClient | null = null;
 
 export function getSupabaseClient(
-  env: RuntimeEnv = process.env,
+  env: RuntimeEnv = readDefaultRuntimeEnv(),
 ): FlareSupabaseClient {
   if (cachedClient) {
     return cachedClient;
@@ -86,5 +96,3 @@ export function getSupabaseClient(
 export function resetSupabaseClientForTests() {
   cachedClient = null;
 }
-
-

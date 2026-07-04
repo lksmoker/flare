@@ -33,6 +33,13 @@ export const PUBLIC_AUTH_REDIRECT_URL_ENV_NAME =
   "EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL";
 
 type RuntimeEnv = Record<string, string | undefined>;
+
+function readDefaultRuntimeEnv(): RuntimeEnv {
+  return {
+    EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL:
+      process.env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL,
+  };
+}
 type SessionTokens = {
   accessToken: string;
   refreshToken: string;
@@ -65,14 +72,14 @@ function mapSessionToAuthState(
 }
 
 export function readFlareAuthRedirectUrl(
-  env: RuntimeEnv = process.env,
+  env: RuntimeEnv = readDefaultRuntimeEnv(),
 ): string | null {
   const redirectUrl = env.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL?.trim();
 
   return redirectUrl && redirectUrl.length > 0 ? redirectUrl : null;
 }
 
-function buildRedirectOptions(env: RuntimeEnv = process.env) {
+function buildRedirectOptions(env: RuntimeEnv = readDefaultRuntimeEnv()) {
   const redirectUrl = readFlareAuthRedirectUrl(env);
 
   return redirectUrl
@@ -316,7 +323,7 @@ export async function signInToFlareSupabaseWithPassword(
 export async function sendFlareSupabaseMagicLink(
   email: string,
   client: FlareSupabaseClient | null = null,
-  env: RuntimeEnv = process.env,
+  env: RuntimeEnv = readDefaultRuntimeEnv(),
 ) {
   const activeClient = client ?? getSupabaseClient();
   const normalizedEmail = email.trim();
@@ -333,7 +340,7 @@ export async function sendFlareSupabaseMagicLink(
 export async function signUpForFlareSupabase(
   input: FlarePasswordSignInInput,
   client: FlareSupabaseClient | null = null,
-  env: RuntimeEnv = process.env,
+  env: RuntimeEnv = readDefaultRuntimeEnv(),
 ) {
   const activeClient = client ?? getSupabaseClient();
   const email = input.email.trim();
@@ -360,5 +367,7 @@ export async function signOutFromFlareSupabase(
     throw error;
   }
 }
+
+
 
 
