@@ -27,17 +27,24 @@ export class MissingSupabaseConfigError extends Error {
   }
 }
 
-function readRequiredEnvValue(env: RuntimeEnv, envName: string) {
-  const value = env[envName]?.trim();
+function cleanRequiredEnvValue(value: string | undefined) {
+  const trimmedValue = value?.trim();
 
-  return value ? value : undefined;
+  return trimmedValue ? trimmedValue : undefined;
 }
 
 export function readPublicSupabaseConfig(
   env: RuntimeEnv = process.env,
 ): PublicSupabaseConfig {
-  const url = readRequiredEnvValue(env, PUBLIC_SUPABASE_URL_ENV_NAME);
-  const anonKey = readRequiredEnvValue(env, PUBLIC_SUPABASE_ANON_KEY_ENV_NAME);
+  const url = cleanRequiredEnvValue(
+    env.EXPO_PUBLIC_FLARE_SUPABASE_URL ??
+      process.env.EXPO_PUBLIC_FLARE_SUPABASE_URL,
+  );
+  const anonKey = cleanRequiredEnvValue(
+    env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY ??
+      process.env.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY,
+  );
+
   const missingEnvNames = [
     !url ? PUBLIC_SUPABASE_URL_ENV_NAME : null,
     !anonKey ? PUBLIC_SUPABASE_ANON_KEY_ENV_NAME : null,
@@ -48,8 +55,8 @@ export function readPublicSupabaseConfig(
   }
 
   return {
-    anonKey: anonKey as string,
-    url: url as string,
+    anonKey,
+    url,
   };
 }
 

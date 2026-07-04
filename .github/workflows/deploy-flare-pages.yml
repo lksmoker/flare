@@ -17,6 +17,9 @@ concurrency:
 
 jobs:
   build:
+    environment:
+      name: github-pages
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -51,23 +54,18 @@ jobs:
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_URL"
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY"
           test -n "$EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL"
+          echo "Flare public env vars are present"
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
           EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
 
       - name: Export web build
-        run: npx expo export --platform web --output-dir dist
+        run: npx expo export --platform web
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
           EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
-
-      - name: Inspect export output
-        run: |
-          pwd
-          ls -la
-          ls -la dist
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
