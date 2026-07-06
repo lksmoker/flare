@@ -180,6 +180,13 @@ execute function public.set_external_support_channel_updated_at();
 alter table public.support_channels enable row level security;
 alter table public.support_channel_delivery_attempts enable row level security;
 
+grant select, insert, update, delete on table public.support_channels to authenticated;
+grant select, insert on table public.support_channel_delivery_attempts to authenticated;
+grant all privileges on table public.support_channels to service_role;
+grant all privileges on table public.support_channel_delivery_attempts to service_role;
+revoke all on table public.support_channels from anon;
+revoke all on table public.support_channel_delivery_attempts from anon;
+
 do $$
 begin
   if not exists (
