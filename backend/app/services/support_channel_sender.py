@@ -9,13 +9,12 @@ from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_SEND_KIND_TEST,
     SUPPORT_CHANNEL_STATUS_CONNECTED,
     DeliveryAttemptRecord,
-    GroupMeRuntimeConfig,
     SupportChannelRecord,
-    SupportChannelSendRequest,
     SupportChannelSendResult,
     build_blocked_result,
 )
-from backend.app.integrations.groupme_provider import GroupMeProvider, GroupMeProviderConfig
+from backend.app.integrations.groupme_provider import GroupMeProvider
+from backend.app.services.support_channel_provider_config import ProviderConfigResolver
 
 
 class SupportChannelRepositoryLike(Protocol):
@@ -55,11 +54,11 @@ class SupportChannelSender:
         *,
         repository: SupportChannelRepositoryLike,
         groupme_provider: GroupMeProvider,
-        groupme_config: GroupMeRuntimeConfig,
+        provider_config_resolver: ProviderConfigResolver,
     ) -> None:
         self._repository = repository
         self._groupme_provider = groupme_provider
-        self._groupme_config = groupme_config
+        self._provider_config_resolver = provider_config_resolver
 
     def send_test_message(
         self,
@@ -90,18 +89,28 @@ class SupportChannelSender:
             self._update_channel(channel, blocked)
             return blocked
 
-        send_request = SupportChannelSendRequest(
-            support_channel_id=channel.id,
-            user_id=channel.user_id,
-            provider=channel.provider,
-            destination_id=channel.external_group_id or self._groupme_config.test_group_id,
-            destination_name=channel.external_group_name or self._groupme_config.test_group_name,
-            message=GROUPME_TEST_MESSAGE,
-            send_kind=SUPPORT_CHANNEL_SEND_KIND_TEST,
+        provider_config = self._provider_config_resolver.resolve_groupme_provider_config(
+            provider_config_ref=channel.provider_config_ref
         )
+        if provider_config is None:
+            blocked = build_blocked_result(
+                provider=channel.provider,
+                user_id=channel.user_id,
+                support_channel_id=channel.id,
+                destination_id=channel.external_group_id,
+                destination_name=channel.external_group_name,
+                message=GROUPME_TEST_MESSAGE,
+                error_code="provider_config_unavailable",
+                error_message_safe="Support channel requires reconnection before testing.",
+                blocked_reason="provider_config_unavailable",
+            )
+            self._record_attempt(blocked)
+            self._update_channel(channel, blocked)
+            return blocked
+
         result = self._groupme_provider.send_message(
-            provider_config=GroupMeProviderConfig(bot_id=self._groupme_config.test_bot_id),
-            send_request=send_request,
+            provider_config=provider_config,
+            send_request=channel.build_test_send_request(),
         )
         self._record_attempt(result)
         self._update_channel(channel, result)
@@ -146,18 +155,6 @@ class SupportChannelSender:
                 error_code="destination_missing",
                 error_message_safe="Support channel is missing a destination group.",
                 blocked_reason="missing_destination",
-            )
-        if channel.external_group_id != self._groupme_config.test_group_id:
-            return build_blocked_result(
-                provider=channel.provider,
-                user_id=channel.user_id,
-                support_channel_id=channel.id,
-                destination_id=channel.external_group_id,
-                destination_name=channel.external_group_name,
-                message=GROUPME_TEST_MESSAGE,
-                error_code="groupme_test_group_mismatch",
-                error_message_safe="Saved support channel does not match the dedicated GroupMe test group.",
-                blocked_reason="group_mismatch",
             )
         return None
 

@@ -46,6 +46,86 @@ class SupportChannelRepository:
             return None
         return SupportChannelRecord.from_row(rows[0])
 
+    def get_current_support_channel(
+        self,
+        *,
+        user_id: str,
+    ) -> SupportChannelRecord | None:
+        query = parse.urlencode(
+            {
+                "user_id": f"eq.{user_id}",
+                "select": "*",
+                "order": "enabled.desc,updated_at.desc",
+                "limit": "1",
+            }
+        )
+        rows = self._transport.request_json(
+            method="GET",
+            path=f"/rest/v1/support_channels?{query}",
+            payload=None,
+            prefer=None,
+        )
+        if not rows:
+            return None
+        return SupportChannelRecord.from_row(rows[0])
+
+    def create_support_channel(
+        self,
+        *,
+        user_id: str,
+        provider: str,
+        status: str,
+        enabled: bool,
+        external_group_id: str | None,
+        external_group_name: str | None,
+        provider_config_ref: str | None,
+        default_message: str,
+    ) -> SupportChannelRecord:
+        rows = self._transport.request_json(
+            method="POST",
+            path="/rest/v1/support_channels",
+            payload=[
+                {
+                    "user_id": user_id,
+                    "provider": provider,
+                    "status": status,
+                    "enabled": enabled,
+                    "external_group_id": external_group_id,
+                    "external_group_name": external_group_name,
+                    "provider_config_ref": provider_config_ref,
+                    "default_message": default_message,
+                }
+            ],
+            prefer="return=representation",
+        )
+        if not rows:
+            raise RuntimeError("Support channel create returned no row.")
+        return SupportChannelRecord.from_row(rows[0])
+
+    def update_support_channel(
+        self,
+        *,
+        support_channel_id: str,
+        user_id: str,
+        patch: dict[str, Any],
+    ) -> SupportChannelRecord | None:
+        query = parse.urlencode(
+            {
+                "id": f"eq.{support_channel_id}",
+                "user_id": f"eq.{user_id}",
+                "select": "*",
+            }
+        )
+        rows = self._transport.request_json(
+            method="PATCH",
+            path=f"/rest/v1/support_channels?{query}",
+            payload=patch,
+            prefer="return=representation",
+        )
+        if not rows:
+            return None
+        return SupportChannelRecord.from_row(rows[0])
+
     def insert_delivery_attempt(self, attempt: DeliveryAttemptRecord) -> dict[str, Any]:
         rows = self._transport.request_json(
             method="POST",

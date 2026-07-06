@@ -7,7 +7,10 @@ from typing import Any
 SUPPORT_CHANNEL_PROVIDER_GROUPME = "groupme"
 SUPPORT_CHANNEL_SEND_KIND_TEST = "test"
 SUPPORT_CHANNEL_SEND_KIND_REAL = "real"
+SUPPORT_CHANNEL_STATUS_DISABLED = "disabled"
 SUPPORT_CHANNEL_STATUS_CONNECTED = "connected"
+SUPPORT_CHANNEL_STATUS_RECONNECT_REQUIRED = "reconnect_required"
+SUPPORT_CHANNEL_STATUS_DISCONNECTED = "disconnected"
 SUPPORT_CHANNEL_DELIVERY_STATUS_SENT = "sent"
 SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED = "failed"
 SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED = "blocked"
@@ -55,6 +58,41 @@ class SupportChannelRecord:
             last_error_message_safe=_optional_str(row.get("last_error_message_safe")),
         )
 
+    def is_configured(self) -> bool:
+        return bool(
+            self.provider_config_ref
+            and self.external_group_id
+            and self.default_message.strip()
+        )
+
+    def destination_display_name(self) -> str | None:
+        return self.external_group_name or self.external_group_id
+
+    def to_safe_public_dict(self) -> dict[str, Any]:
+        return {
+            "provider": self.provider,
+            "configured": self.is_configured(),
+            "enabled": self.enabled,
+            "status": self.status,
+            "destination_display_name": self.destination_display_name(),
+            "message_preview": self.default_message,
+            "last_delivery_status": self.last_delivery_status,
+            "last_delivery_at": self.last_delivery_at,
+        }
+
+    def build_test_send_request(self) -> "SupportChannelSendRequest":
+        if not self.external_group_id:
+            raise ValueError("Support channel must have an external_group_id for test sends.")
+        return SupportChannelSendRequest(
+            support_channel_id=self.id,
+            user_id=self.user_id,
+            provider=self.provider,
+            destination_id=self.external_group_id,
+            destination_name=self.external_group_name,
+            message=GROUPME_TEST_MESSAGE,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_TEST,
+        )
+
 
 @dataclass(frozen=True)
 class GroupMeRuntimeConfig:
@@ -96,6 +134,19 @@ class SupportChannelSendResult:
 
     def to_public_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+    def to_safe_public_dict(self) -> dict[str, Any]:
+        return {
+            "provider": self.provider,
+            "send_kind": self.send_kind,
+            "status": self.status,
+            "attempted_at": self.attempted_at,
+            "delivered_at": self.delivered_at,
+            "destination_display_name": self.destination_name,
+            "message_preview": self.message_snapshot,
+            "error_code": self.error_code,
+            "error_message_safe": self.error_message_safe,
+        }
 
 
 @dataclass(frozen=True)

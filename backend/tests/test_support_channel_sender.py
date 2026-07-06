@@ -8,11 +8,11 @@ from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED,
     SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
-    GroupMeRuntimeConfig,
     SupportChannelRecord,
     SupportChannelSendResult,
 )
 from backend.app.integrations.groupme_provider import GroupMeProviderConfig
+from backend.app.services.support_channel_provider_config import ProviderConfigResolver
 from backend.app.services.support_channel_sender import (
     SendSupportChannelTestMessageCommand,
     SupportChannelSender,
@@ -21,11 +21,6 @@ from backend.app.services.support_channel_sender import (
 
 class SupportChannelSenderTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.groupme_config = GroupMeRuntimeConfig(
-            test_group_id="group-123",
-            test_group_name="Flare Test Group",
-            test_bot_id="bot-123",
-        )
         self.channel = SupportChannelRecord(
             id="channel-123",
             user_id="user-123",
@@ -34,7 +29,7 @@ class SupportChannelSenderTests(unittest.TestCase):
             enabled=True,
             external_group_id="group-123",
             external_group_name="Flare Test Group",
-            provider_config_ref="groupme:test-bot",
+            provider_config_ref="groupme:bot:Ym90LTEyMw",
             default_message="Luke sent a Flare and may need support. Please check in when you can.",
         )
 
@@ -62,7 +57,7 @@ class SupportChannelSenderTests(unittest.TestCase):
         sender = SupportChannelSender(
             repository=repository,
             groupme_provider=provider,
-            groupme_config=self.groupme_config,
+            provider_config_resolver=ProviderConfigResolver(),
         )
 
         result = sender.send_test_message(
@@ -114,7 +109,7 @@ class SupportChannelSenderTests(unittest.TestCase):
         sender = SupportChannelSender(
             repository=repository,
             groupme_provider=provider,
-            groupme_config=self.groupme_config,
+            provider_config_resolver=ProviderConfigResolver(),
         )
 
         result = sender.send_test_message(
@@ -149,7 +144,7 @@ class SupportChannelSenderTests(unittest.TestCase):
         sender = SupportChannelSender(
             repository=repository,
             groupme_provider=provider,
-            groupme_config=self.groupme_config,
+            provider_config_resolver=ProviderConfigResolver(),
         )
 
         result = sender.send_test_message(
@@ -167,36 +162,36 @@ class SupportChannelSenderTests(unittest.TestCase):
         self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, repository.attempts[0].status)
         self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, repository.last_update["status"])
 
-    def test_send_test_message_blocks_group_mismatch_without_provider_call(self) -> None:
-        mismatched_channel = SupportChannelRecord(
+    def test_send_test_message_blocks_missing_provider_config_without_provider_call(self) -> None:
+        disconnected_channel = SupportChannelRecord(
             id=self.channel.id,
             user_id=self.channel.user_id,
             provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
             status="connected",
             enabled=True,
-            external_group_id="other-group",
-            external_group_name="Wrong Group",
+            external_group_id=self.channel.external_group_id,
+            external_group_name=self.channel.external_group_name,
             provider_config_ref=None,
             default_message=self.channel.default_message,
         )
-        repository = _FakeRepository(channel=mismatched_channel)
+        repository = _FakeRepository(channel=disconnected_channel)
         provider = _FakeProvider(result=None)
         sender = SupportChannelSender(
             repository=repository,
             groupme_provider=provider,
-            groupme_config=self.groupme_config,
+            provider_config_resolver=ProviderConfigResolver(),
         )
 
         result = sender.send_test_message(
             SendSupportChannelTestMessageCommand(
-                support_channel_id=mismatched_channel.id,
-                user_id=mismatched_channel.user_id,
+                support_channel_id=disconnected_channel.id,
+                user_id=disconnected_channel.user_id,
             )
         )
 
         self.assertFalse(result.ok)
         self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, result.status)
-        self.assertEqual("groupme_test_group_mismatch", result.error_code)
+        self.assertEqual("provider_config_unavailable", result.error_code)
         self.assertFalse(provider.was_called)
 
 

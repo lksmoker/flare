@@ -11,9 +11,9 @@ if __package__ is None or __package__ == "":
 from backend.app.db.support_channel_repository import SupportChannelRepository
 from backend.app.integrations.groupme_provider import GroupMeProvider
 from backend.app.services.support_channel_config import (
-    load_groupme_runtime_config,
     load_supabase_admin_config,
 )
+from backend.app.services.support_channel_provider_config import ProviderConfigResolver
 from backend.app.services.support_channel_sender import (
     SendSupportChannelTestMessageCommand,
     SupportChannelSender,
@@ -32,7 +32,7 @@ def main() -> int:
     sender = SupportChannelSender(
         repository=repository,
         groupme_provider=GroupMeProvider(),
-        groupme_config=load_groupme_runtime_config(),
+        provider_config_resolver=ProviderConfigResolver(),
     )
     result = sender.send_test_message(
         SendSupportChannelTestMessageCommand(
