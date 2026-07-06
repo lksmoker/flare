@@ -80,6 +80,17 @@ Backend:
 - Bind to a reachable interface such as `0.0.0.0` rather than `127.0.0.1` if another device on the tailnet will open it.
 - Keep CORS exact: use only the Expo web/Tailscale origins you will actually browse from in `FLARE_ALLOWED_FRONTEND_ORIGINS`.
 - Publish the same backend URL through `FLARE_PUBLIC_BACKEND_BASE_URL` and `EXPO_PUBLIC_FLARE_API_BASE_URL`.
+- Canonical startup command:
+
+```powershell
+python -m backend.app.http.server --host 0.0.0.0 --port 9001
+```
+
+- Lightweight startup check:
+
+```powershell
+Invoke-WebRequest http://127.0.0.1:9001/api/health
+```
 
 Frontend:
 
@@ -91,6 +102,7 @@ GroupMe callback:
 
 - Configure the GroupMe OAuth app callback URL to match `GROUPME_OAUTH_REDIRECT_URL` exactly.
 - For Tailscale validation, that means the callback should use the backend Tailscale URL, not the frontend URL.
+- The backend callback route now serves a small bridge page that reads the GroupMe OAuth fragment and redirects back to `/customize` on the allowed frontend origin that started the connect flow.
 
 ## Live validation checklist
 

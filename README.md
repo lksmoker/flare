@@ -91,6 +91,13 @@ npm run build
 - `GROUPME_OAUTH_REDIRECT_URL` should be `https://<backend-host>/api/support-channel/groupme/connect/callback`. If it is omitted, the backend config loader now derives that callback from `FLARE_PUBLIC_BACKEND_BASE_URL`.
 - Detailed setup steps and the live validation checklist live in `docs/40_delivery/flare_external_support_channel_tailscale_validation.md`.
 
+Example backend startup for local/Tailscale validation:
+
+```powershell
+python -m backend.app.http.server --host 0.0.0.0 --port 9001
+Invoke-WebRequest http://127.0.0.1:9001/api/health
+```
+
 Example PowerShell session:
 
 ```powershell
