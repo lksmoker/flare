@@ -11,6 +11,9 @@ from backend.app.domain.support_channels import (
 from backend.app.integrations.groupme_provider import GroupMeApiError
 from backend.app.services.support_channel_config import (
     GroupMeOAuthConfig,
+    build_groupme_oauth_redirect_url,
+    load_groupme_oauth_config,
+    load_support_channel_http_runtime_config,
 )
 from backend.app.services.support_channel_groupme_provisioner import (
     GroupMeChannelProvisioner,
@@ -119,6 +122,61 @@ class GroupMeChannelProvisionerTests(unittest.TestCase):
 
         self.assertEqual("groupme_provider_error", raised.exception.code)
         self.assertEqual(502, raised.exception.status_code)
+
+
+class SupportChannelRuntimeConfigTests(unittest.TestCase):
+    def test_load_groupme_oauth_config_falls_back_to_public_backend_base_url(self) -> None:
+        config = load_groupme_oauth_config(
+            {
+                "GROUPME_OAUTH_CLIENT_ID": "client-123",
+                "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001/",
+            }
+        )
+
+        self.assertEqual("client-123", config.client_id)
+        self.assertEqual(
+            "https://flare-api.tailnet.ts.net:9001/api/support-channel/groupme/connect/callback",
+            config.redirect_url,
+        )
+
+    def test_load_support_channel_http_runtime_config_requires_exact_origins(self) -> None:
+        config = load_support_channel_http_runtime_config(
+            {
+                "FLARE_ALLOWED_FRONTEND_ORIGINS": "https://flare-web.tailnet.ts.net,http://100.64.0.10:8081/",
+                "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001",
+            }
+        )
+
+        self.assertEqual(
+            (
+                "https://flare-web.tailnet.ts.net",
+                "http://100.64.0.10:8081",
+            ),
+            config.allowed_frontend_origins,
+        )
+        self.assertEqual(
+            "https://flare-api.tailnet.ts.net:9001",
+            config.public_backend_base_url,
+        )
+
+    def test_load_support_channel_http_runtime_config_rejects_wildcard_origin(self) -> None:
+        with self.assertRaises(RuntimeError) as raised:
+            load_support_channel_http_runtime_config(
+                {
+                    "FLARE_ALLOWED_FRONTEND_ORIGINS": "*",
+                    "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001",
+                }
+            )
+
+        self.assertIn("cannot use '*'", str(raised.exception))
+
+    def test_build_groupme_oauth_redirect_url_normalizes_host_only_base_url(self) -> None:
+        redirect_url = build_groupme_oauth_redirect_url("https://flare-api.tailnet.ts.net:9001/")
+
+        self.assertEqual(
+            "https://flare-api.tailnet.ts.net:9001/api/support-channel/groupme/connect/callback",
+            redirect_url,
+        )
 
 
 class _FakeRepository:

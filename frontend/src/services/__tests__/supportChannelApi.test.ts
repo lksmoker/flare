@@ -147,6 +147,29 @@ describe("supportChannelApi", () => {
     });
   });
 
+  it("uses the configured API base URL for Tailscale-accessible backend requests", async () => {
+    const fetchImpl = jest.fn().mockResolvedValue(
+      createJsonResponse({
+        channel: null,
+      }),
+    );
+
+    await getSupportChannel({
+      env: {
+        EXPO_PUBLIC_FLARE_API_BASE_URL: "https://flare-api.tailnet.ts.net:9001/",
+      },
+      fetchImpl,
+      getAccessToken: async () => "token-123",
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://flare-api.tailnet.ts.net:9001/api/support-channel",
+      expect.objectContaining({
+        method: "GET",
+      }),
+    );
+  });
+
   it("surfaces safe backend errors from test sends", async () => {
     const fetchImpl = jest.fn().mockResolvedValue(
       createJsonResponse(

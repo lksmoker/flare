@@ -84,6 +84,13 @@ npm run build
 - In the Supabase Dashboard, add the same URL to the allowed Auth redirect URLs.
 - If the Supabase project Site URL still points to `http://localhost`, magic links may still send users back to localhost when the redirect URL is missing or not allowed.
 
+## External Support Channel Tailscale Validation
+
+- Frontend support-channel calls use `EXPO_PUBLIC_FLARE_API_BASE_URL`; point it at the backend URL you will open through Tailscale, for example `https://flare-api.tailnet.ts.net:9001`.
+- Backend support-channel HTTP runtimes should expose the same public base through `FLARE_PUBLIC_BACKEND_BASE_URL` and restrict browser callers with `FLARE_ALLOWED_FRONTEND_ORIGINS` as a comma-separated exact-origin list.
+- `GROUPME_OAUTH_REDIRECT_URL` should be `https://<backend-host>/api/support-channel/groupme/connect/callback`. If it is omitted, the backend config loader now derives that callback from `FLARE_PUBLIC_BACKEND_BASE_URL`.
+- Detailed setup steps and the live validation checklist live in `docs/40_delivery/flare_external_support_channel_tailscale_validation.md`.
+
 Example PowerShell session:
 
 ```powershell
