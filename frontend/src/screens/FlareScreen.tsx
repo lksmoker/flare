@@ -48,8 +48,8 @@ export function FlareScreen() {
         : flareContent.screens.flare.readiness.readyToDefine,
     },
     {
-      label: flareContent.screens.flare.readiness.telegram,
-      status: flareContent.common.status.comingSoon,
+      label: flareContent.screens.flare.readiness.supportChannel,
+      status: flareContent.screens.flare.readiness.supportChannelSetup,
     },
   ];
 

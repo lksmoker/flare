@@ -7,15 +7,20 @@ import { AnchorNoteSummary } from "../components/AnchorNoteSummary";
 import { AuthStatusCard } from "../components/AuthStatusCard";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
+import { SupportChannelSetupModal } from "../components/SupportChannelSetupModal";
 import flareContent from "../content/flareContent.json";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { flareTheme } from "../theme/flareTheme";
+import { readAccessTokenFromCurrentUrl } from "../services/supportChannelApi";
 
 export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
   const [isAnchorNoteVisible, setIsAnchorNoteVisible] = useState(false);
+  const [isSupportChannelVisible, setIsSupportChannelVisible] = useState(
+    () => Boolean(readAccessTokenFromCurrentUrl()),
+  );
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
 
@@ -81,17 +86,23 @@ export function CustomizeScreen() {
           <AnchorNoteSummary anchorNote={anchorNote} />
         </Pressable>
 
-        <View style={styles.comingSoonCard}>
-          <Text style={styles.cardTitle}>
-            {flareContent.components.telegramSupport.title}
-          </Text>
-          <Text style={styles.comingSoonBadge}>
-            {flareContent.components.telegramSupport.badge}
-          </Text>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setIsSupportChannelVisible(true)}
+          style={styles.card}
+        >
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>
+              {flareContent.components.supportChannel.cardTitle}
+            </Text>
+            <Text style={[styles.statusBadge, styles.pendingBadge]}>
+              {flareContent.components.supportChannel.status.notConfigured}
+            </Text>
+          </View>
           <Text style={styles.cardCopy}>
-            {flareContent.components.telegramSupport.copy}
+            {flareContent.components.supportChannel.cardCopy}
           </Text>
-        </View>
+        </Pressable>
       </View>
 
       <BehaviorPatternSetupModal
@@ -101,6 +112,10 @@ export function CustomizeScreen() {
       <AnchorNoteSetupModal
         onClose={() => setIsAnchorNoteVisible(false)}
         visible={isAnchorNoteVisible}
+      />
+      <SupportChannelSetupModal
+        onClose={() => setIsSupportChannelVisible(false)}
+        visible={isSupportChannelVisible}
       />
     </AppShell>
   );
@@ -125,15 +140,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     gap: 10,
-  },
-  comingSoonCard: {
-    ...flareTheme.shadows.card,
-    gap: 8,
-    padding: 18,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.surfaceSoft,
   },
   cardTitle: {
     flexShrink: 1,
@@ -163,16 +169,5 @@ const styles = StyleSheet.create({
   pendingBadge: {
     backgroundColor: flareTheme.colors.neutralBg,
     color: flareTheme.colors.neutralText,
-  },
-  comingSoonBadge: {
-    alignSelf: "flex-start",
-    borderRadius: 999,
-    backgroundColor: flareTheme.colors.primary,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    color: flareTheme.colors.onPrimary,
-    fontSize: 12,
-    fontWeight: "700",
-    textTransform: "uppercase",
   },
 });

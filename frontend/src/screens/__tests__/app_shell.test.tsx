@@ -8,9 +8,19 @@ import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
 import { FlareAuthProvider } from "../../state/FlareAuthContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
+import * as supportChannelApi from "../../services/supportChannelApi";
 
 jest.mock("expo-router", () => ({
   Link: ({ children }: { children: ReactNode }) => children,
+}));
+
+jest.mock("expo-linking", () => ({
+  addEventListener: jest.fn(() => ({
+    remove: jest.fn(),
+  })),
+  getInitialURL: jest.fn().mockResolvedValue(null),
+  openURL: jest.fn().mockResolvedValue(undefined),
+  parse: jest.requireActual("expo-linking").parse,
 }));
 
 function TestProviders({ children }: PropsWithChildren) {
@@ -95,7 +105,10 @@ describe("V0 app shell", () => {
     expect(getByText("No Flare Events yet")).toBeTruthy();
   });
 
-  it("keeps setup ownership inside Customize and marks Telegram as future-scoped", () => {
+  it("keeps setup ownership inside Customize and adds the support-group entry point", () => {
+    jest
+      .spyOn(supportChannelApi, "getSupportChannel")
+      .mockResolvedValue(null);
     const { getByText } = render(<CustomizeScreen />, {
       wrapper: TestProviders,
     });
@@ -104,8 +117,12 @@ describe("V0 app shell", () => {
     expect(getByText("Not saved yet")).toBeTruthy();
     expect(getByText("Behavior Pattern")).toBeTruthy();
     expect(getByText("Anchor Note")).toBeTruthy();
-    expect(getByText("Telegram Support")).toBeTruthy();
-    expect(getByText("Coming in V1")).toBeTruthy();
+    expect(getByText("Support Group")).toBeTruthy();
+    expect(
+      getByText(
+        "Connect one GroupMe group for a single saved Flare support message. Send a test before relying on it.",
+      ),
+    ).toBeTruthy();
   });
 
   it("shows the signed-in setup card collapsed by default on Customize", () => {
@@ -145,7 +162,10 @@ describe("V0 app shell", () => {
     expect(getByLabelText("Show saved setup details")).toBeTruthy();
   });
 
-  it("opens Behavior Pattern Setup from Customize and keeps Telegram future-scoped", () => {
+  it("opens Behavior Pattern Setup from Customize and keeps support-group setup separate", () => {
+    jest
+      .spyOn(supportChannelApi, "getSupportChannel")
+      .mockResolvedValue(null);
     const { getAllByText, getByText } = render(<CustomizeScreen />, {
       wrapper: TestProviders,
     });
@@ -166,8 +186,97 @@ describe("V0 app shell", () => {
       ),
     ).toBeTruthy();
     expect(getByText("Save Anchor Note")).toBeTruthy();
-    expect(getByText("Telegram Support")).toBeTruthy();
-    expect(getByText("Coming in V1")).toBeTruthy();
+    expect(getByText("Support Group")).toBeTruthy();
+  });
+
+  it("opens the support-group flow and shows current safe onboarding steps", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue(null);
+    jest
+      .spyOn(supportChannelApi, "startGroupMeConnect")
+      .mockResolvedValue({
+        auth_url: "https://oauth.groupme.com/oauth/authorize?client_id=test",
+        provider: "groupme",
+      });
+
+    const { getAllByText, getByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    fireEvent.press(getAllByText("Support Group")[0]);
+
+    await waitFor(() => {
+      expect(getByText("External Support Channel")).toBeTruthy();
+    });
+
+    expect(getByText("Current status")).toBeTruthy();
+    expect(getByText("Connect GroupMe")).toBeTruthy();
+    expect(
+      getByText(
+        "Flare can send one predefined message to the GroupMe group you choose.",
+      ),
+    ).toBeTruthy();
+  });
+
+  it("shows the configured support-group state and test action", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue({
+      configured: true,
+      destination_display_name: "Close Friends",
+      enabled: true,
+      last_delivery_at: "2026-07-06T03:10:00Z",
+      last_delivery_status: "sent",
+      message_preview:
+        "Luke sent a Flare and may need support. Please check in when you can.",
+      provider: "groupme",
+      status: "connected",
+    });
+
+    const { getAllByText, getByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    fireEvent.press(getAllByText("Support Group")[0]);
+
+    await waitFor(() => {
+      expect(getByText("Close Friends")).toBeTruthy();
+    });
+
+    expect(getByText("Enabled")).toBeTruthy();
+    expect(getByText("Send test flare")).toBeTruthy();
+    expect(getByText("Disable")).toBeTruthy();
   });
 
   it("saves Anchor Note and shows the summary on Customize", () => {
@@ -443,7 +552,7 @@ describe("V0 app shell", () => {
     expect(getByText(/Reflected event/i)).toBeTruthy();
   });
 
-  it("keeps Telegram support future-scoped after the flare event flow changes", () => {
+  it("keeps support-group guidance scoped to Customize after the flare event flow changes", () => {
     const { getAllByText, getByText } = render(
       <>
         <FlareScreen />
@@ -455,11 +564,11 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getAllByText("Telegram Support").length).toBeGreaterThanOrEqual(2);
-    expect(getAllByText("Coming in V1").length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText("Support Group").length).toBeGreaterThanOrEqual(2);
+    expect(getByText("Set it up in Customize")).toBeTruthy();
     expect(
       getByText(
-        /Future direction only\. V0 does not send messages, alerts, or outreach on your behalf\./,
+        /Connect one GroupMe group for a single saved Flare support message\./,
       ),
     ).toBeTruthy();
   });

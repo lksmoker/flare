@@ -113,12 +113,13 @@
         "setupPersistence": "Setup saving",
         "behaviorPattern": "Behavior Pattern",
         "anchorNote": "Anchor Note",
-        "telegram": "Telegram Support",
+        "supportChannel": "Support Group",
         "configuredPrefix": "Configured:",
         "readyToDefine": "Ready to set up",
         "localOnlyUntilSignIn": "Local-only until sign in",
         "localOnlyUntilConfigLoaded": "Not saved until sign-in is configured",
-        "connectedPrefix": "Connected:"
+        "connectedPrefix": "Connected:",
+        "supportChannelSetup": "Set it up in Customize"
       },
       "secondaryAction": {
         "label": "Checkpoint / Reflection",
@@ -239,10 +240,90 @@
         "supportivePhrase": "Supportive phrase"
       }
     },
-    "telegramSupport": {
-      "title": "Telegram Support",
-      "badge": "Coming in V1",
-      "copy": "Future direction only. V0 does not send messages, alerts, or outreach on your behalf."
+    "supportChannel": {
+      "cardTitle": "Support Group",
+      "cardCopy": "Connect one GroupMe group for a single saved Flare support message. Send a test before relying on it.",
+      "modalTitle": "External Support Channel",
+      "modalSubtitle": "Choose one GroupMe group, confirm the saved message, and test it from here.",
+      "status": {
+        "notConfigured": "Not configured",
+        "connecting": "Connecting",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "reconnectRequired": "Reconnect needed"
+      },
+      "currentStatus": {
+        "title": "Current status",
+        "copy": "This setting is for one calm, predefined support signal. It is not a chat thread.",
+        "noGroup": "No group selected yet"
+      },
+      "boundary": {
+        "title": "What this does",
+        "copy": "Flare can send one predefined message to the GroupMe group you choose.",
+        "supportersCopy": "Your supporters do not need to install Flare. You stay in control of which group is connected."
+      },
+      "signInRequired": {
+        "title": "Sign in first",
+        "copy": "Support group settings are tied to your account, so sign in before connecting GroupMe."
+      },
+      "steps": {
+        "connect": {
+          "title": "1. Connect GroupMe",
+          "copy": "Authorize GroupMe so Flare can show your groups and set up one support destination.",
+          "reconnectCopy": "Reconnect GroupMe if you want to refresh the connection or turn this support group back on."
+        },
+        "choose": {
+          "title": "2. Choose a group",
+          "copy": "Pick the GroupMe group that should receive your Flare support signal."
+        },
+        "message": {
+          "title": "3. Confirm the saved message",
+          "copy": "This is the message Flare will send when you press Send Flare. It is not editable at send time."
+        },
+        "test": {
+          "title": "4. Send a test",
+          "copy": "Send one test flare to make sure the right group sees it before you depend on it."
+        }
+      },
+      "actions": {
+        "connect": "Connect GroupMe",
+        "connecting": "Connecting GroupMe...",
+        "disable": "Disable",
+        "reconnect": "Reconnect GroupMe",
+        "save": "Save support group",
+        "saving": "Saving...",
+        "sendTest": "Send test flare",
+        "sendingTest": "Sending test..."
+      },
+      "labels": {
+        "provider": "Provider",
+        "group": "Selected group",
+        "lastDelivery": "Last delivery",
+        "lastTest": "Last test",
+        "savedMessage": "Saved message"
+      },
+      "lastDelivery": {
+        "empty": "No test or delivery recorded yet"
+      },
+      "providers": {
+        "groupme": "GroupMe",
+        "pending": "GroupMe"
+      },
+      "notice": {
+        "chooseGroup": "GroupMe is connected. Choose the group you want Flare to use.",
+        "disabled": "Support group disabled. Reconnect when you want to use it again.",
+        "finishingConnection": "Finishing the GroupMe connection...",
+        "redirecting": "Opening GroupMe for authorization...",
+        "saved": "Support group saved. Send a test before you rely on it.",
+        "testSent": "Test flare sent."
+      },
+      "errors": {
+        "connectFailed": "GroupMe could not be connected right now.",
+        "disableFailed": "Support group could not be disabled.",
+        "loadFailed": "Support group settings could not be loaded.",
+        "saveFailed": "Support group settings could not be saved.",
+        "testFailed": "Test flare could not be sent."
+      }
     },
     "sendFlare": {
       "label": "Send Flare",
