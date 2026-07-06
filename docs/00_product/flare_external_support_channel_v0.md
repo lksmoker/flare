@@ -193,3 +193,137 @@ The full intention of this feature is:
 - Delivery success and failure must be recorded.
 - Failed external delivery must not be displayed as successful.
 - V0 does not read replies, track acknowledgements, manage supporters, or sync chat history.
+
+## Product Contract
+
+External Support Channel V0 has one product promise:
+
+> When enabled, pressing Send Flare posts the user's predefined support message to their configured external support group and accurately reports whether delivery succeeded.
+
+The product contract is:
+
+- The user may configure one active external support channel.
+- The user may customize the flare message during setup.
+- The user may not customize the message at send time.
+- The user may send a test flare during setup or from the support-channel settings.
+- Test flares are posted to the real configured group.
+- Test flares must be clearly marked as tests.
+- Real flares must not be labeled as tests.
+- Delivery status must reflect the actual provider delivery result.
+- Failed external delivery must not be shown as successful.
+- The local Flare action and the external delivery attempt are related but distinct.
+- External delivery failure should not erase or hide the local Flare event.
+
+V0 intentionally avoids supporter workflows. The external group is treated as an existing conversation owned by the provider, not as a Flare-managed support network.
+
+## Provider Contract
+
+The internal support-channel interface should remain provider-agnostic.
+
+A provider adapter is responsible for:
+
+- Validating that the user's provider configuration can send messages.
+- Listing available external groups or destinations when supported.
+- Sending a test flare message.
+- Sending a real flare message.
+- Returning a normalized delivery result.
+- Returning safe, user-displayable error information.
+- Hiding provider-specific secrets from the mobile app.
+
+Conceptual provider adapter shape:
+
+```text
+SupportChannelProvider
+- provider_key
+- connect(...)
+- list_destinations(...)
+- validate_destination(...)
+- send_message(...)
+- disconnect(...)
+```
+
+Conceptual normalized send request:
+
+```text
+support_channel_send_request
+- user_id
+- support_channel_id
+- provider
+- destination_id
+- message
+- send_kind: test | real
+- flare_event_id
+```
+
+Conceptual normalized send result:
+
+```text
+support_channel_send_result
+- ok
+- provider
+- provider_message_id
+- status
+- attempted_at
+- delivered_at
+- error_code
+- error_message_safe
+- raw_provider_status_ref
+```
+
+The application should not depend on GroupMe-specific concepts outside the GroupMe adapter and provider-specific persistence boundary.
+
+For V0, only the GroupMe adapter must exist.
+
+## Security and Safeguards
+
+External Support Channel V0 must treat external messaging as sensitive because it can notify real people.
+
+Security requirements:
+
+- Provider secrets and tokens are stored backend-only.
+- The mobile app must never receive raw provider tokens, bot tokens, refresh tokens, or long-lived secrets.
+- Backend logs must not print provider secrets.
+- API responses must not include provider secrets.
+- User-owned support channel configuration must only be readable or mutable by that user.
+- Delivery records must be scoped to the owning user.
+- Disconnecting a provider should prevent future sends through that support channel.
+- Reconnect should require an explicit user action.
+
+Accidental-send safeguards:
+
+- Test flare and real flare paths must be visually and technically distinct.
+- Test flare copy must include a clear test marker.
+- The setup flow should require the user to intentionally save or enable the channel.
+- Send Flare should use the saved setup-time message, not an editable send-time draft.
+- If the support channel is missing, disabled, expired, or invalid, the backend should block external delivery and return a clear failure state.
+- Failed provider delivery must be recorded and shown accurately.
+- Retry should not create a misleading duplicate success state.
+
+Safe error display:
+
+- User-facing errors should explain the next action, such as retry, reconnect, or check GroupMe setup.
+- User-facing errors should not expose tokens, provider raw payloads, stack traces, or internal IDs unless explicitly safe.
+
+## Message Rules
+
+V0 supports one saved support message per user support channel.
+
+Default real flare message:
+
+> Luke sent a Flare and may need support. Please check in when you can.
+
+Default test flare message:
+
+> TEST FLARE: Luke is testing Flare support notifications. No action is needed.
+
+Message rules:
+
+- The user may edit the real flare message during setup.
+- The user may edit the saved message later from settings.
+- The user may not edit the message at the moment they press Send Flare.
+- The saved message must be non-empty.
+- The saved message should have a maximum length appropriate for provider limits.
+- The test flare message must always include a clear test marker.
+- The real flare message must not include the test marker.
+- V0 does not support multiple templates.
+- V0 does not support per-send custom text.
