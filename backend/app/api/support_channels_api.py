@@ -6,6 +6,12 @@ from http import HTTPStatus
 from typing import Any, Protocol
 from urllib import parse
 
+from backend.app.domain.support_channels import (
+    SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED,
+    SUPPORT_CHANNEL_PROVIDER_GROUPME,
+    SUPPORT_CHANNEL_SEND_KIND_REAL,
+    build_blocked_result,
+)
 from backend.app.services.support_channel_management import (
     ConfigureSupportChannelCommand,
     ReconnectSupportChannelCommand,
@@ -13,6 +19,7 @@ from backend.app.services.support_channel_management import (
     SupportChannelManager,
 )
 from backend.app.services.support_channel_sender import (
+    SendSupportChannelRealMessageCommand,
     SendSupportChannelTestMessageCommand,
     SupportChannelSender,
 )
@@ -141,6 +148,39 @@ class SupportChannelsApi:
                     if result.ok
                     else HTTPStatus.CONFLICT
                     if result.status == "blocked"
+                    else HTTPStatus.BAD_GATEWAY
+                )
+                return _json_response(status, {"result": result.to_safe_public_dict()})
+            if method == "POST" and route_path == "/api/support-channel/send-flare":
+                payload = _parse_json_body(body)
+                channel = self._manager.get_current_channel(user_id=user.user_id)
+                if channel is None:
+                    result = build_blocked_result(
+                        provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+                        user_id=user.user_id,
+                        support_channel_id=None,
+                        destination_id=None,
+                        destination_name=None,
+                        message="",
+                        error_code="support_channel_not_configured",
+                        error_message_safe="No support group is configured for this account.",
+                        blocked_reason="missing_channel",
+                        send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+                        flare_event_id=_optional_str(payload.get("flare_event_id")),
+                    )
+                    return _json_response(HTTPStatus.CONFLICT, {"result": result.to_safe_public_dict()})
+                result = self._sender.send_real_message(
+                    SendSupportChannelRealMessageCommand(
+                        support_channel_id=channel.id,
+                        user_id=user.user_id,
+                        flare_event_id=_optional_str(payload.get("flare_event_id")),
+                    )
+                )
+                status = (
+                    HTTPStatus.OK
+                    if result.ok
+                    else HTTPStatus.CONFLICT
+                    if result.status == SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED
                     else HTTPStatus.BAD_GATEWAY
                 )
                 return _json_response(status, {"result": result.to_safe_public_dict()})

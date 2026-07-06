@@ -86,6 +86,102 @@ describe("V0 app shell", () => {
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
+  it("shows a calm sent status when Send Flare reaches the enabled support group", async () => {
+    jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
+      attempted_at: "2026-07-06T03:40:00Z",
+      delivered_at: "2026-07-06T03:40:00Z",
+      destination_display_name: "Close Friends",
+      error_code: null,
+      error_message_safe: null,
+      message_preview:
+        "Luke sent a Flare and may need support. Please check in when you can.",
+      provider: "groupme",
+      send_kind: "real",
+      status: "sent",
+    });
+
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(getByText("Support message sent")).toBeTruthy();
+      expect(
+        getByText("Your saved support message was sent to the connected group."),
+      ).toBeTruthy();
+    });
+  });
+
+  it("keeps the flare event flow working when external delivery fails safely", async () => {
+    jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
+      attempted_at: "2026-07-06T03:45:00Z",
+      delivered_at: null,
+      destination_display_name: "Close Friends",
+      error_code: "groupme_http_500",
+      error_message_safe: "GroupMe rejected the support message.",
+      message_preview:
+        "Luke sent a Flare and may need support. Please check in when you can.",
+      provider: "groupme",
+      send_kind: "real",
+      status: "failed",
+    });
+
+    const { getAllByText, getByText } = render(
+      <>
+        <FlareScreen />
+        <HistoryScreen />
+      </>,
+      {
+        wrapper({ children }) {
+          return (
+            <FlareAuthProvider
+              initialAuthState={{
+                kind: "authenticated",
+                userEmail: "flare@example.com",
+                userId: "user-123",
+              }}
+              subscribe={() => null}
+            >
+              <BehaviorPatternProvider>
+                <AnchorNoteProvider>
+                  <FlareEventProvider>{children}</FlareEventProvider>
+                </AnchorNoteProvider>
+              </BehaviorPatternProvider>
+            </FlareAuthProvider>
+          );
+        },
+      },
+    );
+
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(getByText("Support message failed")).toBeTruthy();
+      expect(getByText("GroupMe rejected the support message.")).toBeTruthy();
+    });
+
+    expect(getAllByText("Flare Event").length).toBeGreaterThanOrEqual(1);
+  });
+
   it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", () => {
     const { getAllByText, getByText } = render(<FlareScreen />, {
       wrapper: TestProviders,

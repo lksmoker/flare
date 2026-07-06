@@ -9,11 +9,17 @@ import { useAnchorNote } from "../state/AnchorNoteContext";
 import { flareTheme } from "../theme/flareTheme";
 
 type FlareResponseProps = {
+  externalSupportState?: {
+    copy: string;
+    title: string;
+    tone: "muted" | "success" | "warning";
+  } | null;
   flareEvent: FlareEvent | null;
   onOpenCheckpoint: () => void;
 };
 
 export function FlareResponse({
+  externalSupportState = null,
   flareEvent,
   onOpenCheckpoint,
 }: FlareResponseProps) {
@@ -81,6 +87,24 @@ export function FlareResponse({
             flareContent.components.flareResponse.defaultNextStep}
         </Text>
       </View>
+      {externalSupportState ? (
+        <View
+          style={[
+            styles.deliveryCard,
+            externalSupportState.tone === "success"
+              ? styles.deliveryCardSuccess
+              : externalSupportState.tone === "warning"
+                ? styles.deliveryCardWarning
+                : styles.deliveryCardMuted,
+          ]}
+        >
+          <Text style={styles.deliveryLabel}>
+            {flareContent.components.flareResponse.externalSupport.label}
+          </Text>
+          <Text style={styles.deliveryTitle}>{externalSupportState.title}</Text>
+          <Text style={styles.deliveryCopy}>{externalSupportState.copy}</Text>
+        </View>
+      ) : null}
       <Pressable
         accessibilityRole="button"
         onPress={onOpenCheckpoint}
@@ -186,6 +210,41 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textMuted,
     fontSize: 15,
     lineHeight: 22,
+  },
+  deliveryCard: {
+    gap: 6,
+    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+  deliveryCardMuted: {
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceSoft,
+  },
+  deliveryCardSuccess: {
+    borderColor: flareTheme.colors.successText,
+    backgroundColor: flareTheme.colors.successBg,
+  },
+  deliveryCardWarning: {
+    borderColor: "#C38B34",
+    backgroundColor: "#FFF2DD",
+  },
+  deliveryLabel: {
+    color: flareTheme.colors.text,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+  },
+  deliveryTitle: {
+    color: flareTheme.colors.textStrong,
+    fontSize: 17,
+    fontWeight: "700",
+  },
+  deliveryCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
   },
   secondaryButton: {
     minHeight: 48,

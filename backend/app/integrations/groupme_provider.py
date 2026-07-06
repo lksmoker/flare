@@ -22,6 +22,10 @@ GROUPME_BOT_POST_URL = "https://api.groupme.com/v3/bots/post"
 GROUPME_USER_ME_URL = "https://api.groupme.com/v3/users/me"
 
 
+def _send_label(send_kind: str) -> str:
+    return "test message" if send_kind == "test" else "support message"
+
+
 class GroupMeApiError(RuntimeError):
     def __init__(self, *, code: str, message: str, status_code: int) -> None:
         super().__init__(message)
@@ -165,8 +169,9 @@ class GroupMeProvider:
                 message_snapshot=send_request.message,
                 provider_message_id=None,
                 error_code=f"groupme_http_{exc.code}",
-                error_message_safe="GroupMe rejected the test message.",
+                error_message_safe=f"GroupMe rejected the {_send_label(send_request.send_kind)}.",
                 raw_provider_status_ref=f"http_status:{exc.code}",
+                flare_event_id=send_request.flare_event_id,
             )
         except error.URLError:
             return SupportChannelSendResult(
@@ -183,8 +188,9 @@ class GroupMeProvider:
                 message_snapshot=send_request.message,
                 provider_message_id=None,
                 error_code="groupme_unreachable",
-                error_message_safe="GroupMe could not be reached for the test message.",
+                error_message_safe=f"GroupMe could not be reached for the {_send_label(send_request.send_kind)}.",
                 raw_provider_status_ref="transport:error",
+                flare_event_id=send_request.flare_event_id,
             )
 
         delivered_at = attempted_at
@@ -208,6 +214,7 @@ class GroupMeProvider:
             error_code=None,
             error_message_safe=None,
             raw_provider_status_ref="http_status:202",
+            flare_event_id=send_request.flare_event_id,
         )
 
     def _request_groupme_json(

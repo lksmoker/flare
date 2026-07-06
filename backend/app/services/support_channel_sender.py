@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Protocol
 
 from backend.app.domain.support_channels import (
     GROUPME_TEST_MESSAGE,
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
+    SUPPORT_CHANNEL_SEND_KIND_REAL,
     SUPPORT_CHANNEL_SEND_KIND_TEST,
     SUPPORT_CHANNEL_STATUS_CONNECTED,
     DeliveryAttemptRecord,
@@ -48,6 +49,13 @@ class SendSupportChannelTestMessageCommand:
     user_id: str
 
 
+@dataclass(frozen=True)
+class SendSupportChannelRealMessageCommand:
+    support_channel_id: str
+    user_id: str
+    flare_event_id: str | None = None
+
+
 class SupportChannelSender:
     def __init__(
         self,
@@ -83,7 +91,11 @@ class SupportChannelSender:
             self._record_attempt(result)
             return result
 
-        blocked = self._validate_channel(channel)
+        blocked = self._validate_channel(
+            channel,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_TEST,
+            message=GROUPME_TEST_MESSAGE,
+        )
         if blocked is not None:
             self._record_attempt(blocked)
             self._update_channel(channel, blocked)
@@ -117,9 +129,66 @@ class SupportChannelSender:
         self._update_channel(channel, result)
         return result
 
+    def send_real_message(
+        self,
+        command: SendSupportChannelRealMessageCommand,
+    ) -> SupportChannelSendResult:
+        channel = self._repository.get_support_channel(
+            support_channel_id=command.support_channel_id,
+            user_id=command.user_id,
+        )
+        if channel is None:
+            raise ValueError("Support channel could not be found for this user.")
+
+        blocked = self._validate_channel(
+            channel,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+            message=channel.default_message,
+        )
+        if blocked is not None:
+            blocked = replace(blocked, flare_event_id=command.flare_event_id)
+            self._record_attempt(blocked)
+            self._update_channel(channel, blocked)
+            return blocked
+
+        provider_config = self._provider_config_resolver.resolve_groupme_provider_config(
+            provider_config_ref=channel.provider_config_ref,
+            user_id=channel.user_id,
+        )
+        if provider_config is None:
+            blocked = build_blocked_result(
+                provider=channel.provider,
+                user_id=channel.user_id,
+                support_channel_id=channel.id,
+                destination_id=channel.external_group_id,
+                destination_name=channel.external_group_name,
+                message=channel.default_message,
+                error_code="provider_config_unavailable",
+                error_message_safe="Support channel requires reconnection before sending.",
+                blocked_reason="provider_config_unavailable",
+                send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+                flare_event_id=command.flare_event_id,
+            )
+            self._record_attempt(blocked)
+            self._update_channel(channel, blocked)
+            return blocked
+
+        result = self._groupme_provider.send_message(
+            provider_config=provider_config,
+            send_request=channel.build_real_send_request(
+                flare_event_id=command.flare_event_id,
+            ),
+        )
+        self._record_attempt(result)
+        self._update_channel(channel, result)
+        return result
+
     def _validate_channel(
         self,
         channel: SupportChannelRecord,
+        *,
+        send_kind: str,
+        message: str,
     ) -> SupportChannelSendResult | None:
         if channel.provider != SUPPORT_CHANNEL_PROVIDER_GROUPME:
             return build_blocked_result(
@@ -128,22 +197,53 @@ class SupportChannelSender:
                 support_channel_id=channel.id,
                 destination_id=channel.external_group_id,
                 destination_name=channel.external_group_name,
-                message=GROUPME_TEST_MESSAGE,
+                message=message,
                 error_code="unsupported_provider",
-                error_message_safe="Only GroupMe test sending is available for this spike.",
+                error_message_safe=(
+                    "Only GroupMe support sending is available for this spike."
+                    if send_kind == SUPPORT_CHANNEL_SEND_KIND_REAL
+                    else "Only GroupMe test sending is available for this spike."
+                ),
                 blocked_reason="provider_not_groupme",
+                send_kind=send_kind,
             )
-        if not channel.enabled or channel.status != SUPPORT_CHANNEL_STATUS_CONNECTED:
+        if not channel.enabled:
             return build_blocked_result(
                 provider=channel.provider,
                 user_id=channel.user_id,
                 support_channel_id=channel.id,
                 destination_id=channel.external_group_id,
                 destination_name=channel.external_group_name,
-                message=GROUPME_TEST_MESSAGE,
+                message=message,
+                error_code=(
+                    "support_channel_disabled"
+                    if send_kind == SUPPORT_CHANNEL_SEND_KIND_REAL
+                    else "support_channel_not_ready"
+                ),
+                error_message_safe=(
+                    "Support group is disabled. Reconnect it in Customize before sending."
+                    if send_kind == SUPPORT_CHANNEL_SEND_KIND_REAL
+                    else "Support channel must be enabled and connected before testing."
+                ),
+                blocked_reason="channel_disabled",
+                send_kind=send_kind,
+            )
+        if channel.status != SUPPORT_CHANNEL_STATUS_CONNECTED:
+            return build_blocked_result(
+                provider=channel.provider,
+                user_id=channel.user_id,
+                support_channel_id=channel.id,
+                destination_id=channel.external_group_id,
+                destination_name=channel.external_group_name,
+                message=message,
                 error_code="support_channel_not_ready",
-                error_message_safe="Support channel must be enabled and connected before testing.",
-                blocked_reason="channel_not_enabled_or_connected",
+                error_message_safe=(
+                    "Support channel must be connected before sending."
+                    if send_kind == SUPPORT_CHANNEL_SEND_KIND_REAL
+                    else "Support channel must be enabled and connected before testing."
+                ),
+                blocked_reason="channel_not_connected",
+                send_kind=send_kind,
             )
         if not channel.external_group_id:
             return build_blocked_result(
@@ -152,10 +252,11 @@ class SupportChannelSender:
                 support_channel_id=channel.id,
                 destination_id=channel.external_group_id,
                 destination_name=channel.external_group_name,
-                message=GROUPME_TEST_MESSAGE,
+                message=message,
                 error_code="destination_missing",
                 error_message_safe="Support channel is missing a destination group.",
                 blocked_reason="missing_destination",
+                send_kind=send_kind,
             )
         return None
 

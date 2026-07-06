@@ -95,6 +95,24 @@ class SupportChannelRecord:
             send_kind=SUPPORT_CHANNEL_SEND_KIND_TEST,
         )
 
+    def build_real_send_request(
+        self,
+        *,
+        flare_event_id: str | None = None,
+    ) -> "SupportChannelSendRequest":
+        if not self.external_group_id:
+            raise ValueError("Support channel must have an external_group_id for real sends.")
+        return SupportChannelSendRequest(
+            support_channel_id=self.id,
+            user_id=self.user_id,
+            provider=self.provider,
+            destination_id=self.external_group_id,
+            destination_name=self.external_group_name,
+            message=self.default_message,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+            flare_event_id=flare_event_id,
+        )
+
 
 @dataclass(frozen=True)
 class GroupMeRuntimeConfig:
@@ -200,6 +218,7 @@ class SupportChannelSendResult:
     error_message_safe: str | None = None
     raw_provider_status_ref: str | None = None
     blocked_reason: str | None = None
+    flare_event_id: str | None = None
 
     def to_public_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -253,6 +272,7 @@ class DeliveryAttemptRecord:
             error_code=result.error_code,
             error_message_safe=result.error_message_safe,
             raw_provider_status_ref=result.raw_provider_status_ref,
+            flare_event_id=result.flare_event_id,
         )
 
 
@@ -267,13 +287,15 @@ def build_blocked_result(
     error_code: str,
     error_message_safe: str,
     blocked_reason: str,
+    send_kind: str = SUPPORT_CHANNEL_SEND_KIND_TEST,
+    flare_event_id: str | None = None,
     attempted_at: datetime | None = None,
 ) -> SupportChannelSendResult:
     attempted = (attempted_at or utc_now()).isoformat()
     return SupportChannelSendResult(
         ok=False,
         provider=provider,
-        send_kind=SUPPORT_CHANNEL_SEND_KIND_TEST,
+        send_kind=send_kind,
         status=SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED,
         attempted_at=attempted,
         delivered_at=None,
@@ -287,6 +309,7 @@ def build_blocked_result(
         error_message_safe=error_message_safe,
         raw_provider_status_ref=None,
         blocked_reason=blocked_reason,
+        flare_event_id=flare_event_id,
     )
 
 

@@ -8,12 +8,14 @@ from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED,
     SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
+    SUPPORT_CHANNEL_SEND_KIND_REAL,
     SupportChannelRecord,
     SupportChannelSendResult,
 )
 from backend.app.integrations.groupme_provider import GroupMeProviderConfig
 from backend.app.services.support_channel_provider_config import ProviderConfigResolver
 from backend.app.services.support_channel_sender import (
+    SendSupportChannelRealMessageCommand,
     SendSupportChannelTestMessageCommand,
     SupportChannelSender,
 )
@@ -52,6 +54,7 @@ class SupportChannelSenderTests(unittest.TestCase):
                 error_code=None,
                 error_message_safe=None,
                 raw_provider_status_ref="http_status:202",
+                flare_event_id=None,
             )
         )
         sender = SupportChannelSender(
@@ -104,6 +107,7 @@ class SupportChannelSenderTests(unittest.TestCase):
                 error_code="groupme_http_500",
                 error_message_safe="GroupMe rejected the test message.",
                 raw_provider_status_ref="http_status:500",
+                flare_event_id=None,
             )
         )
         sender = SupportChannelSender(
@@ -194,6 +198,82 @@ class SupportChannelSenderTests(unittest.TestCase):
         self.assertEqual("provider_config_unavailable", result.error_code)
         self.assertFalse(provider.was_called)
 
+    def test_send_real_message_success_persists_real_attempt(self) -> None:
+        repository = _FakeRepository(channel=self.channel)
+        provider = _FakeProvider(
+            result=SupportChannelSendResult(
+                ok=True,
+                provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+                send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+                status=SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
+                attempted_at="2026-07-06T02:30:00Z",
+                delivered_at="2026-07-06T02:30:00Z",
+                support_channel_id=self.channel.id,
+                user_id=self.channel.user_id,
+                destination_id=self.channel.external_group_id,
+                destination_name=self.channel.external_group_name,
+                message_snapshot=self.channel.default_message,
+                provider_message_id="provider-msg-2",
+                error_code=None,
+                error_message_safe=None,
+                raw_provider_status_ref="http_status:202",
+                flare_event_id="event-123",
+            )
+        )
+        sender = SupportChannelSender(
+            repository=repository,
+            groupme_provider=provider,
+            provider_config_resolver=ProviderConfigResolver(),
+        )
+
+        result = sender.send_real_message(
+            SendSupportChannelRealMessageCommand(
+                support_channel_id=self.channel.id,
+                user_id=self.channel.user_id,
+                flare_event_id="event-123",
+            )
+        )
+
+        self.assertTrue(result.ok)
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, result.send_kind)
+        self.assertEqual(1, len(repository.attempts))
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, repository.attempts[0].send_kind)
+        self.assertEqual("event-123", repository.attempts[0].flare_event_id)
+        self.assertEqual(self.channel.default_message, repository.attempts[0].message_snapshot)
+
+    def test_send_real_message_disabled_channel_records_blocked_real_attempt(self) -> None:
+        blocked_channel = SupportChannelRecord(
+            id=self.channel.id,
+            user_id=self.channel.user_id,
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            status="disabled",
+            enabled=False,
+            external_group_id=self.channel.external_group_id,
+            external_group_name=self.channel.external_group_name,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+            default_message=self.channel.default_message,
+        )
+        repository = _FakeRepository(channel=blocked_channel)
+        provider = _FakeProvider(result=None)
+        sender = SupportChannelSender(
+            repository=repository,
+            groupme_provider=provider,
+            provider_config_resolver=ProviderConfigResolver(),
+        )
+
+        result = sender.send_real_message(
+            SendSupportChannelRealMessageCommand(
+                support_channel_id=blocked_channel.id,
+                user_id=blocked_channel.user_id,
+            )
+        )
+
+        self.assertFalse(result.ok)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, result.status)
+        self.assertEqual("support_channel_disabled", result.error_code)
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, repository.attempts[0].send_kind)
+        self.assertFalse(provider.was_called)
+
 
 class _FakeRepository:
     def __init__(self, *, channel: SupportChannelRecord | None) -> None:
@@ -243,6 +323,11 @@ class _FakeProvider:
         self.last_bot_id = provider_config.bot_id
         if self.result is None:
             raise AssertionError("Provider should not have been called.")
-        if send_request.message != GROUPME_TEST_MESSAGE:
+        expected_message = (
+            GROUPME_TEST_MESSAGE
+            if send_request.send_kind == "test"
+            else self.result.message_snapshot
+        )
+        if send_request.message != expected_message:
             raise AssertionError(f"Unexpected message: {send_request.message!r}")
         return self.result

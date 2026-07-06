@@ -6,6 +6,7 @@ import {
   getSupportChannel,
   readAccessTokenFromCurrentUrl,
   readAccessTokenFromUrl,
+  sendSupportChannelFlare,
   sendSupportChannelTest,
   SupportChannelApiError,
 } from "../supportChannelApi";
@@ -171,6 +172,53 @@ describe("supportChannelApi", () => {
         statusCode: 404,
       }),
     );
+  });
+
+  it("returns safe blocked flare-delivery results without throwing", async () => {
+    const fetchImpl = jest.fn().mockResolvedValue(
+      createJsonResponse(
+        {
+          result: {
+            attempted_at: "2026-07-06T03:40:00Z",
+            delivered_at: null,
+            destination_display_name: null,
+            error_code: "support_channel_not_configured",
+            error_message_safe: "No support group is configured for this account.",
+            message_preview: "",
+            provider: "groupme",
+            send_kind: "real",
+            status: "blocked",
+          },
+        },
+        409,
+      ),
+    );
+
+    await expect(
+      sendSupportChannelFlare(
+        { flareEventId: "event-1" },
+        {
+          fetchImpl,
+          getAccessToken: async () => "token-123",
+        },
+      ),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        error_code: "support_channel_not_configured",
+        send_kind: "real",
+        status: "blocked",
+      }),
+    );
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "http://localhost/api/support-channel/send-flare",
+      expect.objectContaining({
+        method: "POST",
+      }),
+    );
+    expect(JSON.parse(fetchImpl.mock.calls[0][1].body as string)).toEqual({
+      flare_event_id: "event-1",
+    });
   });
 
   it("builds the callback request from an access token", async () => {

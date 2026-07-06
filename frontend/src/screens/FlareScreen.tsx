@@ -7,15 +7,73 @@ import { FlareResponse } from "../components/FlareResponse";
 import { PlaceholderModal } from "../components/PlaceholderModal";
 import { SendFlareButton } from "../components/SendFlareButton";
 import flareContent from "../content/flareContent.json";
+import {
+  sendSupportChannelFlare,
+  type SupportChannelFlareDeliveryResult,
+} from "../services/supportChannelApi";
 import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
 import { flareTheme } from "../theme/flareTheme";
 
+type ExternalSupportState =
+  | {
+      copy: string;
+      title: string;
+      tone: "muted" | "success" | "warning";
+    }
+  | null;
+
+function mapExternalSupportState(
+  result: SupportChannelFlareDeliveryResult,
+): ExternalSupportState {
+  const externalContent = flareContent.components.flareResponse.externalSupport;
+
+  if (result.status === "sent") {
+    return {
+      copy: externalContent.sentCopy,
+      title: externalContent.sentTitle,
+      tone: "success",
+    };
+  }
+
+  if (result.error_code === "support_channel_not_configured") {
+    return {
+      copy: externalContent.notConfiguredCopy,
+      title: externalContent.notConfiguredTitle,
+      tone: "muted",
+    };
+  }
+
+  if (result.error_code === "support_channel_disabled") {
+    return {
+      copy: externalContent.disabledCopy,
+      title: externalContent.disabledTitle,
+      tone: "muted",
+    };
+  }
+
+  if (result.status === "blocked") {
+    return {
+      copy: result.error_message_safe ?? externalContent.blockedCopy,
+      title: externalContent.blockedTitle,
+      tone: "muted",
+    };
+  }
+
+  return {
+    copy: result.error_message_safe ?? externalContent.failedCopy,
+    title: externalContent.failedTitle,
+    tone: "warning",
+  };
+}
+
 export function FlareScreen() {
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
+  const [externalSupportState, setExternalSupportState] =
+    useState<ExternalSupportState>(null);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
@@ -73,6 +131,30 @@ export function FlareScreen() {
             behaviorLabelSnapshot: behaviorPattern?.behaviorName,
             supportActionShown: anchorNote?.emergencyActions,
           });
+          if (authState.kind === "authenticated") {
+            const externalContent =
+              flareContent.components.flareResponse.externalSupport;
+            setExternalSupportState({
+              copy: externalContent.sendingCopy,
+              title: externalContent.sendingTitle,
+              tone: "muted",
+            });
+            void sendSupportChannelFlare({
+              flareEventId: null,
+            })
+              .then((result) => {
+                setExternalSupportState(mapExternalSupportState(result));
+              })
+              .catch(() => {
+                setExternalSupportState({
+                  copy: externalContent.failedCopy,
+                  title: externalContent.failedTitle,
+                  tone: "warning",
+                });
+              });
+          } else {
+            setExternalSupportState(null);
+          }
           setIsCheckpointVisible(false);
           setIsFlareResponseVisible(true);
         }}
@@ -112,6 +194,7 @@ export function FlareScreen() {
         visible={isFlareResponseVisible}
       >
         <FlareResponse
+          externalSupportState={externalSupportState}
           flareEvent={eventForResponse}
           onOpenCheckpoint={openCheckpoint}
         />

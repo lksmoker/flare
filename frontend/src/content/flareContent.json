@@ -348,7 +348,22 @@
       "safety": "If you may hurt yourself or someone else, or need immediate help, contact local emergency services or a crisis hotline now.",
       "nextStepTitle": "Try one next step",
       "defaultNextStep": "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next.",
-      "checkpointButton": "Checkpoint / Reflection"
+      "checkpointButton": "Checkpoint / Reflection",
+      "externalSupport": {
+        "label": "Support Group Delivery",
+        "sendingTitle": "Checking your saved support group",
+        "sendingCopy": "Flare is trying the saved support delivery in the background.",
+        "sentTitle": "Support message sent",
+        "sentCopy": "Your saved support message was sent to the connected group.",
+        "failedTitle": "Support message failed",
+        "failedCopy": "Your flare was still recorded here, but the external support message did not go through.",
+        "blockedTitle": "Support message blocked",
+        "blockedCopy": "Flare kept the event, but the support group could not receive a message right now.",
+        "notConfiguredTitle": "No support group configured",
+        "notConfiguredCopy": "Set up a support group in Customize if you want Send Flare to also notify someone.",
+        "disabledTitle": "Support group is disabled",
+        "disabledCopy": "Reconnect the saved group in Customize before Send Flare can notify it."
+      }
     },
     "checkpointReflection": {
       "modalTitle": "Checkpoint / Reflection",

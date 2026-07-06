@@ -14,6 +14,7 @@ from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED,
     SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
+    SUPPORT_CHANNEL_SEND_KIND_REAL,
     SUPPORT_CHANNEL_STATUS_CONNECTED,
     SUPPORT_CHANNEL_STATUS_DISABLED,
     GroupMeConnectSession,
@@ -230,6 +231,7 @@ class SupportChannelsApiTests(unittest.TestCase):
             error_code=None,
             error_message_safe=None,
             raw_provider_status_ref="http_status:202",
+            flare_event_id=None,
         )
 
         response = self._request("POST", "/api/support-channel/test")
@@ -264,6 +266,7 @@ class SupportChannelsApiTests(unittest.TestCase):
             error_code="groupme_http_500",
             error_message_safe="GroupMe rejected the test message.",
             raw_provider_status_ref="http_status:500",
+            flare_event_id=None,
         )
 
         response = self._request("POST", "/api/support-channel/test")
@@ -287,6 +290,122 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertFalse(self.repository.current.enabled)
         self.assertEqual(SUPPORT_CHANNEL_STATUS_DISABLED, self.repository.current.status)
+        self._assert_no_provider_secrets(response.body)
+
+    def test_send_flare_without_configured_support_channel_returns_safe_blocked_result(self) -> None:
+        response = self._request(
+            "POST",
+            "/api/support-channel/send-flare",
+            {"flare_event_id": "event-1"},
+        )
+
+        self.assertEqual(409, response.status_code)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, response.body["result"]["status"])
+        self.assertEqual("support_channel_not_configured", response.body["result"]["error_code"])
+        self.assertEqual(0, len(self.repository.attempts))
+        self._assert_no_provider_secrets(response.body)
+
+    def test_send_flare_disabled_channel_records_blocked_real_attempt(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=False,
+            status=SUPPORT_CHANNEL_STATUS_DISABLED,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+        )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
+
+        response = self._request(
+            "POST",
+            "/api/support-channel/send-flare",
+            {"flare_event_id": "event-1"},
+        )
+
+        self.assertEqual(409, response.status_code)
+        self.assertEqual("support_channel_disabled", response.body["result"]["error_code"])
+        self.assertEqual(1, len(self.repository.attempts))
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, self.repository.attempts[0].send_kind)
+        self.assertEqual("event-1", self.repository.attempts[0].flare_event_id)
+        self.assertFalse(self.provider.was_called)
+        self._assert_no_provider_secrets(response.body)
+
+    def test_send_flare_success_persists_real_attempt_and_updates_channel_status(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=True,
+            status=SUPPORT_CHANNEL_STATUS_CONNECTED,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+        )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
+        self.provider.result = SupportChannelSendResult(
+            ok=True,
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+            status=SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
+            attempted_at="2026-07-06T03:30:00Z",
+            delivered_at="2026-07-06T03:30:00Z",
+            support_channel_id=self.repository.current.id,
+            user_id=self.repository.current.user_id,
+            destination_id=self.repository.current.external_group_id,
+            destination_name=self.repository.current.external_group_name,
+            message_snapshot=self.repository.current.default_message,
+            provider_message_id="provider-message-2",
+            error_code=None,
+            error_message_safe=None,
+            raw_provider_status_ref="http_status:202",
+            flare_event_id="event-1",
+        )
+
+        response = self._request(
+            "POST",
+            "/api/support-channel/send-flare",
+            {"flare_event_id": "event-1"},
+        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertTrue(self.provider.was_called)
+        self.assertEqual(1, len(self.repository.attempts))
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, self.repository.attempts[0].send_kind)
+        self.assertEqual("event-1", self.repository.attempts[0].flare_event_id)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_SENT, self.repository.current.last_delivery_status)
+        self.assertEqual("2026-07-06T03:30:00Z", self.repository.current.last_delivery_at)
+        self._assert_no_provider_secrets(response.body)
+
+    def test_send_flare_provider_failure_surfaces_safe_result_without_breaking_api(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=True,
+            status=SUPPORT_CHANNEL_STATUS_CONNECTED,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+        )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
+        self.provider.result = SupportChannelSendResult(
+            ok=False,
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+            status=SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED,
+            attempted_at="2026-07-06T03:35:00Z",
+            delivered_at=None,
+            support_channel_id=self.repository.current.id,
+            user_id=self.repository.current.user_id,
+            destination_id=self.repository.current.external_group_id,
+            destination_name=self.repository.current.external_group_name,
+            message_snapshot=self.repository.current.default_message,
+            provider_message_id=None,
+            error_code="groupme_http_500",
+            error_message_safe="GroupMe rejected the support message.",
+            raw_provider_status_ref="http_status:500",
+            flare_event_id="event-1",
+        )
+
+        response = self._request(
+            "POST",
+            "/api/support-channel/send-flare",
+            {"flare_event_id": "event-1"},
+        )
+
+        self.assertEqual(502, response.status_code)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED, response.body["result"]["status"])
+        self.assertEqual("groupme_http_500", response.body["result"]["error_code"])
+        self.assertEqual(1, len(self.repository.attempts))
+        self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, self.repository.attempts[0].send_kind)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED, self.repository.current.last_delivery_status)
         self._assert_no_provider_secrets(response.body)
 
     def _request(

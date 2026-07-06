@@ -57,6 +57,8 @@ export type SupportChannelTestResult = {
   status: string;
 };
 
+export type SupportChannelFlareDeliveryResult = SupportChannelTestResult;
+
 type SupportChannelApiErrorBody = {
   error?: {
     code?: string;
@@ -280,6 +282,43 @@ export async function sendSupportChannelTest(deps?: RequestDeps) {
   );
 
   return body.result;
+}
+
+export async function sendSupportChannelFlare(
+  input: {
+    flareEventId?: string | null;
+  } = {},
+  deps?: RequestDeps,
+) {
+  const fetchImpl = deps?.fetchImpl ?? fetch;
+  const accessToken = await (deps?.getAccessToken ?? readAccessToken)();
+  const response = await fetchImpl(
+    `${readApiBaseUrl(deps?.env)}/api/support-channel/send-flare`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        flare_event_id: input.flareEventId ?? null,
+      }),
+    },
+  );
+  const body = (await response.json()) as
+    | { result?: SupportChannelFlareDeliveryResult; error?: SupportChannelApiErrorBody["error"] }
+    | SupportChannelApiErrorBody;
+
+  if (body && typeof body === "object" && "result" in body && body.result) {
+    return body.result;
+  }
+
+  throw new SupportChannelApiError({
+    code: body.error?.code ?? "support_channel_request_failed",
+    message:
+      body.error?.message ?? "Support message could not be sent right now.",
+    statusCode: response.status,
+  });
 }
 
 export function readAccessTokenFromUrl(url: string) {
