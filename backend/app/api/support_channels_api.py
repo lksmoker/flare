@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Any, Protocol
+from urllib import parse
 
 from backend.app.services.support_channel_management import (
     ConfigureSupportChannelCommand,
@@ -63,40 +64,58 @@ class SupportChannelsApi:
                 HTTPStatus.UNAUTHORIZED,
                 {"error": {"code": "unauthorized", "message": "Authentication is required."}},
             )
+        parsed = parse.urlsplit(path)
+        route_path = parsed.path
+        query = {key: values[-1] for key, values in parse.parse_qs(parsed.query).items()}
         try:
-            if method == "GET" and path == "/api/support-channel":
+            if method == "GET" and route_path == "/api/support-channel":
                 channel = self._manager.get_current_channel(user_id=user.user_id)
                 return _json_response(
                     HTTPStatus.OK,
                     {"channel": channel.to_safe_public_dict() if channel is not None else None},
                 )
-            if method == "POST" and path == "/api/support-channel/configure":
+            if method == "POST" and route_path == "/api/support-channel/groupme/connect/start":
+                return _json_response(HTTPStatus.OK, self._manager.start_groupme_connect())
+            if method == "GET" and route_path == "/api/support-channel/groupme/connect/callback":
+                session = self._manager.complete_groupme_connect(
+                    user_id=user.user_id,
+                    access_token=str(query.get("access_token") or ""),
+                )
+                return _json_response(HTTPStatus.OK, {"connection": session.to_safe_public_dict()})
+            if method == "GET" and route_path == "/api/support-channel/groupme/destinations":
+                destinations = self._manager.list_groupme_destinations(
+                    user_id=user.user_id,
+                    connect_session_id=str(query.get("connect_session_id") or ""),
+                )
+                return _json_response(
+                    HTTPStatus.OK,
+                    {"destinations": [item.to_safe_public_dict() for item in destinations]},
+                )
+            if method == "POST" and route_path == "/api/support-channel/configure":
                 payload = _parse_json_body(body)
                 channel = self._manager.configure_groupme(
                     ConfigureSupportChannelCommand(
                         user_id=user.user_id,
-                        connect_token=str(payload.get("connect_token") or ""),
+                        connect_session_id=str(payload.get("connect_session_id") or ""),
                         external_group_id=str(payload.get("external_group_id") or ""),
-                        external_group_name=_optional_str(payload.get("external_group_name")),
                         default_message=str(payload.get("default_message") or ""),
                         enabled=bool(payload.get("enabled", False)),
                     )
                 )
                 return _json_response(HTTPStatus.OK, {"channel": channel.to_safe_public_dict()})
-            if method == "POST" and path == "/api/support-channel/reconnect":
+            if method == "POST" and route_path == "/api/support-channel/reconnect":
                 payload = _parse_json_body(body)
                 channel = self._manager.reconnect_groupme(
                     ReconnectSupportChannelCommand(
                         user_id=user.user_id,
-                        connect_token=str(payload.get("connect_token") or ""),
+                        connect_session_id=str(payload.get("connect_session_id") or ""),
                         external_group_id=_optional_str(payload.get("external_group_id")),
-                        external_group_name=_optional_str(payload.get("external_group_name")),
                         default_message=_optional_str(payload.get("default_message")),
                         enabled=bool(payload.get("enabled", True)),
                     )
                 )
                 return _json_response(HTTPStatus.OK, {"channel": channel.to_safe_public_dict()})
-            if method == "POST" and path == "/api/support-channel/disable":
+            if method == "POST" and route_path == "/api/support-channel/disable":
                 channel = self._manager.disable_current_channel(user_id=user.user_id)
                 if channel is None:
                     return _json_response(
@@ -109,7 +128,7 @@ class SupportChannelsApi:
                         },
                     )
                 return _json_response(HTTPStatus.OK, {"channel": channel.to_safe_public_dict()})
-            if method == "POST" and path == "/api/support-channel/test":
+            if method == "POST" and route_path == "/api/support-channel/test":
                 channel = self._manager.require_current_channel(user_id=user.user_id)
                 result = self._sender.send_test_message(
                     SendSupportChannelTestMessageCommand(

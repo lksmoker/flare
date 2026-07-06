@@ -14,6 +14,8 @@ SUPPORT_CHANNEL_STATUS_DISCONNECTED = "disconnected"
 SUPPORT_CHANNEL_DELIVERY_STATUS_SENT = "sent"
 SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED = "failed"
 SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED = "blocked"
+SUPPORT_CHANNEL_PROVIDER_CONFIG_STATUS_AUTHORIZED = "authorized"
+SUPPORT_CHANNEL_PROVIDER_CONFIG_STATUS_PROVISIONED = "provisioned"
 
 GROUPME_TEST_MESSAGE = (
     "TEST FLARE: Luke is testing Flare support notifications. No action is needed."
@@ -99,6 +101,73 @@ class GroupMeRuntimeConfig:
     test_group_id: str
     test_group_name: str
     test_bot_id: str
+
+
+@dataclass(frozen=True)
+class GroupMeUserProfile:
+    user_id: str
+    name: str | None = None
+
+
+@dataclass(frozen=True)
+class SupportChannelDestination:
+    id: str
+    name: str
+    description: str | None = None
+    image_url: str | None = None
+    group_type: str | None = None
+
+    def to_safe_public_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "image_url": self.image_url,
+            "group_type": self.group_type,
+        }
+
+
+@dataclass(frozen=True)
+class SupportChannelProviderConfigRecord:
+    id: str
+    user_id: str
+    provider: str
+    status: str
+    access_token: str
+    provider_user_id: str | None = None
+    provider_user_name: str | None = None
+    bot_id: str | None = None
+    external_group_id: str | None = None
+    external_group_name: str | None = None
+
+    @classmethod
+    def from_row(cls, row: dict[str, Any]) -> "SupportChannelProviderConfigRecord":
+        return cls(
+            id=str(row["id"]),
+            user_id=str(row["user_id"]),
+            provider=str(row["provider"]),
+            status=str(row["status"]),
+            access_token=str(row["access_token"]),
+            provider_user_id=_optional_str(row.get("provider_user_id")),
+            provider_user_name=_optional_str(row.get("provider_user_name")),
+            bot_id=_optional_str(row.get("bot_id")),
+            external_group_id=_optional_str(row.get("external_group_id")),
+            external_group_name=_optional_str(row.get("external_group_name")),
+        )
+
+
+@dataclass(frozen=True)
+class GroupMeConnectSession:
+    connect_session_id: str
+    provider: str
+    status: str
+
+    def to_safe_public_dict(self) -> dict[str, Any]:
+        return {
+            "connect_session_id": self.connect_session_id,
+            "provider": self.provider,
+            "status": self.status,
+        }
 
 
 @dataclass(frozen=True)

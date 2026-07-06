@@ -5,8 +5,12 @@ from typing import Any, Protocol
 
 from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
+    SUPPORT_CHANNEL_PROVIDER_CONFIG_STATUS_AUTHORIZED,
     SUPPORT_CHANNEL_STATUS_CONNECTED,
     SUPPORT_CHANNEL_STATUS_DISABLED,
+    GroupMeConnectSession,
+    SupportChannelDestination,
+    SupportChannelProviderConfigRecord,
     SupportChannelRecord,
 )
 
@@ -38,6 +42,35 @@ class SupportChannelManagementRepositoryLike(Protocol):
     ) -> SupportChannelRecord | None:
         ...
 
+    def create_provider_config(
+        self,
+        *,
+        user_id: str,
+        provider: str,
+        status: str,
+        access_token: str,
+        provider_user_id: str | None,
+        provider_user_name: str | None,
+    ) -> SupportChannelProviderConfigRecord:
+        ...
+
+    def get_provider_config(
+        self,
+        *,
+        provider_config_id: str,
+        user_id: str,
+    ) -> SupportChannelProviderConfigRecord | None:
+        ...
+
+    def update_provider_config(
+        self,
+        *,
+        provider_config_id: str,
+        user_id: str,
+        patch: dict[str, Any],
+    ) -> SupportChannelProviderConfigRecord | None:
+        ...
+
 
 @dataclass(frozen=True)
 class ProvisionedGroupMeChannel:
@@ -46,14 +79,32 @@ class ProvisionedGroupMeChannel:
     external_group_name: str | None
 
 
-class GroupMeProvisionerLike(Protocol):
+class GroupMeOnboardingLike(Protocol):
+    def build_connect_url(self) -> str:
+        ...
+
+    def create_connect_session(
+        self,
+        *,
+        user_id: str,
+        access_token: str,
+    ) -> GroupMeConnectSession:
+        ...
+
+    def list_destinations(
+        self,
+        *,
+        user_id: str,
+        connect_session_id: str,
+    ) -> list[SupportChannelDestination]:
+        ...
+
     def provision_channel(
         self,
         *,
         user_id: str,
-        connect_token: str,
+        connect_session_id: str,
         external_group_id: str,
-        external_group_name: str | None,
         reconnect: bool,
     ) -> ProvisionedGroupMeChannel:
         ...
@@ -62,9 +113,8 @@ class GroupMeProvisionerLike(Protocol):
 @dataclass(frozen=True)
 class ConfigureSupportChannelCommand:
     user_id: str
-    connect_token: str
+    connect_session_id: str
     external_group_id: str
-    external_group_name: str | None
     default_message: str
     enabled: bool
 
@@ -72,9 +122,8 @@ class ConfigureSupportChannelCommand:
 @dataclass(frozen=True)
 class ReconnectSupportChannelCommand:
     user_id: str
-    connect_token: str
+    connect_session_id: str
     external_group_id: str | None = None
-    external_group_name: str | None = None
     default_message: str | None = None
     enabled: bool = True
 
@@ -92,38 +141,58 @@ class SupportChannelManager:
         self,
         *,
         repository: SupportChannelManagementRepositoryLike,
-        groupme_provisioner: GroupMeProvisionerLike,
+        groupme_onboarding: GroupMeOnboardingLike,
     ) -> None:
         self._repository = repository
-        self._groupme_provisioner = groupme_provisioner
+        self._groupme_onboarding = groupme_onboarding
 
     def get_current_channel(self, *, user_id: str) -> SupportChannelRecord | None:
         return self._repository.get_current_support_channel(user_id=user_id)
+
+    def start_groupme_connect(self) -> dict[str, str]:
+        return {
+            "provider": SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            "auth_url": self._groupme_onboarding.build_connect_url(),
+        }
+
+    def complete_groupme_connect(
+        self,
+        *,
+        user_id: str,
+        access_token: str,
+    ) -> GroupMeConnectSession:
+        self._require_non_empty(access_token, "access_token")
+        return self._groupme_onboarding.create_connect_session(
+            user_id=user_id,
+            access_token=access_token.strip(),
+        )
+
+    def list_groupme_destinations(
+        self,
+        *,
+        user_id: str,
+        connect_session_id: str,
+    ) -> list[SupportChannelDestination]:
+        self._require_non_empty(connect_session_id, "connect_session_id")
+        return self._groupme_onboarding.list_destinations(
+            user_id=user_id,
+            connect_session_id=connect_session_id.strip(),
+        )
 
     def configure_groupme(
         self,
         command: ConfigureSupportChannelCommand,
     ) -> SupportChannelRecord:
-        self._require_non_empty(command.connect_token, "connect_token")
+        self._require_non_empty(command.connect_session_id, "connect_session_id")
         self._require_non_empty(command.external_group_id, "external_group_id")
         self._require_non_empty(command.default_message, "default_message")
-        provisioned = self._groupme_provisioner.provision_channel(
+        provisioned = self._groupme_onboarding.provision_channel(
             user_id=command.user_id,
-            connect_token=command.connect_token,
+            connect_session_id=command.connect_session_id.strip(),
             external_group_id=command.external_group_id.strip(),
-            external_group_name=_clean_optional_text(command.external_group_name),
             reconnect=False,
         )
         current = self._repository.get_current_support_channel(user_id=command.user_id)
-        patch = {
-            "provider": SUPPORT_CHANNEL_PROVIDER_GROUPME,
-            "status": SUPPORT_CHANNEL_STATUS_CONNECTED,
-            "enabled": command.enabled,
-            "external_group_id": provisioned.external_group_id,
-            "external_group_name": provisioned.external_group_name,
-            "provider_config_ref": provisioned.provider_config_ref,
-            "default_message": command.default_message.strip(),
-        }
         if current is None:
             return self._repository.create_support_channel(
                 user_id=command.user_id,
@@ -138,7 +207,15 @@ class SupportChannelManager:
         updated = self._repository.update_support_channel(
             support_channel_id=current.id,
             user_id=command.user_id,
-            patch=patch,
+            patch={
+                "provider": SUPPORT_CHANNEL_PROVIDER_GROUPME,
+                "status": SUPPORT_CHANNEL_STATUS_CONNECTED,
+                "enabled": command.enabled,
+                "external_group_id": provisioned.external_group_id,
+                "external_group_name": provisioned.external_group_name,
+                "provider_config_ref": provisioned.provider_config_ref,
+                "default_message": command.default_message.strip(),
+            },
         )
         if updated is None:
             raise SupportChannelManagementError(
@@ -167,14 +244,12 @@ class SupportChannelManager:
                 status_code=400,
             )
         default_message = _clean_optional_text(command.default_message) or current.default_message
-        self._require_non_empty(command.connect_token, "connect_token")
+        self._require_non_empty(command.connect_session_id, "connect_session_id")
         self._require_non_empty(default_message, "default_message")
-        provisioned = self._groupme_provisioner.provision_channel(
+        provisioned = self._groupme_onboarding.provision_channel(
             user_id=command.user_id,
-            connect_token=command.connect_token,
+            connect_session_id=command.connect_session_id.strip(),
             external_group_id=external_group_id,
-            external_group_name=_clean_optional_text(command.external_group_name)
-            or current.external_group_name,
             reconnect=True,
         )
         updated = self._repository.update_support_channel(

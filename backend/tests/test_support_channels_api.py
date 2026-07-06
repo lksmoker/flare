@@ -16,6 +16,8 @@ from backend.app.domain.support_channels import (
     SUPPORT_CHANNEL_PROVIDER_GROUPME,
     SUPPORT_CHANNEL_STATUS_CONNECTED,
     SUPPORT_CHANNEL_STATUS_DISABLED,
+    GroupMeConnectSession,
+    SupportChannelDestination,
     SupportChannelRecord,
     SupportChannelSendResult,
 )
@@ -31,17 +33,17 @@ class SupportChannelsApiTests(unittest.TestCase):
     def setUp(self) -> None:
         self.repository = _FakeRepository()
         self.provider = _FakeProvider()
-        self.provisioner = _FakeProvisioner()
+        self.onboarding = _FakeOnboarding()
         self.api = SupportChannelsApi(
             authenticator=_FakeAuthenticator(user_id="user-123"),
             manager=SupportChannelManager(
                 repository=self.repository,
-                groupme_provisioner=self.provisioner,
+                groupme_onboarding=self.onboarding,
             ),
             sender=SupportChannelSender(
                 repository=self.repository,
                 groupme_provider=self.provider,
-                provider_config_resolver=ProviderConfigResolver(),
+                provider_config_resolver=ProviderConfigResolver(repository=self.repository),
             ),
         )
 
@@ -51,82 +53,150 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual({"channel": None}, response.body)
 
-    def test_get_returns_safe_configured_channel_state_without_provider_fields(self) -> None:
-        self.repository.current = _build_channel(
-            enabled=True,
-            status=SUPPORT_CHANNEL_STATUS_CONNECTED,
-            provider_config_ref="groupme:bot:Ym90LW1hc2tlZA",
-            external_group_name="Luke Support",
-            last_delivery_status=SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
-            last_delivery_at="2026-07-06T03:00:00Z",
-        )
+    def test_groupme_connect_start_returns_safe_authorize_url(self) -> None:
+        response = self._request("POST", "/api/support-channel/groupme/connect/start")
 
-        response = self._request("GET", "/api/support-channel")
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(SUPPORT_CHANNEL_PROVIDER_GROUPME, response.body["provider"])
+        self.assertIn("oauth.groupme.com", response.body["auth_url"])
+        self._assert_no_provider_secrets(response.body)
+
+    def test_groupme_callback_returns_safe_connect_session(self) -> None:
+        response = self._request(
+            "GET",
+            "/api/support-channel/groupme/connect/callback?access_token=access-token-1",
+        )
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(
             {
+                "connect_session_id": "session-123",
                 "provider": SUPPORT_CHANNEL_PROVIDER_GROUPME,
-                "configured": True,
-                "enabled": True,
-                "status": SUPPORT_CHANNEL_STATUS_CONNECTED,
-                "destination_display_name": "Luke Support",
-                "message_preview": self.repository.current.default_message,
-                "last_delivery_status": SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
-                "last_delivery_at": "2026-07-06T03:00:00Z",
+                "status": "authorized",
             },
-            response.body["channel"],
+            response.body["connection"],
         )
         self._assert_no_provider_secrets(response.body)
 
-    def test_configure_and_reconnect_hide_provider_secrets(self) -> None:
-        configure_response = self._request(
+    def test_groupme_callback_surfaces_auth_error_without_leaking_token(self) -> None:
+        self.onboarding.complete_error = ("groupme_auth_invalid", "GroupMe authorization is invalid or expired.", 401)
+
+        response = self._request(
+            "GET",
+            "/api/support-channel/groupme/connect/callback?access_token=bad-token",
+        )
+
+        self.assertEqual(401, response.status_code)
+        self.assertEqual("groupme_auth_invalid", response.body["error"]["code"])
+        self._assert_no_provider_secrets(response.body)
+
+    def test_groupme_destinations_returns_safe_group_list(self) -> None:
+        response = self._request(
+            "GET",
+            "/api/support-channel/groupme/destinations?connect_session_id=session-123",
+        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            [
+                {
+                    "id": "group-1",
+                    "name": "Group One",
+                    "description": None,
+                    "image_url": None,
+                    "group_type": None,
+                },
+                {
+                    "id": "group-2",
+                    "name": "Group Two",
+                    "description": "close friends",
+                    "image_url": None,
+                    "group_type": "private",
+                },
+            ],
+            response.body["destinations"],
+        )
+        self._assert_no_provider_secrets(response.body)
+
+    def test_configure_selects_destination_and_hides_provider_secrets(self) -> None:
+        response = self._request(
             "POST",
             "/api/support-channel/configure",
             {
-                "connect_token": "oauth-short-lived-token",
-                "external_group_id": "group-123",
-                "external_group_name": "Luke Support",
+                "connect_session_id": "session-123",
+                "external_group_id": "group-2",
                 "default_message": "Please check in when you can.",
                 "enabled": True,
             },
         )
 
-        self.assertEqual(200, configure_response.status_code)
-        self.assertEqual("group-123", self.provisioner.last_external_group_id)
-        self.assertEqual("oauth-short-lived-token", self.provisioner.last_connect_token)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("session-123", self.onboarding.last_connect_session_id)
+        self.assertEqual("group-2", self.onboarding.last_external_group_id)
         self.assertTrue(self.repository.current is not None)
+        self.assertEqual("Group Two", self.repository.current.external_group_name)
         self.assertTrue(self.repository.current.enabled)
-        self.assertEqual(SUPPORT_CHANNEL_STATUS_CONNECTED, self.repository.current.status)
-        self._assert_no_provider_secrets(configure_response.body)
+        self._assert_no_provider_secrets(response.body)
 
-        self.repository.current = replace(
-            self.repository.current,
-            enabled=False,
-            status="reconnect_required",
+    def test_configure_surfaces_provisioning_failure(self) -> None:
+        self.onboarding.provision_error = (
+            "groupme_provider_error",
+            "GroupMe request failed with status 500.",
+            502,
         )
-        reconnect_response = self._request(
+
+        response = self._request(
             "POST",
-            "/api/support-channel/reconnect",
+            "/api/support-channel/configure",
             {
-                "connect_token": "oauth-short-lived-token-2",
+                "connect_session_id": "session-123",
+                "external_group_id": "group-2",
+                "default_message": "Please check in when you can.",
                 "enabled": True,
             },
         )
 
-        self.assertEqual(200, reconnect_response.status_code)
-        self.assertEqual("oauth-short-lived-token-2", self.provisioner.last_connect_token)
-        self.assertTrue(self.provisioner.last_reconnect)
+        self.assertEqual(502, response.status_code)
+        self.assertEqual("groupme_provider_error", response.body["error"]["code"])
+        self._assert_no_provider_secrets(response.body)
+
+    def test_reconnect_updates_current_channel_without_leaking_provider_config(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=False,
+            status="reconnect_required",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+            external_group_name="Old Group",
+        )
+        self.repository.current = replace(
+            self.repository.current,
+            external_group_id="group-1",
+        )
+
+        response = self._request(
+            "POST",
+            "/api/support-channel/reconnect",
+            {
+                "connect_session_id": "session-123",
+                "enabled": True,
+            },
+        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("session-123", self.onboarding.last_connect_session_id)
+        self.assertTrue(self.onboarding.last_reconnect)
+        self.assertTrue(self.repository.current is not None)
         self.assertEqual(SUPPORT_CHANNEL_STATUS_CONNECTED, self.repository.current.status)
-        self.assertTrue(self.repository.current.enabled)
-        self._assert_no_provider_secrets(reconnect_response.body)
+        self.assertEqual("group-1", self.repository.current.external_group_id)
+        self.assertEqual("Group One", self.repository.current.external_group_name)
+        self._assert_no_provider_secrets(response.body)
 
     def test_disabled_channel_cannot_send_test_flare(self) -> None:
         self.repository.current = _build_channel(
             enabled=False,
             status=SUPPORT_CHANNEL_STATUS_DISABLED,
-            provider_config_ref="groupme:bot:Ym90LW1hc2tlZA",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
         )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
 
         response = self._request("POST", "/api/support-channel/test")
 
@@ -141,8 +211,9 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.repository.current = _build_channel(
             enabled=True,
             status=SUPPORT_CHANNEL_STATUS_CONNECTED,
-            provider_config_ref="groupme:bot:Ym90LTEyMw",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
         )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
         self.provider.result = SupportChannelSendResult(
             ok=True,
             provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
@@ -174,8 +245,9 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.repository.current = _build_channel(
             enabled=True,
             status=SUPPORT_CHANNEL_STATUS_CONNECTED,
-            provider_config_ref="groupme:bot:Ym90LTEyMw",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
         )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
         self.provider.result = SupportChannelSendResult(
             ok=False,
             provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
@@ -207,7 +279,7 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.repository.current = _build_channel(
             enabled=True,
             status=SUPPORT_CHANNEL_STATUS_CONNECTED,
-            provider_config_ref="groupme:bot:Ym90LTEyMw",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
         )
 
         response = self._request("POST", "/api/support-channel/disable")
@@ -215,7 +287,6 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertFalse(self.repository.current.enabled)
         self.assertEqual(SUPPORT_CHANNEL_STATUS_DISABLED, self.repository.current.status)
-        self.assertEqual("group-123", self.repository.current.external_group_id)
         self._assert_no_provider_secrets(response.body)
 
     def _request(
@@ -235,10 +306,11 @@ class SupportChannelsApiTests(unittest.TestCase):
     def _assert_no_provider_secrets(self, body: dict[str, object]) -> None:
         serialized = json.dumps(body, sort_keys=True)
         self.assertNotIn("provider_config_ref", serialized)
+        self.assertNotIn("access_token", serialized)
         self.assertNotIn("connect_token", serialized)
-        self.assertNotIn("oauth-short-lived-token", serialized)
         self.assertNotIn("bot-123", serialized)
         self.assertNotIn("Ym90", serialized)
+        self.assertNotIn("access-token-1", serialized)
 
 
 class _FakeAuthenticator:
@@ -251,28 +323,58 @@ class _FakeAuthenticator:
         return AuthenticatedUser(user_id=self.user_id)
 
 
-class _FakeProvisioner:
+class _FakeOnboarding:
     def __init__(self) -> None:
-        self.last_connect_token = None
+        self.last_connect_session_id = None
         self.last_external_group_id = None
         self.last_reconnect = False
+        self.complete_error: tuple[str, str, int] | None = None
+        self.provision_error: tuple[str, str, int] | None = None
+
+    def build_connect_url(self) -> str:
+        return "https://oauth.groupme.com/oauth/authorize?client_id=client-123&response_type=token"
+
+    def create_connect_session(self, *, user_id: str, access_token: str) -> GroupMeConnectSession:
+        if self.complete_error is not None:
+            code, message, status_code = self.complete_error
+            raise _management_error(code=code, message=message, status_code=status_code)
+        return GroupMeConnectSession(
+            connect_session_id="session-123",
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            status="authorized",
+        )
+
+    def list_destinations(self, *, user_id: str, connect_session_id: str):
+        self.last_connect_session_id = connect_session_id
+        return [
+            SupportChannelDestination(id="group-1", name="Group One"),
+            SupportChannelDestination(
+                id="group-2",
+                name="Group Two",
+                description="close friends",
+                group_type="private",
+            ),
+        ]
 
     def provision_channel(
         self,
         *,
         user_id: str,
-        connect_token: str,
+        connect_session_id: str,
         external_group_id: str,
-        external_group_name: str | None,
         reconnect: bool,
     ) -> ProvisionedGroupMeChannel:
-        self.last_connect_token = connect_token
+        self.last_connect_session_id = connect_session_id
         self.last_external_group_id = external_group_id
         self.last_reconnect = reconnect
+        if self.provision_error is not None:
+            code, message, status_code = self.provision_error
+            raise _management_error(code=code, message=message, status_code=status_code)
+        name = "Group One" if external_group_id == "group-1" else "Group Two"
         return ProvisionedGroupMeChannel(
-            provider_config_ref="groupme:bot:Ym90LTEyMw",
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
             external_group_id=external_group_id,
-            external_group_name=external_group_name,
+            external_group_name=name,
         )
 
 
@@ -280,6 +382,7 @@ class _FakeRepository:
     def __init__(self) -> None:
         self.current: SupportChannelRecord | None = None
         self.attempts = []
+        self.provider_configs = {}
 
     def get_current_support_channel(self, *, user_id: str) -> SupportChannelRecord | None:
         if self.current is None or self.current.user_id != user_id:
@@ -356,6 +459,12 @@ class _FakeRepository:
             last_error_message_safe=error_message_safe,
         )
 
+    def get_provider_config(self, *, provider_config_id: str, user_id: str):
+        record = self.provider_configs.get(provider_config_id)
+        if record is None or record.user_id != user_id:
+            return None
+        return record
+
 
 class _FakeProvider:
     def __init__(self) -> None:
@@ -391,3 +500,22 @@ def _build_channel(
         last_delivery_status=last_delivery_status,
         last_delivery_at=last_delivery_at,
     )
+
+
+def _build_provider_config(*, bot_id: str):
+    from backend.app.domain.support_channels import SupportChannelProviderConfigRecord
+
+    return SupportChannelProviderConfigRecord(
+        id="config-1",
+        user_id="user-123",
+        provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+        status="provisioned",
+        access_token="access-token-stored",
+        bot_id=bot_id,
+    )
+
+
+def _management_error(*, code: str, message: str, status_code: int):
+    from backend.app.services.support_channel_management import SupportChannelManagementError
+
+    return SupportChannelManagementError(code=code, message=message, status_code=status_code)

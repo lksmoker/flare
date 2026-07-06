@@ -7,6 +7,7 @@ from urllib import parse, request
 
 from backend.app.domain.support_channels import (
     DeliveryAttemptRecord,
+    SupportChannelProviderConfigRecord,
     SupportChannelRecord,
 )
 from backend.app.services.support_channel_config import SupabaseAdminConfig
@@ -101,6 +102,83 @@ class SupportChannelRepository:
         if not rows:
             raise RuntimeError("Support channel create returned no row.")
         return SupportChannelRecord.from_row(rows[0])
+
+    def create_provider_config(
+        self,
+        *,
+        user_id: str,
+        provider: str,
+        status: str,
+        access_token: str,
+        provider_user_id: str | None,
+        provider_user_name: str | None,
+    ) -> SupportChannelProviderConfigRecord:
+        rows = self._transport.request_json(
+            method="POST",
+            path="/rest/v1/support_channel_provider_configs",
+            payload=[
+                {
+                    "user_id": user_id,
+                    "provider": provider,
+                    "status": status,
+                    "access_token": access_token,
+                    "provider_user_id": provider_user_id,
+                    "provider_user_name": provider_user_name,
+                }
+            ],
+            prefer="return=representation",
+        )
+        if not rows:
+            raise RuntimeError("Provider config create returned no row.")
+        return SupportChannelProviderConfigRecord.from_row(rows[0])
+
+    def get_provider_config(
+        self,
+        *,
+        provider_config_id: str,
+        user_id: str,
+    ) -> SupportChannelProviderConfigRecord | None:
+        query = parse.urlencode(
+            {
+                "id": f"eq.{provider_config_id}",
+                "user_id": f"eq.{user_id}",
+                "select": "*",
+                "limit": "1",
+            }
+        )
+        rows = self._transport.request_json(
+            method="GET",
+            path=f"/rest/v1/support_channel_provider_configs?{query}",
+            payload=None,
+            prefer=None,
+        )
+        if not rows:
+            return None
+        return SupportChannelProviderConfigRecord.from_row(rows[0])
+
+    def update_provider_config(
+        self,
+        *,
+        provider_config_id: str,
+        user_id: str,
+        patch: dict[str, Any],
+    ) -> SupportChannelProviderConfigRecord | None:
+        query = parse.urlencode(
+            {
+                "id": f"eq.{provider_config_id}",
+                "user_id": f"eq.{user_id}",
+                "select": "*",
+            }
+        )
+        rows = self._transport.request_json(
+            method="PATCH",
+            path=f"/rest/v1/support_channel_provider_configs?{query}",
+            payload=patch,
+            prefer="return=representation",
+        )
+        if not rows:
+            return None
+        return SupportChannelProviderConfigRecord.from_row(rows[0])
 
     def update_support_channel(
         self,

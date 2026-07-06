@@ -90,7 +90,8 @@ class SupportChannelSender:
             return blocked
 
         provider_config = self._provider_config_resolver.resolve_groupme_provider_config(
-            provider_config_ref=channel.provider_config_ref
+            provider_config_ref=channel.provider_config_ref,
+            user_id=channel.user_id,
         )
         if provider_config is None:
             blocked = build_blocked_result(
