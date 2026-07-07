@@ -103,6 +103,7 @@ class GroupMeOnboardingLike(Protocol):
         self,
         *,
         user_id: str,
+        user_first_name: str | None,
         connect_session_id: str,
         external_group_id: str,
         reconnect: bool,
@@ -113,6 +114,7 @@ class GroupMeOnboardingLike(Protocol):
 @dataclass(frozen=True)
 class ConfigureSupportChannelCommand:
     user_id: str
+    user_first_name: str | None
     connect_session_id: str
     external_group_id: str
     default_message: str
@@ -122,6 +124,7 @@ class ConfigureSupportChannelCommand:
 @dataclass(frozen=True)
 class ReconnectSupportChannelCommand:
     user_id: str
+    user_first_name: str | None
     connect_session_id: str
     external_group_id: str | None = None
     default_message: str | None = None
@@ -188,6 +191,7 @@ class SupportChannelManager:
         self._require_non_empty(command.default_message, "default_message")
         provisioned = self._groupme_onboarding.provision_channel(
             user_id=command.user_id,
+            user_first_name=command.user_first_name,
             connect_session_id=command.connect_session_id.strip(),
             external_group_id=command.external_group_id.strip(),
             reconnect=False,
@@ -248,6 +252,7 @@ class SupportChannelManager:
         self._require_non_empty(default_message, "default_message")
         provisioned = self._groupme_onboarding.provision_channel(
             user_id=command.user_id,
+            user_first_name=command.user_first_name,
             connect_session_id=command.connect_session_id.strip(),
             external_group_id=external_group_id,
             reconnect=True,

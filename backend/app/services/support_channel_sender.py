@@ -120,6 +120,21 @@ class SupportChannelSender:
             self._record_attempt(blocked)
             self._update_channel(channel, blocked)
             return blocked
+        if not provider_config.bot_id or not provider_config.bot_id.strip():
+            blocked = build_blocked_result(
+                provider=channel.provider,
+                user_id=channel.user_id,
+                support_channel_id=channel.id,
+                destination_id=channel.external_group_id,
+                destination_name=channel.external_group_name,
+                message=GROUPME_TEST_MESSAGE,
+                error_code="provider_bot_missing",
+                error_message_safe="GroupMe bot is missing. Reconnect GroupMe before testing.",
+                blocked_reason="provider_bot_missing",
+            )
+            self._record_attempt(blocked)
+            self._update_channel(channel, blocked)
+            return blocked
 
         result = self._groupme_provider.send_message(
             provider_config=provider_config,
@@ -166,6 +181,23 @@ class SupportChannelSender:
                 error_code="provider_config_unavailable",
                 error_message_safe="Support channel requires reconnection before sending.",
                 blocked_reason="provider_config_unavailable",
+                send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+                flare_event_id=command.flare_event_id,
+            )
+            self._record_attempt(blocked)
+            self._update_channel(channel, blocked)
+            return blocked
+        if not provider_config.bot_id or not provider_config.bot_id.strip():
+            blocked = build_blocked_result(
+                provider=channel.provider,
+                user_id=channel.user_id,
+                support_channel_id=channel.id,
+                destination_id=channel.external_group_id,
+                destination_name=channel.external_group_name,
+                message=channel.default_message,
+                error_code="provider_bot_missing",
+                error_message_safe="GroupMe bot is missing. Reconnect GroupMe before sending.",
+                blocked_reason="provider_bot_missing",
                 send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
                 flare_event_id=command.flare_event_id,
             )

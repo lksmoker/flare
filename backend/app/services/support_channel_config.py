@@ -34,7 +34,7 @@ class GroupMeOAuthConfig:
 
 @dataclass(frozen=True)
 class GroupMeBotProvisioningConfig:
-    bot_name: str
+    legacy_bot_name: str | None = None
     callback_url: str | None = None
     avatar_url: str | None = None
 
@@ -144,13 +144,11 @@ def load_groupme_bot_provisioning_config(
     env: dict[str, str] | None = None,
 ) -> GroupMeBotProvisioningConfig:
     source = env or os.environ
-    bot_name = (source.get(GROUPME_BOT_NAME_ENV_NAME) or "").strip()
-    if not bot_name:
-        raise RuntimeError(f"Missing GroupMe bot env var: {GROUPME_BOT_NAME_ENV_NAME}")
+    bot_name = (source.get(GROUPME_BOT_NAME_ENV_NAME) or "").strip() or None
     callback_url = (source.get(GROUPME_BOT_CALLBACK_URL_ENV_NAME) or "").strip() or None
     avatar_url = (source.get(GROUPME_BOT_AVATAR_URL_ENV_NAME) or "").strip() or None
     return GroupMeBotProvisioningConfig(
-        bot_name=bot_name,
+        legacy_bot_name=bot_name,
         callback_url=callback_url,
         avatar_url=avatar_url,
     )

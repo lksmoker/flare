@@ -155,6 +155,7 @@ class SupportChannelProviderConfigRecord:
     provider_user_id: str | None = None
     provider_user_name: str | None = None
     bot_id: str | None = None
+    bot_display_name: str | None = None
     external_group_id: str | None = None
     external_group_name: str | None = None
 
@@ -169,6 +170,7 @@ class SupportChannelProviderConfigRecord:
             provider_user_id=_optional_str(row.get("provider_user_id")),
             provider_user_name=_optional_str(row.get("provider_user_name")),
             bot_id=_optional_str(row.get("bot_id")),
+            bot_display_name=_optional_str(row.get("bot_display_name")),
             external_group_id=_optional_str(row.get("external_group_id")),
             external_group_name=_optional_str(row.get("external_group_name")),
         )

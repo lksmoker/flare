@@ -29,6 +29,7 @@ from backend.app.services.support_channel_sender import (
 @dataclass(frozen=True)
 class AuthenticatedUser:
     user_id: str
+    first_name: str | None = None
 
 
 class AuthenticatorLike(Protocol):
@@ -104,6 +105,7 @@ class SupportChannelsApi:
                 channel = self._manager.configure_groupme(
                     ConfigureSupportChannelCommand(
                         user_id=user.user_id,
+                        user_first_name=user.first_name,
                         connect_session_id=str(payload.get("connect_session_id") or ""),
                         external_group_id=str(payload.get("external_group_id") or ""),
                         default_message=str(payload.get("default_message") or ""),
@@ -116,6 +118,7 @@ class SupportChannelsApi:
                 channel = self._manager.reconnect_groupme(
                     ReconnectSupportChannelCommand(
                         user_id=user.user_id,
+                        user_first_name=user.first_name,
                         connect_session_id=str(payload.get("connect_session_id") or ""),
                         external_group_id=_optional_str(payload.get("external_group_id")),
                         default_message=_optional_str(payload.get("default_message")),

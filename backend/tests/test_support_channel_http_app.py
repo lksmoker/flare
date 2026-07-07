@@ -194,12 +194,27 @@ class SupabaseUserAuthenticatorTests(unittest.TestCase):
         authenticator = SupabaseUserAuthenticator(
             supabase_url="https://project.supabase.co",
             service_role_key="service-role-key",
-            transport=_FakeUserLookupTransport(payload={"id": "user-123"}),
+            transport=_FakeUserLookupTransport(
+                payload={"id": "user-123", "user_metadata": {"first_name": "Luke"}}
+            ),
         )
 
         user = authenticator.authenticate({"authorization": "Bearer session-token"})
 
-        self.assertEqual(AuthenticatedUser(user_id="user-123"), user)
+        self.assertEqual(AuthenticatedUser(user_id="user-123", first_name="Luke"), user)
+
+    def test_authenticator_falls_back_to_first_token_of_full_name(self) -> None:
+        authenticator = SupabaseUserAuthenticator(
+            supabase_url="https://project.supabase.co",
+            service_role_key="service-role-key",
+            transport=_FakeUserLookupTransport(
+                payload={"id": "user-123", "user_metadata": {"full_name": "Jane Doe"}}
+            ),
+        )
+
+        user = authenticator.authenticate({"authorization": "Bearer session-token"})
+
+        self.assertEqual(AuthenticatedUser(user_id="user-123", first_name="Jane"), user)
 
     def test_authenticator_fails_closed_on_lookup_error(self) -> None:
         authenticator = SupabaseUserAuthenticator(

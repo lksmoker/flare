@@ -17,6 +17,7 @@ from backend.app.services.support_channel_config import (
 )
 from backend.app.services.support_channel_groupme_provisioner import (
     GroupMeChannelProvisioner,
+    build_groupme_bot_display_name,
 )
 from backend.app.services.support_channel_management import SupportChannelManagementError
 from backend.app.services.support_channel_provider_config import ProviderConfigResolver
@@ -86,6 +87,7 @@ class GroupMeChannelProvisionerTests(unittest.TestCase):
 
         provisioned = self.provisioner.provision_channel(
             user_id="user-123",
+            user_first_name="Luke",
             connect_session_id="config-1",
             external_group_id="group-2",
             reconnect=False,
@@ -103,6 +105,7 @@ class GroupMeChannelProvisionerTests(unittest.TestCase):
         assert resolved is not None
         self.assertEqual("bot-live-1", resolved.bot_id)
         self.assertEqual("access-token-1", resolved.access_token)
+        self.assertEqual("Luke’s Flare", self.bot_manager.last_bot_name)
 
     def test_provision_channel_surfaces_bot_creation_failure(self) -> None:
         self.provisioner.create_connect_session(user_id="user-123", access_token="access-token-1")
@@ -115,6 +118,7 @@ class GroupMeChannelProvisionerTests(unittest.TestCase):
         with self.assertRaises(SupportChannelManagementError) as raised:
             self.provisioner.provision_channel(
                 user_id="user-123",
+                user_first_name="Luke",
                 connect_session_id="config-1",
                 external_group_id="group-1",
                 reconnect=True,
@@ -122,6 +126,19 @@ class GroupMeChannelProvisionerTests(unittest.TestCase):
 
         self.assertEqual("groupme_provider_error", raised.exception.code)
         self.assertEqual(502, raised.exception.status_code)
+
+    def test_provision_channel_falls_back_to_authorized_groupme_name_when_first_name_missing(self) -> None:
+        self.provisioner.create_connect_session(user_id="user-123", access_token="access-token-1")
+
+        self.provisioner.provision_channel(
+            user_id="user-123",
+            user_first_name=None,
+            connect_session_id="config-1",
+            external_group_id="group-1",
+            reconnect=False,
+        )
+
+        self.assertEqual("Luke’s Flare", self.bot_manager.last_bot_name)
 
 
 class SupportChannelRuntimeConfigTests(unittest.TestCase):
@@ -176,6 +193,23 @@ class SupportChannelRuntimeConfigTests(unittest.TestCase):
         self.assertEqual(
             "https://flare-api.tailnet.ts.net:9001/api/support-channel/groupme/connect/callback",
             redirect_url,
+        )
+
+
+class GroupMeBotDisplayNameTests(unittest.TestCase):
+    def test_build_groupme_bot_display_name_formats_first_name_with_curly_apostrophe(self) -> None:
+        self.assertEqual("Luke’s Flare", build_groupme_bot_display_name(first_name="Luke"))
+
+    def test_build_groupme_bot_display_name_normalizes_whitespace_and_uses_first_token(self) -> None:
+        self.assertEqual("Jane’s Flare", build_groupme_bot_display_name(first_name="  Jane   Doe  "))
+
+    def test_build_groupme_bot_display_name_uses_safe_fallback_for_missing_name(self) -> None:
+        self.assertEqual("A Friend’s Flare", build_groupme_bot_display_name(first_name="   "))
+
+    def test_build_groupme_bot_display_name_uses_legacy_env_name_last(self) -> None:
+        self.assertEqual(
+            "Flare Support",
+            build_groupme_bot_display_name(first_name=None, legacy_bot_name="Flare Support"),
         )
 
 
@@ -267,8 +301,11 @@ class _FakeProvider:
 class _FakeBotManager:
     def __init__(self) -> None:
         self.error: GroupMeApiError | None = None
+        self.legacy_bot_name: str | None = None
+        self.last_bot_name: str | None = None
 
-    def ensure_bot(self, *, access_token: str, external_group_id: str) -> str:
+    def ensure_bot(self, *, access_token: str, external_group_id: str, bot_name: str) -> str:
         if self.error is not None:
             raise self.error
+        self.last_bot_name = bot_name
         return "bot-live-1"

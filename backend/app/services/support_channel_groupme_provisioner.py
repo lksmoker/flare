@@ -58,11 +58,14 @@ class GroupMeProviderConfigRepositoryLike(Protocol):
 
 
 class GroupMeBotManagerLike(Protocol):
+    legacy_bot_name: str | None
+
     def ensure_bot(
         self,
         *,
         access_token: str,
         external_group_id: str,
+        bot_name: str,
     ) -> str:
         ...
 
@@ -71,17 +74,22 @@ class GroupMeBotManagerLike(Protocol):
 class GroupMeBotManager:
     provider: GroupMeProvider
     config: GroupMeBotProvisioningConfig
+    legacy_bot_name: str | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "legacy_bot_name", self.config.legacy_bot_name)
 
     def ensure_bot(
         self,
         *,
         access_token: str,
         external_group_id: str,
+        bot_name: str,
     ) -> str:
         return self.provider.create_bot(
             access_token=access_token,
             group_id=external_group_id,
-            bot_name=self.config.bot_name,
+            bot_name=bot_name,
             callback_url=self.config.callback_url,
             avatar_url=self.config.avatar_url,
         )
@@ -151,6 +159,7 @@ class GroupMeChannelProvisioner:
         self,
         *,
         user_id: str,
+        user_first_name: str | None,
         connect_session_id: str,
         external_group_id: str,
         reconnect: bool,
@@ -174,10 +183,16 @@ class GroupMeChannelProvisioner:
                 message="Selected GroupMe destination was not found for this authorization.",
                 status_code=400,
             )
+        bot_display_name = build_groupme_bot_display_name(
+            first_name=user_first_name,
+            fallback_name_source=record.provider_user_name,
+            legacy_bot_name=self.bot_manager.legacy_bot_name,
+        )
         try:
             bot_id = self.bot_manager.ensure_bot(
                 access_token=record.access_token,
                 external_group_id=external_group_id,
+                bot_name=bot_display_name,
             )
         except GroupMeApiError as exc:
             raise SupportChannelManagementError(
@@ -234,3 +249,30 @@ class GroupMeChannelProvisioner:
                 status_code=409,
             )
         return record
+
+
+_GROUPME_BOT_DISPLAY_FALLBACK = "A Friend\u2019s Flare"
+
+
+def build_groupme_bot_display_name(
+    *,
+    first_name: str | None,
+    fallback_name_source: str | None = None,
+    legacy_bot_name: str | None = None,
+) -> str:
+    for candidate in (first_name, fallback_name_source):
+        normalized = _normalize_first_name(candidate)
+        if normalized is not None:
+            return f"{normalized}\u2019s Flare"
+    if legacy_bot_name and legacy_bot_name.strip():
+        return legacy_bot_name.strip()
+    return _GROUPME_BOT_DISPLAY_FALLBACK
+
+
+def _normalize_first_name(value: str | None) -> str | None:
+    if value is None:
+        return None
+    pieces = str(value).strip().split()
+    if not pieces:
+        return None
+    return pieces[0]

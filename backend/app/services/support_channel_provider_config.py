@@ -55,10 +55,17 @@ class ProviderConfigResolver:
                 user_id=user_id,
             )
             if record is None or not record.bot_id:
-                return None
+                if record is None:
+                    return None
+                return GroupMeProviderConfig(
+                    bot_id=record.bot_id,
+                    access_token=record.access_token,
+                    bot_display_name=record.bot_display_name,
+                )
             return GroupMeProviderConfig(
                 bot_id=record.bot_id,
                 access_token=record.access_token,
+                bot_display_name=record.bot_display_name,
             )
         if provider_config_ref.startswith(_LEGACY_GROUPME_PROVIDER_REF_PREFIX):
             bot_id = _decode_ref(provider_config_ref.removeprefix(_LEGACY_GROUPME_PROVIDER_REF_PREFIX))

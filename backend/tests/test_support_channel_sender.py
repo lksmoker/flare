@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 
 from backend.app.domain.support_channels import (
     GROUPME_TEST_MESSAGE,
@@ -198,6 +199,38 @@ class SupportChannelSenderTests(unittest.TestCase):
         self.assertEqual("provider_config_unavailable", result.error_code)
         self.assertFalse(provider.was_called)
 
+    def test_send_test_message_blocks_missing_bot_id_without_provider_call(self) -> None:
+        connected_channel = SupportChannelRecord(
+            id=self.channel.id,
+            user_id=self.channel.user_id,
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            status="connected",
+            enabled=True,
+            external_group_id=self.channel.external_group_id,
+            external_group_name=self.channel.external_group_name,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+            default_message=self.channel.default_message,
+        )
+        repository = _FakeRepository(channel=connected_channel)
+        provider = _FakeProvider(result=None)
+        sender = SupportChannelSender(
+            repository=repository,
+            groupme_provider=provider,
+            provider_config_resolver=ProviderConfigResolver(repository=_FakeProviderConfigRepository(bot_id=None)),
+        )
+
+        result = sender.send_test_message(
+            SendSupportChannelTestMessageCommand(
+                support_channel_id=connected_channel.id,
+                user_id=connected_channel.user_id,
+            )
+        )
+
+        self.assertFalse(result.ok)
+        self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_BLOCKED, result.status)
+        self.assertEqual("provider_bot_missing", result.error_code)
+        self.assertFalse(provider.was_called)
+
     def test_send_real_message_success_persists_real_attempt(self) -> None:
         repository = _FakeRepository(channel=self.channel)
         provider = _FakeProvider(
@@ -274,6 +307,46 @@ class SupportChannelSenderTests(unittest.TestCase):
         self.assertEqual(SUPPORT_CHANNEL_SEND_KIND_REAL, repository.attempts[0].send_kind)
         self.assertFalse(provider.was_called)
 
+    def test_send_real_message_reuses_persisted_provider_config_bot_id(self) -> None:
+        repository = _FakeRepository(channel=replace(self.channel, provider_config_ref="groupme:config:Y29uZmlnLTE"))
+        provider = _FakeProvider(
+            result=SupportChannelSendResult(
+                ok=True,
+                provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+                send_kind=SUPPORT_CHANNEL_SEND_KIND_REAL,
+                status=SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
+                attempted_at="2026-07-06T02:30:00Z",
+                delivered_at="2026-07-06T02:30:00Z",
+                support_channel_id=self.channel.id,
+                user_id=self.channel.user_id,
+                destination_id=self.channel.external_group_id,
+                destination_name=self.channel.external_group_name,
+                message_snapshot=self.channel.default_message,
+                provider_message_id="provider-msg-2",
+                error_code=None,
+                error_message_safe=None,
+                raw_provider_status_ref="http_status:202",
+                flare_event_id="event-123",
+            )
+        )
+        sender = SupportChannelSender(
+            repository=repository,
+            groupme_provider=provider,
+            provider_config_resolver=ProviderConfigResolver(
+                repository=_FakeProviderConfigRepository(bot_id="persisted-bot-9")
+            ),
+        )
+
+        sender.send_real_message(
+            SendSupportChannelRealMessageCommand(
+                support_channel_id=self.channel.id,
+                user_id=self.channel.user_id,
+                flare_event_id="event-123",
+            )
+        )
+
+        self.assertEqual("persisted-bot-9", provider.last_bot_id)
+
 
 class _FakeRepository:
     def __init__(self, *, channel: SupportChannelRecord | None) -> None:
@@ -331,3 +404,20 @@ class _FakeProvider:
         if send_request.message != expected_message:
             raise AssertionError(f"Unexpected message: {send_request.message!r}")
         return self.result
+
+
+class _FakeProviderConfigRepository:
+    def __init__(self, *, bot_id: str | None) -> None:
+        self.bot_id = bot_id
+
+    def get_provider_config(self, *, provider_config_id: str, user_id: str):
+        from backend.app.domain.support_channels import SupportChannelProviderConfigRecord
+
+        return SupportChannelProviderConfigRecord(
+            id=provider_config_id,
+            user_id=user_id,
+            provider=SUPPORT_CHANNEL_PROVIDER_GROUPME,
+            status="provisioned",
+            access_token="access-token-stored",
+            bot_id=self.bot_id,
+        )

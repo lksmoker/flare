@@ -36,8 +36,9 @@ class GroupMeApiError(RuntimeError):
 
 @dataclass(frozen=True)
 class GroupMeProviderConfig:
-    bot_id: str
+    bot_id: str | None
     access_token: str | None = None
+    bot_display_name: str | None = None
 
 
 class GroupMeProvider:
@@ -142,6 +143,8 @@ class GroupMeProvider:
         provider_config: GroupMeProviderConfig,
         send_request: SupportChannelSendRequest,
     ) -> SupportChannelSendResult:
+        if not provider_config.bot_id or not provider_config.bot_id.strip():
+            raise ValueError("GroupMe bot_id is required for bot-posting sends.")
         payload = {
             "bot_id": provider_config.bot_id,
             "text": send_request.message,

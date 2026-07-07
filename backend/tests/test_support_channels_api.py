@@ -408,6 +408,25 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.assertEqual(SUPPORT_CHANNEL_DELIVERY_STATUS_FAILED, self.repository.current.last_delivery_status)
         self._assert_no_provider_secrets(response.body)
 
+    def test_send_flare_blocks_missing_persisted_bot_id_without_provider_call(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=True,
+            status=SUPPORT_CHANNEL_STATUS_CONNECTED,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+        )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id=None)
+
+        response = self._request(
+            "POST",
+            "/api/support-channel/send-flare",
+            {"flare_event_id": "event-1"},
+        )
+
+        self.assertEqual(409, response.status_code)
+        self.assertEqual("provider_bot_missing", response.body["result"]["error_code"])
+        self.assertFalse(self.provider.was_called)
+        self._assert_no_provider_secrets(response.body)
+
     def _request(
         self,
         method: str,
@@ -479,6 +498,7 @@ class _FakeOnboarding:
         self,
         *,
         user_id: str,
+        user_first_name: str | None,
         connect_session_id: str,
         external_group_id: str,
         reconnect: bool,
@@ -621,7 +641,7 @@ def _build_channel(
     )
 
 
-def _build_provider_config(*, bot_id: str):
+def _build_provider_config(*, bot_id: str | None):
     from backend.app.domain.support_channels import SupportChannelProviderConfigRecord
 
     return SupportChannelProviderConfigRecord(

@@ -67,7 +67,10 @@ class SupabaseUserAuthenticator:
         user_id = None if not isinstance(payload, dict) else payload.get("id")
         if user_id is None:
             return None
-        return AuthenticatedUser(user_id=str(user_id))
+        return AuthenticatedUser(
+            user_id=str(user_id),
+            first_name=_extract_authenticated_first_name(payload),
+        )
 
 
 class SupportChannelHttpApp:
@@ -411,6 +414,29 @@ class _UrllibUserLookupTransport:
         if not isinstance(decoded, dict):
             raise RuntimeError("Unexpected Supabase auth response shape.")
         return decoded
+
+
+def _extract_authenticated_first_name(payload: dict[str, Any]) -> str | None:
+    metadata = payload.get("user_metadata")
+    if isinstance(metadata, dict):
+        for key in ("first_name", "given_name"):
+            value = metadata.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+        for key in ("full_name", "name"):
+            value = metadata.get(key)
+            if isinstance(value, str):
+                extracted = _extract_first_token(value)
+                if extracted is not None:
+                    return extracted
+    return None
+
+
+def _extract_first_token(value: str) -> str | None:
+    pieces = value.strip().split()
+    if not pieces:
+        return None
+    return pieces[0]
 
 
 
