@@ -8,6 +8,10 @@ frontend/dist/
 web-build/
 frontend/web-build/
 backend/tests/__pycache__/*
+# Python bytecode and cache directories
+__pycache__/
+*.py[cod]
+*$py.class
 coverage/
 .cache/
 *.tsbuildinfo
