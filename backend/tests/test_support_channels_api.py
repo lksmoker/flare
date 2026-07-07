@@ -54,6 +54,52 @@ class SupportChannelsApiTests(unittest.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual({"channel": None}, response.body)
 
+    def test_get_returns_only_authenticated_users_channel_and_hides_secret_fields(self) -> None:
+        self.repository.current = _build_channel(
+            enabled=True,
+            status=SUPPORT_CHANNEL_STATUS_CONNECTED,
+            provider_config_ref="groupme:config:Y29uZmlnLTE",
+            external_group_name="Close Friends",
+            last_delivery_status=SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
+            last_delivery_at="2026-07-06T03:10:00Z",
+        )
+        self.repository.provider_configs["config-1"] = _build_provider_config(bot_id="bot-123")
+
+        response = self._request("GET", "/api/support-channel")
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            {
+                "channel": {
+                    "configured": True,
+                    "destination_display_name": "Close Friends",
+                    "enabled": True,
+                    "last_delivery_at": "2026-07-06T03:10:00Z",
+                    "last_delivery_status": SUPPORT_CHANNEL_DELIVERY_STATUS_SENT,
+                    "message_preview": "Luke sent a Flare and may need support. Please check in when you can.",
+                    "provider": SUPPORT_CHANNEL_PROVIDER_GROUPME,
+                    "status": SUPPORT_CHANNEL_STATUS_CONNECTED,
+                }
+            },
+            response.body,
+        )
+        self._assert_no_provider_secrets(response.body)
+
+    def test_get_does_not_return_another_users_channel(self) -> None:
+        self.repository.current = replace(
+            _build_channel(
+                enabled=True,
+                status=SUPPORT_CHANNEL_STATUS_CONNECTED,
+                provider_config_ref="groupme:config:Y29uZmlnLTE",
+            ),
+            user_id="user-other",
+        )
+
+        response = self._request("GET", "/api/support-channel")
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual({"channel": None}, response.body)
+
     def test_groupme_connect_start_returns_safe_authorize_url(self) -> None:
         response = self._request("POST", "/api/support-channel/groupme/connect/start")
 

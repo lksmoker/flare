@@ -4,6 +4,7 @@ import { PropsWithChildren, ReactNode } from "react";
 import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
+import { DEFAULT_SUPPORT_CHANNEL_MESSAGE } from "../../services/supportChannelApi";
 import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
 import { FlareAuthProvider } from "../../state/FlareAuthContext";
@@ -373,6 +374,181 @@ describe("V0 app shell", () => {
     expect(getByText("Enabled")).toBeTruthy();
     expect(getByText("Send test flare")).toBeTruthy();
     expect(getByText("Disable")).toBeTruthy();
+  });
+
+  it("shows a successful test-flare result after the test action runs", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue({
+      configured: true,
+      destination_display_name: "Close Friends",
+      enabled: true,
+      last_delivery_at: "2026-07-06T03:10:00Z",
+      last_delivery_status: "sent",
+      message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+      provider: "groupme",
+      status: "connected",
+    });
+    const sendTestSpy = jest
+      .spyOn(supportChannelApi, "sendSupportChannelTest")
+      .mockResolvedValue({
+        attempted_at: "2026-07-06T03:40:00Z",
+        delivered_at: "2026-07-06T03:40:00Z",
+        destination_display_name: "Close Friends",
+        error_code: null,
+        error_message_safe: null,
+        message_preview:
+          "TEST FLARE: Luke is testing Flare support notifications. No action is needed.",
+        provider: "groupme",
+        send_kind: "test",
+        status: "sent",
+      });
+
+    const { getAllByText, getByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    fireEvent.press(getAllByText("Support Group")[0]);
+
+    await waitFor(() => {
+      expect(getByText("Send test flare")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Send test flare"));
+
+    await waitFor(() => {
+      expect(sendTestSpy).toHaveBeenCalledTimes(1);
+      expect(getByText("Test flare sent.")).toBeTruthy();
+      expect(getByText("Last test")).toBeTruthy();
+      expect(getByText("sent")).toBeTruthy();
+    });
+  });
+
+  it("shows a safe failure state when the test-flare action fails", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue({
+      configured: true,
+      destination_display_name: "Close Friends",
+      enabled: true,
+      last_delivery_at: "2026-07-06T03:10:00Z",
+      last_delivery_status: "sent",
+      message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+      provider: "groupme",
+      status: "connected",
+    });
+    const sendTestSpy = jest
+      .spyOn(supportChannelApi, "sendSupportChannelTest")
+      .mockRejectedValue(
+        new supportChannelApi.SupportChannelApiError({
+          code: "groupme_http_500",
+          message: "GroupMe rejected the test message.",
+          statusCode: 502,
+        }),
+      );
+
+    const { getAllByText, getByText, queryByText } = render(
+      <CustomizeScreen />,
+      {
+        wrapper({ children }) {
+          return (
+            <FlareAuthProvider
+              initialAuthState={{
+                kind: "authenticated",
+                userEmail: "flare@example.com",
+                userId: "user-123",
+              }}
+              subscribe={() => null}
+            >
+              <BehaviorPatternProvider>
+                <AnchorNoteProvider>
+                  <FlareEventProvider>{children}</FlareEventProvider>
+                </AnchorNoteProvider>
+              </BehaviorPatternProvider>
+            </FlareAuthProvider>
+          );
+        },
+      },
+    );
+
+    fireEvent.press(getAllByText("Support Group")[0]);
+
+    await waitFor(() => {
+      expect(getByText("Send test flare")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Send test flare"));
+
+    await waitFor(() => {
+      expect(sendTestSpy).toHaveBeenCalledTimes(1);
+      expect(getByText("GroupMe rejected the test message.")).toBeTruthy();
+    });
+    expect(queryByText("Test flare sent.")).toBeNull();
+  });
+
+  it("does not expose support-message editing during the real Send Flare action", async () => {
+    jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
+      attempted_at: "2026-07-06T03:40:00Z",
+      delivered_at: "2026-07-06T03:40:00Z",
+      destination_display_name: "Close Friends",
+      error_code: null,
+      error_message_safe: null,
+      message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+      provider: "groupme",
+      send_kind: "real",
+      status: "sent",
+    });
+
+    const { getByText, queryByDisplayValue, queryByText } = render(
+      <FlareScreen />,
+      {
+        wrapper({ children }) {
+          return (
+            <FlareAuthProvider
+              initialAuthState={{
+                kind: "authenticated",
+                userEmail: "flare@example.com",
+                userId: "user-123",
+              }}
+              subscribe={() => null}
+            >
+              <BehaviorPatternProvider>
+                <AnchorNoteProvider>
+                  <FlareEventProvider>{children}</FlareEventProvider>
+                </AnchorNoteProvider>
+              </BehaviorPatternProvider>
+            </FlareAuthProvider>
+          );
+        },
+      },
+    );
+
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(getByText("Support message sent")).toBeTruthy();
+    });
+
+    expect(
+      queryByText(
+        "This is the message Flare will send when you press Send Flare. It is not editable at send time.",
+      ),
+    ).toBeNull();
+    expect(queryByText("Saved message")).toBeNull();
+    expect(queryByDisplayValue(DEFAULT_SUPPORT_CHANNEL_MESSAGE)).toBeNull();
   });
 
   it("saves Anchor Note and shows the summary on Customize", () => {
