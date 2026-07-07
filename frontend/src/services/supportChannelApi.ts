@@ -170,6 +170,15 @@ export async function getSupportChannel(deps?: RequestDeps) {
   return body.channel;
 }
 
+export function hasUsableSupportChannel(channel: SupportChannel | null) {
+  return Boolean(
+    channel &&
+      channel.configured &&
+      channel.enabled &&
+      channel.status === "connected",
+  );
+}
+
 export async function startGroupMeConnect(deps?: RequestDeps) {
   return performRequest<SupportChannelConnectStart>(
     "/api/support-channel/groupme/connect/start",

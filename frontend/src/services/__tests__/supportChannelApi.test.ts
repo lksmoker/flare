@@ -4,6 +4,7 @@ import {
   configureSupportChannel,
   DEFAULT_SUPPORT_CHANNEL_MESSAGE,
   getSupportChannel,
+  hasUsableSupportChannel,
   readAccessTokenFromCurrentUrl,
   readAccessTokenFromUrl,
   sendSupportChannelFlare,
@@ -102,6 +103,49 @@ describe("supportChannelApi", () => {
         method: "GET",
       }),
     );
+  });
+
+  it("treats only connected enabled configured channels as usable", () => {
+    expect(
+      hasUsableSupportChannel({
+        configured: true,
+        destination_display_name: "Close Friends",
+        enabled: true,
+        last_delivery_at: "2026-07-06T03:10:00Z",
+        last_delivery_status: "sent",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        status: "connected",
+      }),
+    ).toBe(true);
+
+    expect(
+      hasUsableSupportChannel({
+        configured: true,
+        destination_display_name: "Close Friends",
+        enabled: false,
+        last_delivery_at: "2026-07-06T03:10:00Z",
+        last_delivery_status: "sent",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        status: "connected",
+      }),
+    ).toBe(false);
+
+    expect(
+      hasUsableSupportChannel({
+        configured: true,
+        destination_display_name: "Close Friends",
+        enabled: true,
+        last_delivery_at: "2026-07-06T03:10:00Z",
+        last_delivery_status: "sent",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        status: "reconnect_required",
+      }),
+    ).toBe(false);
+
+    expect(hasUsableSupportChannel(null)).toBe(false);
   });
 
   it("posts the safe configure payload without exposing provider internals", async () => {

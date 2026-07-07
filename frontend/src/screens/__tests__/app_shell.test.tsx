@@ -1,5 +1,6 @@
 ﻿import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { PropsWithChildren, ReactNode } from "react";
+import { act } from "@testing-library/react-native";
 
 import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
@@ -11,9 +12,48 @@ import { FlareAuthProvider } from "../../state/FlareAuthContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
 import * as supportChannelApi from "../../services/supportChannelApi";
 
-jest.mock("expo-router", () => ({
-  Link: ({ children }: { children: ReactNode }) => children,
-}));
+jest.mock("expo-router", () => {
+  const React = require("react");
+  const focusEffects = new Set<() => void | (() => void)>();
+  const focusCleanups = new Map<
+    () => void | (() => void),
+    void | (() => void)
+  >();
+
+  return {
+    Link: ({ children }: { children: ReactNode }) => children,
+    useFocusEffect(effect: () => void | (() => void)) {
+      React.useEffect(() => {
+        focusEffects.add(effect);
+        const cleanup = effect();
+        focusCleanups.set(effect, cleanup);
+
+        return () => {
+          focusEffects.delete(effect);
+          const currentCleanup = focusCleanups.get(effect);
+
+          if (typeof currentCleanup === "function") {
+            currentCleanup();
+          }
+
+          focusCleanups.delete(effect);
+        };
+      }, [effect]);
+    },
+    __triggerFocus() {
+      focusEffects.forEach((effect) => {
+        const currentCleanup = focusCleanups.get(effect);
+
+        if (typeof currentCleanup === "function") {
+          currentCleanup();
+        }
+
+        const nextCleanup = effect();
+        focusCleanups.set(effect, nextCleanup);
+      });
+    },
+  };
+});
 
 jest.mock("expo-linking", () => ({
   addEventListener: jest.fn(() => ({
@@ -39,6 +79,10 @@ function TestProviders({ children }: PropsWithChildren) {
     </FlareAuthProvider>
   );
 }
+
+const expoRouter = jest.requireMock("expo-router") as {
+  __triggerFocus: () => void;
+};
 
 describe("V0 app shell", () => {
   afterEach(() => {
@@ -222,7 +266,159 @@ describe("V0 app shell", () => {
     ).toBeTruthy();
   });
 
-  it("shows the signed-in setup card collapsed by default on Customize", () => {
+  it("shows Support Group as configured when the authenticated user already has an active channel", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue({
+      configured: true,
+      destination_display_name: "Close Friends",
+      enabled: true,
+      last_delivery_at: "2026-07-06T03:10:00Z",
+      last_delivery_status: "sent",
+      message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+      provider: "groupme",
+      status: "connected",
+    });
+
+    const { getAllByText, queryByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
+    });
+    expect(queryByText("Checking connection")).toBeNull();
+  });
+
+  it("shows Support Group as not configured when the authenticated user has no active channel", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue(null);
+
+    const { getByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("Not configured")).toBeTruthy();
+    });
+  });
+
+  it("shows a loading status instead of a false not-configured state while support-group status is loading", () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockImplementation(
+      () =>
+        new Promise(() => {
+          // Leave the request unresolved to verify the interim screen state.
+        }),
+    );
+
+    const { getByText, queryByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    expect(getByText("Checking connection")).toBeTruthy();
+    expect(queryByText("Not configured")).toBeNull();
+  });
+
+  it("refetches the support-group status when Customize regains focus", async () => {
+    const getSupportChannelSpy = jest
+      .spyOn(supportChannelApi, "getSupportChannel")
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        configured: true,
+        destination_display_name: "Close Friends",
+        enabled: true,
+        last_delivery_at: "2026-07-06T03:10:00Z",
+        last_delivery_status: "sent",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        status: "connected",
+      });
+
+    const { getAllByText, getByText } = render(<CustomizeScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("Not configured")).toBeTruthy();
+    });
+
+    act(() => {
+      expoRouter.__triggerFocus();
+    });
+
+    await waitFor(() => {
+      expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
+      expect(getSupportChannelSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("shows the signed-in setup card collapsed by default on Customize", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue(null);
     const { getByLabelText, getByText, queryByText } = render(
       <CustomizeScreen />,
       {
@@ -247,6 +443,9 @@ describe("V0 app shell", () => {
       },
     );
 
+    await waitFor(() => {
+      expect(getByText("Not configured")).toBeTruthy();
+    });
     expect(getByText("Save your setup")).toBeTruthy();
     expect(getByText("Signed in as luke.smoker@gmail.com")).toBeTruthy();
     expect(getByText("Connected")).toBeTruthy();
