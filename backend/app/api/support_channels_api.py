@@ -1,6 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Any, Protocol
@@ -86,7 +87,7 @@ class SupportChannelsApi:
             if method == "GET" and route_path == "/api/support-channel/groupme/connect/callback":
                 session = self._manager.complete_groupme_connect(
                     user_id=user.user_id,
-                    access_token=str(query.get("access_token") or ""),
+                    access_token=(os.environ.get("GROUPME_ACCESS_TOKEN") or str(query.get("access_token") or "")),
                 )
                 return _json_response(HTTPStatus.OK, {"connection": session.to_safe_public_dict()})
             if method == "GET" and route_path == "/api/support-channel/groupme/destinations":
@@ -223,3 +224,5 @@ def _parse_json_body(body: bytes | None) -> dict[str, Any]:
     if not isinstance(decoded, dict):
         raise ValueError("JSON body must decode to an object.")
     return decoded
+
+

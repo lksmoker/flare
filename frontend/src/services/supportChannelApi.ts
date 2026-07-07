@@ -1,4 +1,4 @@
-import * as Linking from "expo-linking";
+﻿import * as Linking from "expo-linking";
 
 import { getSupabaseClient } from "./supabaseClient";
 
@@ -324,7 +324,7 @@ export async function sendSupportChannelFlare(
 export function readAccessTokenFromUrl(url: string) {
   try {
     const parsedUrl = new URL(url, "http://localhost");
-    const queryToken = parsedUrl.searchParams.get("access_token");
+    const queryToken = parsedUrl.searchParams.get("access_token") ?? parsedUrl.searchParams.get("groupme_code");
 
     if (queryToken) {
       return queryToken;
@@ -348,7 +348,8 @@ export function readAccessTokenFromUrl(url: string) {
     return null;
   }
 
-  return new URLSearchParams(url.slice(hashIndex + 1)).get("access_token");
+  const hashParams = new URLSearchParams(url.slice(hashIndex + 1));
+  return hashParams.get("access_token") ?? hashParams.get("groupme_code");
 }
 
 export function readAccessTokenFromCurrentUrl() {
@@ -375,7 +376,7 @@ export function clearSupportChannelCallbackParams() {
       : window.location.hash,
   );
 
-  ["access_token", "token_type", "expires_in"].forEach((paramName) => {
+  ["access_token", "groupme_code", "token_type", "expires_in"].forEach((paramName) => {
     searchParams.delete(paramName);
     hashParams.delete(paramName);
   });
@@ -386,3 +387,5 @@ export function clearSupportChannelCallbackParams() {
 
   window.history.replaceState(window.history.state, "", nextUrl);
 }
+
+

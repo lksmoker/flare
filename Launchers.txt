@@ -1,0 +1,5 @@
+Start-Process powershell -ArgumentList @(
+  "-NoExit",
+  "-ExecutionPolicy", "Bypass",
+  "-File", "C:\dev\Flare\scripts\start-flare-support-backend.ps1"
+)

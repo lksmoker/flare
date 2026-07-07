@@ -294,21 +294,26 @@ class _UrllibTransport(_Transport):
         return json.loads(raw_body.decode("utf-8"))
 
 
-def _extract_user(response: dict[str, object] | None) -> GroupMeUserProfile | None:
-    if not isinstance(response, dict):
-        return None
+def _extract_user(response: dict[str, object]) -> GroupMeUserProfile | None:
     payload = response.get("response")
     if not isinstance(payload, dict):
         return None
-    user = payload.get("user")
-    if not isinstance(user, dict) or user.get("id") is None:
-        return None
-    name = user.get("name")
-    return GroupMeUserProfile(
-        user_id=str(user["id"]),
-        name=str(name) if name is not None else None,
-    )
 
+    nested_user = payload.get("user")
+    if isinstance(nested_user, dict):
+        user_source = nested_user
+    else:
+        user_source = payload
+
+    user_id = user_source.get("user_id") or user_source.get("id")
+    if user_id is None:
+        return None
+
+    name = user_source.get("name")
+    return GroupMeUserProfile(
+        user_id=str(user_id),
+        name=str(name) if name else None,
+    )
 
 def _extract_groups(response: dict[str, object] | None) -> list[SupportChannelDestination]:
     if not isinstance(response, dict):

@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import json
 import unittest
+from http import HTTPStatus
 from urllib import parse
 
 from backend.app.api.support_channels_api import (
@@ -10,10 +11,13 @@ from backend.app.api.support_channels_api import (
     AuthenticatedUser,
     SupportChannelsApi,
 )
+from backend.app.domain.support_channels import SupportChannelSendResult
 from backend.app.http.app import SupportChannelHttpApp, SupabaseUserAuthenticator
 from backend.app.services.support_channel_config import (
     load_support_channel_http_runtime_config,
 )
+from backend.app.services.support_channel_management import SupportChannelManager
+from backend.app.services.support_channel_sender import SupportChannelSender
 
 
 class SupportChannelHttpAppTests(unittest.TestCase):
@@ -97,6 +101,33 @@ class SupportChannelHttpAppTests(unittest.TestCase):
         self.assertIn('var defaultOrigin = "https://flare-web.tailnet.ts.net";', html)
         self.assertIn('targetOrigin + "/customize?"', html)
 
+    def test_legacy_groupme_callback_alias_is_public_without_authorization(self) -> None:
+        response = _invoke(
+            self.app,
+            method="GET",
+            path="/api/support-channel/groupme/callback",
+        )
+
+        self.assertEqual(200, response.status_code)
+        html = response.body.decode("utf-8")
+        self.assertIn("window.location.replace", html)
+        self.assertIn('var defaultOrigin = "https://flare-web.tailnet.ts.net";', html)
+
+    def test_legacy_groupme_callback_bridge_only_redirects_to_allowed_state_origins(self) -> None:
+        response = _invoke(
+            self.app,
+            method="GET",
+            path="/api/support-channel/groupme/callback",
+        )
+
+        self.assertEqual(200, response.status_code)
+        html = response.body.decode("utf-8")
+        self.assertIn('var stateOrigin = hashParams.get("state") || searchParams.get("state");', html)
+        self.assertIn(
+            "var targetOrigin = allowedOrigins.indexOf(stateOrigin) >= 0 ? stateOrigin : defaultOrigin;",
+            html,
+        )
+
     def test_authenticated_callback_query_is_forwarded_to_support_api(self) -> None:
         response = _invoke(
             self.app,
@@ -116,6 +147,46 @@ class SupportChannelHttpAppTests(unittest.TestCase):
             ),
             self.support_api.requests[-1],
         )
+
+
+class SupportChannelHttpAuthBoundaryTests(unittest.TestCase):
+    def setUp(self) -> None:
+        runtime_config = load_support_channel_http_runtime_config(
+            {
+                "FLARE_ALLOWED_FRONTEND_ORIGINS": "https://flare-web.tailnet.ts.net,http://100.64.0.10:8081",
+                "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001",
+            }
+        )
+        self.app = SupportChannelHttpApp(
+            runtime_config=runtime_config,
+            support_api=SupportChannelsApi(
+                authenticator=_ConfigurableAuthenticator(),
+                manager=_UnusedSupportChannelManager(),
+                sender=_UnusedSupportChannelSender(),
+            ),
+        )
+
+    def test_get_support_channel_without_authorization_stays_unauthorized(self) -> None:
+        response = _invoke(
+            self.app,
+            method="GET",
+            path="/api/support-channel",
+        )
+
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+        payload = json.loads(response.body.decode("utf-8"))
+        self.assertEqual("unauthorized", payload["error"]["code"])
+
+    def test_post_support_channel_test_without_authorization_stays_unauthorized(self) -> None:
+        response = _invoke(
+            self.app,
+            method="POST",
+            path="/api/support-channel/test",
+        )
+
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+        payload = json.loads(response.body.decode("utf-8"))
+        self.assertEqual("unauthorized", payload["error"]["code"])
 
 
 class SupabaseUserAuthenticatorTests(unittest.TestCase):
@@ -168,6 +239,30 @@ class _FakeUserLookupTransport:
         if self.error is not None:
             raise self.error
         return self.payload
+
+
+class _ConfigurableAuthenticator:
+    def __init__(self, user: AuthenticatedUser | None = None) -> None:
+        self.user = user
+
+    def authenticate(self, headers: dict[str, str]) -> AuthenticatedUser | None:
+        return self.user
+
+
+class _UnusedSupportChannelManager(SupportChannelManager):
+    def __init__(self) -> None:
+        pass
+
+
+class _UnusedSupportChannelSender(SupportChannelSender):
+    def __init__(self) -> None:
+        pass
+
+    def send_test_message(self, command) -> SupportChannelSendResult:
+        raise AssertionError("Auth boundary failed before sender should be called.")
+
+    def send_real_message(self, command) -> SupportChannelSendResult:
+        raise AssertionError("Auth boundary failed before sender should be called.")
 
 
 def _invoke(

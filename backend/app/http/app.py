@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 from dataclasses import dataclass
@@ -35,6 +35,7 @@ _CORS_ALLOWED_METHODS = "GET, POST, OPTIONS"
 _CORS_ALLOWED_HEADERS = "authorization, content-type"
 _API_PREFIX = "/api/"
 _GROUPME_CALLBACK_PATH = "/api/support-channel/groupme/connect/callback"
+_GROUPME_PUBLIC_CALLBACK_PATH = "/api/support-channel/groupme/callback"
 _GROUPME_CONNECT_START_PATH = "/api/support-channel/groupme/connect/start"
 
 
@@ -109,6 +110,7 @@ class SupportChannelHttpApp:
                         "/api/health",
                         "/api/support-channel",
                         "/api/support-channel/groupme/connect/start",
+                        "/api/support-channel/groupme/callback",
                         "/api/support-channel/groupme/connect/callback",
                         "/api/support-channel/groupme/destinations",
                         "/api/support-channel/configure",
@@ -125,6 +127,20 @@ class SupportChannelHttpApp:
                 HTTPStatus.OK,
                 body,
                 content_type="application/json; charset=utf-8",
+                extra_headers=self._cors_headers(origin),
+            )
+
+        if method == "GET" and path == _GROUPME_PUBLIC_CALLBACK_PATH:
+            default_origin = self._select_callback_frontend_origin(origin)
+            html = _build_groupme_callback_bridge_html(
+                default_frontend_origin=default_origin,
+                allowed_origins=self._runtime_config.allowed_frontend_origins,
+            ).encode("utf-8")
+            return self._respond(
+                start_response,
+                HTTPStatus.OK,
+                html,
+                content_type="text/html; charset=utf-8",
                 extra_headers=self._cors_headers(origin),
             )
 
@@ -340,15 +356,26 @@ def _build_groupme_callback_bridge_html(
       var allowedOrigins = {json.dumps(list(allowed_origins))};
       var hashParams = new URLSearchParams(window.location.hash.startsWith("#") ? window.location.hash.slice(1) : window.location.hash);
       var searchParams = new URLSearchParams(window.location.search.startsWith("?") ? window.location.search.slice(1) : window.location.search);
-      var accessToken = hashParams.get("access_token") || searchParams.get("access_token");
+      var accessToken = hashParams.get("access_token") || searchParams.get("access_token") || hashParams.get("code") || searchParams.get("code");
       var stateOrigin = hashParams.get("state") || searchParams.get("state");
       var targetOrigin = allowedOrigins.indexOf(stateOrigin) >= 0 ? stateOrigin : defaultOrigin;
       if (!accessToken) {{
-        document.body.innerHTML = "<p>GroupMe callback is missing an access token.</p>";
+        document.body.innerHTML = "<p>GroupMe callback is missing an access token or code.</p>";
         return;
       }}
       var redirectParams = new URLSearchParams();
-      ["access_token", "token_type", "expires_in", "state"].forEach(function (name) {{
+      var callbackToken = hashParams.get("access_token") || searchParams.get("access_token");
+      var callbackCode = hashParams.get("code") || searchParams.get("code");
+
+      if (callbackToken) {{
+        redirectParams.set("access_token", callbackToken);
+      }}
+
+      if (callbackCode) {{
+        redirectParams.set("groupme_code", callbackCode);
+      }}
+
+      ["token_type", "expires_in", "state"].forEach(function (name) {{
         var value = hashParams.get(name) || searchParams.get(name);
         if (value) {{
           redirectParams.set(name, value);
@@ -384,3 +411,7 @@ class _UrllibUserLookupTransport:
         if not isinstance(decoded, dict):
             raise RuntimeError("Unexpected Supabase auth response shape.")
         return decoded
+
+
+
+
