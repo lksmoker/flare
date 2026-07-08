@@ -1,4 +1,4 @@
-﻿# Flare Plan V0 Contract
+# Flare Plan V0 Contract
 
 ## Status
 
@@ -830,6 +830,240 @@ Flare Plan V0 is complete when:
 27. Users cannot read or mutate another user's plan, actions, runs, Event-Time Actions, or checkpoint data.
 28. A missing or empty Flare Plan does not prevent the user from initiating a Flare.
 29. Automated tests cover ownership, ordering, snapshots, migration, state transitions, resume behavior, interruption behavior, failed delivery, idempotency, concurrency conflicts, checkpoint behavior, and both response-screen entry paths.
+
+## Starter Action Library Contract
+
+### Purpose
+
+Flare Plan V0 must provide a curated starter-action library so users can build a useful Flare Plan without having to begin from a blank state.
+
+The starter library is intended to reduce setup friction, provide concrete examples of suitable Flare Plan actions, and help users create a short, realistic sequence for use during an active Flare Event.
+
+Starter actions are suggestions only. They are not treatment recommendations, clinical guidance, or claims of effectiveness.
+
+### Starter Action Template
+
+A Starter Action Template is a Flare-managed reusable suggestion that may be selected when configuring a Flare Plan.
+
+Each template must have:
+
+- A stable template key.
+- A required title.
+- An optional short description.
+- A category.
+- A display position within that category.
+- An active or inactive state.
+- Creation and update timestamps.
+
+A template may also include internal metadata used for administration or future presentation, but such metadata must not change the meaning of an already-created user action.
+
+Starter Action Templates are not themselves part of a user's active Flare Plan.
+
+### Starter Library Presentation
+
+The Configure screen must present the active starter templates as a selectable list.
+
+The starter library may be grouped into clear categories such as:
+
+- Change the situation.
+- Reset your body.
+- Interrupt the pattern.
+- Reach toward support.
+
+The final category names and template copy must be defined in product content and may evolve without changing the underlying user-plan model.
+
+The interface must allow the user to:
+
+- Review available starter templates.
+- Select one or more templates.
+- See which templates are already represented in their active plan.
+- Add custom actions alongside selected starter actions.
+- Review and reorder the resulting active plan before or after saving.
+
+The starter library must not require the user to select any particular action.
+
+No template should be preselected by default in V0.
+
+### Template Selection Contract
+
+Selecting a Starter Action Template must create a normal user-owned Flare Plan Action.
+
+The new saved action must copy the template's current:
+
+- Template key.
+- Title.
+- Description.
+- Suggested position information, when applicable.
+
+After creation, the user-owned action becomes authoritative for that user's plan.
+
+The selected action must behave the same as a custom action. The user may:
+
+- Edit its title.
+- Edit its description.
+- Reorder it.
+- Archive it.
+- Use it during future Flare Plan Runs.
+
+The saved action may retain its source template key for traceability and future aggregate analysis.
+
+The source template reference must not prevent the user from changing the copied action.
+
+### Template Independence Contract
+
+Changes to a Starter Action Template must not silently modify existing user-owned Flare Plan Actions.
+
+This includes later changes to:
+
+- Title.
+- Description.
+- Category.
+- Display order.
+- Active state.
+
+Template updates apply only to future selections.
+
+Existing user-owned actions remain unchanged unless the user explicitly edits them.
+
+Archiving or removing a template from the starter library must not archive, delete, or alter actions previously copied into user plans.
+
+### Duplicate Selection Contract
+
+V0 must prevent accidental duplicate selection of the same active starter template within one Flare Plan.
+
+A starter template is considered already selected when the active plan contains an active action with the same source template key.
+
+When a template is already represented in the active plan:
+
+- The Configure screen must indicate that it has already been added.
+- The normal selection action must be disabled or treated as idempotent.
+- Repeated requests must not create duplicate active actions.
+
+This rule prevents accidental duplication but does not prohibit the user from creating a separate custom action with similar wording.
+
+If a starter-derived action is archived, the same template may be selected again unless a later API contract specifies restoration instead.
+
+### Custom Action Coexistence
+
+Custom actions and starter-derived actions must use the same authoritative saved-action model.
+
+After creation, both types must support the same:
+
+- Validation rules.
+- Ordering behavior.
+- Editing behavior.
+- Archival behavior.
+- Readiness contribution.
+- Event-time snapshot behavior.
+- Done, Skip, and not-reached outcomes.
+
+The Flare Plan Run must not treat a starter-derived action differently from a custom action.
+
+### Starter Content Guidelines
+
+Starter actions should be:
+
+- Concrete.
+- Immediately understandable.
+- Possible to begin during an active Flare Event.
+- Short enough to present as a single step.
+- Nonjudgmental.
+- Broadly applicable.
+- Easy to personalize after selection.
+
+Starter actions should avoid:
+
+- Vague motivational language.
+- Claims of guaranteed benefit.
+- Clinical or diagnostic language.
+- Instructions that assume access to a specific paid service or external app.
+- Actions that require substantial setup during the Flare Event.
+- Language that treats completion as a measure of recovery success.
+- Emergency or crisis guidance presented as ordinary plan content.
+
+The initial library should include a strong but bounded set of options rather than an exhaustive catalog.
+
+### Starter Library Administration
+
+Starter Action Templates are managed by Flare, not by individual users.
+
+V0 may store the library in the database or in another authoritative application-managed source, provided that:
+
+- Template keys are stable.
+- Active and inactive status is supported.
+- Ordering is deterministic.
+- Template reads are available to the Configure experience.
+- Existing user actions remain independent from future template edits.
+
+The implementation must not require a general-purpose admin interface for starter-template management in V0.
+
+### Starter Library API Capabilities
+
+The backend must provide operations sufficient to:
+
+- Read all active starter templates in deterministic order.
+- Identify which templates are already represented in the user's active plan.
+- Create a user-owned action from a selected template.
+- Prevent duplicate active selection of the same template.
+- Return the newly created action in the canonical active-plan representation.
+
+The exact routes, payloads, response shapes, and error codes must be defined in the Flare Plan API contract.
+
+### Readiness Interaction
+
+A starter template does not contribute to Flare Plan readiness until it has been selected and copied into the user's active plan.
+
+Readiness continues to depend only on the user's valid active Flare Plan Actions.
+
+Browsing templates without selecting one must not mark the plan configured.
+
+### Analytics and Privacy Boundary
+
+V0 does not require popularity rankings, usage analytics, or personalized template recommendations.
+
+The source template key may be retained on user-owned actions so future aggregate analysis is possible.
+
+Any future aggregate analysis must:
+
+- Use privacy-preserving aggregated data.
+- Avoid exposing individual user behavior.
+- Avoid presenting popularity as effectiveness.
+- Avoid presenting commonly selected actions as treatment recommendations.
+
+### Future Popular Choice Boundary
+
+A later version may mark a limited number of starter templates as **Popular choice** using aggregated selection data.
+
+For such a feature:
+
+- Popularity must be based on how often a starter template is selected into a plan, not on whether users mark it Done.
+- Only starter templates may be ranked; custom action content must not be included.
+- Exact counts need not be shown.
+- A minimum sample threshold must be met before any ranking is displayed.
+- Rankings should be recalculated periodically rather than requiring real-time updates.
+- The label must mean commonly selected, not best, recommended, or proven effective.
+- Popularity must not affect the user's saved action order.
+- The feature remains outside Flare Plan V0 implementation scope.
+
+### Starter Library Acceptance Criteria
+
+The starter-action library portion of Flare Plan V0 is complete when:
+
+1. The Configure screen displays a curated set of active starter templates.
+2. Templates appear in deterministic category and display order.
+3. No starter template is preselected by default.
+4. A user can select a starter template and create a user-owned Flare Plan Action from it.
+5. The created action retains the source template key.
+6. The created action copies the template title and description at selection time.
+7. The user can edit, reorder, and archive the copied action.
+8. Later template changes do not modify the copied action.
+9. Archiving a template does not alter existing user plans.
+10. Selecting the same active template repeatedly does not create duplicate active actions.
+11. Custom and starter-derived actions behave identically after creation.
+12. Template selection contributes to readiness only after the user-owned action exists.
+13. Users cannot create or modify global starter templates through ordinary user APIs.
+14. Automated tests cover selection, duplication prevention, template independence, ownership, ordering, and coexistence with custom actions.
+15. Popular Choice ranking is not implemented as part of V0.
 
 ## Final Product Statement
 
