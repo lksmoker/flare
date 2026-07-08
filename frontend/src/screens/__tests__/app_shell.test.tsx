@@ -115,6 +115,48 @@ describe("V0 app shell", () => {
     expect(readinessIndex).toBeGreaterThan(checkpointIndex);
   });
 
+  it("shows the Readiness panel collapsed by default with the aggregate count", () => {
+    const { getByLabelText, getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: TestProviders,
+    });
+
+    expect(getByLabelText("Expand readiness details")).toBeTruthy();
+    expect(getByText("0 out of 4 configured")).toBeTruthy();
+    expect(queryByText("Setup saving")).toBeNull();
+    expect(queryByText("Behavior Pattern")).toBeNull();
+    expect(queryByText("Anchor Note")).toBeNull();
+    expect(queryByText("Support Group")).toBeNull();
+  });
+
+  it("expands and collapses the Readiness panel with correct accessibility state", () => {
+    const { getByLabelText, getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: TestProviders,
+    });
+
+    const toggle = getByLabelText("Expand readiness details");
+    expect(toggle.props.accessibilityState).toEqual({ expanded: false });
+
+    fireEvent.press(toggle);
+
+    expect(getByLabelText("Collapse readiness details")).toBeTruthy();
+    expect(getByText("Setup saving")).toBeTruthy();
+    expect(getByText("Behavior Pattern")).toBeTruthy();
+    expect(getByText("Anchor Note")).toBeTruthy();
+    expect(getByText("Support Group")).toBeTruthy();
+
+    const expandedToggle = getByLabelText("Collapse readiness details");
+    expect(expandedToggle.props.accessibilityState).toEqual({
+      expanded: true,
+    });
+
+    fireEvent.press(expandedToggle);
+
+    expect(queryByText("Setup saving")).toBeNull();
+    expect(queryByText("Behavior Pattern")).toBeNull();
+    expect(queryByText("Anchor Note")).toBeNull();
+    expect(queryByText("Support Group")).toBeNull();
+  });
+
   it("shows Flare Response immediately when Send Flare is pressed", () => {
     const { getByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
@@ -305,6 +347,48 @@ describe("V0 app shell", () => {
     expect(queryByText("Checking connection")).toBeNull();
   });
 
+  it("shows Support Group as configured in Flare readiness when the active support channel is usable", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue({
+      configured: true,
+      destination_display_name: "Close Friends",
+      enabled: true,
+      last_delivery_at: "2026-07-06T03:10:00Z",
+      last_delivery_status: "sent",
+      message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+      provider: "groupme",
+      status: "connected",
+    });
+
+    const { getByText, getByLabelText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("2 out of 4 configured")).toBeTruthy();
+    });
+
+    fireEvent.press(getByLabelText("Expand readiness details"));
+
+    expect(getByText("Configured: Close Friends")).toBeTruthy();
+  });
+
   it("shows Support Group as not configured when the authenticated user has no active channel", async () => {
     jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue(null);
 
@@ -332,6 +416,40 @@ describe("V0 app shell", () => {
     await waitFor(() => {
       expect(getByText("Not configured")).toBeTruthy();
     });
+  });
+
+  it("shows Support Group as unconfigured in Flare readiness when no valid active configuration exists", async () => {
+    jest.spyOn(supportChannelApi, "getSupportChannel").mockResolvedValue(null);
+
+    const { getAllByText, getByLabelText, getByText, queryByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("1 out of 4 configured")).toBeTruthy();
+    });
+
+    fireEvent.press(getByLabelText("Expand readiness details"));
+
+    expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(1);
+    expect(queryByText("Configured: Close Friends")).toBeNull();
   });
 
   it("shows a loading status instead of a false not-configured state while support-group status is loading", () => {
@@ -414,6 +532,55 @@ describe("V0 app shell", () => {
     await waitFor(() => {
       expect(getAllByText("Configured").length).toBeGreaterThanOrEqual(1);
       expect(getSupportChannelSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("updates the Flare readiness summary when the support-group status changes on refocus", async () => {
+    jest
+      .spyOn(supportChannelApi, "getSupportChannel")
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        configured: true,
+        destination_display_name: "Close Friends",
+        enabled: true,
+        last_delivery_at: "2026-07-06T03:10:00Z",
+        last_delivery_status: "sent",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        status: "connected",
+      });
+
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("1 out of 4 configured")).toBeTruthy();
+    });
+
+    act(() => {
+      expoRouter.__triggerFocus();
+    });
+
+    await waitFor(() => {
+      expect(getByText("2 out of 4 configured")).toBeTruthy();
     });
   });
 
@@ -847,6 +1014,8 @@ describe("V0 app shell", () => {
       },
     );
 
+    expect(getByText("0 out of 4 configured")).toBeTruthy();
+    fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getByText("Local-only until sign in")).toBeTruthy();
     expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
 
@@ -873,6 +1042,7 @@ describe("V0 app shell", () => {
       },
     );
 
+    fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
 
     fireEvent.press(getAllByText("Anchor Note")[0]);
@@ -1024,7 +1194,7 @@ describe("V0 app shell", () => {
   });
 
   it("keeps support-group guidance scoped to Customize after the flare event flow changes", () => {
-    const { getAllByText, getByText } = render(
+    const { getByText } = render(
       <>
         <FlareScreen />
         <CustomizeScreen />
@@ -1035,8 +1205,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getAllByText("Support Group").length).toBeGreaterThanOrEqual(2);
-    expect(getByText("Set it up in Customize")).toBeTruthy();
+    expect(getByText("0 out of 4 configured")).toBeTruthy();
     expect(
       getByText(
         /Connect one GroupMe group for a single saved Flare support message\./,
@@ -1066,7 +1235,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("Local-only until sign in")).toBeTruthy();
+      expect(getByText("0 out of 4 configured")).toBeTruthy();
     });
 
     expect(

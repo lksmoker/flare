@@ -84,6 +84,7 @@ describe("supportChannelApi", () => {
 
     await expect(
       getSupportChannel({
+        env: {},
         fetchImpl,
         getAccessToken: async () => "token-123",
       }),
@@ -170,6 +171,7 @@ describe("supportChannelApi", () => {
         externalGroupId: "group-1",
       },
       {
+        env: {},
         fetchImpl,
         getAccessToken: async () => "token-123",
       },
@@ -265,6 +267,7 @@ describe("supportChannelApi", () => {
       sendSupportChannelFlare(
         { flareEventId: "event-1" },
         {
+          env: {},
           fetchImpl,
           getAccessToken: async () => "token-123",
         },
@@ -300,6 +303,7 @@ describe("supportChannelApi", () => {
     );
 
     await completeGroupMeConnect("access-123", {
+      env: {},
       fetchImpl,
       getAccessToken: async () => "token-123",
     });

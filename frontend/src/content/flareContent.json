@@ -110,6 +110,8 @@
       "subtitle": "Use one simple action to open your saved support words and mark the moment.",
       "readiness": {
         "title": "Readiness",
+        "expandAccessibilityLabel": "Expand readiness details",
+        "collapseAccessibilityLabel": "Collapse readiness details",
         "setupPersistence": "Setup saving",
         "behaviorPattern": "Behavior Pattern",
         "anchorNote": "Anchor Note",

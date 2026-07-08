@@ -27,6 +27,7 @@ import { PlaceholderModal } from "./PlaceholderModal";
 
 type SupportChannelSetupModalProps = {
   onClose: () => void;
+  onStatusChange?: (channel: SupportChannel | null) => void;
   visible: boolean;
 };
 
@@ -107,6 +108,7 @@ function getLastDeliveryLabel(
 
 export function SupportChannelSetupModal({
   onClose,
+  onStatusChange,
   visible,
 }: SupportChannelSetupModalProps) {
   const { authState, authStatus } = useFlareAuth();
@@ -293,6 +295,7 @@ export function SupportChannelSetupModal({
             externalGroupId: selectedDestinationId,
           });
       setChannel(nextChannel);
+      onStatusChange?.(nextChannel);
       setDestinations([]);
       setConnectSessionId(null);
       setSelectedDestinationId(null);
@@ -316,6 +319,7 @@ export function SupportChannelSetupModal({
     try {
       const nextChannel = await disableSupportChannel();
       setChannel(nextChannel);
+      onStatusChange?.(nextChannel);
       setNotice(flareContent.components.supportChannel.notice.disabled);
     } catch (error) {
       setErrorMessage(

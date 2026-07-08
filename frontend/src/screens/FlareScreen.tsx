@@ -15,6 +15,7 @@ import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
+import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
 
 type ExternalSupportState =
@@ -72,12 +73,21 @@ function mapExternalSupportState(
 export function FlareScreen() {
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
+  const [isReadinessExpanded, setIsReadinessExpanded] = useState(false);
   const [externalSupportState, setExternalSupportState] =
     useState<ExternalSupportState>(null);
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { authState, authStatus } = useFlareAuth();
+  const {
+    isSupportChannelConfigured,
+    isSupportChannelLoading,
+    supportChannel,
+  } = useSupportChannelStatus();
+
+  const isPersistenceConfigured =
+    authStatus === "ready" && authState.kind === "authenticated";
 
   const persistenceStatus =
     authStatus === "loading"
@@ -90,26 +100,36 @@ export function FlareScreen() {
 
   const readinessItems = [
     {
+      configured: isPersistenceConfigured,
       label: flareContent.screens.flare.readiness.setupPersistence,
       status: persistenceStatus,
     },
     {
+      configured: isConfigured,
       label: flareContent.screens.flare.readiness.behaviorPattern,
       status: isConfigured
         ? `${flareContent.screens.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
         : flareContent.screens.flare.readiness.readyToDefine,
     },
     {
+      configured: isAnchorNoteConfigured,
       label: flareContent.screens.flare.readiness.anchorNote,
       status: isAnchorNoteConfigured
         ? `${flareContent.screens.flare.readiness.configuredPrefix} ${anchorNote?.supportivePhrase}`
         : flareContent.screens.flare.readiness.readyToDefine,
     },
     {
+      configured: isSupportChannelConfigured,
       label: flareContent.screens.flare.readiness.supportChannel,
-      status: flareContent.screens.flare.readiness.supportChannelSetup,
+      status: isSupportChannelLoading
+        ? flareContent.common.states.loading.checkingConnection
+        : isSupportChannelConfigured
+          ? `${flareContent.screens.flare.readiness.configuredPrefix} ${supportChannel?.destination_display_name ?? flareContent.components.supportChannel.cardTitle}`
+          : flareContent.screens.flare.readiness.readyToDefine,
     },
   ];
+  const configuredCount = readinessItems.filter((item) => item.configured).length;
+  const readinessSummary = `${configuredCount} out of ${readinessItems.length} configured`;
 
   const openCheckpoint = () => {
     setIsFlareResponseVisible(false);
@@ -174,17 +194,39 @@ export function FlareScreen() {
       </Pressable>
 
       <View style={styles.readinessCard}>
-        <Text style={styles.sectionTitle}>
-          {flareContent.screens.flare.readiness.title}
-        </Text>
-        <View style={styles.readinessList}>
-          {readinessItems.map((item) => (
-            <View key={item.label} style={styles.readinessPill}>
-              <Text style={styles.readinessLabel}>{item.label}</Text>
-              <Text style={styles.readinessStatus}>{item.status}</Text>
-            </View>
-          ))}
-        </View>
+        <Pressable
+          accessibilityLabel={
+            isReadinessExpanded
+              ? flareContent.screens.flare.readiness.collapseAccessibilityLabel
+              : flareContent.screens.flare.readiness.expandAccessibilityLabel
+          }
+          accessibilityRole="button"
+          accessibilityState={{ expanded: isReadinessExpanded }}
+          onPress={() => setIsReadinessExpanded((currentValue) => !currentValue)}
+          style={styles.readinessHeader}
+        >
+          <View style={styles.readinessHeadingBlock}>
+            <Text style={styles.sectionTitle}>
+              {flareContent.screens.flare.readiness.title}
+            </Text>
+            {!isReadinessExpanded ? (
+              <Text style={styles.readinessSummary}>{readinessSummary}</Text>
+            ) : null}
+          </View>
+          <Text style={styles.readinessToggle}>
+            {isReadinessExpanded ? "Hide" : "Show"}
+          </Text>
+        </Pressable>
+        {isReadinessExpanded ? (
+          <View style={styles.readinessList}>
+            {readinessItems.map((item) => (
+              <View key={item.label} style={styles.readinessPill}>
+                <Text style={styles.readinessLabel}>{item.label}</Text>
+                <Text style={styles.readinessStatus}>{item.status}</Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
       </View>
 
       <PlaceholderModal
@@ -227,6 +269,26 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textStrong,
     fontSize: 19,
     lineHeight: 24,
+    fontWeight: "700",
+  },
+  readinessHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  readinessHeadingBlock: {
+    flex: 1,
+    gap: 4,
+  },
+  readinessSummary: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  readinessToggle: {
+    color: flareTheme.colors.primary,
+    fontSize: 14,
     fontWeight: "700",
   },
   readinessList: {

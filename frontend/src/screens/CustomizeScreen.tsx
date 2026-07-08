@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { useFocusEffect } from "expo-router";
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
@@ -10,15 +9,10 @@ import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupMod
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
 import { SupportChannelSetupModal } from "../components/SupportChannelSetupModal";
 import flareContent from "../content/flareContent.json";
-import {
-  getSupportChannel,
-  hasUsableSupportChannel,
-  readAccessTokenFromCurrentUrl,
-  SupportChannel,
-} from "../services/supportChannelApi";
+import { readAccessTokenFromCurrentUrl } from "../services/supportChannelApi";
 import { useAnchorNote } from "../state/AnchorNoteContext";
-import { useFlareAuth } from "../state/FlareAuthContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
 
 export function CustomizeScreen() {
@@ -28,66 +22,13 @@ export function CustomizeScreen() {
   const [isSupportChannelVisible, setIsSupportChannelVisible] = useState(
     () => Boolean(readAccessTokenFromCurrentUrl()),
   );
-  const [supportChannel, setSupportChannel] = useState<SupportChannel | null>(
-    null,
-  );
-  const [isSupportChannelLoading, setIsSupportChannelLoading] = useState(false);
-  const { authState, authStatus } = useFlareAuth();
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
-  const isSupportChannelConfigured = hasUsableSupportChannel(supportChannel);
-
-  useFocusEffect(
-    useCallback(() => {
-      let isActive = true;
-
-      if (authStatus !== "ready") {
-        setIsSupportChannelLoading(true);
-
-        return () => {
-          isActive = false;
-        };
-      }
-
-      if (authState.kind !== "authenticated") {
-        setSupportChannel(null);
-        setIsSupportChannelLoading(false);
-
-        return () => {
-          isActive = false;
-        };
-      }
-
-      setIsSupportChannelLoading(true);
-
-      void getSupportChannel()
-        .then((nextChannel) => {
-          if (!isActive) {
-            return;
-          }
-
-          setSupportChannel(nextChannel);
-        })
-        .catch(() => {
-          if (!isActive) {
-            return;
-          }
-
-          setSupportChannel(null);
-        })
-        .finally(() => {
-          if (!isActive) {
-            return;
-          }
-
-          setIsSupportChannelLoading(false);
-        });
-
-      return () => {
-        isActive = false;
-      };
-    }, [authState, authStatus]),
-  );
+  const {
+    isSupportChannelConfigured,
+    isSupportChannelLoading,
+    replaceSupportChannelStatus,
+  } = useSupportChannelStatus();
 
   return (
     <AppShell
@@ -189,6 +130,7 @@ export function CustomizeScreen() {
       />
       <SupportChannelSetupModal
         onClose={() => setIsSupportChannelVisible(false)}
+        onStatusChange={replaceSupportChannelStatus}
         visible={isSupportChannelVisible}
       />
     </AppShell>
