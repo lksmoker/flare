@@ -9,7 +9,7 @@ from backend.app.services.flare_plan_config import FlarePlanDatabaseConfig
 class PostgresFlarePlanRepositorySqlTests(unittest.TestCase):
     def setUp(self) -> None:
         self.repository = PostgresFlarePlanRepository(
-            config=FlarePlanDatabaseConfig(db_url="postgresql://unused"),
+            config=FlarePlanDatabaseConfig(dsn="postgresql://unused"),
         )
 
     def test_reorder_uses_plan_lock_and_two_phase_position_updates(self) -> None:

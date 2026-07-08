@@ -878,7 +878,7 @@ class PostgresFlarePlanRepository(FlarePlanRepository):
         )
 
     def _connect(self) -> PgConnection:
-        return psycopg2.connect(self._config.db_url)
+        return psycopg2.connect(self._config.dsn)
 
 
 def build_request_fingerprint(payload: dict[str, Any]) -> str:

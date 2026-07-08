@@ -74,7 +74,8 @@ npm run build
 - Do not create or commit repo-local `.env` files.
 - Use `.env.example` for variable names only.
 - Frontend-safe Expo variables are `EXPO_PUBLIC_FLARE_SUPABASE_URL`, `EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY`, and `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL`.
-- Server/admin-only Supabase variables must stay outside frontend code: `FLARE_SUPABASE_URL`, `FLARE_SUPABASE_PROJECT_ID`, `FLARE_SUPABASE_SERVICE_ROLE_KEY`, and `FLARE_SUPABASE_DB_URL`.
+- Server/admin-only Supabase variables must stay outside frontend code: `FLARE_SUPABASE_URL`, `FLARE_SUPABASE_PROJECT_ID`, and `FLARE_SUPABASE_SERVICE_ROLE_KEY`.
+- Flare Plan direct Postgres access uses `FLARE_POSTGRES_DSN`. `FLARE_SUPABASE_DB_URL` remains a deprecated backend-only fallback and must not be repurposed to replace the Supabase project URL.
 - For local development, load runtime variables from `C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env` or from the current process environment before starting Expo.
 
 ## Local auth note

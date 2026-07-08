@@ -31,7 +31,8 @@ Do not load server/admin-only variables into the Expo web client bundle:
 | `FLARE_SUPABASE_URL` | no | Admin/server-only duplicate of the project URL. |
 | `FLARE_SUPABASE_PROJECT_ID` | no | Admin/operator reference only. |
 | `FLARE_SUPABASE_SERVICE_ROLE_KEY` | no | Never expose to the browser bundle. |
-| `FLARE_SUPABASE_DB_URL` | no | Migration/admin access only. |
+| `FLARE_POSTGRES_DSN` | no | Backend-only Postgres DSN for Flare Plan transactional persistence. |
+| `FLARE_SUPABASE_DB_URL` | no | Deprecated legacy fallback for Flare Plan direct Postgres access only; do not use this name for the HTTPS project URL. |
 
 ## Supabase project configuration
 
@@ -50,7 +51,7 @@ Verify the production Supabase project matches these assumptions:
   - The app stores browser session auth state with the `flare-auth-token` storage key.
 - Secrets discipline:
   - Only the public URL, anon key, and redirect URL belong in the Expo runtime.
-  - Service role and DB connection values stay in operator-only tooling.
+  - Service role and direct Postgres connection values stay in operator-only tooling.
 
 ## Production auth email / SMTP verification
 
@@ -68,6 +69,7 @@ Apply the checked-in migrations before the first production smoke test:
 
 1. `db/migrations/20260627_230500_flare_v0_persistence.sql`
 2. `db/migrations/20260702_110000_flare_events_archive_support.sql`
+3. `db/migrations/20260708073000_flare_plan_v0_persistence.sql`
 
 Expected production tables:
 
@@ -75,6 +77,13 @@ Expected production tables:
 - `public.anchor_notes`
 - `public.flare_events`
 - `public.checkpoint_reflections`
+- `public.flare_plans`
+- `public.flare_plan_starter_templates`
+- `public.flare_plan_actions`
+- `public.flare_plan_runs`
+- `public.flare_plan_run_actions`
+- `public.flare_plan_run_checkpoints`
+- `public.flare_plan_idempotency_keys`
 
 Expected production indexes/constraints include:
 
