@@ -30,8 +30,7 @@ export function BehaviorPatternSetupModal({
   }, [behaviorPattern, visible]);
 
   const saveDisabled =
-    draft.behaviorName.trim().length === 0 ||
-    draft.preferredRecoveryActions.trim().length === 0;
+    draft.behaviorName.trim().length === 0;
 
   return (
     <PlaceholderModal
@@ -176,34 +175,6 @@ export function BehaviorPatternSetupModal({
           />
         </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>
-            {
-              flareContent.components.behaviorPattern.fields
-                .preferredRecoveryActions.label
-            }
-          </Text>
-          <TextInput
-            accessibilityLabel={
-              flareContent.components.behaviorPattern.fields
-                .preferredRecoveryActions.label
-            }
-            multiline
-            onChangeText={(value) =>
-              setDraft((current) => ({
-                ...current,
-                preferredRecoveryActions: value,
-              }))
-            }
-            placeholder={
-              flareContent.components.behaviorPattern.fields
-                .preferredRecoveryActions.placeholder
-            }
-            style={[styles.input, styles.multilineInput]}
-            textAlignVertical="top"
-            value={draft.preferredRecoveryActions}
-          />
-        </View>
       </View>
     </PlaceholderModal>
   );

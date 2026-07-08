@@ -7,11 +7,13 @@ import { AnchorNoteSummary } from "../components/AnchorNoteSummary";
 import { AuthStatusCard } from "../components/AuthStatusCard";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
+import { FlarePlanSetupModal } from "../components/FlarePlanSetupModal";
 import { SupportChannelSetupModal } from "../components/SupportChannelSetupModal";
 import flareContent from "../content/flareContent.json";
 import { readAccessTokenFromCurrentUrl } from "../services/supportChannelApi";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
+import { useFlarePlan } from "../state/FlarePlanContext";
 import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
 
@@ -19,11 +21,13 @@ export function CustomizeScreen() {
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
   const [isAnchorNoteVisible, setIsAnchorNoteVisible] = useState(false);
+  const [isFlarePlanVisible, setIsFlarePlanVisible] = useState(false);
   const [isSupportChannelVisible, setIsSupportChannelVisible] = useState(
     () => Boolean(readAccessTokenFromCurrentUrl()),
   );
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
+  const { isInitialLoading, isPlanConfigured, plan } = useFlarePlan();
   const {
     isSupportChannelConfigured,
     isSupportChannelLoading,
@@ -94,6 +98,45 @@ export function CustomizeScreen() {
 
         <Pressable
           accessibilityRole="button"
+          onPress={() => setIsFlarePlanVisible(true)}
+          style={styles.card}
+        >
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>
+              {flareContent.components.flarePlan.cardTitle}
+            </Text>
+            <Text
+              style={[
+                styles.statusBadge,
+                isPlanConfigured ? styles.readyBadge : styles.pendingBadge,
+              ]}
+            >
+              {isInitialLoading
+                ? flareContent.components.flarePlan.loading.checking
+                : isPlanConfigured
+                  ? flareContent.common.status.configured
+                  : flareContent.components.flarePlan.notConfigured}
+            </Text>
+          </View>
+          <Text style={styles.cardCopy}>
+            {flareContent.components.flarePlan.cardCopy}
+          </Text>
+          <View style={styles.summaryCard}>
+            <Text style={styles.summaryTitle}>
+              {isPlanConfigured
+                ? flareContent.components.flarePlan.summaryConfigured
+                : flareContent.components.flarePlan.summaryEmptyTitle}
+            </Text>
+            <Text style={styles.summaryCopy}>
+              {isInitialLoading
+                ? flareContent.components.flarePlan.loading.initial
+                : `${plan?.active_action_count ?? 0} of ${plan?.maximum_active_actions ?? 10} actions`}
+            </Text>
+          </View>
+        </Pressable>
+
+        <Pressable
+          accessibilityRole="button"
           onPress={() => setIsSupportChannelVisible(true)}
           style={styles.card}
         >
@@ -127,6 +170,10 @@ export function CustomizeScreen() {
       <AnchorNoteSetupModal
         onClose={() => setIsAnchorNoteVisible(false)}
         visible={isAnchorNoteVisible}
+      />
+      <FlarePlanSetupModal
+        onClose={() => setIsFlarePlanVisible(false)}
+        visible={isFlarePlanVisible}
       />
       <SupportChannelSetupModal
         onClose={() => setIsSupportChannelVisible(false)}
@@ -165,6 +212,22 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   cardCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  summaryCard: {
+    gap: 4,
+    padding: 14,
+    borderRadius: 18,
+    backgroundColor: flareTheme.colors.surfaceSoft,
+  },
+  summaryTitle: {
+    color: flareTheme.colors.text,
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  summaryCopy: {
     color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,

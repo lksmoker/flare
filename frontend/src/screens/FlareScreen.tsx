@@ -15,6 +15,7 @@ import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
+import { useFlarePlan } from "../state/FlarePlanContext";
 import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
 
@@ -80,6 +81,7 @@ export function FlareScreen() {
   const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { authState, authStatus } = useFlareAuth();
+  const { isInitialLoading: isPlanLoading, isPlanConfigured, plan } = useFlarePlan();
   const {
     isSupportChannelConfigured,
     isSupportChannelLoading,
@@ -110,6 +112,15 @@ export function FlareScreen() {
       status: isConfigured
         ? `${flareContent.screens.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
         : flareContent.screens.flare.readiness.readyToDefine,
+    },
+    {
+      configured: isPlanConfigured,
+      label: flareContent.screens.flare.readiness.flarePlan,
+      status: isPlanLoading
+        ? flareContent.components.flarePlan.loading.checking
+        : isPlanConfigured
+          ? `${flareContent.screens.flare.readiness.configuredPrefix} ${plan?.active_action_count ?? 0} of ${plan?.maximum_active_actions ?? 10} actions`
+          : flareContent.components.flarePlan.notConfigured,
     },
     {
       configured: isAnchorNoteConfigured,

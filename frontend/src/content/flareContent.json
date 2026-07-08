@@ -102,7 +102,7 @@
     "customize": {
       "screenLabel": "Setup",
       "title": "Customize what helps you pause",
-      "subtitle": "Set up the words and next steps you want available during a flare."
+      "subtitle": "Set up the words and plan steps you want available during a flare."
     },
     "flare": {
       "screenLabel": "In-the-moment support",
@@ -114,6 +114,7 @@
         "collapseAccessibilityLabel": "Collapse readiness details",
         "setupPersistence": "Setup saving",
         "behaviorPattern": "Behavior Pattern",
+        "flarePlan": "Flare Plan",
         "anchorNote": "Anchor Note",
         "supportChannel": "Support Group",
         "configuredPrefix": "Configured:",
@@ -167,11 +168,11 @@
   "components": {
     "behaviorPattern": {
       "cardTitle": "Behavior Pattern",
-      "cardCopy": "Name the pattern you want help interrupting, along with common triggers and useful next steps.",
+      "cardCopy": "Name the pattern you want help interrupting, along with the cues that usually show up around it.",
       "modalTitle": "Behavior Pattern",
       "modalSubtitle": "Keep it concrete enough to recognize, and simple enough to update.",
       "intro": "Describe the pattern you want Flare to help you pause and reflect on.",
-      "helperCopy": "Save requires a behavior name and at least one next step.",
+      "helperCopy": "Save requires a behavior name.",
       "saveButton": "Save Behavior Pattern",
       "summaryEmptyCopy": "Add a lightweight pattern so Flare knows what you are trying to pause.",
       "fields": {
@@ -190,17 +191,62 @@
         "riskTimesOrSituations": {
           "label": "Risk times or situations",
           "placeholder": "Late nights, payday, after a setback."
-        },
-        "preferredRecoveryActions": {
-          "label": "Preferred next steps",
-          "placeholder": "Put the phone down, stand up, drink water, step outside."
         }
       },
       "summaryLabels": {
         "shortDescription": "Description",
         "commonTriggers": "Triggers",
-        "riskTimesOrSituations": "Risk moments",
-        "preferredRecoveryActions": "Next steps"
+        "riskTimesOrSituations": "Risk moments"
+      }
+    },
+    "flarePlan": {
+      "cardTitle": "Flare Plan",
+      "cardCopy": "Choose a few simple actions you can follow after sending a Flare. You’ll see them one at a time when you need them.",
+      "modalTitle": "Flare Plan",
+      "modalSubtitle": "Keep it short, direct, and easy to follow in the moment.",
+      "helperCopy": "These actions are for future Flare moments. Changes here do not alter past activity.",
+      "notConfigured": "Not configured",
+      "selected": "Added",
+      "summaryConfigured": "Configured",
+      "summaryEmptyTitle": "No active actions yet",
+      "emptyTitle": "No active actions yet",
+      "emptyCopy": "Add one or two simple steps you can actually follow after sending a Flare.",
+      "addActionTitle": "Add your own action",
+      "editActionTitle": "Edit action",
+      "activeActionsTitle": "Active actions",
+      "starterLibraryTitle": "Starter actions",
+      "noTemplatesCopy": "No starter actions are available right now.",
+      "limitReachedCopy": "You already have 10 active actions.",
+      "removeTitle": "Remove this action?",
+      "removeBody": "It will no longer appear in your Flare Plan. Past Flare activity will not be changed.",
+      "loading": {
+        "initial": "Loading your Flare Plan...",
+        "checking": "Loading plan",
+        "refreshing": "Refreshing saved actions..."
+      },
+      "fields": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Put my phone in another room"
+        },
+        "description": {
+          "label": "Description (optional)",
+          "placeholder": "Leave it there for at least ten minutes."
+        }
+      },
+      "actions": {
+        "addCustom": "Add your own action",
+        "addStarter": "Add",
+        "adding": "Adding...",
+        "edit": "Edit",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "remove": "Remove",
+        "retryAll": "Retry all",
+        "retryPlan": "Retry plan",
+        "retryTemplates": "Retry starter actions",
+        "save": "Save action",
+        "saving": "Saving..."
       }
     },
     "anchorNote": {

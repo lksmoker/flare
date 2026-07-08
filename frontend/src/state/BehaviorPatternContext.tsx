@@ -54,9 +54,7 @@ function normalizeBehaviorPattern(
 
 function isBehaviorPatternConfigured(behaviorPattern: BehaviorPattern | null) {
   return Boolean(
-    behaviorPattern &&
-      hasMeaningfulValue(behaviorPattern.behaviorName) &&
-      hasMeaningfulValue(behaviorPattern.preferredRecoveryActions),
+    behaviorPattern && hasMeaningfulValue(behaviorPattern.behaviorName),
   );
 }
 

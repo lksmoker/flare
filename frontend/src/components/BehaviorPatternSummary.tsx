@@ -26,12 +26,6 @@ const fieldLabels: Array<{
       flareContent.components.behaviorPattern.summaryLabels
         .riskTimesOrSituations,
   },
-  {
-    key: "preferredRecoveryActions",
-    label:
-      flareContent.components.behaviorPattern.summaryLabels
-        .preferredRecoveryActions,
-  },
 ];
 
 export function BehaviorPatternSummary({

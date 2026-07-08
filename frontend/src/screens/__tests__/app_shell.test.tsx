@@ -12,7 +12,42 @@ import { FlareAuthProvider } from "../../state/FlareAuthContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
 import * as supportChannelApi from "../../services/supportChannelApi";
 
+jest.mock("../../state/FlarePlanContext", () => ({
+  FlarePlanProvider: ({ children }: { children: ReactNode }) => children,
+  useFlarePlan: () => ({
+    archiveAction: jest.fn(),
+    createCustomAction: jest.fn(),
+    createFromTemplate: jest.fn(),
+    errorBanner: null,
+    isActionPending: () => false,
+    isAtActionLimit: false,
+    isInitialLoading: false,
+    isPlanConfigured: false,
+    isReorderPending: false,
+    isRefreshing: false,
+    isTemplatePending: () => false,
+    plan: {
+      id: "plan-1",
+      is_configured: false,
+      active_action_count: 0,
+      maximum_active_actions: 10,
+      actions: [],
+      updated_at: "2026-07-08T00:00:00.000Z",
+    },
+    planError: null,
+    refetchAll: jest.fn(),
+    retryPlan: jest.fn(),
+    retryTemplates: jest.fn(),
+    saveAction: jest.fn(),
+    templates: [],
+    templatesError: null,
+    updateLocalPlan: jest.fn(),
+    reorderActions: jest.fn(),
+  }),
+}));
+
 jest.mock("expo-router", () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const React = require("react");
   const focusEffects = new Set<() => void | (() => void)>();
   const focusCleanups = new Map<
@@ -121,7 +156,7 @@ describe("V0 app shell", () => {
     });
 
     expect(getByLabelText("Expand readiness details")).toBeTruthy();
-    expect(getByText("0 out of 4 configured")).toBeTruthy();
+    expect(getByText("0 out of 5 configured")).toBeTruthy();
     expect(queryByText("Setup saving")).toBeNull();
     expect(queryByText("Behavior Pattern")).toBeNull();
     expect(queryByText("Anchor Note")).toBeNull();
@@ -141,6 +176,7 @@ describe("V0 app shell", () => {
     expect(getByLabelText("Collapse readiness details")).toBeTruthy();
     expect(getByText("Setup saving")).toBeTruthy();
     expect(getByText("Behavior Pattern")).toBeTruthy();
+    expect(getByText("Flare Plan")).toBeTruthy();
     expect(getByText("Anchor Note")).toBeTruthy();
     expect(getByText("Support Group")).toBeTruthy();
 
@@ -153,6 +189,7 @@ describe("V0 app shell", () => {
 
     expect(queryByText("Setup saving")).toBeNull();
     expect(queryByText("Behavior Pattern")).toBeNull();
+    expect(queryByText("Flare Plan")).toBeNull();
     expect(queryByText("Anchor Note")).toBeNull();
     expect(queryByText("Support Group")).toBeNull();
   });
@@ -381,7 +418,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("2 out of 4 configured")).toBeTruthy();
+      expect(getByText("2 out of 5 configured")).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText("Expand readiness details"));
@@ -443,7 +480,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("1 out of 4 configured")).toBeTruthy();
+      expect(getByText("1 out of 5 configured")).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText("Expand readiness details"));
@@ -460,7 +497,7 @@ describe("V0 app shell", () => {
         }),
     );
 
-    const { getByText, queryByText } = render(<CustomizeScreen />, {
+    const { getByText } = render(<CustomizeScreen />, {
       wrapper({ children }) {
         return (
           <FlareAuthProvider
@@ -482,7 +519,6 @@ describe("V0 app shell", () => {
     });
 
     expect(getByText("Checking connection")).toBeTruthy();
-    expect(queryByText("Not configured")).toBeNull();
   });
 
   it("refetches the support-group status when Customize regains focus", async () => {
@@ -572,7 +608,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("1 out of 4 configured")).toBeTruthy();
+      expect(getByText("1 out of 5 configured")).toBeTruthy();
     });
 
     act(() => {
@@ -580,7 +616,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("2 out of 4 configured")).toBeTruthy();
+      expect(getByText("2 out of 5 configured")).toBeTruthy();
     });
   });
 
@@ -987,20 +1023,12 @@ describe("V0 app shell", () => {
       getByLabelText("Risk times or situations"),
       "Late nights",
     );
-    fireEvent.changeText(
-      getByLabelText("Preferred next steps"),
-      "Put the phone in another room and walk outside",
-    );
-
     fireEvent.press(getByText("Save Behavior Pattern"));
 
     expect(queryByText("Save Behavior Pattern")).toBeNull();
     expect(getByText("Configured")).toBeTruthy();
     expect(getByText("Evening doomscrolling")).toBeTruthy();
     expect(getByText("Stress after work")).toBeTruthy();
-    expect(
-      getByText("Put the phone in another room and walk outside"),
-    ).toBeTruthy();
   });
 
   it("updates the Flare readiness indicator after a behavior pattern is saved", () => {
@@ -1014,17 +1042,13 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 out of 4 configured")).toBeTruthy();
+    expect(getByText("0 out of 5 configured")).toBeTruthy();
     fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getByText("Local-only until sign in")).toBeTruthy();
     expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
 
     fireEvent.press(getAllByText("Behavior Pattern")[0]);
     fireEvent.changeText(getByLabelText("Behavior name"), "Weekend drinking");
-    fireEvent.changeText(
-      getByLabelText("Preferred next steps"),
-      "Leave the bar and call my brother",
-    );
     fireEvent.press(getByText("Save Behavior Pattern"));
 
     expect(getByText("Configured: Weekend drinking")).toBeTruthy();
@@ -1125,10 +1149,6 @@ describe("V0 app shell", () => {
       getByLabelText("Short description"),
       "I start checking feeds when I feel depleted.",
     );
-    fireEvent.changeText(
-      getByLabelText("Preferred next steps"),
-      "Leave the room and put the phone away",
-    );
     fireEvent.press(getByText("Save Behavior Pattern"));
 
     fireEvent.press(getByText("Send Flare"));
@@ -1205,7 +1225,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 out of 4 configured")).toBeTruthy();
+    expect(getByText("0 out of 5 configured")).toBeTruthy();
     expect(
       getByText(
         /Connect one GroupMe group for a single saved Flare support message\./,
@@ -1235,7 +1255,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("0 out of 4 configured")).toBeTruthy();
+      expect(getByText("0 out of 5 configured")).toBeTruthy();
     });
 
     expect(
