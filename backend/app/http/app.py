@@ -12,7 +12,9 @@ from backend.app.api.support_channels_api import (
     AuthenticatedUser,
     SupportChannelsApi,
 )
+from backend.app.api.flare_plan_api import FlarePlanApi
 from backend.app.db.support_channel_repository import SupportChannelRepository
+from backend.app.db.flare_plan_repository import PostgresFlarePlanRepository
 from backend.app.integrations.groupme_provider import GroupMeProvider
 from backend.app.services.support_channel_config import (
     SupportChannelHttpRuntimeConfig,
@@ -21,6 +23,8 @@ from backend.app.services.support_channel_config import (
     load_support_channel_http_runtime_config,
     load_supabase_admin_config,
 )
+from backend.app.services.flare_plan_config import load_flare_plan_database_config
+from backend.app.services.flare_plan_service import FlarePlanService
 from backend.app.services.support_channel_groupme_provisioner import (
     GroupMeBotManager,
     GroupMeChannelProvisioner,
@@ -31,8 +35,8 @@ from backend.app.services.support_channel_sender import SupportChannelSender
 
 StartResponse = Callable[[str, list[tuple[str, str]]], Any]
 
-_CORS_ALLOWED_METHODS = "GET, POST, OPTIONS"
-_CORS_ALLOWED_HEADERS = "authorization, content-type"
+_CORS_ALLOWED_METHODS = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+_CORS_ALLOWED_HEADERS = "authorization, content-type, idempotency-key"
 _API_PREFIX = "/api/"
 _GROUPME_CALLBACK_PATH = "/api/support-channel/groupme/connect/callback"
 _GROUPME_PUBLIC_CALLBACK_PATH = "/api/support-channel/groupme/callback"
@@ -79,9 +83,11 @@ class SupportChannelHttpApp:
         *,
         runtime_config: SupportChannelHttpRuntimeConfig,
         support_api: SupportChannelsApi,
+        flare_plan_api: FlarePlanApi | None = None,
     ) -> None:
         self._runtime_config = runtime_config
         self._support_api = support_api
+        self._flare_plan_api = flare_plan_api
 
     def __call__(self, environ: dict[str, Any], start_response: StartResponse) -> Iterable[bytes]:
         method = str(environ.get("REQUEST_METHOD") or "GET").upper()
@@ -121,6 +127,12 @@ class SupportChannelHttpApp:
                         "/api/support-channel/disable",
                         "/api/support-channel/test",
                         "/api/support-channel/send-flare",
+                        "/api/flare-plan/templates",
+                        "/api/flare-plan",
+                        "/api/flare-plan/actions/from-template",
+                        "/api/flare-plan/actions",
+                        "/api/flare-plan/actions/{action_id}",
+                        "/api/flare-plan/actions/order",
                     ],
                 },
                 sort_keys=True,
@@ -164,12 +176,20 @@ class SupportChannelHttpApp:
         body = _read_request_body(environ)
         headers = _extract_headers(environ)
         api_path = path if not query_string else f"{path}?{query_string}"
-        response = self._support_api.handle_request(
-            method=method,
-            path=api_path,
-            headers=headers,
-            body=body,
-        )
+        if self._flare_plan_api is not None and path.startswith("/api/flare-plan"):
+            response = self._flare_plan_api.handle_request(
+                method=method,
+                path=api_path,
+                headers=headers,
+                body=body,
+            )
+        else:
+            response = self._support_api.handle_request(
+                method=method,
+                path=api_path,
+                headers=headers,
+                body=body,
+            )
         if path == _GROUPME_CONNECT_START_PATH and response.status_code == HTTPStatus.OK:
             response = _append_groupme_oauth_state(
                 response=response,
@@ -265,6 +285,9 @@ def build_support_channel_http_app(
             config=load_groupme_bot_provisioning_config(env),
         ),
     )
+    flare_plan_repository = PostgresFlarePlanRepository(
+        config=load_flare_plan_database_config(env),
+    )
     support_api = SupportChannelsApi(
         authenticator=SupabaseUserAuthenticator(
             supabase_url=supabase_config.url,
@@ -281,7 +304,19 @@ def build_support_channel_http_app(
             provider_config_resolver=ProviderConfigResolver(repository=repository),
         ),
     )
-    return SupportChannelHttpApp(runtime_config=runtime_config, support_api=support_api)
+    flare_plan_api = FlarePlanApi(
+        authenticator=SupabaseUserAuthenticator(
+            supabase_url=supabase_config.url,
+            service_role_key=supabase_config.service_role_key,
+            transport=auth_transport,
+        ),
+        service=FlarePlanService(repository=flare_plan_repository),
+    )
+    return SupportChannelHttpApp(
+        runtime_config=runtime_config,
+        support_api=support_api,
+        flare_plan_api=flare_plan_api,
+    )
 
 
 def _append_groupme_oauth_state(*, response: ApiResponse, origin: str) -> ApiResponse:

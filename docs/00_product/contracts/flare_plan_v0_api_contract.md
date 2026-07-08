@@ -43,10 +43,10 @@ It does not define:
 
 ### Base Path
 
-All routes use:
+All routes use the repository-wide shared API prefix:
 
 ```text
-/flare/api
+/api
 ```
 
 ### Authentication
@@ -352,7 +352,7 @@ Rules:
 ## List Starter Templates
 
 ```text
-GET /flare/api/flare-plan/templates
+GET /api/flare-plan/templates
 ```
 
 Returns active starter templates in deterministic category and display order.
@@ -387,7 +387,7 @@ Returns active starter templates in deterministic category and display order.
 ## Read Active Flare Plan
 
 ```text
-GET /flare/api/flare-plan
+GET /api/flare-plan
 ```
 
 ### Success
@@ -427,7 +427,7 @@ The service may lazily create the user's plan container, provided repeated reads
 ## Create Action from Starter Template
 
 ```text
-POST /flare/api/flare-plan/actions/from-template
+POST /api/flare-plan/actions/from-template
 ```
 
 Headers:
@@ -496,7 +496,7 @@ An implementation may return the existing plan with `200 OK` instead of an alrea
 ## Create Custom Action
 
 ```text
-POST /flare/api/flare-plan/actions
+POST /api/flare-plan/actions
 ```
 
 Headers:
@@ -554,7 +554,7 @@ Request:
 ## Update Saved Action
 
 ```text
-PATCH /flare/api/flare-plan/actions/{action_id}
+PATCH /api/flare-plan/actions/{action_id}
 ```
 
 Headers:
@@ -609,7 +609,7 @@ Request:
 ## Archive Saved Action
 
 ```text
-DELETE /flare/api/flare-plan/actions/{action_id}
+DELETE /api/flare-plan/actions/{action_id}
 ```
 
 Headers:
@@ -652,7 +652,7 @@ Idempotency-Key: required
 ## Reorder Active Actions
 
 ```text
-PUT /flare/api/flare-plan/actions/order
+PUT /api/flare-plan/actions/order
 ```
 
 Headers:
@@ -717,7 +717,7 @@ A separate idempotent read-or-create route is also supported for recovery from p
 ## Create or Return Run for Flare Event
 
 ```text
-POST /flare/api/flare-events/{flare_event_id}/flare-plan-run
+POST /api/flare-events/{flare_event_id}/flare-plan-run
 ```
 
 Headers:
@@ -807,7 +807,7 @@ Request:
 ## Read Run by Flare Event
 
 ```text
-GET /flare/api/flare-events/{flare_event_id}/flare-plan-run
+GET /api/flare-events/{flare_event_id}/flare-plan-run
 ```
 
 ### Success
@@ -840,7 +840,7 @@ When no run exists:
 ## Begin Run
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/begin
+POST /api/flare-plan-runs/{run_id}/begin
 ```
 
 Headers:
@@ -884,7 +884,7 @@ offered -> in_progress
 ## Decline Run
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/decline
+POST /api/flare-plan-runs/{run_id}/decline
 ```
 
 Headers:
@@ -929,7 +929,7 @@ offered -> declined
 ## Mark Current Action Done
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/actions/{event_action_id}/done
+POST /api/flare-plan-runs/{run_id}/actions/{event_action_id}/done
 ```
 
 Headers:
@@ -972,7 +972,7 @@ Returns the updated canonical run.
 ## Skip Current Action
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/actions/{event_action_id}/skip
+POST /api/flare-plan-runs/{run_id}/actions/{event_action_id}/skip
 ```
 
 Headers:
@@ -1011,7 +1011,7 @@ The same progression errors apply as for Done.
 ## End Run Early
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/end-early
+POST /api/flare-plan-runs/{run_id}/end-early
 ```
 
 Headers:
@@ -1059,7 +1059,7 @@ No separate mutation route is required to resume a run.
 Reading an `in_progress` run through:
 
 ```text
-GET /flare/api/flare-events/{flare_event_id}/flare-plan-run
+GET /api/flare-events/{flare_event_id}/flare-plan-run
 ```
 
 must return the first unresolved action as `current_action`.
@@ -1071,7 +1071,7 @@ App closure, navigation, network loss, or process interruption does not change r
 ## Submit Checkpoint
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/checkpoint
+POST /api/flare-plan-runs/{run_id}/checkpoint
 ```
 
 Headers:
@@ -1121,7 +1121,7 @@ Returns the canonical run with:
 ## Skip Checkpoint
 
 ```text
-POST /flare/api/flare-plan-runs/{run_id}/checkpoint/skip
+POST /api/flare-plan-runs/{run_id}/checkpoint/skip
 ```
 
 Headers:

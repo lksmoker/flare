@@ -11,6 +11,7 @@ from backend.app.api.support_channels_api import (
     AuthenticatedUser,
     SupportChannelsApi,
 )
+from backend.app.api.flare_plan_api import FlarePlanApi
 from backend.app.domain.support_channels import SupportChannelSendResult
 from backend.app.http.app import SupportChannelHttpApp, SupabaseUserAuthenticator
 from backend.app.services.support_channel_config import (
@@ -60,6 +61,14 @@ class SupportChannelHttpAppTests(unittest.TestCase):
             response.headers["Access-Control-Allow-Origin"],
         )
         self.assertNotEqual("*", response.headers["Access-Control-Allow-Origin"])
+        self.assertEqual(
+            "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+            response.headers["Access-Control-Allow-Methods"],
+        )
+        self.assertEqual(
+            "authorization, content-type, idempotency-key",
+            response.headers["Access-Control-Allow-Headers"],
+        )
 
     def test_disallowed_origin_is_rejected(self) -> None:
         response = _invoke(
@@ -147,6 +156,29 @@ class SupportChannelHttpAppTests(unittest.TestCase):
             ),
             self.support_api.requests[-1],
         )
+
+    def test_flare_plan_requests_are_forwarded_to_flare_plan_api(self) -> None:
+        app = SupportChannelHttpApp(
+            runtime_config=load_support_channel_http_runtime_config(
+                {
+                    "FLARE_ALLOWED_FRONTEND_ORIGINS": "https://flare-web.tailnet.ts.net,http://100.64.0.10:8081",
+                    "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001",
+                }
+            ),
+            support_api=self.support_api,
+            flare_plan_api=_FakeFlarePlanApi(),
+        )
+
+        response = _invoke(
+            app,
+            method="GET",
+            path="/api/flare-plan/templates",
+            authorization="Bearer user-session-token",
+        )
+
+        self.assertEqual(200, response.status_code)
+        payload = json.loads(response.body.decode("utf-8"))
+        self.assertEqual("move_to_different_room", payload["templates"][0]["template_key"])
 
 
 class SupportChannelHttpAuthBoundaryTests(unittest.TestCase):
@@ -243,6 +275,17 @@ class _FakeSupportApi(SupportChannelsApi):
                 },
             )
         return ApiResponse(status_code=200, body={"ok": True})
+
+
+class _FakeFlarePlanApi(FlarePlanApi):
+    def __init__(self) -> None:
+        pass
+
+    def handle_request(self, *, method: str, path: str, headers=None, body=None) -> ApiResponse:
+        return ApiResponse(
+            status_code=200,
+            body={"templates": [{"template_key": "move_to_different_room"}]},
+        )
 
 
 class _FakeUserLookupTransport:
