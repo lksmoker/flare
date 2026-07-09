@@ -388,11 +388,11 @@
       "eventStartedPrefix": "Started",
       "eventStatusPrefix": "status:",
       "behaviorPatternPrefix": "Behavior Pattern:",
-      "anchorNoteLabel": "Anchor Note",
-      "defaultSupportivePhrase": "You already created a pause.",
-      "defaultInterruptionReason": "Flare shows your Anchor Note right after Send Flare so your own words are close at hand.",
-      "groundedReminderLabel": "Grounded reminder",
-      "continuingCostsLabel": "If I keep going",
+      "rememberTitle": "Remember why you're doing this",
+      "whyLabel": "Your Why",
+      "consequencesLabel": "Your Consequences",
+      "defaultWhy": "You already created a pause. Stay with the reason you chose recovery.",
+      "defaultConsequences": "If you have not saved consequences yet, keep this moment simple and move to your next safe step.",
       "safety": "If you may hurt yourself or someone else, or need immediate help, contact local emergency services or a crisis hotline now.",
       "nextStepTitle": "Try one next step",
       "defaultNextStep": "Step away from the trigger for two minutes, drink water, and give yourself a short pause before choosing what comes next.",
@@ -497,4 +497,3 @@
     }
   }
 }
-
