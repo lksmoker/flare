@@ -235,18 +235,35 @@ Appropriate state-specific language should distinguish:
 
 ## Flare Response Entry Contract
 
-When a configured Flare Plan Run exists in the `offered` state, the response screen must offer:
+When a configured Flare Plan Run exists in the `offered` state, the response screen must first acknowledge the significance of initiating the Flare before presenting the plan choice.
 
-> Would you like to begin your Flare Plan?
+The primary acknowledgment copy for V0 is:
+
+> **You sent a Flare.**
+>
+> You interrupted the pattern and reached for support. That matters.
+
+The plan invitation copy is:
+
+> **Keep the momentum going with your Flare Plan.**
 
 The available choices are:
 
 - **Begin Flare Plan**
-- **Not right now**
+- **Skip for now**
 
-Choosing **Begin Flare Plan** changes the run to `in_progress` and presents the first unresolved action.
+The acknowledgment is part of the immediate Flare response experience. It must be presented as the dominant opening message rather than as secondary status text beneath event details.
 
-Choosing **Not right now** changes the run to `declined`.
+Choosing **Begin Flare Plan**:
+
+- Changes the run from `offered` to `in_progress`.
+- Records the run start time.
+- Transitions the response screen into focused action mode.
+- Presents the first authoritative unresolved action.
+
+Choosing **Skip for now** changes the run to `declined`.
+
+The whole-plan choice **Skip for now** is distinct from **Skip this step**, which applies only to the current action after a run has begun.
 
 Declining the plan does not:
 
@@ -259,17 +276,58 @@ A declined run is not resumable in V0.
 
 ## Guided Action Contract
 
-When the user begins the Flare Plan:
+When the user begins the Flare Plan, the response screen must enter focused action mode.
 
-- Only one action is presented as the primary focus at a time.
-- The current position and total action count are shown.
+In focused action mode:
+
+- The current action fills the available response surface.
+- Only one action is presented at a time.
+- The current action is the sole primary focus.
+- The current position and total action count are shown with low visual emphasis.
+- The action title is shown prominently.
+- The optional action description is shown when present.
 - The user may mark the current action **Done**.
-- The user may mark the current action **Skip**.
-- Either choice records the outcome and advances to the next unresolved action.
-- The user may intentionally end the plan early.
+- The user may mark the current action **Skip this step**.
+- Either choice records the outcome and replaces the current action with the next authoritative unresolved action.
+- The user may choose **End plan** as a visually secondary action.
+- **End plan** must not compete visually with **Done** or **Skip this step**.
+- Actions must not be stacked, previewed as a list, or shown alongside future actions.
+- Event details, the anchor note, support-delivery details, generic next-step guidance, and completion counts must not compete with the current action.
+- The ordinary response-screen Close control must not be presented as an ambiguous third action during focused action mode.
 - The user is not required to complete every action.
 
 Skipping an action is a valid outcome, not an error state.
+
+Choosing **End plan** must present a confirmation before mutating the run.
+
+The V0 confirmation copy is:
+
+> **End your Flare Plan?**
+>
+> Your completed and skipped steps will be saved. The remaining steps will be marked not reached.
+
+The confirmation choices are:
+
+- **End plan**
+- **Keep going**
+
+Choosing **Keep going** dismisses the confirmation and returns to the current action without changing the run or any action outcome.
+
+Confirming **End plan** must:
+
+- Change the run from `in_progress` to `ended_early`.
+- Preserve all existing `done` and `skipped` outcomes.
+- Change every remaining `pending` action to `not_reached`.
+- Record the run end timestamp.
+- Transition the response screen to the ended-early summary state.
+
+The focused sequence follows this interaction model:
+
+`offered response -> focused action 1 -> focused action 2 -> ... -> completion`
+
+or:
+
+`offered response -> focused action -> end-plan confirmation -> ended-early summary`
 
 The frontend must not determine the authoritative next action from local state alone.
 
@@ -688,21 +746,89 @@ The Flare response screen must support distinct states for:
 - No configured Flare Plan.
 - Flare Plan offered.
 - Flare Plan declined.
-- Flare Plan in progress.
+- Flare Plan focused action mode.
 - Flare Plan completed.
 - Flare Plan ended early.
 - Checkpoint pending.
 - Checkpoint completed or skipped.
 - Final summary.
 
-The response screen must preserve access to relevant event information, including:
+### Offered State
+
+The offered state must:
+
+- Lead with the Flare acknowledgment.
+- Present the agreed momentum copy.
+- Offer **Begin Flare Plan** and **Skip for now**.
+- Preserve accurate support-message delivery status.
+- Preserve the anchor note when configured.
+- Avoid presenting the configured actions before the user chooses to begin.
+
+### Focused Action State
+
+After the user chooses **Begin Flare Plan**, the focused action state must replace the offered-state content within the response surface.
+
+While an action is active, the response screen must show only the information needed to continue or intentionally end the plan:
+
+- Flare Plan identity.
+- Current position and total action count.
+- Current action title.
+- Current action description, when present.
+- **Done**.
+- **Skip this step**.
+- **End plan** as a visually secondary action.
+
+The following content must be hidden or removed from primary view during focused action mode:
+
+- Flare Event detail cards.
+- Anchor-note cards.
+- Support Group Delivery cards.
+- Generic suggested-action content.
+- Future action previews.
+- Outcome totals.
+- The ordinary Close button.
+
+Selecting **Done** or **Skip this step** must persist the outcome before the next action replaces the current one.
+
+Selecting **End plan** must open the confirmation defined by this contract. The run must remain `in_progress` until the user confirms.
+
+### Completion State
+
+After the last action receives either `done` or `skipped`, the focused action state must transition to a dedicated completion state.
+
+The completion state must:
+
+- Clearly state that the Flare Plan is complete.
+- Show a concise, nonjudgmental persisted summary.
+- Restore an explicit way to close the response screen.
+- May restore relevant event context, including support-delivery status.
+
+### Ended-Early State
+
+After the user confirms **End plan**, the response screen must show a dedicated ended-early state.
+
+The ended-early state must:
+
+- Use neutral, nonjudgmental language.
+- State that the Flare Plan ended.
+- Show persisted counts for actions done, skipped, and not reached.
+- Restore an explicit way to close the response screen.
+- May restore relevant event context, including support-delivery status.
+
+Acceptable V0 copy includes:
+
+> **Flare Plan ended**
+>
+> Your progress was saved.
+
+The ended-early state must not describe the run as failed or incomplete in a judgmental way.
+
+The response screen must preserve access to relevant event information outside focused action mode, including:
 
 - Support-message delivery status.
 - Anchor note, when configured.
 - Flare Plan state.
 - Completion summary, when available.
-
-The anchor note may be secondary or collapsible during the guided sequence so the current action remains the primary focus.
 
 ## Future Review Boundary
 
@@ -811,25 +937,32 @@ Flare Plan V0 is complete when:
 8. The offered run contains an immutable ordered snapshot of the active saved actions.
 9. A failed support-message delivery does not prevent the Flare Plan from being offered.
 10. The response screen accurately distinguishes message-delivery success, failure, and pending states.
-11. The response screen offers Begin Flare Plan and Not right now when a configured offered run exists.
-12. Declining the plan marks unresolved actions not reached without marking them skipped.
-13. Beginning the plan presents one action at a time.
-14. Done and Skip persist distinct outcomes.
-15. Done or Skip advances the plan exactly once.
-16. Only the authoritative current action may be answered.
-17. Repeated or competing requests cannot produce duplicate advancement or conflicting outcomes.
-18. An interrupted in-progress run resumes at the first unresolved action.
-19. App closure or network loss does not automatically skip, decline, or end the plan.
-20. Ending early leaves remaining actions not reached rather than skipped.
-21. A completed run has no pending or not-reached actions.
-22. A completed run may contain skipped actions.
-23. Editing or archiving the saved plan does not alter historical Event-Time Action snapshots.
-24. The user may complete or skip a checkpoint after a completed or ended-early run.
-25. Checkpoint status remains separate from Flare Plan Run status.
-26. The final summary accurately reflects persisted action outcomes, checkpoint data, and delivery status.
-27. Users cannot read or mutate another user's plan, actions, runs, Event-Time Actions, or checkpoint data.
-28. A missing or empty Flare Plan does not prevent the user from initiating a Flare.
-29. Automated tests cover ownership, ordering, snapshots, migration, state transitions, resume behavior, interruption behavior, failed delivery, idempotency, concurrency conflicts, checkpoint behavior, and both response-screen entry paths.
+11. The offered response state prominently acknowledges that the user sent a Flare and presents the agreed V0 acknowledgment copy.
+12. The response screen offers Begin Flare Plan and Skip for now when a configured offered run exists.
+13. The response screen does not reveal configured actions before the user chooses Begin Flare Plan.
+14. Declining the plan marks unresolved actions not reached without marking them skipped.
+15. Beginning the plan replaces the offered response with focused action mode.
+16. Focused action mode presents one action as the sole primary focus and hides competing event, anchor, delivery, summary, and future-action content.
+17. Focused action mode presents Done and Skip this step as the primary action outcomes and End plan as a visually secondary action.
+18. Choosing End plan requires confirmation before the run is mutated.
+19. Cancelling the end-plan confirmation returns to the current action without changing run or action state.
+20. Confirming End plan preserves completed and skipped outcomes, marks remaining pending actions not reached, and transitions the run to ended early exactly once.
+21. Done and Skip persist distinct outcomes.
+22. Done or Skip advances the plan exactly once and replaces the current action with the next authoritative action.
+23. Only the authoritative current action may be answered.
+24. Repeated or competing requests cannot produce duplicate advancement or conflicting outcomes.
+25. An interrupted in-progress run resumes at the first unresolved action.
+26. App closure or network loss does not automatically skip, decline, or end the plan.
+27. Ending early leaves remaining actions not reached rather than skipped.
+28. A completed run has no pending or not-reached actions.
+29. A completed run may contain skipped actions.
+30. Editing or archiving the saved plan does not alter historical Event-Time Action snapshots.
+31. The user may complete or skip a checkpoint after a completed or ended-early run.
+32. Checkpoint status remains separate from Flare Plan Run status.
+33. The final summary accurately reflects persisted action outcomes, checkpoint data, and delivery status.
+34. Users cannot read or mutate another user's plan, actions, runs, Event-Time Actions, or checkpoint data.
+35. A missing or empty Flare Plan does not prevent the user from initiating a Flare.
+36. Automated tests cover ownership, ordering, snapshots, migration, state transitions, resume behavior, interruption behavior, failed delivery, idempotency, concurrency conflicts, checkpoint behavior, and both response-screen entry paths.
 
 ## Starter Action Library Contract
 
