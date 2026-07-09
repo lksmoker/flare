@@ -19,7 +19,7 @@ type PlaceholderModalProps = PropsWithChildren<{
   onClose: () => void;
   scrollContentContainerStyle?: StyleProp<ViewStyle>;
   showCloseButton?: boolean;
-  subtitle: string;
+  subtitle?: string;
   title: string;
   visible: boolean;
 }>;
@@ -47,7 +47,7 @@ export function PlaceholderModal({
           <View style={styles.header}>
             <View style={styles.headerCopy}>
               <Text style={styles.title}>{title}</Text>
-              <Text style={styles.subtitle}>{subtitle}</Text>
+              {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
             </View>
             {showCloseButton ? (
               <Pressable

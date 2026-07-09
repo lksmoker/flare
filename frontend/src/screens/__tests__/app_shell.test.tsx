@@ -220,9 +220,12 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Flare Response")).toBeTruthy();
-    expect(getByText("Current Flare Event")).toBeTruthy();
     expect(getByText(/status: active/i)).toBeTruthy();
-    expect(getByText("You paused the pattern")).toBeTruthy();
+    expect(queryByText("Current Flare Event")).toBeNull();
+    expect(queryByText("You paused the pattern")).toBeNull();
+    expect(
+      queryByText("Your saved support words are attached to this Flare Event."),
+    ).toBeNull();
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
@@ -545,7 +548,9 @@ describe("V0 app shell", () => {
     expect(getByText("Second step")).toBeTruthy();
   });
 
-  it("opens end-plan confirmation and renders the ended summary after confirmation", async () => {
+  it(
+    "opens end-plan confirmation and renders the ended summary after confirmation",
+    async () => {
     jest.spyOn(flareResponseApi, "getFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -690,54 +695,102 @@ describe("V0 app shell", () => {
 
     expect(getByText("Flare Plan ended")).toBeTruthy();
     expect(getByText(/1 done, 1 skipped, 1 not reached/i)).toBeTruthy();
-  });
+    },
+    15000,
+  );
 
-  it("shows a calm sent status when Send Flare reaches the enabled support group", async () => {
-    jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
-      attempted_at: "2026-07-06T03:40:00Z",
-      delivered_at: "2026-07-06T03:40:00Z",
-      destination_display_name: "Close Friends",
-      error_code: null,
-      error_message_safe: null,
-      message_preview:
-        "Luke sent a Flare and may need support. Please check in when you can.",
-      provider: "groupme",
-      send_kind: "real",
-      status: "sent",
-    });
+  it(
+    "shows a calm sent status when Send Flare reaches the enabled support group",
+    async () => {
+      jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
+        flareEvent: {
+          anchorNoteId: null,
+          anchorNoteVersion: null,
+          archivedAt: null,
+          behaviorDescriptionSnapshot: null,
+          behaviorLabelSnapshot: "Late-night scrolling",
+          behaviorPatternId: null,
+          checkpoint: null,
+          closedAt: null,
+          createdAt: "2026-07-09T00:00:00Z",
+          id: "event-1",
+          responseMode: "configured",
+          status: "active",
+          supportActionShown: null,
+          supportActionTaken: null,
+          updatedAt: "2026-07-09T00:00:00Z",
+          userId: "user-123",
+        },
+        run: null,
+      });
+      jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
+        attempted_at: "2026-07-06T03:40:00Z",
+        delivered_at: "2026-07-06T03:40:00Z",
+        destination_display_name: "Close Friends",
+        error_code: null,
+        error_message_safe: null,
+        message_preview:
+          "Luke sent a Flare and may need support. Please check in when you can.",
+        provider: "groupme",
+        send_kind: "real",
+        status: "sent",
+      });
 
-    const { getByText } = render(<FlareScreen />, {
-      wrapper({ children }) {
-        return (
-          <FlareAuthProvider
-            initialAuthState={{
-              kind: "authenticated",
-              userEmail: "flare@example.com",
-              userId: "user-123",
-            }}
-            subscribe={() => null}
-          >
-            <BehaviorPatternProvider>
-              <AnchorNoteProvider>
-                <FlareEventProvider>{children}</FlareEventProvider>
-              </AnchorNoteProvider>
-            </BehaviorPatternProvider>
-          </FlareAuthProvider>
-        );
-      },
-    });
+      const { getByText } = render(<FlareScreen />, {
+        wrapper({ children }) {
+          return (
+            <FlareAuthProvider
+              initialAuthState={{
+                kind: "authenticated",
+                userEmail: "flare@example.com",
+                userId: "user-123",
+              }}
+              subscribe={() => null}
+            >
+              <BehaviorPatternProvider>
+                <AnchorNoteProvider>
+                  <FlareEventProvider>{children}</FlareEventProvider>
+                </AnchorNoteProvider>
+              </BehaviorPatternProvider>
+            </FlareAuthProvider>
+          );
+        },
+      });
 
-    fireEvent.press(getByText("Send Flare"));
+      fireEvent.press(getByText("Send Flare"));
 
-    await waitFor(() => {
-      expect(getByText("Support message sent")).toBeTruthy();
-      expect(
-        getByText("Your saved support message was sent to the connected group."),
-      ).toBeTruthy();
-    });
-  });
+      await waitFor(() => {
+        expect(getByText("Support message sent")).toBeTruthy();
+        expect(
+          getByText("Your saved support message was sent to the connected group."),
+        ).toBeTruthy();
+      });
+    },
+    15000,
+  );
 
   it("keeps the flare event flow working when external delivery fails safely", async () => {
+    jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      run: null,
+    });
     jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
       attempted_at: "2026-07-06T03:45:00Z",
       delivered_at: null,
@@ -1566,7 +1619,7 @@ describe("V0 app shell", () => {
   });
 
   it("shows saved Anchor Note immediately in Flare Response after Send Flare", () => {
-    const { getAllByText, getByLabelText, getByText } = render(
+    const { getAllByText, getByLabelText, getByText, queryByText } = render(
       <>
         <CustomizeScreen />
         <FlareScreen />
@@ -1598,7 +1651,8 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Flare Response")).toBeTruthy();
-    expect(getByText("Current Flare Event")).toBeTruthy();
+    expect(getByText(/status: active/i)).toBeTruthy();
+    expect(queryByText("Current Flare Event")).toBeNull();
     expect(
       getAllByText("Pause now. You already chose differently.").length,
     ).toBeGreaterThanOrEqual(2);

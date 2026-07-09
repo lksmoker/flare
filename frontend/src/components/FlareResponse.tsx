@@ -68,6 +68,11 @@ export function FlareResponse({
   const { anchorNote } = useAnchorNote();
   const [isEndConfirmVisible, setIsEndConfirmVisible] = useState(false);
   const currentAction = run?.current_action ?? null;
+  const isTerminalRun =
+    run?.status === "declined" ||
+    run?.status === "completed" ||
+    run?.status === "ended_early";
+  const deliveryCardState = !isTerminalRun ? externalSupportState : null;
 
   const summaryCopy = useMemo(() => {
     if (!run) {
@@ -153,22 +158,61 @@ export function FlareResponse({
 
   return (
     <View style={styles.container}>
-      <View style={styles.eventCard}>
-        <Text style={styles.eventLabel}>
-          {flareContent.components.flareResponse.eventLabel}
+      {deliveryCardState ? (
+        <View
+          style={[
+            styles.deliveryCard,
+            deliveryCardState.tone === "success"
+              ? styles.deliveryCardSuccess
+              : deliveryCardState.tone === "warning"
+                ? styles.deliveryCardWarning
+                : styles.deliveryCardMuted,
+          ]}
+        >
+          <Text style={styles.deliveryLabel}>
+            {flareContent.components.flareResponse.externalSupport.label}
+          </Text>
+          <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
+          <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
+        </View>
+      ) : null}
+
+      <View style={styles.callout}>
+        <Text style={styles.calloutLabel}>
+          {flareContent.components.flareResponse.anchorNoteLabel}
         </Text>
-        <Text style={styles.eventTitle}>
-          {flareEvent?.status === "reflected"
-            ? flareContent.components.flareResponse.eventTitleReflected
-            : flareContent.components.flareResponse.eventTitleActive}
+        <Text style={styles.calloutTitle}>
+          {anchorNote?.supportivePhrase ||
+            flareContent.components.flareResponse.defaultSupportivePhrase}
         </Text>
-        <Text style={styles.eventCopy}>
-          {flareEvent
-            ? `${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`
-            : flareContent.components.flareResponse.noActiveEvent}
+        <Text style={styles.calloutCopy}>
+          {anchorNote?.interruptionReasons ||
+            flareContent.components.flareResponse.defaultInterruptionReason}
         </Text>
+        {anchorNote?.groundedReminders ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>
+              {flareContent.components.flareResponse.groundedReminderLabel}
+            </Text>
+            <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
+          </View>
+        ) : null}
+        {anchorNote?.continuingCosts ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>
+              {flareContent.components.flareResponse.continuingCostsLabel}
+            </Text>
+            <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
+          </View>
+        ) : null}
+        <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
+        {flareEvent ? (
+          <Text style={styles.contextCopy}>
+            {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
+          </Text>
+        ) : null}
         {flareEvent?.behaviorLabelSnapshot ? (
-          <Text style={styles.eventCopy}>
+          <Text style={styles.contextCopy}>
             {flareContent.components.flareResponse.behaviorPatternPrefix} {flareEvent.behaviorLabelSnapshot}
           </Text>
         ) : null}
@@ -203,89 +247,17 @@ export function FlareResponse({
             }}
           />
         </View>
-      ) : (
-        <>
-          <View style={styles.callout}>
-            <Text style={styles.calloutLabel}>
-              {flareContent.components.flareResponse.anchorNoteLabel}
-            </Text>
-            <Text style={styles.calloutTitle}>
-              {anchorNote?.supportivePhrase ||
-                flareContent.components.flareResponse.defaultSupportivePhrase}
-            </Text>
-            <Text style={styles.calloutCopy}>
-              {anchorNote?.interruptionReasons ||
-                flareContent.components.flareResponse.defaultInterruptionReason}
-            </Text>
-            {anchorNote?.groundedReminders ? (
-              <View style={styles.memorySection}>
-                <Text style={styles.memoryLabel}>
-                  {flareContent.components.flareResponse.groundedReminderLabel}
-                </Text>
-                <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
-              </View>
-            ) : null}
-            {anchorNote?.continuingCosts ? (
-              <View style={styles.memorySection}>
-                <Text style={styles.memoryLabel}>
-                  {flareContent.components.flareResponse.continuingCostsLabel}
-                </Text>
-                <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
-              </View>
-            ) : null}
-            <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
-          </View>
-          {run === null ? (
-            <View style={styles.actionCard}>
-              <Text style={styles.actionTitle}>
-                {flareContent.components.flareResponse.nextStepTitle}
-              </Text>
-              <Text style={styles.actionCopy}>
-                {anchorNote?.emergencyActions ||
-                  flareContent.components.flareResponse.defaultNextStep}
-              </Text>
-            </View>
-          ) : null}
-        </>
-      )}
+      ) : null}
 
-      {externalSupportState ? (
-        <View
-          style={[
-            styles.deliveryCard,
-            externalSupportState.tone === "success"
-              ? styles.deliveryCardSuccess
-              : externalSupportState.tone === "warning"
-                ? styles.deliveryCardWarning
-                : styles.deliveryCardMuted,
-          ]}
-        >
-          <Text style={styles.deliveryLabel}>
-            {flareContent.components.flareResponse.externalSupport.label}
+      {run === null ? (
+        <View style={styles.actionCard}>
+          <Text style={styles.actionTitle}>
+            {flareContent.components.flareResponse.nextStepTitle}
           </Text>
-          <Text style={styles.deliveryTitle}>{externalSupportState.title}</Text>
-          <Text style={styles.deliveryCopy}>{externalSupportState.copy}</Text>
-        </View>
-      ) : null}
-
-      {run?.status === "declined" ? (
-        <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Flare Plan skipped for now</Text>
-          <Text style={styles.summaryCopy}>You can close this response and come back to your plan later.</Text>
-        </View>
-      ) : null}
-
-      {run?.status === "completed" ? (
-        <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Flare Plan complete</Text>
-          <Text style={styles.summaryCopy}>Your steps are saved. {summaryCopy}</Text>
-        </View>
-      ) : null}
-
-      {run?.status === "ended_early" ? (
-        <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Flare Plan ended</Text>
-          <Text style={styles.summaryCopy}>Your progress was saved. {summaryCopy}</Text>
+          <Text style={styles.actionCopy}>
+            {anchorNote?.emergencyActions ||
+              flareContent.components.flareResponse.defaultNextStep}
+          </Text>
         </View>
       ) : null}
 
@@ -299,6 +271,27 @@ export function FlareResponse({
             {flareContent.components.flareResponse.checkpointButton}
           </Text>
         </Pressable>
+      ) : null}
+
+      {run?.status === "declined" ? (
+        <View style={styles.statusNote}>
+          <Text style={styles.statusNoteTitle}>Flare Plan skipped for now</Text>
+          <Text style={styles.statusNoteCopy}>You can close this response and come back to your plan later.</Text>
+        </View>
+      ) : null}
+
+      {run?.status === "completed" ? (
+        <View style={styles.statusNote}>
+          <Text style={styles.statusNoteTitle}>Flare Plan complete</Text>
+          <Text style={styles.statusNoteCopy}>Your steps are saved. {summaryCopy}</Text>
+        </View>
+      ) : null}
+
+      {run?.status === "ended_early" ? (
+        <View style={styles.statusNote}>
+          <Text style={styles.statusNoteTitle}>Flare Plan ended</Text>
+          <Text style={styles.statusNoteCopy}>Your progress was saved. {summaryCopy}</Text>
+        </View>
       ) : null}
     </View>
   );
@@ -365,32 +358,6 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textMuted,
     fontSize: 15,
     lineHeight: 22,
-  },
-  eventCard: {
-    gap: 6,
-    padding: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.surfaceSoft,
-  },
-  eventLabel: {
-    color: flareTheme.colors.primaryBright,
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
-  },
-  eventTitle: {
-    color: flareTheme.colors.text,
-    fontSize: 18,
-    lineHeight: 22,
-    fontWeight: "700",
-  },
-  eventCopy: {
-    color: flareTheme.colors.textMuted,
-    fontSize: 14,
-    lineHeight: 20,
   },
   offerCard: {
     gap: 12,
@@ -461,6 +428,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
   },
+  contextCopy: {
+    color: "#DCEBFF",
+    fontSize: 13,
+    lineHeight: 18,
+  },
   actionCard: {
     gap: 6,
     padding: 16,
@@ -514,24 +486,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  summaryCard: {
-    gap: 8,
-    padding: 18,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.surfaceSoft,
+  statusNote: {
+    gap: 4,
+    paddingHorizontal: 2,
   },
-  summaryTitle: {
+  statusNoteTitle: {
     color: flareTheme.colors.textStrong,
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: "800",
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: "700",
   },
-  summaryCopy: {
+  statusNoteCopy: {
     color: flareTheme.colors.textMuted,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 13,
+    lineHeight: 18,
   },
   primaryButton: {
     minHeight: 52,

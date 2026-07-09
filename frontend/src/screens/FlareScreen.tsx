@@ -363,7 +363,6 @@ export function FlareScreen() {
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
         showCloseButton={responseState?.run?.status !== "in_progress"}
-        subtitle={flareContent.components.flareResponse.modalSubtitle}
         title={flareContent.components.flareResponse.modalTitle}
         visible={isFlareResponseVisible}
       >
