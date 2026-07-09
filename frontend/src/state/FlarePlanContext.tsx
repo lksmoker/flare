@@ -190,6 +190,7 @@ export function FlarePlanProvider({
   const [errorBanner, setErrorBanner] = useState<FlarePlanMutationError | null>(
     null,
   );
+  const isUsingLocalFallbackPlan = plan?.id === "local-flare-plan";
 
   const loadPlan = useCallback(async () => {
     try {
@@ -233,8 +234,11 @@ export function FlarePlanProvider({
       return;
     }
 
-    const showInitialLoading = plan === null;
+    const showInitialLoading = plan === null || isUsingLocalFallbackPlan;
     if (showInitialLoading) {
+      if (isUsingLocalFallbackPlan) {
+        setPlan(null);
+      }
       setIsInitialLoading(true);
     } else {
       setIsRefreshing(true);
@@ -244,7 +248,14 @@ export function FlarePlanProvider({
 
     setIsInitialLoading(false);
     setIsRefreshing(false);
-  }, [authState.kind, authStatus, loadPlan, loadTemplates, plan]);
+  }, [
+    authState.kind,
+    authStatus,
+    isUsingLocalFallbackPlan,
+    loadPlan,
+    loadTemplates,
+    plan,
+  ]);
 
   useEffect(() => {
     void refetchAll();

@@ -61,7 +61,7 @@ Write-Host "Backend:   $env:FLARE_PUBLIC_BACKEND_BASE_URL"
 Write-Host "Listen:    http://${HostName}:$Port"
 Write-Host ""
 Write-Host "Health check from another window:" -ForegroundColor Yellow
-Write-Host "Invoke-WebRequest $env:FLARE_PUBLIC_BACKEND_BASE_URL/health"
+Write-Host "Invoke-WebRequest $env:FLARE_PUBLIC_BACKEND_BASE_URL/api/health"
 Write-Host ""
 
 python -m backend.app.http.server --host $HostName --port $Port
