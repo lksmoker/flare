@@ -83,3 +83,30 @@
     }
   ]
 }
+
+## Diff
+- terminal_state_snapshot: completed
+- files_changed: 6
+- insertions: 669
+- deletions: 60
+- note: terminal_state_snapshot reflects the run state when diff metadata was captured.
+- changed_files:
+  - docs/90_archive/task_summary/AI/task_20260709_013848__admin-config__polling-loop__run_1e5e.md
+  - frontend/src/components/FlarePlanSetupModal.tsx
+  - frontend/src/screens/__tests__/app_shell.test.tsx
+  - frontend/src/screens/__tests__/flare_plan_configure.test.tsx
+  - frontend/src/state/FlarePlanContext.tsx
+  - frontend/src/state/__tests__/flarePlanContext.test.tsx
+## Validation Summary
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: npm run typecheck, npm test -- --runTestsByPath src/state/__tests__/flarePlanContext.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/flare_plan_configure.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "renders the top-level navigation labels and dominant Send Flare action"
+- summary: Validation details were derived from the Build Run Summary body.
+## Final Run State
+- terminal_state: completed
+- summary_written: true
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: npm run typecheck, npm test -- --runTestsByPath src/state/__tests__/flarePlanContext.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/flare_plan_configure.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "renders the top-level navigation labels and dominant Send Flare action"
