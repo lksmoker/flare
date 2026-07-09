@@ -354,7 +354,9 @@ describe("Flare Plan Configure screen", () => {
     });
 
     await waitForCustomizePlanReady(getByText);
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
     await waitFor(() => {
       expect(getAllByText("No active actions yet").length).toBeGreaterThanOrEqual(1);
@@ -384,10 +386,12 @@ describe("Flare Plan Configure screen", () => {
     await waitFor(() => {
       expect(getAllByText("0 of 10 actions").length).toBeGreaterThanOrEqual(1);
     });
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
-    const addStarter = getByLabelText(
-      "Add starter action Move to a different room",
+    const addStarter = await waitFor(() =>
+      getByLabelText("Add starter action Move to a different room"),
     );
     fireEvent.press(addStarter);
     fireEvent.press(addStarter);
@@ -423,7 +427,9 @@ describe("Flare Plan Configure screen", () => {
       expect(getByText("1 out of 5 configured")).toBeTruthy();
     });
 
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
     fireEvent.press(getByText("Add your own action"));
     fireEvent.press(getByText("Save action"));
     expect(getByText("Add a short title before saving this action.")).toBeTruthy();
@@ -496,7 +502,9 @@ describe("Flare Plan Configure screen", () => {
     await waitFor(() => {
       expect(getAllByText("2 of 10 actions").length).toBeGreaterThanOrEqual(1);
     });
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
     fireEvent.press(getAllByLabelText("Edit action Custom action")[0]);
     fireEvent.changeText(getByLabelText("Title"), "Updated custom action");
@@ -558,7 +566,9 @@ describe("Flare Plan Configure screen", () => {
     await waitFor(() => {
       expect(getAllByText("1 of 10 actions").length).toBeGreaterThanOrEqual(1);
     });
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
     fireEvent.press(getAllByLabelText("Remove action Move to a different room")[0]);
 
     expect(getByText("Remove this action?")).toBeTruthy();
@@ -595,7 +605,9 @@ describe("Flare Plan Configure screen", () => {
     await waitFor(() => {
       expect(getAllByText("3 of 10 actions").length).toBeGreaterThanOrEqual(1);
     });
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
     expect(
       getAllByLabelText("Move action First up")[0].props.accessibilityState,
@@ -655,7 +667,9 @@ describe("Flare Plan Configure screen", () => {
     );
 
     await waitForCustomizePlanReady(getByText);
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
     await waitFor(() => {
       expect(
@@ -690,7 +704,9 @@ describe("Flare Plan Configure screen", () => {
     await waitFor(() => {
       expect(getAllByText("10 of 10 actions").length).toBeGreaterThanOrEqual(1);
     });
-    fireEvent.press(getAllByText("Flare Plan")[0]);
+    await act(async () => {
+      fireEvent.press(getAllByText("Flare Plan")[0]);
+    });
 
     expect(getByText("You already have 10 active actions.")).toBeTruthy();
     expect(getByLabelText("Add your own action").props.accessibilityState).toEqual(

@@ -97,6 +97,7 @@ export function FlarePlanSetupModal({
   const {
     archiveAction,
     createFromTemplate,
+    ensureTemplatesLoaded,
     errorBanner,
     isActionPending,
     isAtActionLimit,
@@ -128,8 +129,11 @@ export function FlarePlanSetupModal({
       setDraftError(null);
       setIsComposerVisible(false);
       setArchiveCandidate(null);
+      return;
     }
-  }, [visible]);
+
+    void ensureTemplatesLoaded();
+  }, [ensureTemplatesLoaded, visible]);
 
   const groupedTemplates = useMemo(
     () => groupTemplatesByCategory(templates),

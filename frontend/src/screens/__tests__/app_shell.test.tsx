@@ -18,6 +18,7 @@ jest.mock("../../state/FlarePlanContext", () => ({
     archiveAction: jest.fn(),
     createCustomAction: jest.fn(),
     createFromTemplate: jest.fn(),
+    ensureTemplatesLoaded: jest.fn(),
     errorBanner: null,
     isActionPending: () => false,
     isAtActionLimit: false,

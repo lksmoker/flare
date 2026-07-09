@@ -5,9 +5,9 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { useFocusEffect } from "expo-router";
 
 import { createIdempotencyKey } from "../services/idempotency";
 import {
@@ -73,6 +73,7 @@ type FlarePlanMutationError = {
 };
 
 type FlarePlanContextValue = {
+  ensureTemplatesLoaded: () => Promise<void>;
   createCustomAction: (input: {
     description: string;
     title: string;
@@ -135,6 +136,60 @@ const defaultFlarePlanRepository: FlarePlanRepository = {
   },
 };
 
+const sharedPlanLoads = new WeakMap<
+  FlarePlanRepository["loadPlan"],
+  Promise<ActiveFlarePlan>
+>();
+const sharedTemplateLoads = new WeakMap<
+  FlarePlanRepository["loadTemplates"],
+  Promise<StarterTemplate[]>
+>();
+
+async function runSharedLoad<T>(
+  registry: WeakMap<() => Promise<T>, Promise<T>>,
+  load: () => Promise<T>,
+) {
+  const inFlight = registry.get(load);
+
+  if (inFlight) {
+    return inFlight;
+  }
+
+  const request = load().finally(() => {
+    registry.delete(load);
+  });
+
+  registry.set(load, request);
+  return request;
+}
+
+function createLocalFallbackPlan(): ActiveFlarePlan {
+  return {
+    id: "local-flare-plan",
+    is_configured: false,
+    active_action_count: 0,
+    maximum_active_actions: 10,
+    actions: [],
+    updated_at: new Date(0).toISOString(),
+  };
+}
+
+function applyPlanSelectionToTemplates(
+  templates: StarterTemplate[],
+  plan: ActiveFlarePlan | null,
+) {
+  const selectedTemplateKeys = new Set(
+    plan?.actions
+      .map((action) => action.source_template_key)
+      .filter((templateKey): templateKey is string => Boolean(templateKey)) ?? [],
+  );
+
+  return templates.map((template) => ({
+    ...template,
+    is_selected: selectedTemplateKeys.has(template.template_key),
+  }));
+}
+
 function toUserMessage(error: unknown, fallback: string) {
   if (error instanceof FlarePlanApiError) {
     switch (error.code) {
@@ -174,12 +229,15 @@ export function FlarePlanProvider({
   flarePlanRepository = defaultFlarePlanRepository,
 }: FlarePlanProviderProps) {
   const { authState, authStatus } = useFlareAuth();
+  const authenticatedUserId =
+    authState.kind === "authenticated" ? authState.userId : null;
   const [plan, setPlan] = useState<ActiveFlarePlan | null>(null);
-  const [templates, setTemplates] = useState<StarterTemplate[]>([]);
+  const [templatesState, setTemplatesState] = useState<StarterTemplate[]>([]);
   const [planError, setPlanError] = useState<string | null>(null);
   const [templatesError, setTemplatesError] = useState<string | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [hasLoadedTemplates, setHasLoadedTemplates] = useState(false);
   const [pendingActionIds, setPendingActionIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -190,82 +248,148 @@ export function FlarePlanProvider({
   const [errorBanner, setErrorBanner] = useState<FlarePlanMutationError | null>(
     null,
   );
-  const isUsingLocalFallbackPlan = plan?.id === "local-flare-plan";
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const templates = useMemo(
+    () => applyPlanSelectionToTemplates(templatesState, plan),
+    [plan, templatesState],
+  );
 
   const loadPlan = useCallback(async () => {
     try {
-      const nextPlan = await flarePlanRepository.loadPlan();
+      const nextPlan = await runSharedLoad(
+        sharedPlanLoads,
+        flarePlanRepository.loadPlan,
+      );
+
+      if (!mountedRef.current) {
+        return false;
+      }
+
       setPlan(nextPlan);
       setPlanError(null);
+      return true;
     } catch (error) {
+      if (!mountedRef.current) {
+        return false;
+      }
+
       setPlanError(
         toUserMessage(error, "Flare Plan could not be loaded right now."),
       );
+      return false;
     }
-  }, [flarePlanRepository]);
+  }, [flarePlanRepository.loadPlan]);
 
   const loadTemplates = useCallback(async () => {
     try {
-      const nextTemplates = await flarePlanRepository.loadTemplates();
-      setTemplates(nextTemplates);
+      const nextTemplates = await runSharedLoad(
+        sharedTemplateLoads,
+        flarePlanRepository.loadTemplates,
+      );
+
+      if (!mountedRef.current) {
+        return false;
+      }
+
+      setTemplatesState(nextTemplates);
       setTemplatesError(null);
+      setHasLoadedTemplates(true);
+      return true;
     } catch (error) {
+      if (!mountedRef.current) {
+        return false;
+      }
+
       setTemplatesError(
         toUserMessage(error, "Starter actions could not be loaded right now."),
       );
+      setHasLoadedTemplates(true);
+      return false;
     }
-  }, [flarePlanRepository]);
+  }, [flarePlanRepository.loadTemplates]);
 
   const refetchAll = useCallback(async () => {
     if (authStatus !== "ready" || authState.kind !== "authenticated") {
-      setPlan({
-        id: "local-flare-plan",
-        is_configured: false,
-        active_action_count: 0,
-        maximum_active_actions: 10,
-        actions: [],
-        updated_at: new Date(0).toISOString(),
-      });
-      setTemplates([]);
+      setPlan(createLocalFallbackPlan());
+      setTemplatesState([]);
       setPlanError(null);
       setTemplatesError(null);
+      setHasLoadedTemplates(true);
       setIsInitialLoading(false);
       setIsRefreshing(false);
       return;
     }
 
-    const showInitialLoading = plan === null || isUsingLocalFallbackPlan;
-    if (showInitialLoading) {
-      if (isUsingLocalFallbackPlan) {
-        setPlan(null);
-      }
-      setIsInitialLoading(true);
-    } else {
-      setIsRefreshing(true);
+    setIsRefreshing(true);
+    await Promise.allSettled([loadPlan(), loadTemplates()]);
+    setIsInitialLoading(false);
+    setIsRefreshing(false);
+  }, [authState.kind, authStatus, loadPlan, loadTemplates]);
+
+  useEffect(() => {
+    if (authStatus !== "ready" || authState.kind !== "authenticated") {
+      setPlan(createLocalFallbackPlan());
+      setTemplatesState([]);
+      setPlanError(null);
+      setTemplatesError(null);
+      setHasLoadedTemplates(true);
+      setIsInitialLoading(false);
+      setIsRefreshing(false);
+      return;
     }
 
-    await Promise.allSettled([loadPlan(), loadTemplates()]);
+    setIsInitialLoading(true);
+    setIsRefreshing(false);
+    setPlan(null);
+    setPlanError(null);
+    setTemplatesError(null);
+    setTemplatesState([]);
+    setHasLoadedTemplates(false);
 
-    setIsInitialLoading(false);
+    void loadPlan().finally(() => {
+      if (!mountedRef.current) {
+        return;
+      }
+
+      setIsInitialLoading(false);
+    });
+  }, [authState.kind, authStatus, authenticatedUserId, loadPlan]);
+
+  const ensureTemplatesLoaded = useCallback(async () => {
+    if (authStatus !== "ready" || authState.kind !== "authenticated") {
+      setTemplatesState([]);
+      setTemplatesError(null);
+      setHasLoadedTemplates(true);
+      return;
+    }
+
+    if (hasLoadedTemplates && templatesError === null) {
+      return;
+    }
+
+    setIsRefreshing(true);
+    await loadTemplates();
+    if (!mountedRef.current) {
+      return;
+    }
+
     setIsRefreshing(false);
   }, [
     authState.kind,
     authStatus,
-    isUsingLocalFallbackPlan,
-    loadPlan,
+    hasLoadedTemplates,
     loadTemplates,
-    plan,
+    templatesError,
   ]);
-
-  useEffect(() => {
-    void refetchAll();
-  }, [refetchAll]);
-
-  useFocusEffect(
-    useCallback(() => {
-      void refetchAll();
-    }, [refetchAll]),
-  );
 
   const retryPlan = useCallback(async () => {
     if (plan === null) {
@@ -281,17 +405,18 @@ export function FlarePlanProvider({
   }, [loadPlan, plan]);
 
   const retryTemplates = useCallback(async () => {
-    if (plan === null && templates.length === 0) {
+    if (plan === null && templatesState.length === 0) {
       setIsInitialLoading(true);
     } else {
       setIsRefreshing(true);
     }
 
+    setHasLoadedTemplates(false);
     await loadTemplates();
 
     setIsInitialLoading(false);
     setIsRefreshing(false);
-  }, [loadTemplates, plan, templates.length]);
+  }, [loadTemplates, plan, templatesState.length]);
 
   const updateLocalPlan = useCallback((nextPlan: ActiveFlarePlan) => {
     setPlan(nextPlan);
@@ -313,7 +438,6 @@ export function FlarePlanProvider({
         });
 
         setPlan(response.plan);
-        await loadTemplates();
         return true;
       } catch (error) {
         setErrorBanner({
@@ -337,7 +461,7 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, flarePlanRepository, loadTemplates],
+    [clearErrorBanner, flarePlanRepository],
   );
 
   const createCustomAction = useCallback(
@@ -351,7 +475,6 @@ export function FlarePlanProvider({
           title: input.title,
         });
         setPlan(response.plan);
-        await loadTemplates();
         return true;
       } catch (error) {
         setErrorBanner({
@@ -368,7 +491,7 @@ export function FlarePlanProvider({
         return false;
       }
     },
-    [clearErrorBanner, flarePlanRepository, loadTemplates],
+    [clearErrorBanner, flarePlanRepository],
   );
 
   const saveAction = useCallback(
@@ -390,7 +513,6 @@ export function FlarePlanProvider({
           titleProvided: true,
         });
         setPlan(response.plan);
-        await loadTemplates();
         return true;
       } catch (error) {
         setErrorBanner({
@@ -414,7 +536,7 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, createCustomAction, flarePlanRepository, loadTemplates],
+    [clearErrorBanner, createCustomAction, flarePlanRepository],
   );
 
   const archiveAction = useCallback(
@@ -428,7 +550,6 @@ export function FlarePlanProvider({
           idempotencyKey: createIdempotencyKey(),
         });
         setPlan(response.plan);
-        await loadTemplates();
         return true;
       } catch (error) {
         setErrorBanner({
@@ -452,7 +573,7 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, flarePlanRepository, loadTemplates],
+    [clearErrorBanner, flarePlanRepository],
   );
 
   const reorderActions = useCallback(
@@ -492,6 +613,7 @@ export function FlarePlanProvider({
       archiveAction,
       createCustomAction,
       createFromTemplate,
+      ensureTemplatesLoaded,
       errorBanner,
       isActionPending: (actionId) => pendingActionIds.has(actionId),
       isAtActionLimit:
@@ -517,6 +639,7 @@ export function FlarePlanProvider({
       archiveAction,
       createCustomAction,
       createFromTemplate,
+      ensureTemplatesLoaded,
       errorBanner,
       isInitialLoading,
       isReorderPending,
