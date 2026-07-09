@@ -180,6 +180,32 @@ class SupportChannelHttpAppTests(unittest.TestCase):
         payload = json.loads(response.body.decode("utf-8"))
         self.assertEqual("move_to_different_room", payload["templates"][0]["template_key"])
 
+    def test_unhandled_api_exception_returns_json_500_with_cors_headers(self) -> None:
+        app = SupportChannelHttpApp(
+            runtime_config=load_support_channel_http_runtime_config(
+                {
+                    "FLARE_ALLOWED_FRONTEND_ORIGINS": "https://flare-web.tailnet.ts.net,http://100.64.0.10:8081",
+                    "FLARE_PUBLIC_BACKEND_BASE_URL": "https://flare-api.tailnet.ts.net:9001",
+                }
+            ),
+            support_api=_ExplodingSupportApi(),
+        )
+
+        response = _invoke(
+            app,
+            method="GET",
+            path="/api/support-channel",
+            origin="https://flare-web.tailnet.ts.net",
+        )
+
+        self.assertEqual(500, response.status_code)
+        self.assertEqual(
+            "https://flare-web.tailnet.ts.net",
+            response.headers["Access-Control-Allow-Origin"],
+        )
+        payload = json.loads(response.body.decode("utf-8"))
+        self.assertEqual("internal_server_error", payload["error"]["code"])
+
 
 class SupportChannelHttpAuthBoundaryTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -203,11 +229,16 @@ class SupportChannelHttpAuthBoundaryTests(unittest.TestCase):
             self.app,
             method="GET",
             path="/api/support-channel",
+            origin="https://flare-web.tailnet.ts.net",
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
         payload = json.loads(response.body.decode("utf-8"))
         self.assertEqual("unauthorized", payload["error"]["code"])
+        self.assertEqual(
+            "https://flare-web.tailnet.ts.net",
+            response.headers["Access-Control-Allow-Origin"],
+        )
 
     def test_post_support_channel_test_without_authorization_stays_unauthorized(self) -> None:
         response = _invoke(
@@ -297,6 +328,14 @@ class _FakeUserLookupTransport:
         if self.error is not None:
             raise self.error
         return self.payload
+
+
+class _ExplodingSupportApi(SupportChannelsApi):
+    def __init__(self) -> None:
+        pass
+
+    def handle_request(self, *, method: str, path: str, headers=None, body=None) -> ApiResponse:
+        raise RuntimeError("boom")
 
 
 class _ConfigurableAuthenticator:

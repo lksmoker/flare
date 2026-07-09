@@ -13,35 +13,42 @@ class PostgresFlarePlanRepositorySqlTests(unittest.TestCase):
         )
 
     def test_reorder_uses_plan_lock_and_two_phase_position_updates(self) -> None:
+        first_id = "11111111-1111-1111-1111-111111111111"
+        second_id = "22222222-2222-2222-2222-222222222222"
+        third_id = "33333333-3333-3333-3333-333333333333"
         cursor = _FakeCursor(
             plan={"id": "plan-1", "user_id": "user-1", "updated_at": "2026-07-08T00:00:00Z"},
             actions=[
-                _action_row("action-1", position=1),
-                _action_row("action-2", position=2),
-                _action_row("action-3", position=3),
+                _action_row(first_id, position=1),
+                _action_row(second_id, position=2),
+                _action_row(third_id, position=3),
             ],
         )
 
         response = self.repository._reorder_actions(
             cursor=cursor,
             user_id="user-1",
-            action_ids=["action-3", "action-1", "action-2"],
+            action_ids=[third_id, first_id, second_id],
         )
 
         self.assertEqual(200, int(response[0]))
         self.assertEqual(
-            ["action-3", "action-1", "action-2"],
+            [third_id, first_id, second_id],
             [action["id"] for action in response[1]["plan"]["actions"]],
         )
         self.assertIn("for update", cursor.statements[1])
+        self.assertTrue(
+            any("action.id = any(%s::uuid[])" in statement for statement in cursor.statements),
+            cursor.statements,
+        )
         self.assertEqual(
             [
-                ("action-1", 4),
-                ("action-2", 5),
-                ("action-3", 6),
-                ("action-3", 1),
-                ("action-1", 2),
-                ("action-2", 3),
+                (first_id, 4),
+                (second_id, 5),
+                (third_id, 6),
+                (third_id, 1),
+                (first_id, 2),
+                (second_id, 3),
             ],
             cursor.position_updates,
         )
@@ -71,7 +78,10 @@ class _FakeCursor:
             plan_id = params[0]
             self._fetchall_result = self._active_actions_for_plan(plan_id)
             return
-        if "from public.flare_plan_actions action join public.flare_plans plan" in normalized and "action.id = any(%s)" in normalized:
+        if (
+            "from public.flare_plan_actions action join public.flare_plans plan" in normalized
+            and "action.id = any(%s::uuid[])" in normalized
+        ):
             user_id, action_ids = params
             self._fetchall_result = [
                 dict(action)

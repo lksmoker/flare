@@ -85,7 +85,7 @@ describe("flareResponseApi", () => {
     );
   });
 
-  it("loads canonical response state and posts run transitions through the reserved routes", async () => {
+  it("loads canonical response state from the response route and never hits a plain event-detail GET", async () => {
     const fetchImpl = jest
       .fn()
       .mockResolvedValueOnce(
@@ -162,6 +162,12 @@ describe("flareResponseApi", () => {
 
     expect(state.flareEvent.id).toBe("event-1");
     expect(run?.status).toBe("in_progress");
+    expect(fetchImpl.mock.calls[0][0]).toBe(
+      "http://localhost/api/flare-events/event-1/response",
+    );
+    expect(fetchImpl.mock.calls[0][0]).not.toBe(
+      "http://localhost/api/flare-events/event-1",
+    );
     expect(fetchImpl.mock.calls[1][0]).toBe(
       "http://localhost/api/flare-plan-runs/run-1/begin",
     );

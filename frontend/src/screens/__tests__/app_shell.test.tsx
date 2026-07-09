@@ -353,6 +353,7 @@ describe("V0 app shell", () => {
     expect(getByText("Begin Flare Plan")).toBeTruthy();
     expect(getByText("Skip for now")).toBeTruthy();
     expect(queryByText("First step")).toBeNull();
+    expect(flareResponseApi.getFlareResponse).toHaveBeenCalledWith("event-1");
   });
 
   it("enters focused mode, advances one action, and hides the ordinary response chrome", async () => {

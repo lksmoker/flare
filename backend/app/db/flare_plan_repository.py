@@ -1367,7 +1367,7 @@ class PostgresFlarePlanRepository(FlarePlanRepository):
             from public.flare_plan_actions action
             join public.flare_plans plan on plan.id = action.plan_id
             where plan.user_id = %s
-              and action.id = any(%s)
+              and action.id = any(%s::uuid[])
             """,
             (user_id, action_ids),
         )

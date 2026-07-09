@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations
 
 import json
+import logging
 from dataclasses import dataclass
 from html import escape
 from http import HTTPStatus
@@ -40,6 +41,7 @@ _CORS_ALLOWED_HEADERS = "authorization, content-type, idempotency-key"
 _API_PREFIX = "/api/"
 _GROUPME_CALLBACK_PATH = "/api/support-channel/groupme/connect/callback"
 _GROUPME_PUBLIC_CALLBACK_PATH = "/api/support-channel/groupme/callback"
+_LOGGER = logging.getLogger(__name__)
 _GROUPME_CONNECT_START_PATH = "/api/support-channel/groupme/connect/start"
 
 
@@ -94,125 +96,145 @@ class SupportChannelHttpApp:
         path = str(environ.get("PATH_INFO") or "/")
         query_string = str(environ.get("QUERY_STRING") or "")
         origin = _clean_origin(environ.get("HTTP_ORIGIN"))
+        try:
+            if path.startswith(_API_PREFIX):
+                rejected = self._reject_disallowed_origin(path=path, origin=origin, start_response=start_response)
+                if rejected is not None:
+                    return rejected
 
-        if path.startswith(_API_PREFIX):
-            rejected = self._reject_disallowed_origin(path=path, origin=origin, start_response=start_response)
-            if rejected is not None:
-                return rejected
+            if method == "OPTIONS" and path.startswith(_API_PREFIX):
+                return self._respond(
+                    start_response,
+                    HTTPStatus.NO_CONTENT,
+                    b"",
+                    content_type="text/plain; charset=utf-8",
+                    extra_headers=self._cors_headers(origin),
+                )
 
-        if method == "OPTIONS" and path.startswith(_API_PREFIX):
+            if method == "GET" and path == "/api/health":
+                body = json.dumps(
+                    {
+                        "status": "ok",
+                        "public_backend_base_url": self._runtime_config.public_backend_base_url,
+                        "allowed_frontend_origins": list(self._runtime_config.allowed_frontend_origins),
+                        "routes": [
+                            "/api/health",
+                            "/api/support-channel",
+                            "/api/support-channel/groupme/connect/start",
+                            "/api/support-channel/groupme/callback",
+                            "/api/support-channel/groupme/connect/callback",
+                            "/api/support-channel/groupme/destinations",
+                            "/api/support-channel/configure",
+                            "/api/support-channel/reconnect",
+                            "/api/support-channel/disable",
+                            "/api/support-channel/test",
+                            "/api/support-channel/send-flare",
+                            "/api/flare-events",
+                            "/api/flare-events/{flare_event_id}/response",
+                            "/api/flare-events/{flare_event_id}/flare-plan-run",
+                            "/api/flare-plan/templates",
+                            "/api/flare-plan",
+                            "/api/flare-plan/actions/from-template",
+                            "/api/flare-plan/actions",
+                            "/api/flare-plan/actions/{action_id}",
+                            "/api/flare-plan/actions/order",
+                            "/api/flare-plan-runs/{run_id}/begin",
+                            "/api/flare-plan-runs/{run_id}/decline",
+                            "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/done",
+                            "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/skip",
+                            "/api/flare-plan-runs/{run_id}/end-early",
+                        ],
+                    },
+                    sort_keys=True,
+                ).encode("utf-8")
+                return self._respond(
+                    start_response,
+                    HTTPStatus.OK,
+                    body,
+                    content_type="application/json; charset=utf-8",
+                    extra_headers=self._cors_headers(origin),
+                )
+
+            if method == "GET" and path == _GROUPME_PUBLIC_CALLBACK_PATH:
+                default_origin = self._select_callback_frontend_origin(origin)
+                html = _build_groupme_callback_bridge_html(
+                    default_frontend_origin=default_origin,
+                    allowed_origins=self._runtime_config.allowed_frontend_origins,
+                ).encode("utf-8")
+                return self._respond(
+                    start_response,
+                    HTTPStatus.OK,
+                    html,
+                    content_type="text/html; charset=utf-8",
+                    extra_headers=self._cors_headers(origin),
+                )
+
+            if method == "GET" and path == _GROUPME_CALLBACK_PATH and "access_token=" not in query_string:
+                default_origin = self._select_callback_frontend_origin(origin)
+                html = _build_groupme_callback_bridge_html(
+                    default_frontend_origin=default_origin,
+                    allowed_origins=self._runtime_config.allowed_frontend_origins,
+                ).encode("utf-8")
+                return self._respond(
+                    start_response,
+                    HTTPStatus.OK,
+                    html,
+                    content_type="text/html; charset=utf-8",
+                    extra_headers=self._cors_headers(origin),
+                )
+
+            body = _read_request_body(environ)
+            headers = _extract_headers(environ)
+            api_path = path if not query_string else f"{path}?{query_string}"
+            if self._flare_plan_api is not None and (
+                path.startswith("/api/flare-plan")
+                or path.startswith("/api/flare-events")
+            ):
+                response = self._flare_plan_api.handle_request(
+                    method=method,
+                    path=api_path,
+                    headers=headers,
+                    body=body,
+                )
+            else:
+                response = self._support_api.handle_request(
+                    method=method,
+                    path=api_path,
+                    headers=headers,
+                    body=body,
+                )
+            if path == _GROUPME_CONNECT_START_PATH and response.status_code == HTTPStatus.OK:
+                response = _append_groupme_oauth_state(
+                    response=response,
+                    origin=self._select_callback_frontend_origin(origin),
+                )
             return self._respond(
                 start_response,
-                HTTPStatus.NO_CONTENT,
-                b"",
-                content_type="text/plain; charset=utf-8",
-                extra_headers=self._cors_headers(origin),
-            )
-
-        if method == "GET" and path == "/api/health":
-            body = json.dumps(
-                {
-                    "status": "ok",
-                    "public_backend_base_url": self._runtime_config.public_backend_base_url,
-                    "allowed_frontend_origins": list(self._runtime_config.allowed_frontend_origins),
-                    "routes": [
-                        "/api/health",
-                        "/api/support-channel",
-                        "/api/support-channel/groupme/connect/start",
-                        "/api/support-channel/groupme/callback",
-                        "/api/support-channel/groupme/connect/callback",
-                        "/api/support-channel/groupme/destinations",
-                        "/api/support-channel/configure",
-                        "/api/support-channel/reconnect",
-                        "/api/support-channel/disable",
-                        "/api/support-channel/test",
-                        "/api/support-channel/send-flare",
-                        "/api/flare-events",
-                        "/api/flare-events/{flare_event_id}/response",
-                        "/api/flare-events/{flare_event_id}/flare-plan-run",
-                        "/api/flare-plan/templates",
-                        "/api/flare-plan",
-                        "/api/flare-plan/actions/from-template",
-                        "/api/flare-plan/actions",
-                        "/api/flare-plan/actions/{action_id}",
-                        "/api/flare-plan/actions/order",
-                        "/api/flare-plan-runs/{run_id}/begin",
-                        "/api/flare-plan-runs/{run_id}/decline",
-                        "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/done",
-                        "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/skip",
-                        "/api/flare-plan-runs/{run_id}/end-early",
-                    ],
-                },
-                sort_keys=True,
-            ).encode("utf-8")
-            return self._respond(
-                start_response,
-                HTTPStatus.OK,
-                body,
+                response.status_code,
+                response.json_bytes(),
                 content_type="application/json; charset=utf-8",
                 extra_headers=self._cors_headers(origin),
             )
-
-        if method == "GET" and path == _GROUPME_PUBLIC_CALLBACK_PATH:
-            default_origin = self._select_callback_frontend_origin(origin)
-            html = _build_groupme_callback_bridge_html(
-                default_frontend_origin=default_origin,
-                allowed_origins=self._runtime_config.allowed_frontend_origins,
-            ).encode("utf-8")
-            return self._respond(
-                start_response,
-                HTTPStatus.OK,
-                html,
-                content_type="text/html; charset=utf-8",
-                extra_headers=self._cors_headers(origin),
-            )
-
-        if method == "GET" and path == _GROUPME_CALLBACK_PATH and "access_token=" not in query_string:
-            default_origin = self._select_callback_frontend_origin(origin)
-            html = _build_groupme_callback_bridge_html(
-                default_frontend_origin=default_origin,
-                allowed_origins=self._runtime_config.allowed_frontend_origins,
-            ).encode("utf-8")
-            return self._respond(
-                start_response,
-                HTTPStatus.OK,
-                html,
-                content_type="text/html; charset=utf-8",
-                extra_headers=self._cors_headers(origin),
-            )
-
-        body = _read_request_body(environ)
-        headers = _extract_headers(environ)
-        api_path = path if not query_string else f"{path}?{query_string}"
-        if self._flare_plan_api is not None and (
-            path.startswith("/api/flare-plan")
-            or path.startswith("/api/flare-events")
-        ):
-            response = self._flare_plan_api.handle_request(
-                method=method,
-                path=api_path,
-                headers=headers,
-                body=body,
-            )
-        else:
-            response = self._support_api.handle_request(
-                method=method,
-                path=api_path,
-                headers=headers,
-                body=body,
-            )
-        if path == _GROUPME_CONNECT_START_PATH and response.status_code == HTTPStatus.OK:
-            response = _append_groupme_oauth_state(
-                response=response,
-                origin=self._select_callback_frontend_origin(origin),
-            )
-        return self._respond(
-            start_response,
-            response.status_code,
-            response.json_bytes(),
-            content_type="application/json; charset=utf-8",
-            extra_headers=self._cors_headers(origin),
-        )
+        except Exception:
+            if path.startswith(_API_PREFIX):
+                _LOGGER.exception("Unhandled API exception for %s %s", method, path)
+                body = json.dumps(
+                    {
+                        "error": {
+                            "code": "internal_server_error",
+                            "message": "An unexpected server error occurred.",
+                        }
+                    },
+                    sort_keys=True,
+                ).encode("utf-8")
+                return self._respond(
+                    start_response,
+                    HTTPStatus.INTERNAL_SERVER_ERROR,
+                    body,
+                    content_type="application/json; charset=utf-8",
+                    extra_headers=self._cors_headers(origin),
+                )
+            raise
 
     def _reject_disallowed_origin(
         self,
