@@ -13,8 +13,14 @@ from psycopg2.extensions import cursor as PgCursor
 
 from backend.app.domain.flare_plan import (
     ActiveFlarePlanRecord,
+    FlareEventRecord,
     FlarePlanActionRecord,
     FlarePlanError,
+    FlarePlanRunActionRecord,
+    FlarePlanRunProgressRecord,
+    FlarePlanRunRecord,
+    FlareResponseRecord,
+    FlareSupportDeliveryRecord,
     IdempotentResponseRecord,
     MAXIMUM_ACTIVE_FLARE_PLAN_ACTIONS,
     StarterTemplateRecord,
@@ -87,6 +93,80 @@ class FlarePlanRepository:
     ) -> IdempotentResponseRecord:
         raise NotImplementedError
 
+    def create_flare_event(
+        self,
+        *,
+        user_id: str,
+        anchor_note_id: str | None,
+        anchor_note_version: int | None,
+        behavior_description_snapshot: str | None,
+        behavior_label_snapshot: str,
+        behavior_pattern_id: str | None,
+        response_mode: str,
+        support_action_shown: str | None,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
+    def read_flare_response(self, *, user_id: str, flare_event_id: str) -> FlareResponseRecord:
+        raise NotImplementedError
+
+    def create_or_read_run_for_event(
+        self,
+        *,
+        user_id: str,
+        flare_event_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
+    def read_run_for_event(self, *, user_id: str, flare_event_id: str) -> FlarePlanRunRecord | None:
+        raise NotImplementedError
+
+    def begin_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
+    def decline_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
+    def resolve_run_action(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        event_action_id: str,
+        outcome: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
+    def end_run_early(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        raise NotImplementedError
+
 
 @dataclass(frozen=True)
 class _ActionRow:
@@ -135,6 +215,131 @@ class _PlanRow:
     user_id: str
     updated_at: str
 
+
+@dataclass(frozen=True)
+class _FlareEventRow:
+    id: str
+    user_id: str
+    status: str
+    response_mode: str
+    behavior_label_snapshot: str
+    behavior_description_snapshot: str | None
+    behavior_pattern_id: str | None
+    anchor_note_id: str | None
+    anchor_note_version: int | None
+    support_action_shown: str | None
+    support_action_taken: str | None
+    created_at: str
+    updated_at: str
+    closed_at: str | None
+    archived_at: str | None
+
+    @classmethod
+    def from_row(cls, row: dict[str, Any]) -> "_FlareEventRow":
+        return cls(
+            id=str(row["id"]),
+            user_id=str(row["user_id"]),
+            status=str(row["status"]),
+            response_mode=str(row["response_mode"]),
+            behavior_label_snapshot=str(row["behavior_label_snapshot"]),
+            behavior_description_snapshot=_optional_str(row.get("behavior_description_snapshot")),
+            behavior_pattern_id=_optional_str(row.get("behavior_pattern_id")),
+            anchor_note_id=_optional_str(row.get("anchor_note_id")),
+            anchor_note_version=None if row.get("anchor_note_version") is None else int(row["anchor_note_version"]),
+            support_action_shown=_optional_str(row.get("support_action_shown")),
+            support_action_taken=_optional_str(row.get("support_action_taken")),
+            created_at=format_timestamp(row.get("created_at")) or "",
+            updated_at=format_timestamp(row.get("updated_at")) or "",
+            closed_at=format_timestamp(row.get("closed_at")),
+            archived_at=format_timestamp(row.get("archived_at")),
+        )
+
+    def to_record(self) -> FlareEventRecord:
+        return FlareEventRecord(
+            id=self.id,
+            user_id=self.user_id,
+            status=self.status,
+            response_mode=self.response_mode,
+            behavior_label_snapshot=self.behavior_label_snapshot,
+            behavior_description_snapshot=self.behavior_description_snapshot,
+            behavior_pattern_id=self.behavior_pattern_id,
+            anchor_note_id=self.anchor_note_id,
+            anchor_note_version=self.anchor_note_version,
+            support_action_shown=self.support_action_shown,
+            support_action_taken=self.support_action_taken,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            closed_at=self.closed_at,
+            archived_at=self.archived_at,
+        )
+
+
+@dataclass(frozen=True)
+class _RunRow:
+    id: str
+    flare_event_id: str
+    source_plan_id: str | None
+    status: str
+    offered_at: str
+    started_at: str | None
+    declined_at: str | None
+    completed_at: str | None
+    ended_at: str | None
+    updated_at: str
+
+    @classmethod
+    def from_row(cls, row: dict[str, Any]) -> "_RunRow":
+        return cls(
+            id=str(row["id"]),
+            flare_event_id=str(row["flare_event_id"]),
+            source_plan_id=_optional_str(row.get("source_plan_id")),
+            status=str(row["status"]),
+            offered_at=format_timestamp(row.get("offered_at")) or "",
+            started_at=format_timestamp(row.get("started_at")),
+            declined_at=format_timestamp(row.get("declined_at")),
+            completed_at=format_timestamp(row.get("completed_at")),
+            ended_at=format_timestamp(row.get("ended_at")),
+            updated_at=format_timestamp(row.get("updated_at")) or "",
+        )
+
+
+@dataclass(frozen=True)
+class _RunActionRow:
+    id: str
+    run_id: str
+    source_action_id: str | None
+    source_template_key: str | None
+    title: str
+    description: str | None
+    position: int
+    outcome: str
+    responded_at: str | None
+
+    @classmethod
+    def from_row(cls, row: dict[str, Any]) -> "_RunActionRow":
+        return cls(
+            id=str(row["id"]),
+            run_id=str(row["run_id"]),
+            source_action_id=_optional_str(row.get("source_action_id")),
+            source_template_key=_optional_str(row.get("source_template_key")),
+            title=str(row["title"]),
+            description=_optional_str(row.get("description")),
+            position=int(row["position"]),
+            outcome=str(row["outcome"]),
+            responded_at=format_timestamp(row.get("responded_at")),
+        )
+
+    def to_record(self) -> FlarePlanRunActionRecord:
+        return FlarePlanRunActionRecord(
+            id=self.id,
+            source_action_id=self.source_action_id,
+            source_template_key=self.source_template_key,
+            title=self.title,
+            description=self.description,
+            position=self.position,
+            outcome=self.outcome,
+            responded_at=self.responded_at,
+        )
 
 class PostgresFlarePlanRepository(FlarePlanRepository):
     def __init__(self, *, config: FlarePlanDatabaseConfig) -> None:
@@ -299,6 +504,155 @@ class PostgresFlarePlanRepository(FlarePlanRepository):
                 user_id=user_id,
                 action_ids=action_ids,
             ),
+        )
+
+    def create_flare_event(
+        self,
+        *,
+        user_id: str,
+        anchor_note_id: str | None,
+        anchor_note_version: int | None,
+        behavior_description_snapshot: str | None,
+        behavior_label_snapshot: str,
+        behavior_pattern_id: str | None,
+        response_mode: str,
+        support_action_shown: str | None,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation="create_flare_event",
+            target_resource="flare_event:new",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._create_flare_event(
+                cursor=cursor,
+                user_id=user_id,
+                anchor_note_id=anchor_note_id,
+                anchor_note_version=anchor_note_version,
+                behavior_description_snapshot=behavior_description_snapshot,
+                behavior_label_snapshot=behavior_label_snapshot,
+                behavior_pattern_id=behavior_pattern_id,
+                response_mode=response_mode,
+                support_action_shown=support_action_shown,
+            ),
+        )
+
+    def read_flare_response(self, *, user_id: str, flare_event_id: str) -> FlareResponseRecord:
+        with self._connect() as connection, connection.cursor(cursor_factory=extras.RealDictCursor) as cursor:
+            flare_event = self._get_owned_flare_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+            support_delivery = self._get_support_delivery(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+            run = self._get_run_for_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+            return FlareResponseRecord(
+                flare_event=flare_event.to_record(),
+                support_delivery=support_delivery,
+                run=None if run is None else self._build_run_record(cursor=cursor, run=run),
+            )
+
+    def create_or_read_run_for_event(
+        self,
+        *,
+        user_id: str,
+        flare_event_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation="offer_run_for_event",
+            target_resource=f"flare_event:{flare_event_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._create_or_read_run_for_event(
+                cursor=cursor,
+                user_id=user_id,
+                flare_event_id=flare_event_id,
+            ),
+        )
+
+    def read_run_for_event(self, *, user_id: str, flare_event_id: str) -> FlarePlanRunRecord | None:
+        with self._connect() as connection, connection.cursor(cursor_factory=extras.RealDictCursor) as cursor:
+            self._get_owned_flare_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+            run = self._get_run_for_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+            if run is None:
+                return None
+            return self._build_run_record(cursor=cursor, run=run)
+
+    def begin_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation="begin_run",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._begin_run(cursor=cursor, user_id=user_id, run_id=run_id),
+        )
+
+    def decline_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation="decline_run",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._decline_run(cursor=cursor, user_id=user_id, run_id=run_id),
+        )
+
+    def resolve_run_action(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        event_action_id: str,
+        outcome: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation=f"resolve_run_action:{outcome}",
+            target_resource=f"run_action:{event_action_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._resolve_run_action(
+                cursor=cursor,
+                user_id=user_id,
+                run_id=run_id,
+                event_action_id=event_action_id,
+                outcome=outcome,
+            ),
+        )
+
+    def end_run_early(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_idempotent_mutation(
+            user_id=user_id,
+            operation="end_run_early",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda cursor: self._end_run_early(cursor=cursor, user_id=user_id, run_id=run_id),
         )
 
     def _create_action_from_template(
@@ -559,6 +913,202 @@ class PostgresFlarePlanRepository(FlarePlanRepository):
             )
         current_plan = self._build_active_plan(cursor=cursor, plan=plan)
         return HTTPStatus.OK, {"plan": current_plan.to_public_dict()}
+
+    def _create_flare_event(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        anchor_note_id: str | None,
+        anchor_note_version: int | None,
+        behavior_description_snapshot: str | None,
+        behavior_label_snapshot: str,
+        behavior_pattern_id: str | None,
+        response_mode: str,
+        support_action_shown: str | None,
+    ) -> tuple[int, dict[str, Any]]:
+        cursor.execute(
+            """
+            update public.flare_events
+            set status = 'closed',
+                closed_at = coalesce(closed_at, now())
+            where user_id = %s
+              and status = 'active'
+              and archived_at is null
+            """,
+            (user_id,),
+        )
+        cursor.execute(
+            """
+            insert into public.flare_events (
+                user_id,
+                anchor_note_id,
+                anchor_note_version,
+                behavior_description_snapshot,
+                behavior_label_snapshot,
+                behavior_pattern_id,
+                response_mode,
+                status,
+                support_action_shown,
+                support_action_taken
+            )
+            values (%s, %s, %s, %s, %s, %s, %s, 'active', %s, null)
+            returning *
+            """,
+            (
+                user_id,
+                anchor_note_id,
+                anchor_note_version,
+                behavior_description_snapshot,
+                behavior_label_snapshot,
+                behavior_pattern_id,
+                response_mode,
+                support_action_shown,
+            ),
+        )
+        flare_event = _FlareEventRow.from_row(cursor.fetchone())
+        run = self._ensure_run_for_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event.id)
+        return HTTPStatus.CREATED, {
+            "flare_event": flare_event.to_record().to_public_dict(),
+            "run": None if run is None else run.to_public_dict(),
+        }
+
+    def _create_or_read_run_for_event(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        flare_event_id: str,
+    ) -> tuple[int, dict[str, Any]]:
+        self._get_owned_flare_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+        run = self._ensure_run_for_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+        if run is None:
+            return HTTPStatus.OK, {"run": None, "reason": "flare_plan_not_configured"}
+        return HTTPStatus.OK, {"run": run.to_public_dict()}
+
+    def _begin_run(self, *, cursor: PgCursor, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._lock_owned_run(cursor=cursor, user_id=user_id, run_id=run_id)
+        if run.status == "offered":
+            cursor.execute(
+                """
+                update public.flare_plan_runs
+                set status = 'in_progress',
+                    started_at = coalesce(started_at, now())
+                where id = %s
+                """,
+                (run_id,),
+            )
+        elif run.status == "declined":
+            self._raise_conflict("FLARE_PLAN_RUN_ALREADY_DECLINED", "Flare Plan Run has already been declined.")
+        elif run.status in ("completed", "ended_early"):
+            self._raise_conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        elif run.status != "in_progress":
+            self._raise_conflict("FLARE_PLAN_INVALID_RUN_TRANSITION", "Flare Plan Run could not be started.")
+        updated = self._get_run_by_id(cursor=cursor, run_id=run_id)
+        return HTTPStatus.OK, {"run": self._build_run_record(cursor=cursor, run=updated).to_public_dict()}
+
+    def _decline_run(self, *, cursor: PgCursor, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._lock_owned_run(cursor=cursor, user_id=user_id, run_id=run_id)
+        if run.status == "offered":
+            cursor.execute(
+                """
+                update public.flare_plan_run_actions
+                set outcome = 'not_reached'
+                where run_id = %s
+                  and outcome = 'pending'
+                """,
+                (run_id,),
+            )
+            cursor.execute(
+                """
+                update public.flare_plan_runs
+                set status = 'declined',
+                    declined_at = coalesce(declined_at, now())
+                where id = %s
+                """,
+                (run_id,),
+            )
+        elif run.status == "in_progress":
+            self._raise_conflict("FLARE_PLAN_RUN_ALREADY_STARTED", "Flare Plan Run has already started.")
+        else:
+            self._raise_conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        updated = self._get_run_by_id(cursor=cursor, run_id=run_id)
+        return HTTPStatus.OK, {"run": self._build_run_record(cursor=cursor, run=updated).to_public_dict()}
+
+    def _resolve_run_action(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        run_id: str,
+        event_action_id: str,
+        outcome: str,
+    ) -> tuple[int, dict[str, Any]]:
+        run = self._lock_owned_run(cursor=cursor, user_id=user_id, run_id=run_id)
+        if run.status != "in_progress":
+            self._raise_conflict("FLARE_PLAN_RUN_NOT_IN_PROGRESS", "Flare Plan Run is not in progress.")
+        action = self._lock_run_action(cursor=cursor, run_id=run_id, event_action_id=event_action_id)
+        if action is None:
+            raise FlarePlanError(
+                code="FLARE_PLAN_EVENT_ACTION_NOT_FOUND",
+                message="Flare Plan action could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        current_action = self._get_current_run_action(cursor=cursor, run_id=run_id)
+        if current_action is None:
+            self._raise_conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        if action.id != current_action.id:
+            if action.outcome != "pending":
+                self._raise_conflict("FLARE_PLAN_ACTION_ALREADY_RESOLVED", "Flare Plan action was already resolved.")
+            self._raise_conflict("FLARE_PLAN_ACTION_NOT_CURRENT", "Flare Plan action is not current.")
+        cursor.execute(
+            """
+            update public.flare_plan_run_actions
+            set outcome = %s,
+                responded_at = now()
+            where id = %s
+            """,
+            (outcome, event_action_id),
+        )
+        next_current = self._get_current_run_action(cursor=cursor, run_id=run_id)
+        if next_current is None:
+            cursor.execute(
+                """
+                update public.flare_plan_runs
+                set status = 'completed',
+                    completed_at = coalesce(completed_at, now())
+                where id = %s
+                """,
+                (run_id,),
+            )
+        updated = self._get_run_by_id(cursor=cursor, run_id=run_id)
+        return HTTPStatus.OK, {"run": self._build_run_record(cursor=cursor, run=updated).to_public_dict()}
+
+    def _end_run_early(self, *, cursor: PgCursor, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._lock_owned_run(cursor=cursor, user_id=user_id, run_id=run_id)
+        if run.status != "in_progress":
+            self._raise_conflict("FLARE_PLAN_RUN_NOT_IN_PROGRESS", "Flare Plan Run is not in progress.")
+        cursor.execute(
+            """
+            update public.flare_plan_run_actions
+            set outcome = 'not_reached'
+            where run_id = %s
+              and outcome = 'pending'
+            """,
+            (run_id,),
+        )
+        cursor.execute(
+            """
+            update public.flare_plan_runs
+            set status = 'ended_early',
+                ended_at = coalesce(ended_at, now())
+            where id = %s
+            """,
+            (run_id,),
+        )
+        updated = self._get_run_by_id(cursor=cursor, run_id=run_id)
+        return HTTPStatus.OK, {"run": self._build_run_record(cursor=cursor, run=updated).to_public_dict()}
 
     def _run_idempotent_mutation(
         self,
@@ -875,6 +1425,270 @@ class PostgresFlarePlanRepository(FlarePlanRepository):
             for update
             """,
             (plan_id,),
+        )
+
+    def _get_owned_flare_event(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        flare_event_id: str,
+    ) -> _FlareEventRow:
+        cursor.execute(
+            """
+            select *
+            from public.flare_events
+            where id = %s
+              and user_id = %s
+            limit 1
+            """,
+            (flare_event_id, user_id),
+        )
+        row = cursor.fetchone()
+        if row is None:
+            raise FlarePlanError(
+                code="FLARE_EVENT_NOT_FOUND",
+                message="Flare Event could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        return _FlareEventRow.from_row(row)
+
+    def _get_support_delivery(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        flare_event_id: str,
+    ) -> FlareSupportDeliveryRecord | None:
+        cursor.execute(
+            """
+            select
+                status,
+                attempted_at,
+                delivered_at,
+                error_code,
+                error_message_safe,
+                destination_name
+            from public.support_channel_delivery_attempts
+            where user_id = %s
+              and flare_event_id = %s
+            order by attempted_at desc, created_at desc
+            limit 1
+            """,
+            (user_id, flare_event_id),
+        )
+        row = cursor.fetchone()
+        if row is None:
+            return None
+        return FlareSupportDeliveryRecord(
+            status=str(row["status"]),
+            attempted_at=format_timestamp(row.get("attempted_at")),
+            delivered_at=format_timestamp(row.get("delivered_at")),
+            error_code=_optional_str(row.get("error_code")),
+            error_message_safe=_optional_str(row.get("error_message_safe")),
+            destination_display_name=_optional_str(row.get("destination_name")),
+        )
+
+    def _get_run_for_event(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        flare_event_id: str,
+    ) -> _RunRow | None:
+        cursor.execute(
+            """
+            select run.*
+            from public.flare_plan_runs run
+            join public.flare_events event on event.id = run.flare_event_id
+            where run.flare_event_id = %s
+              and event.user_id = %s
+            limit 1
+            """,
+            (flare_event_id, user_id),
+        )
+        row = cursor.fetchone()
+        return None if row is None else _RunRow.from_row(row)
+
+    def _get_run_by_id(self, *, cursor: PgCursor, run_id: str) -> _RunRow:
+        cursor.execute(
+            """
+            select *
+            from public.flare_plan_runs
+            where id = %s
+            limit 1
+            """,
+            (run_id,),
+        )
+        row = cursor.fetchone()
+        if row is None:
+            raise FlarePlanError(
+                code="FLARE_PLAN_RUN_NOT_FOUND",
+                message="Flare Plan Run could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        return _RunRow.from_row(row)
+
+    def _lock_owned_run(self, *, cursor: PgCursor, user_id: str, run_id: str) -> _RunRow:
+        cursor.execute(
+            """
+            select run.*
+            from public.flare_plan_runs run
+            join public.flare_events event on event.id = run.flare_event_id
+            where run.id = %s
+              and event.user_id = %s
+            for update
+            """,
+            (run_id, user_id),
+        )
+        row = cursor.fetchone()
+        if row is None:
+            raise FlarePlanError(
+                code="FLARE_PLAN_RUN_NOT_FOUND",
+                message="Flare Plan Run could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        return _RunRow.from_row(row)
+
+    def _lock_run_action(
+        self,
+        *,
+        cursor: PgCursor,
+        run_id: str,
+        event_action_id: str,
+    ) -> _RunActionRow | None:
+        cursor.execute(
+            """
+            select *
+            from public.flare_plan_run_actions
+            where id = %s
+              and run_id = %s
+            for update
+            """,
+            (event_action_id, run_id),
+        )
+        row = cursor.fetchone()
+        return None if row is None else _RunActionRow.from_row(row)
+
+    def _list_run_actions(self, *, cursor: PgCursor, run_id: str) -> list[_RunActionRow]:
+        cursor.execute(
+            """
+            select *
+            from public.flare_plan_run_actions
+            where run_id = %s
+            order by position asc, id asc
+            """,
+            (run_id,),
+        )
+        return [_RunActionRow.from_row(row) for row in cursor.fetchall()]
+
+    def _get_current_run_action(self, *, cursor: PgCursor, run_id: str) -> _RunActionRow | None:
+        cursor.execute(
+            """
+            select *
+            from public.flare_plan_run_actions
+            where run_id = %s
+              and outcome = 'pending'
+            order by position asc, id asc
+            limit 1
+            """,
+            (run_id,),
+        )
+        row = cursor.fetchone()
+        return None if row is None else _RunActionRow.from_row(row)
+
+    def _build_run_record(self, *, cursor: PgCursor, run: _RunRow) -> FlarePlanRunRecord:
+        actions = self._list_run_actions(cursor=cursor, run_id=run.id)
+        done_count = sum(1 for action in actions if action.outcome == "done")
+        skipped_count = sum(1 for action in actions if action.outcome == "skipped")
+        not_reached_count = sum(1 for action in actions if action.outcome == "not_reached")
+        pending_count = sum(1 for action in actions if action.outcome == "pending")
+        current_action = next((action for action in actions if action.outcome == "pending"), None)
+        return FlarePlanRunRecord(
+            id=run.id,
+            flare_event_id=run.flare_event_id,
+            source_plan_id=run.source_plan_id,
+            status=run.status,
+            current_action=None if current_action is None else current_action.to_record(),
+            progress=FlarePlanRunProgressRecord(
+                current_position=None if current_action is None else current_action.position,
+                total_count=len(actions),
+                done_count=done_count,
+                skipped_count=skipped_count,
+                not_reached_count=not_reached_count,
+                pending_count=pending_count,
+            ),
+            actions=[action.to_record() for action in actions],
+            offered_at=run.offered_at,
+            started_at=run.started_at,
+            declined_at=run.declined_at,
+            completed_at=run.completed_at,
+            ended_at=run.ended_at,
+            updated_at=run.updated_at,
+        )
+
+    def _ensure_run_for_event(
+        self,
+        *,
+        cursor: PgCursor,
+        user_id: str,
+        flare_event_id: str,
+    ) -> FlarePlanRunRecord | None:
+        existing = self._get_run_for_event(cursor=cursor, user_id=user_id, flare_event_id=flare_event_id)
+        if existing is not None:
+            return self._build_run_record(cursor=cursor, run=existing)
+        plan = self._get_or_create_plan(cursor=cursor, user_id=user_id)
+        self._lock_plan(cursor=cursor, plan_id=plan.id)
+        actions = self._list_active_actions(cursor=cursor, plan_id=plan.id)
+        if len(actions) == 0:
+            return None
+        cursor.execute(
+            """
+            insert into public.flare_plan_runs (
+                flare_event_id,
+                source_plan_id,
+                status
+            )
+            values (%s, %s, 'offered')
+            returning *
+            """,
+            (flare_event_id, plan.id),
+        )
+        run = _RunRow.from_row(cursor.fetchone())
+        for action in actions:
+            cursor.execute(
+                """
+                insert into public.flare_plan_run_actions (
+                    run_id,
+                    source_action_id,
+                    source_template_key,
+                    title,
+                    description,
+                    position,
+                    outcome
+                )
+                values (%s, %s, %s, %s, %s, %s, 'pending')
+                """,
+                (
+                    run.id,
+                    action.id,
+                    action.source_template_key,
+                    action.title,
+                    action.description,
+                    action.position,
+                ),
+            )
+        return self._build_run_record(cursor=cursor, run=run)
+
+    def _raise_conflict(self, code: str, message: str) -> None:
+        raise FlarePlanError(
+            code=code,
+            message=message,
+            status_code=HTTPStatus.CONFLICT,
+            details={},
         )
 
     def _connect(self) -> PgConnection:

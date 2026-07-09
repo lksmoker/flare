@@ -7,7 +7,10 @@ from typing import Any
 from backend.app.db.flare_plan_repository import FlarePlanRepository, build_request_fingerprint
 from backend.app.domain.flare_plan import (
     ActiveFlarePlanRecord,
+    FlareEventRecord,
     FlarePlanError,
+    FlarePlanRunRecord,
+    FlareResponseRecord,
     IdempotentResponseRecord,
     MAX_FLARE_PLAN_ACTION_DESCRIPTION_LENGTH,
     MAX_FLARE_PLAN_ACTION_TITLE_LENGTH,
@@ -52,6 +55,34 @@ class ArchiveFlarePlanActionCommand:
 class ReorderFlarePlanActionsCommand:
     user_id: str
     action_ids: list[str]
+    idempotency_key: str
+
+
+@dataclass(frozen=True)
+class CreateFlareEventCommand:
+    user_id: str
+    anchor_note_id: str | None
+    anchor_note_version: int | None
+    behavior_description_snapshot: str | None
+    behavior_label_snapshot: str
+    behavior_pattern_id: str | None
+    response_mode: str
+    support_action_shown: str | None
+    idempotency_key: str
+
+
+@dataclass(frozen=True)
+class TransitionFlarePlanRunCommand:
+    user_id: str
+    run_id: str
+    idempotency_key: str
+
+
+@dataclass(frozen=True)
+class ResolveFlarePlanRunActionCommand:
+    user_id: str
+    run_id: str
+    event_action_id: str
     idempotency_key: str
 
 
@@ -131,6 +162,109 @@ class FlarePlanService:
             action_ids=action_ids,
             idempotency_key=self._require_idempotency_key(command.idempotency_key),
             request_fingerprint=build_request_fingerprint({"action_ids": action_ids}),
+        )
+
+    def create_flare_event(self, command: CreateFlareEventCommand) -> IdempotentResponseRecord:
+        behavior_label_snapshot = (command.behavior_label_snapshot or "").strip()
+        if not behavior_label_snapshot:
+            raise FlarePlanError(
+                code="FLARE_EVENT_BEHAVIOR_LABEL_REQUIRED",
+                message="Flare Event behavior label is required.",
+                status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+                details={},
+            )
+        response_mode = (command.response_mode or "").strip() or "fallback-generic"
+        if response_mode not in ("configured", "fallback-generic"):
+            raise FlarePlanError(
+                code="FLARE_EVENT_RESPONSE_MODE_INVALID",
+                message="Flare Event response mode is invalid.",
+                status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+                details={},
+            )
+        payload = {
+            "anchor_note_id": command.anchor_note_id,
+            "anchor_note_version": command.anchor_note_version,
+            "behavior_description_snapshot": _normalize_description(command.behavior_description_snapshot),
+            "behavior_label_snapshot": behavior_label_snapshot,
+            "behavior_pattern_id": command.behavior_pattern_id,
+            "response_mode": response_mode,
+            "support_action_shown": _normalize_description(command.support_action_shown),
+        }
+        return self._repository.create_flare_event(
+            user_id=command.user_id,
+            anchor_note_id=command.anchor_note_id,
+            anchor_note_version=command.anchor_note_version,
+            behavior_description_snapshot=payload["behavior_description_snapshot"],
+            behavior_label_snapshot=behavior_label_snapshot,
+            behavior_pattern_id=command.behavior_pattern_id,
+            response_mode=response_mode,
+            support_action_shown=payload["support_action_shown"],
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint(payload),
+        )
+
+    def read_flare_response(self, *, user_id: str, flare_event_id: str) -> FlareResponseRecord:
+        return self._repository.read_flare_response(user_id=user_id, flare_event_id=flare_event_id)
+
+    def create_or_read_run_for_event(
+        self,
+        *,
+        user_id: str,
+        flare_event_id: str,
+        idempotency_key: str,
+    ) -> IdempotentResponseRecord:
+        return self._repository.create_or_read_run_for_event(
+            user_id=user_id,
+            flare_event_id=flare_event_id,
+            idempotency_key=self._require_idempotency_key(idempotency_key),
+            request_fingerprint=build_request_fingerprint({}),
+        )
+
+    def read_run_for_event(self, *, user_id: str, flare_event_id: str) -> FlarePlanRunRecord | None:
+        return self._repository.read_run_for_event(user_id=user_id, flare_event_id=flare_event_id)
+
+    def begin_run(self, command: TransitionFlarePlanRunCommand) -> IdempotentResponseRecord:
+        return self._repository.begin_run(
+            user_id=command.user_id,
+            run_id=command.run_id,
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint({}),
+        )
+
+    def decline_run(self, command: TransitionFlarePlanRunCommand) -> IdempotentResponseRecord:
+        return self._repository.decline_run(
+            user_id=command.user_id,
+            run_id=command.run_id,
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint({}),
+        )
+
+    def mark_action_done(self, command: ResolveFlarePlanRunActionCommand) -> IdempotentResponseRecord:
+        return self._repository.resolve_run_action(
+            user_id=command.user_id,
+            run_id=command.run_id,
+            event_action_id=command.event_action_id,
+            outcome="done",
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint({"outcome": "done"}),
+        )
+
+    def mark_action_skipped(self, command: ResolveFlarePlanRunActionCommand) -> IdempotentResponseRecord:
+        return self._repository.resolve_run_action(
+            user_id=command.user_id,
+            run_id=command.run_id,
+            event_action_id=command.event_action_id,
+            outcome="skipped",
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint({"outcome": "skipped"}),
+        )
+
+    def end_run_early(self, command: TransitionFlarePlanRunCommand) -> IdempotentResponseRecord:
+        return self._repository.end_run_early(
+            user_id=command.user_id,
+            run_id=command.run_id,
+            idempotency_key=self._require_idempotency_key(command.idempotency_key),
+            request_fingerprint=build_request_fingerprint({}),
         )
 
     def _require_idempotency_key(self, idempotency_key: str | None) -> str:

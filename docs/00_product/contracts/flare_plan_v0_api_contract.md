@@ -714,6 +714,83 @@ The Flare Event response may embed the run or provide its identifier.
 
 A separate idempotent read-or-create route is also supported for recovery from partial client flows.
 
+## Implemented V0 Response Slice Note
+
+The currently implemented vertical slice in this repository covers:
+
+- `POST /api/flare-events`
+- `GET /api/flare-events/{flare_event_id}/response`
+- `POST /api/flare-events/{flare_event_id}/flare-plan-run`
+- `GET /api/flare-events/{flare_event_id}/flare-plan-run`
+- begin / decline / done / skip / end-early run mutations
+
+Checkpoint routes remain documented below for later work but are not implemented in this slice.
+
+## Create Flare Event and Initial Response
+
+```text
+POST /api/flare-events
+```
+
+Headers:
+
+```text
+Idempotency-Key: required
+```
+
+Request:
+
+```json
+{
+  "anchor_note_id": "anchor-id-or-null",
+  "anchor_note_version": 4,
+  "behavior_description_snapshot": "Optional description",
+  "behavior_label_snapshot": "Late-night scrolling",
+  "behavior_pattern_id": "pattern-id-or-null",
+  "response_mode": "configured",
+  "support_action_shown": "Leave the room and drink water."
+}
+```
+
+### Success
+
+```json
+{
+  "flare_event": {},
+  "run": {}
+}
+```
+
+### Rules
+
+- The backend creates the Flare Event and any offered run in one backend-governed mutation.
+- Existing active Flare Events for the user may be closed as part of preserving current Send Flare behavior.
+- `run` is `null` when no configured active Flare Plan exists.
+
+## Read Flare Response State
+
+```text
+GET /api/flare-events/{flare_event_id}/response
+```
+
+### Success
+
+```json
+{
+  "response": {
+    "flare_event": {},
+    "support_delivery": null,
+    "run": null
+  }
+}
+```
+
+### Rules
+
+- The response read model is canonical for the response sheet.
+- The backend returns the owned Flare Event, latest persisted support-delivery state for that event when present, and the current run.
+- The client must not reconstruct current action, counts, or terminal state locally.
+
 ## Create or Return Run for Flare Event
 
 ```text

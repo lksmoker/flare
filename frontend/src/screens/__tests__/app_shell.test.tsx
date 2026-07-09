@@ -10,6 +10,7 @@ import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
 import { FlareAuthProvider } from "../../state/FlareAuthContext";
 import { FlareEventProvider } from "../../state/FlareEventContext";
+import * as flareResponseApi from "../../services/flareResponseApi";
 import * as supportChannelApi from "../../services/supportChannelApi";
 
 jest.mock("../../state/FlarePlanContext", () => ({
@@ -98,6 +99,20 @@ jest.mock("expo-linking", () => ({
   getInitialURL: jest.fn().mockResolvedValue(null),
   openURL: jest.fn().mockResolvedValue(undefined),
   parse: jest.requireActual("expo-linking").parse,
+}));
+
+jest.mock("../../services/flareResponseApi", () => ({
+  beginFlarePlanRun: jest.fn(),
+  completeFlarePlanAction: jest.fn(),
+  createFlareResponse: jest.fn(),
+  declineFlarePlanRun: jest.fn(),
+  endFlarePlanRunEarly: jest.fn(),
+  getFlareResponse: jest.fn().mockResolvedValue({
+    flareEvent: null,
+    run: null,
+    supportDelivery: null,
+  }),
+  skipFlarePlanAction: jest.fn(),
 }));
 
 function TestProviders({ children }: PropsWithChildren) {
@@ -209,6 +224,471 @@ describe("V0 app shell", () => {
     expect(getByText(/status: active/i)).toBeTruthy();
     expect(getByText("You paused the pattern")).toBeTruthy();
     expect(queryByText("Are you sure?")).toBeNull();
+  });
+
+  it("shows the offered Flare Plan acknowledgement before any actions are revealed", async () => {
+    jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "offered",
+        current_action: null,
+        progress: {
+          current_position: null,
+          total_count: 2,
+          done_count: 0,
+          skipped_count: 0,
+          not_reached_count: 0,
+          pending_count: 2,
+        },
+        actions: [
+          {
+            id: "event-action-1",
+            source_action_id: "action-1",
+            source_template_key: null,
+            title: "First step",
+            description: null,
+            position: 1,
+            outcome: "pending",
+            responded_at: null,
+          },
+        ],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: null,
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:00Z",
+      },
+    });
+    jest.spyOn(flareResponseApi, "getFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      supportDelivery: null,
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "offered",
+        current_action: null,
+        progress: {
+          current_position: null,
+          total_count: 2,
+          done_count: 0,
+          skipped_count: 0,
+          not_reached_count: 0,
+          pending_count: 2,
+        },
+        actions: [],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: null,
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:00Z",
+      },
+    });
+
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await act(async () => {
+      fireEvent.press(getByText("Send Flare"));
+    });
+
+    expect(getByText("You sent a Flare.")).toBeTruthy();
+    expect(getByText("Begin Flare Plan")).toBeTruthy();
+    expect(getByText("Skip for now")).toBeTruthy();
+    expect(queryByText("First step")).toBeNull();
+  });
+
+  it("enters focused mode, advances one action, and hides the ordinary response chrome", async () => {
+    jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "offered",
+        current_action: null,
+        progress: {
+          current_position: null,
+          total_count: 2,
+          done_count: 0,
+          skipped_count: 0,
+          not_reached_count: 0,
+          pending_count: 2,
+        },
+        actions: [],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: null,
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:00Z",
+      },
+    });
+    jest.spyOn(flareResponseApi, "getFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      supportDelivery: null,
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "offered",
+        current_action: null,
+        progress: {
+          current_position: null,
+          total_count: 2,
+          done_count: 0,
+          skipped_count: 0,
+          not_reached_count: 0,
+          pending_count: 2,
+        },
+        actions: [],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: null,
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:00Z",
+      },
+    });
+    jest.spyOn(flareResponseApi, "beginFlarePlanRun").mockResolvedValue({
+      id: "run-1",
+      flare_event_id: "event-1",
+      source_plan_id: "plan-1",
+      status: "in_progress",
+      current_action: {
+        id: "event-action-1",
+        source_action_id: "action-1",
+        source_template_key: null,
+        title: "First step",
+        description: "Start here.",
+        position: 1,
+        outcome: "pending",
+        responded_at: null,
+      },
+      progress: {
+        current_position: 1,
+        total_count: 2,
+        done_count: 0,
+        skipped_count: 0,
+        not_reached_count: 0,
+        pending_count: 2,
+      },
+      actions: [],
+      offered_at: "2026-07-09T00:00:00Z",
+      started_at: "2026-07-09T00:00:10Z",
+      declined_at: null,
+      completed_at: null,
+      ended_at: null,
+      updated_at: "2026-07-09T00:00:10Z",
+    });
+    jest.spyOn(flareResponseApi, "completeFlarePlanAction").mockResolvedValue({
+      id: "run-1",
+      flare_event_id: "event-1",
+      source_plan_id: "plan-1",
+      status: "in_progress",
+      current_action: {
+        id: "event-action-2",
+        source_action_id: "action-2",
+        source_template_key: null,
+        title: "Second step",
+        description: "Then this.",
+        position: 2,
+        outcome: "pending",
+        responded_at: null,
+      },
+      progress: {
+        current_position: 2,
+        total_count: 2,
+        done_count: 1,
+        skipped_count: 0,
+        not_reached_count: 0,
+        pending_count: 1,
+      },
+      actions: [],
+      offered_at: "2026-07-09T00:00:00Z",
+      started_at: "2026-07-09T00:00:10Z",
+      declined_at: null,
+      completed_at: null,
+      ended_at: null,
+      updated_at: "2026-07-09T00:00:20Z",
+    });
+
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await act(async () => {
+      fireEvent.press(getByText("Send Flare"));
+    });
+    await act(async () => {
+      fireEvent.press(getByText("Begin Flare Plan"));
+    });
+
+    expect(getByText("Step 1 of 2")).toBeTruthy();
+    expect(getByText("First step")).toBeTruthy();
+    expect(queryByText("Current Flare Event")).toBeNull();
+    expect(queryByText("Checkpoint / Reflection")).toBeNull();
+
+    await act(async () => {
+      fireEvent.press(getByText("Done"));
+    });
+
+    expect(getByText("Second step")).toBeTruthy();
+  });
+
+  it("opens end-plan confirmation and renders the ended summary after confirmation", async () => {
+    jest.spyOn(flareResponseApi, "getFlareResponse").mockResolvedValue({
+      flareEvent: {
+        anchorNoteId: null,
+        anchorNoteVersion: null,
+        archivedAt: null,
+        behaviorDescriptionSnapshot: null,
+        behaviorLabelSnapshot: "Late-night scrolling",
+        behaviorPatternId: null,
+        checkpoint: null,
+        closedAt: null,
+        createdAt: "2026-07-09T00:00:00Z",
+        id: "event-1",
+        responseMode: "configured",
+        status: "active",
+        supportActionShown: null,
+        supportActionTaken: null,
+        updatedAt: "2026-07-09T00:00:00Z",
+        userId: "user-123",
+      },
+      supportDelivery: null,
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "in_progress",
+        current_action: {
+          id: "event-action-1",
+          source_action_id: "action-1",
+          source_template_key: null,
+          title: "First step",
+          description: null,
+          position: 1,
+          outcome: "pending",
+          responded_at: null,
+        },
+        progress: {
+          current_position: 1,
+          total_count: 3,
+          done_count: 1,
+          skipped_count: 1,
+          not_reached_count: 0,
+          pending_count: 1,
+        },
+        actions: [],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: "2026-07-09T00:00:10Z",
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:10Z",
+      },
+    });
+    jest.spyOn(flareResponseApi, "endFlarePlanRunEarly").mockResolvedValue({
+      id: "run-1",
+      flare_event_id: "event-1",
+      source_plan_id: "plan-1",
+      status: "ended_early",
+      current_action: null,
+      progress: {
+        current_position: null,
+        total_count: 3,
+        done_count: 1,
+        skipped_count: 1,
+        not_reached_count: 1,
+        pending_count: 0,
+      },
+      actions: [],
+      offered_at: "2026-07-09T00:00:00Z",
+      started_at: "2026-07-09T00:00:10Z",
+      declined_at: null,
+      completed_at: null,
+      ended_at: "2026-07-09T00:00:30Z",
+      updated_at: "2026-07-09T00:00:30Z",
+    });
+
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider>
+              <AnchorNoteProvider>
+                <FlareEventProvider
+                  flareEventRepository={{
+                    archiveFlareEvent: jest.fn(),
+                    createFlareEvent: jest.fn(),
+                    loadFlareEvents: jest.fn().mockResolvedValue([
+                      {
+                        createdAt: "2026-07-09T00:00:00Z",
+                        flareEvent: {
+                          anchorNoteId: null,
+                          anchorNoteVersion: null,
+                          archivedAt: null,
+                          behaviorDescriptionSnapshot: null,
+                          behaviorLabelSnapshot: "Late-night scrolling",
+                          behaviorPatternId: null,
+                          checkpoint: null,
+                          closedAt: null,
+                          createdAt: "2026-07-09T00:00:00Z",
+                          id: "event-1",
+                          responseMode: "configured",
+                          status: "active",
+                          supportActionShown: null,
+                          supportActionTaken: null,
+                          updatedAt: "2026-07-09T00:00:00Z",
+                          userId: "user-123",
+                        },
+                        id: "event-1",
+                        updatedAt: "2026-07-09T00:00:00Z",
+                        userId: "user-123",
+                      },
+                    ]),
+                    restoreFlareEvent: jest.fn(),
+                    updateFlareEventStatus: jest.fn(),
+                  }}
+                >
+                  {children}
+                </FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("First step")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("End plan"));
+    expect(getByText("End your Flare Plan?")).toBeTruthy();
+
+    await act(async () => {
+      fireEvent.press(getByText("End plan"));
+    });
+
+    expect(getByText("Flare Plan ended")).toBeTruthy();
+    expect(getByText(/1 done, 1 skipped, 1 not reached/i)).toBeTruthy();
   });
 
   it("shows a calm sent status when Send Flare reaches the enabled support group", async () => {

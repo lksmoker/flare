@@ -83,6 +83,7 @@ type FlareEventContextValue = {
   createFlareEvent: (input: CreateFlareEventInput) => FlareEvent;
   restoreFlareEvent: (eventId: string) => void;
   saveCheckpointReflection: (input: SaveCheckpointReflectionInput) => void;
+  upsertPersistedFlareEvent: (persistedRecord: PersistedFlareEvent) => void;
 };
 
 type FlareEventProviderProps = PropsWithChildren<{
@@ -231,6 +232,27 @@ function mergePersistedCheckpointReflection(
     updatedAt: persistedCheckpointReflection.updatedAt,
     userId: persistedCheckpointReflection.userId,
   };
+}
+
+function insertPersistedFlareEvent(
+  currentEvents: FlareEvent[],
+  persistedRecord: PersistedFlareEvent,
+) {
+  const nextEvent = persistedRecord.flareEvent;
+  const withoutTarget = currentEvents.filter((flareEvent) => flareEvent.id !== nextEvent.id);
+
+  const normalized = withoutTarget.map((flareEvent) =>
+    flareEvent.status === "active" && flareEvent.archivedAt === null
+      ? {
+          ...flareEvent,
+          closedAt: flareEvent.closedAt ?? nextEvent.createdAt,
+          status: "closed" as const,
+          updatedAt: nextEvent.updatedAt,
+        }
+      : flareEvent,
+  );
+
+  return [nextEvent, ...normalized];
 }
 
 export function formatFlareEventTimestamp(timestamp: string) {
@@ -401,6 +423,11 @@ export function FlareEventProvider({
       },
       currentEvent,
       flareEvents,
+      upsertPersistedFlareEvent: (persistedRecord) => {
+        setFlareEvents((currentEvents) =>
+          insertPersistedFlareEvent(currentEvents, persistedRecord),
+        );
+      },
       createFlareEvent: (input) => {
         const previousActiveEvent =
           flareEventsRef.current.find(

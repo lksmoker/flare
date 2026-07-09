@@ -18,6 +18,7 @@ type PlaceholderModalProps = PropsWithChildren<{
   footer?: React.ReactNode;
   onClose: () => void;
   scrollContentContainerStyle?: StyleProp<ViewStyle>;
+  showCloseButton?: boolean;
   subtitle: string;
   title: string;
   visible: boolean;
@@ -28,6 +29,7 @@ export function PlaceholderModal({
   footer,
   onClose,
   scrollContentContainerStyle,
+  showCloseButton = true,
   subtitle,
   title,
   visible,
@@ -47,15 +49,17 @@ export function PlaceholderModal({
               <Text style={styles.title}>{title}</Text>
               <Text style={styles.subtitle}>{subtitle}</Text>
             </View>
-            <Pressable
-              accessibilityRole="button"
-              onPress={onClose}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeButtonLabel}>
-                {flareContent.common.modal.close}
-              </Text>
-            </Pressable>
+            {showCloseButton ? (
+              <Pressable
+                accessibilityRole="button"
+                onPress={onClose}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonLabel}>
+                  {flareContent.common.modal.close}
+                </Text>
+              </Pressable>
+            ) : null}
           </View>
           <ScrollView
             contentContainerStyle={[

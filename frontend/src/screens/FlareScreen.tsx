@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
@@ -7,6 +7,18 @@ import { FlareResponse } from "../components/FlareResponse";
 import { PlaceholderModal } from "../components/PlaceholderModal";
 import { SendFlareButton } from "../components/SendFlareButton";
 import flareContent from "../content/flareContent.json";
+import {
+  beginFlarePlanRun,
+  completeFlarePlanAction,
+  createFlareResponse,
+  declineFlarePlanRun,
+  type FlareSupportDelivery,
+  endFlarePlanRunEarly,
+  type FlareResponseState,
+  getFlareResponse,
+  skipFlarePlanAction,
+} from "../services/flareResponseApi";
+import { createIdempotencyKey } from "../services/idempotency";
 import {
   sendSupportChannelFlare,
   type SupportChannelFlareDeliveryResult,
@@ -71,15 +83,38 @@ function mapExternalSupportState(
   };
 }
 
+function mapPersistedSupportDelivery(
+  delivery: FlareSupportDelivery | null,
+): ExternalSupportState {
+  if (!delivery) {
+    return null;
+  }
+
+  return mapExternalSupportState({
+    attempted_at: delivery.attempted_at ?? "",
+    delivered_at: delivery.delivered_at,
+    destination_display_name: delivery.destination_display_name,
+    error_code: delivery.error_code,
+    error_message_safe: delivery.error_message_safe,
+    message_preview: "",
+    provider: "groupme",
+    send_kind: "real",
+    status: delivery.status,
+  });
+}
+
 export function FlareScreen() {
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const [isReadinessExpanded, setIsReadinessExpanded] = useState(false);
   const [externalSupportState, setExternalSupportState] =
     useState<ExternalSupportState>(null);
-  const { behaviorPattern, isConfigured } = useBehaviorPattern();
-  const { activeEvent, createFlareEvent, currentEvent } = useFlareEvents();
-  const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
+  const [responseState, setResponseState] = useState<FlareResponseState | null>(null);
+  const [responseError, setResponseError] = useState<string | null>(null);
+  const [isRunMutationPending, setIsRunMutationPending] = useState(false);
+  const { behaviorPattern, behaviorPatternRecord, isConfigured } = useBehaviorPattern();
+  const { activeEvent, createFlareEvent, currentEvent, upsertPersistedFlareEvent } = useFlareEvents();
+  const { anchorNote, anchorNoteRecord, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { authState, authStatus } = useFlareAuth();
   const { isInitialLoading: isPlanLoading, isPlanConfigured, plan } = useFlarePlan();
   const {
@@ -146,7 +181,53 @@ export function FlareScreen() {
     setIsFlareResponseVisible(false);
     setIsCheckpointVisible(true);
   };
-  const eventForResponse = activeEvent ?? currentEvent;
+  const eventForResponse = responseState?.flareEvent ?? activeEvent ?? currentEvent;
+  const deliveryStateForResponse =
+    externalSupportState ?? mapPersistedSupportDelivery(responseState?.supportDelivery ?? null);
+
+  useEffect(() => {
+    if (authState.kind !== "authenticated" || !currentEvent) {
+      return;
+    }
+
+    let isActive = true;
+    void getFlareResponse(currentEvent.id)
+      .then((state) => {
+        if (!isActive) {
+          return;
+        }
+        setResponseState(state);
+        if (state.run?.status === "in_progress") {
+          setIsFlareResponseVisible(true);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setResponseState(null);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [authState.kind, currentEvent]);
+
+  async function runMutation(
+    callback: () => Promise<FlareResponseState["run"]>,
+  ) {
+    setIsRunMutationPending(true);
+    setResponseError(null);
+    try {
+      const run = await callback();
+      setResponseState((current) => (current ? { ...current, run } : current));
+    } catch (error) {
+      setResponseError(
+        error instanceof Error ? error.message : "Flare Plan could not be updated right now.",
+      );
+    } finally {
+      setIsRunMutationPending(false);
+    }
+  }
 
   return (
     <AppShell
@@ -156,13 +237,40 @@ export function FlareScreen() {
       title={flareContent.screens.flare.title}
     >
       <SendFlareButton
-        onPress={() => {
-          createFlareEvent({
-            behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
-            behaviorLabelSnapshot: behaviorPattern?.behaviorName,
-            supportActionShown: anchorNote?.emergencyActions,
-          });
+        onPress={async () => {
+          setResponseError(null);
+          setResponseState(null);
+          let flareEventId: string | null = null;
+
           if (authState.kind === "authenticated") {
+            try {
+              const created = await createFlareResponse({
+                anchorNoteId: anchorNoteRecord?.id ?? null,
+                anchorNoteVersion: anchorNoteRecord?.version ?? null,
+                behaviorDescriptionSnapshot: behaviorPattern?.shortDescription ?? null,
+                behaviorLabelSnapshot: behaviorPattern?.behaviorName ?? "Behavior pattern not configured",
+                behaviorPatternId: behaviorPatternRecord?.id ?? null,
+                responseMode: anchorNote ? "configured" : "fallback-generic",
+                supportActionShown: anchorNote?.emergencyActions ?? null,
+                idempotencyKey: createIdempotencyKey(),
+              });
+              flareEventId = created.flareEvent.id;
+              upsertPersistedFlareEvent({
+                createdAt: created.flareEvent.createdAt,
+                flareEvent: created.flareEvent,
+                id: created.flareEvent.id,
+                updatedAt: created.flareEvent.updatedAt,
+                userId: created.flareEvent.userId ?? authState.userId,
+              });
+              setResponseState({
+                flareEvent: created.flareEvent,
+                run: created.run,
+                supportDelivery: null,
+              });
+            } catch (error) {
+              setResponseError(error instanceof Error ? error.message : "Flare could not be created right now.");
+              return;
+            }
             const externalContent =
               flareContent.components.flareResponse.externalSupport;
             setExternalSupportState({
@@ -171,7 +279,7 @@ export function FlareScreen() {
               tone: "muted",
             });
             void sendSupportChannelFlare({
-              flareEventId: null,
+              flareEventId,
             })
               .then((result) => {
                 setExternalSupportState(mapExternalSupportState(result));
@@ -184,25 +292,37 @@ export function FlareScreen() {
                 });
               });
           } else {
+            const localFallbackEvent = createFlareEvent({
+              behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
+              behaviorLabelSnapshot: behaviorPattern?.behaviorName,
+              supportActionShown: anchorNote?.emergencyActions,
+            });
             setExternalSupportState(null);
+            setResponseState({
+              flareEvent: localFallbackEvent,
+              run: null,
+              supportDelivery: null,
+            });
           }
           setIsCheckpointVisible(false);
           setIsFlareResponseVisible(true);
         }}
       />
 
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => setIsCheckpointVisible(true)}
-        style={styles.secondaryButton}
-      >
-        <Text style={styles.secondaryButtonLabel}>
-          {flareContent.screens.flare.secondaryAction.label}
-        </Text>
-        <Text style={styles.secondaryButtonCopy}>
-          {flareContent.screens.flare.secondaryAction.copy}
-        </Text>
-      </Pressable>
+      {!(isFlareResponseVisible && responseState?.run?.status === "in_progress") ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setIsCheckpointVisible(true)}
+          style={styles.secondaryButton}
+        >
+          <Text style={styles.secondaryButtonLabel}>
+            {flareContent.screens.flare.secondaryAction.label}
+          </Text>
+          <Text style={styles.secondaryButtonCopy}>
+            {flareContent.screens.flare.secondaryAction.copy}
+          </Text>
+        </Pressable>
+      ) : null}
 
       <View style={styles.readinessCard}>
         <Pressable
@@ -242,14 +362,37 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
+        showCloseButton={responseState?.run?.status !== "in_progress"}
         subtitle={flareContent.components.flareResponse.modalSubtitle}
         title={flareContent.components.flareResponse.modalTitle}
         visible={isFlareResponseVisible}
       >
         <FlareResponse
-          externalSupportState={externalSupportState}
+          externalSupportState={deliveryStateForResponse}
           flareEvent={eventForResponse}
+          isMutationPending={isRunMutationPending}
+          mutationError={responseError}
+          onBeginPlan={(runId) =>
+            void runMutation(() => beginFlarePlanRun(runId, createIdempotencyKey()))
+          }
+          onDeclinePlan={(runId) =>
+            void runMutation(() => declineFlarePlanRun(runId, createIdempotencyKey()))
+          }
+          onEndPlan={(runId) =>
+            void runMutation(() => endFlarePlanRunEarly(runId, createIdempotencyKey()))
+          }
           onOpenCheckpoint={openCheckpoint}
+          onResolveActionDone={(runId, actionId) =>
+            void runMutation(() =>
+              completeFlarePlanAction(runId, actionId, createIdempotencyKey()),
+            )
+          }
+          onResolveActionSkipped={(runId, actionId) =>
+            void runMutation(() =>
+              skipFlarePlanAction(runId, actionId, createIdempotencyKey()),
+            )
+          }
+          run={responseState?.run ?? null}
         />
       </PlaceholderModal>
 

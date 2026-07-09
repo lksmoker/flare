@@ -127,12 +127,20 @@ class SupportChannelHttpApp:
                         "/api/support-channel/disable",
                         "/api/support-channel/test",
                         "/api/support-channel/send-flare",
+                        "/api/flare-events",
+                        "/api/flare-events/{flare_event_id}/response",
+                        "/api/flare-events/{flare_event_id}/flare-plan-run",
                         "/api/flare-plan/templates",
                         "/api/flare-plan",
                         "/api/flare-plan/actions/from-template",
                         "/api/flare-plan/actions",
                         "/api/flare-plan/actions/{action_id}",
                         "/api/flare-plan/actions/order",
+                        "/api/flare-plan-runs/{run_id}/begin",
+                        "/api/flare-plan-runs/{run_id}/decline",
+                        "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/done",
+                        "/api/flare-plan-runs/{run_id}/actions/{event_action_id}/skip",
+                        "/api/flare-plan-runs/{run_id}/end-early",
                     ],
                 },
                 sort_keys=True,
@@ -176,7 +184,10 @@ class SupportChannelHttpApp:
         body = _read_request_body(environ)
         headers = _extract_headers(environ)
         api_path = path if not query_string else f"{path}?{query_string}"
-        if self._flare_plan_api is not None and path.startswith("/api/flare-plan"):
+        if self._flare_plan_api is not None and (
+            path.startswith("/api/flare-plan")
+            or path.startswith("/api/flare-events")
+        ):
             response = self._flare_plan_api.handle_request(
                 method=method,
                 path=api_path,

@@ -10,8 +10,14 @@ from backend.app.api.support_channels_api import AuthenticatedUser
 from backend.app.db.flare_plan_repository import FlarePlanRepository
 from backend.app.domain.flare_plan import (
     ActiveFlarePlanRecord,
+    FlareEventRecord,
     FlarePlanActionRecord,
     FlarePlanError,
+    FlarePlanRunActionRecord,
+    FlarePlanRunProgressRecord,
+    FlarePlanRunRecord,
+    FlareResponseRecord,
+    FlareSupportDeliveryRecord,
     IdempotentResponseRecord,
     MAXIMUM_ACTIVE_FLARE_PLAN_ACTIONS,
     StarterTemplateRecord,
@@ -49,6 +55,52 @@ class MutablePlan:
     id: str
     user_id: str
     updated_at: str
+
+
+@dataclass
+class MutableFlareEvent:
+    id: str
+    user_id: str
+    status: str
+    response_mode: str
+    behavior_label_snapshot: str
+    behavior_description_snapshot: str | None
+    behavior_pattern_id: str | None
+    anchor_note_id: str | None
+    anchor_note_version: int | None
+    support_action_shown: str | None
+    support_action_taken: str | None
+    created_at: str
+    updated_at: str
+    closed_at: str | None = None
+    archived_at: str | None = None
+
+
+@dataclass
+class MutableRun:
+    id: str
+    flare_event_id: str
+    source_plan_id: str | None
+    status: str
+    offered_at: str
+    updated_at: str
+    started_at: str | None = None
+    declined_at: str | None = None
+    completed_at: str | None = None
+    ended_at: str | None = None
+
+
+@dataclass
+class MutableRunAction:
+    id: str
+    run_id: str
+    source_action_id: str | None
+    source_template_key: str | None
+    title: str
+    description: str | None
+    position: int
+    outcome: str
+    responded_at: str | None = None
 
 
 class InMemoryFlarePlanRepository(FlarePlanRepository):
@@ -131,6 +183,10 @@ class InMemoryFlarePlanRepository(FlarePlanRepository):
         self.plan_ids: dict[str, str] = {}
         self.plans: dict[str, MutablePlan] = {}
         self.actions: dict[str, MutableAction] = {}
+        self.flare_events: dict[str, MutableFlareEvent] = {}
+        self.runs: dict[str, MutableRun] = {}
+        self.run_actions: dict[str, MutableRunAction] = {}
+        self.support_deliveries: dict[str, FlareSupportDeliveryRecord] = {}
         self.idempotency_records: dict[tuple[str, str, str, str], dict[str, Any]] = {}
         self.fail_next_reorder = False
         self.fail_next_archive = False
@@ -259,6 +315,144 @@ class InMemoryFlarePlanRepository(FlarePlanRepository):
             idempotency_key=idempotency_key,
             request_fingerprint=request_fingerprint,
             callback=lambda: self._reorder_actions(user_id=user_id, action_ids=action_ids),
+        )
+
+    def create_flare_event(
+        self,
+        *,
+        user_id: str,
+        anchor_note_id: str | None,
+        anchor_note_version: int | None,
+        behavior_description_snapshot: str | None,
+        behavior_label_snapshot: str,
+        behavior_pattern_id: str | None,
+        response_mode: str,
+        support_action_shown: str | None,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation="create_flare_event",
+            target_resource="flare_event:new",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._create_flare_event(
+                user_id=user_id,
+                anchor_note_id=anchor_note_id,
+                anchor_note_version=anchor_note_version,
+                behavior_description_snapshot=behavior_description_snapshot,
+                behavior_label_snapshot=behavior_label_snapshot,
+                behavior_pattern_id=behavior_pattern_id,
+                response_mode=response_mode,
+                support_action_shown=support_action_shown,
+            ),
+        )
+
+    def read_flare_response(self, *, user_id: str, flare_event_id: str) -> FlareResponseRecord:
+        flare_event = self._get_owned_flare_event(user_id=user_id, flare_event_id=flare_event_id)
+        run = self._get_run_for_event(user_id=user_id, flare_event_id=flare_event_id)
+        return FlareResponseRecord(
+            flare_event=self._event_record(flare_event),
+            support_delivery=self.support_deliveries.get(flare_event_id),
+            run=None if run is None else self._run_record(run),
+        )
+
+    def create_or_read_run_for_event(
+        self,
+        *,
+        user_id: str,
+        flare_event_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation="offer_run_for_event",
+            target_resource=f"flare_event:{flare_event_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._create_or_read_run_for_event(user_id=user_id, flare_event_id=flare_event_id),
+        )
+
+    def read_run_for_event(self, *, user_id: str, flare_event_id: str) -> FlarePlanRunRecord | None:
+        self._get_owned_flare_event(user_id=user_id, flare_event_id=flare_event_id)
+        run = self._get_run_for_event(user_id=user_id, flare_event_id=flare_event_id)
+        return None if run is None else self._run_record(run)
+
+    def begin_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation="begin_run",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._begin_run(user_id=user_id, run_id=run_id),
+        )
+
+    def decline_run(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation="decline_run",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._decline_run(user_id=user_id, run_id=run_id),
+        )
+
+    def resolve_run_action(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        event_action_id: str,
+        outcome: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation=f"resolve_run_action:{outcome}",
+            target_resource=f"run_action:{event_action_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._resolve_run_action(
+                user_id=user_id,
+                run_id=run_id,
+                event_action_id=event_action_id,
+                outcome=outcome,
+            ),
+        )
+
+    def end_run_early(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        idempotency_key: str,
+        request_fingerprint: str,
+    ) -> IdempotentResponseRecord:
+        return self._run_mutation(
+            user_id=user_id,
+            operation="end_run_early",
+            target_resource=f"run:{run_id}",
+            idempotency_key=idempotency_key,
+            request_fingerprint=request_fingerprint,
+            callback=lambda: self._end_run_early(user_id=user_id, run_id=run_id),
         )
 
     def _run_mutation(
@@ -437,6 +631,123 @@ class InMemoryFlarePlanRepository(FlarePlanRepository):
                 raise RuntimeError("reorder failure")
         return HTTPStatus.OK, {"plan": self._build_plan(plan.id).to_public_dict()}
 
+    def _create_flare_event(
+        self,
+        *,
+        user_id: str,
+        anchor_note_id: str | None,
+        anchor_note_version: int | None,
+        behavior_description_snapshot: str | None,
+        behavior_label_snapshot: str,
+        behavior_pattern_id: str | None,
+        response_mode: str,
+        support_action_shown: str | None,
+    ) -> tuple[int, dict[str, Any]]:
+        for flare_event in self.flare_events.values():
+            if flare_event.user_id == user_id and flare_event.status == "active" and flare_event.archived_at is None:
+                flare_event.status = "closed"
+                flare_event.closed_at = flare_event.closed_at or self._timestamp()
+                flare_event.updated_at = self._timestamp()
+        flare_event = MutableFlareEvent(
+            id=self._next_id("event"),
+            user_id=user_id,
+            status="active",
+            response_mode=response_mode,
+            behavior_label_snapshot=behavior_label_snapshot,
+            behavior_description_snapshot=behavior_description_snapshot,
+            behavior_pattern_id=behavior_pattern_id,
+            anchor_note_id=anchor_note_id,
+            anchor_note_version=anchor_note_version,
+            support_action_shown=support_action_shown,
+            support_action_taken=None,
+            created_at=self._timestamp(),
+            updated_at=self._timestamp(),
+        )
+        self.flare_events[flare_event.id] = flare_event
+        run = self._ensure_run_for_event(user_id=user_id, flare_event_id=flare_event.id)
+        return HTTPStatus.CREATED, {
+            "flare_event": self._event_record(flare_event).to_public_dict(),
+            "run": None if run is None else run.to_public_dict(),
+        }
+
+    def _create_or_read_run_for_event(self, *, user_id: str, flare_event_id: str) -> tuple[int, dict[str, Any]]:
+        self._get_owned_flare_event(user_id=user_id, flare_event_id=flare_event_id)
+        run = self._ensure_run_for_event(user_id=user_id, flare_event_id=flare_event_id)
+        return HTTPStatus.OK, {"run": None if run is None else run.to_public_dict()}
+
+    def _begin_run(self, *, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._owned_run(user_id=user_id, run_id=run_id)
+        if run.status == "offered":
+            run.status = "in_progress"
+            run.started_at = run.started_at or self._timestamp()
+            run.updated_at = self._timestamp()
+        elif run.status == "declined":
+            self._conflict("FLARE_PLAN_RUN_ALREADY_DECLINED", "Flare Plan Run has already been declined.")
+        elif run.status in ("completed", "ended_early"):
+            self._conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        return HTTPStatus.OK, {"run": self._run_record(run).to_public_dict()}
+
+    def _decline_run(self, *, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._owned_run(user_id=user_id, run_id=run_id)
+        if run.status != "offered":
+            if run.status == "in_progress":
+                self._conflict("FLARE_PLAN_RUN_ALREADY_STARTED", "Flare Plan Run has already started.")
+            self._conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        for action in self._run_actions(run.id):
+            if action.outcome == "pending":
+                action.outcome = "not_reached"
+        run.status = "declined"
+        run.declined_at = run.declined_at or self._timestamp()
+        run.updated_at = self._timestamp()
+        return HTTPStatus.OK, {"run": self._run_record(run).to_public_dict()}
+
+    def _resolve_run_action(
+        self,
+        *,
+        user_id: str,
+        run_id: str,
+        event_action_id: str,
+        outcome: str,
+    ) -> tuple[int, dict[str, Any]]:
+        run = self._owned_run(user_id=user_id, run_id=run_id)
+        if run.status != "in_progress":
+            self._conflict("FLARE_PLAN_RUN_NOT_IN_PROGRESS", "Flare Plan Run is not in progress.")
+        action = self.run_actions.get(event_action_id)
+        if action is None or action.run_id != run_id:
+            raise FlarePlanError(
+                code="FLARE_PLAN_EVENT_ACTION_NOT_FOUND",
+                message="Flare Plan action could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        current = next((item for item in self._run_actions(run_id) if item.outcome == "pending"), None)
+        if current is None:
+            self._conflict("FLARE_PLAN_RUN_ALREADY_TERMINAL", "Flare Plan Run is already terminal.")
+        if current.id != action.id:
+            if action.outcome != "pending":
+                self._conflict("FLARE_PLAN_ACTION_ALREADY_RESOLVED", "Flare Plan action was already resolved.")
+            self._conflict("FLARE_PLAN_ACTION_NOT_CURRENT", "Flare Plan action is not current.")
+        action.outcome = outcome
+        action.responded_at = self._timestamp()
+        run.updated_at = self._timestamp()
+        if all(item.outcome != "pending" for item in self._run_actions(run_id)):
+            run.status = "completed"
+            run.completed_at = run.completed_at or self._timestamp()
+            run.updated_at = self._timestamp()
+        return HTTPStatus.OK, {"run": self._run_record(run).to_public_dict()}
+
+    def _end_run_early(self, *, user_id: str, run_id: str) -> tuple[int, dict[str, Any]]:
+        run = self._owned_run(user_id=user_id, run_id=run_id)
+        if run.status != "in_progress":
+            self._conflict("FLARE_PLAN_RUN_NOT_IN_PROGRESS", "Flare Plan Run is not in progress.")
+        for action in self._run_actions(run_id):
+            if action.outcome == "pending":
+                action.outcome = "not_reached"
+        run.status = "ended_early"
+        run.ended_at = run.ended_at or self._timestamp()
+        run.updated_at = self._timestamp()
+        return HTTPStatus.OK, {"run": self._run_record(run).to_public_dict()}
+
     def _insert_action(
         self,
         *,
@@ -467,6 +778,127 @@ class InMemoryFlarePlanRepository(FlarePlanRepository):
         self.plan_ids[user_id] = plan.id
         self.plans[plan.id] = plan
         return plan
+
+    def _get_owned_flare_event(self, *, user_id: str, flare_event_id: str) -> MutableFlareEvent:
+        flare_event = self.flare_events.get(flare_event_id)
+        if flare_event is None or flare_event.user_id != user_id:
+            raise FlarePlanError(
+                code="FLARE_EVENT_NOT_FOUND",
+                message="Flare Event could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        return flare_event
+
+    def _get_run_for_event(self, *, user_id: str, flare_event_id: str) -> MutableRun | None:
+        self._get_owned_flare_event(user_id=user_id, flare_event_id=flare_event_id)
+        return next((run for run in self.runs.values() if run.flare_event_id == flare_event_id), None)
+
+    def _owned_run(self, *, user_id: str, run_id: str) -> MutableRun:
+        run = self.runs.get(run_id)
+        if run is None:
+            raise FlarePlanError(
+                code="FLARE_PLAN_RUN_NOT_FOUND",
+                message="Flare Plan Run could not be found.",
+                status_code=HTTPStatus.NOT_FOUND,
+                details={},
+            )
+        self._get_owned_flare_event(user_id=user_id, flare_event_id=run.flare_event_id)
+        return run
+
+    def _run_actions(self, run_id: str) -> list[MutableRunAction]:
+        return sorted(
+            [action for action in self.run_actions.values() if action.run_id == run_id],
+            key=lambda action: (action.position, action.id),
+        )
+
+    def _ensure_run_for_event(self, *, user_id: str, flare_event_id: str) -> FlarePlanRunRecord | None:
+        existing = self._get_run_for_event(user_id=user_id, flare_event_id=flare_event_id)
+        if existing is not None:
+            return self._run_record(existing)
+        plan = self._get_or_create_plan(user_id)
+        active_actions = self._active_actions(plan.id)
+        if len(active_actions) == 0:
+            return None
+        run = MutableRun(
+            id=self._next_id("run"),
+            flare_event_id=flare_event_id,
+            source_plan_id=plan.id,
+            status="offered",
+            offered_at=self._timestamp(),
+            updated_at=self._timestamp(),
+        )
+        self.runs[run.id] = run
+        for action in active_actions:
+            run_action = MutableRunAction(
+                id=self._next_id("event-action"),
+                run_id=run.id,
+                source_action_id=action.id,
+                source_template_key=action.source_template_key,
+                title=action.title,
+                description=action.description,
+                position=action.position,
+                outcome="pending",
+            )
+            self.run_actions[run_action.id] = run_action
+        return self._run_record(run)
+
+    def _event_record(self, flare_event: MutableFlareEvent) -> FlareEventRecord:
+        return FlareEventRecord(
+            id=flare_event.id,
+            user_id=flare_event.user_id,
+            status=flare_event.status,
+            response_mode=flare_event.response_mode,
+            behavior_label_snapshot=flare_event.behavior_label_snapshot,
+            behavior_description_snapshot=flare_event.behavior_description_snapshot,
+            behavior_pattern_id=flare_event.behavior_pattern_id,
+            anchor_note_id=flare_event.anchor_note_id,
+            anchor_note_version=flare_event.anchor_note_version,
+            support_action_shown=flare_event.support_action_shown,
+            support_action_taken=flare_event.support_action_taken,
+            created_at=flare_event.created_at,
+            updated_at=flare_event.updated_at,
+            closed_at=flare_event.closed_at,
+            archived_at=flare_event.archived_at,
+        )
+
+    def _run_record(self, run: MutableRun) -> FlarePlanRunRecord:
+        actions = [
+            FlarePlanRunActionRecord(
+                id=action.id,
+                source_action_id=action.source_action_id,
+                source_template_key=action.source_template_key,
+                title=action.title,
+                description=action.description,
+                position=action.position,
+                outcome=action.outcome,
+                responded_at=action.responded_at,
+            )
+            for action in self._run_actions(run.id)
+        ]
+        current_action = next((action for action in actions if action.outcome == "pending"), None)
+        return FlarePlanRunRecord(
+            id=run.id,
+            flare_event_id=run.flare_event_id,
+            source_plan_id=run.source_plan_id,
+            status=run.status,
+            current_action=current_action,
+            progress=FlarePlanRunProgressRecord(
+                current_position=None if current_action is None else current_action.position,
+                total_count=len(actions),
+                done_count=sum(1 for action in actions if action.outcome == "done"),
+                skipped_count=sum(1 for action in actions if action.outcome == "skipped"),
+                not_reached_count=sum(1 for action in actions if action.outcome == "not_reached"),
+                pending_count=sum(1 for action in actions if action.outcome == "pending"),
+            ),
+            actions=actions,
+            offered_at=run.offered_at,
+            started_at=run.started_at,
+            declined_at=run.declined_at,
+            completed_at=run.completed_at,
+            ended_at=run.ended_at,
+            updated_at=run.updated_at,
+        )
 
     def _build_plan(self, plan_id: str) -> ActiveFlarePlanRecord:
         actions = [
@@ -517,6 +949,14 @@ class InMemoryFlarePlanRepository(FlarePlanRepository):
         for position, action in enumerate(self._active_actions(plan_id), start=1):
             action.position = position
             action.updated_at = self._timestamp()
+
+    def _conflict(self, code: str, message: str) -> None:
+        raise FlarePlanError(
+            code=code,
+            message=message,
+            status_code=HTTPStatus.CONFLICT,
+            details={},
+        )
 
     def _next_id(self, prefix: str) -> str:
         return f"{prefix}-{next(self._id_counter)}"
