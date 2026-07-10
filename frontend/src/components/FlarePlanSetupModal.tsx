@@ -96,12 +96,14 @@ export function FlarePlanSetupModal({
 }: FlarePlanSetupModalProps) {
   const {
     archiveAction,
+    canEditPlan,
     createFromTemplate,
     ensureTemplatesLoaded,
     errorBanner,
     isActionPending,
     isAtActionLimit,
     isInitialLoading,
+    isUsingBuiltInDefaultPlan,
     isPlanConfigured,
     isReorderPending,
     isRefreshing,
@@ -144,9 +146,12 @@ export function FlarePlanSetupModal({
     ? `${plan.active_action_count} of ${plan.maximum_active_actions} actions`
     : "0 of 10 actions";
 
-  const statusLabel = isPlanConfigured
-    ? flareContent.common.status.configured
-    : flareContent.components.flarePlan.notConfigured;
+  const statusLabel = isUsingBuiltInDefaultPlan
+    ? flareContent.components.flarePlan.builtInDefaultStatus
+    : isPlanConfigured
+      ? flareContent.common.status.configured
+      : flareContent.components.flarePlan.notConfigured;
+  const isEditingDisabled = !canEditPlan;
 
   const startCreateAction = () => {
     setDraft(createEmptyDraft());
@@ -275,6 +280,17 @@ export function FlarePlanSetupModal({
             </View>
           ) : null}
 
+          {isEditingDisabled ? (
+            <View style={styles.noticeCard}>
+              <Text style={styles.noticeTitle}>
+                {flareContent.components.flarePlan.signInRequiredTitle}
+              </Text>
+              <Text style={styles.noticeCopy}>
+                {flareContent.components.flarePlan.signInRequiredCopy}
+              </Text>
+            </View>
+          ) : null}
+
           {isComposerVisible ? (
             <View style={styles.composerCard}>
               <Text style={styles.sectionTitle}>
@@ -369,12 +385,14 @@ export function FlarePlanSetupModal({
             <Pressable
               accessibilityLabel={flareContent.components.flarePlan.actions.addCustom}
               accessibilityRole="button"
-              accessibilityState={{ disabled: isAtActionLimit }}
-              disabled={isAtActionLimit}
+              accessibilityState={{ disabled: isAtActionLimit || isEditingDisabled }}
+              disabled={isAtActionLimit || isEditingDisabled}
               onPress={startCreateAction}
               style={[
                 styles.addButton,
-                isAtActionLimit ? styles.addButtonDisabled : null,
+                isAtActionLimit || isEditingDisabled
+                  ? styles.addButtonDisabled
+                  : null,
               ]}
             >
               <Text style={styles.addButtonLabel}>
@@ -432,10 +450,14 @@ export function FlarePlanSetupModal({
             {!planError && plan && plan.actions.length === 0 ? (
               <View style={styles.emptyState}>
                 <Text style={styles.emptyStateTitle}>
-                  {flareContent.components.flarePlan.emptyTitle}
+                  {isUsingBuiltInDefaultPlan
+                    ? flareContent.components.flarePlan.builtInDefaultSummaryTitle
+                    : flareContent.components.flarePlan.emptyTitle}
                 </Text>
                 <Text style={styles.emptyStateCopy}>
-                  {flareContent.components.flarePlan.emptyCopy}
+                  {isUsingBuiltInDefaultPlan
+                    ? flareContent.components.flarePlan.builtInDefaultSummaryCopy
+                    : flareContent.components.flarePlan.emptyCopy}
                 </Text>
               </View>
             ) : null}
@@ -470,9 +492,9 @@ export function FlarePlanSetupModal({
                         accessibilityLabel={`Edit action ${action.title}`}
                         accessibilityRole="button"
                         accessibilityState={{
-                          disabled: isActionPending(action.id),
+                          disabled: isEditingDisabled || isActionPending(action.id),
                         }}
-                        disabled={isActionPending(action.id)}
+                        disabled={isEditingDisabled || isActionPending(action.id)}
                         onPress={() => startEditAction(action)}
                         style={styles.inlineButton}
                       >
@@ -485,11 +507,13 @@ export function FlarePlanSetupModal({
                         accessibilityRole="button"
                         accessibilityState={{
                           disabled:
+                            isEditingDisabled ||
                             index === 0 ||
                             isReorderPending ||
                             isActionPending(action.id),
                         }}
                         disabled={
+                          isEditingDisabled ||
                           index === 0 ||
                           isReorderPending ||
                           isActionPending(action.id)
@@ -508,11 +532,13 @@ export function FlarePlanSetupModal({
                         accessibilityRole="button"
                         accessibilityState={{
                           disabled:
+                            isEditingDisabled ||
                             index === plan.actions.length - 1 ||
                             isReorderPending ||
                             isActionPending(action.id),
                         }}
                         disabled={
+                          isEditingDisabled ||
                           index === plan.actions.length - 1 ||
                           isReorderPending ||
                           isActionPending(action.id)
@@ -530,9 +556,9 @@ export function FlarePlanSetupModal({
                         accessibilityLabel={`Remove action ${action.title}`}
                         accessibilityRole="button"
                         accessibilityState={{
-                          disabled: isActionPending(action.id),
+                          disabled: isEditingDisabled || isActionPending(action.id),
                         }}
-                        disabled={isActionPending(action.id)}
+                        disabled={isEditingDisabled || isActionPending(action.id)}
                         onPress={() => setArchiveCandidate(action)}
                         style={styles.inlineButton}
                       >
@@ -546,124 +572,126 @@ export function FlarePlanSetupModal({
               : null}
           </View>
 
-          <View style={styles.sectionCard}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>
-                {flareContent.components.flarePlan.starterLibraryTitle}
-              </Text>
-              {isAtActionLimit ? (
-                <Text style={styles.limitText}>
-                  {flareContent.components.flarePlan.limitReachedCopy}
+          {!isEditingDisabled ? (
+            <View style={styles.sectionCard}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>
+                  {flareContent.components.flarePlan.starterLibraryTitle}
+                </Text>
+                {isAtActionLimit ? (
+                  <Text style={styles.limitText}>
+                    {flareContent.components.flarePlan.limitReachedCopy}
+                  </Text>
+                ) : null}
+              </View>
+
+              {templatesError ? (
+                <View style={styles.errorBlock}>
+                  <Text accessibilityLiveRegion="polite" style={styles.errorText}>
+                    {templatesError}
+                  </Text>
+                  <View style={styles.inlineActions}>
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={() => {
+                        void retryTemplates();
+                      }}
+                      style={styles.inlineButton}
+                    >
+                      <Text style={styles.inlineButtonLabel}>
+                        {flareContent.components.flarePlan.actions.retryTemplates}
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={() => {
+                        void refetchAll();
+                      }}
+                      style={styles.inlineButton}
+                    >
+                      <Text style={styles.inlineButtonLabel}>
+                        {flareContent.components.flarePlan.actions.retryAll}
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              ) : null}
+
+              {!templatesError && groupedTemplates.length === 0 ? (
+                <Text style={styles.emptyStateCopy}>
+                  {flareContent.components.flarePlan.noTemplatesCopy}
                 </Text>
               ) : null}
-            </View>
 
-            {templatesError ? (
-              <View style={styles.errorBlock}>
-                <Text accessibilityLiveRegion="polite" style={styles.errorText}>
-                  {templatesError}
-                </Text>
-                <View style={styles.inlineActions}>
-                  <Pressable
-                    accessibilityRole="button"
-                    onPress={() => {
-                      void retryTemplates();
-                    }}
-                    style={styles.inlineButton}
-                  >
-                    <Text style={styles.inlineButtonLabel}>
-                      {flareContent.components.flarePlan.actions.retryTemplates}
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    accessibilityRole="button"
-                    onPress={() => {
-                      void refetchAll();
-                    }}
-                    style={styles.inlineButton}
-                  >
-                    <Text style={styles.inlineButtonLabel}>
-                      {flareContent.components.flarePlan.actions.retryAll}
-                    </Text>
-                  </Pressable>
-                </View>
-              </View>
-            ) : null}
+              {!templatesError
+                ? groupedTemplates.map((group) => (
+                    <View key={group.category} style={styles.templateGroup}>
+                      <Text style={styles.templateGroupTitle}>
+                        {group.categoryLabel}
+                      </Text>
+                      <View style={styles.templateList}>
+                        {group.templates.map((template) => {
+                          const isPending = isTemplatePending(
+                            template.template_key,
+                          );
+                          const isDisabled =
+                            template.is_selected || isPending || isAtActionLimit;
 
-            {!templatesError && groupedTemplates.length === 0 ? (
-              <Text style={styles.emptyStateCopy}>
-                {flareContent.components.flarePlan.noTemplatesCopy}
-              </Text>
-            ) : null}
-
-            {!templatesError
-              ? groupedTemplates.map((group) => (
-                  <View key={group.category} style={styles.templateGroup}>
-                    <Text style={styles.templateGroupTitle}>
-                      {group.categoryLabel}
-                    </Text>
-                    <View style={styles.templateList}>
-                      {group.templates.map((template) => {
-                        const isPending = isTemplatePending(
-                          template.template_key,
-                        );
-                        const isDisabled =
-                          template.is_selected || isPending || isAtActionLimit;
-
-                        return (
-                          <Pressable
-                            key={template.template_key}
-                            accessibilityLabel={`Add starter action ${template.title}`}
-                            accessibilityRole="button"
-                            accessibilityState={{
-                              disabled: isDisabled,
-                              selected: template.is_selected,
-                            }}
-                            disabled={isDisabled}
-                            onPress={() => {
-                              void createFromTemplate(template.template_key);
-                            }}
-                            style={[
-                              styles.templateCard,
-                              template.is_selected
-                                ? styles.templateCardSelected
-                                : null,
-                            ]}
-                          >
-                            <View style={styles.templateHeader}>
-                              <Text style={styles.templateTitle}>
-                                {template.title}
-                              </Text>
-                              <Text
-                                style={[
-                                  styles.templateState,
-                                  template.is_selected
-                                    ? styles.templateStateSelected
-                                    : null,
-                                ]}
-                              >
-                                {isPending
-                                  ? flareContent.components.flarePlan.actions
-                                      .adding
-                                  : template.is_selected
-                                    ? flareContent.components.flarePlan.selected
-                                    : flareContent.components.flarePlan.actions
-                                        .addStarter}
-                              </Text>
-                            </View>
-                            {template.description ? (
-                              <Text style={styles.templateDescription}>
-                                {template.description}
-                              </Text>
-                            ) : null}
-                          </Pressable>
-                        );
-                      })}
+                          return (
+                            <Pressable
+                              key={template.template_key}
+                              accessibilityLabel={`Add starter action ${template.title}`}
+                              accessibilityRole="button"
+                              accessibilityState={{
+                                disabled: isDisabled,
+                                selected: template.is_selected,
+                              }}
+                              disabled={isDisabled}
+                              onPress={() => {
+                                void createFromTemplate(template.template_key);
+                              }}
+                              style={[
+                                styles.templateCard,
+                                template.is_selected
+                                  ? styles.templateCardSelected
+                                  : null,
+                              ]}
+                            >
+                              <View style={styles.templateHeader}>
+                                <Text style={styles.templateTitle}>
+                                  {template.title}
+                                </Text>
+                                <Text
+                                  style={[
+                                    styles.templateState,
+                                    template.is_selected
+                                      ? styles.templateStateSelected
+                                      : null,
+                                  ]}
+                                >
+                                  {isPending
+                                    ? flareContent.components.flarePlan.actions
+                                        .adding
+                                    : template.is_selected
+                                      ? flareContent.components.flarePlan.selected
+                                      : flareContent.components.flarePlan.actions
+                                          .addStarter}
+                                </Text>
+                              </View>
+                              {template.description ? (
+                                <Text style={styles.templateDescription}>
+                                  {template.description}
+                                </Text>
+                              ) : null}
+                            </Pressable>
+                          );
+                        })}
+                      </View>
                     </View>
-                  </View>
-                ))
-              : null}
-          </View>
+                  ))
+                : null}
+            </View>
+          ) : null}
         </View>
       </PlaceholderModal>
 
@@ -778,6 +806,22 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 18,
     backgroundColor: "#FDECEA",
+  },
+  noticeCard: {
+    gap: 6,
+    padding: 14,
+    borderRadius: 18,
+    backgroundColor: flareTheme.colors.primaryMuted,
+  },
+  noticeTitle: {
+    color: flareTheme.colors.textStrong,
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  noticeCopy: {
+    color: flareTheme.colors.text,
+    fontSize: 14,
+    lineHeight: 20,
   },
   errorText: {
     color: flareTheme.colors.dangerText,

@@ -179,7 +179,17 @@ function Probe({ tick }: { tick: number }) {
 
 function renderWithProviders(
   repository: FlarePlanRepository,
-  options?: { strictMode?: boolean; tick?: number },
+  options?: {
+    authState?: {
+      kind: "authenticated";
+      userEmail: string;
+      userId: string;
+    } | {
+      kind: "no-session";
+    };
+    strictMode?: boolean;
+    tick?: number;
+  },
 ) {
   const content = <Probe tick={options?.tick ?? 0} />;
 
@@ -189,16 +199,20 @@ function renderWithProviders(
     wrapper({ children }: PropsWithChildren) {
       return (
         <FlareAuthProvider
-          initialAuthState={{
-            kind: "authenticated",
-            userEmail: "flare@example.com",
-            userId: "user-123",
-          }}
-          resolveAuthState={async () => ({
-            kind: "authenticated",
-            userEmail: "flare@example.com",
-            userId: "user-123",
-          })}
+          initialAuthState={
+            options?.authState ?? {
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }
+          }
+          resolveAuthState={async () =>
+            options?.authState ?? {
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }
+          }
           subscribe={() => null}
         >
           <FlarePlanProvider flarePlanRepository={repository}>
@@ -243,6 +257,32 @@ describe("FlarePlanProvider loading behavior", () => {
 
     expect(repository.loadPlan).toHaveBeenCalledTimes(1);
     expect(repository.loadTemplates).not.toHaveBeenCalled();
+  });
+
+  it("uses the built-in default plan and blocks editing while signed out", async () => {
+    const repository = createRepository();
+
+    renderWithProviders(repository, {
+      authState: { kind: "no-session" },
+    });
+
+    await waitFor(() => {
+      expect(latestContext?.isUsingBuiltInDefaultPlan).toBe(true);
+      expect(latestContext?.canEditPlan).toBe(false);
+      expect(latestContext?.plan?.active_action_count).toBe(4);
+    });
+
+    expect(repository.loadPlan).not.toHaveBeenCalled();
+
+    await act(async () => {
+      await latestContext?.createCustomAction({
+        description: "desc",
+        title: "title",
+      });
+    });
+
+    expect(repository.createCustomAction).not.toHaveBeenCalled();
+    expect(latestContext?.errorBanner?.code).toBe("auth_session_missing");
   });
 
   it("loads templates once when requested and dedupes concurrent reads", async () => {

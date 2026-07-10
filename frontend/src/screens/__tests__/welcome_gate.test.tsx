@@ -14,6 +14,7 @@ const mockPush = jest.fn();
 
 const mockFlarePlanState = {
   archiveAction: jest.fn(),
+  canEditPlan: false,
   createCustomAction: jest.fn(),
   createFromTemplate: jest.fn(),
   ensureTemplatesLoaded: jest.fn(),
@@ -21,14 +22,15 @@ const mockFlarePlanState = {
   isActionPending: () => false,
   isAtActionLimit: false,
   isInitialLoading: false,
-  isPlanConfigured: false,
+  isPlanConfigured: true,
   isReorderPending: false,
   isRefreshing: false,
   isTemplatePending: () => false,
+  isUsingBuiltInDefaultPlan: true,
   plan: {
-    id: "plan-1",
-    is_configured: false,
-    active_action_count: 0,
+    id: "built-in-default-flare-plan",
+    is_configured: true,
+    active_action_count: 4,
     maximum_active_actions: 10,
     actions: [],
     updated_at: "2026-07-08T00:00:00.000Z",
@@ -161,12 +163,12 @@ describe("WelcomeGateScreen", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("Hold onto your support and your clarity")).toBeTruthy();
+      expect(getByText("Hold on to your support and your clarity")).toBeTruthy();
     });
 
     expect(
       getByText(
-        "The people, encouragement, connection, and chosen messages you want within reach ahead of time.",
+        "The people and encouragement you have chosen to keep close when you need them.",
       ),
     ).toBeTruthy();
     expect(getByText("Go to sign in")).toBeTruthy();
@@ -185,10 +187,10 @@ describe("WelcomeGateScreen", () => {
     fireEvent.press(getByText("Get started"));
 
     await waitFor(() => {
-      expect(getByText("Continue setup")).toBeTruthy();
+      expect(getByText("Send Flare")).toBeTruthy();
     });
 
-    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
+    expect(queryByText("Hold on to your support and your clarity")).toBeNull();
     expect(asyncStorage.setItem).toHaveBeenCalledWith(
       FLARE_WELCOME_COMPLETION_KEY,
       "true",
@@ -203,10 +205,10 @@ describe("WelcomeGateScreen", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("Continue setup")).toBeTruthy();
+      expect(getByText("Send Flare")).toBeTruthy();
     });
 
-    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
+    expect(queryByText("Hold on to your support and your clarity")).toBeNull();
   });
 
   it("routes signed-out users into the existing sign-in flow from Welcome", async () => {
@@ -232,7 +234,7 @@ describe("WelcomeGateScreen", () => {
       expect(getByText("Continue setup")).toBeTruthy();
     });
 
-    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
+    expect(queryByText("Hold on to your support and your clarity")).toBeNull();
   });
 
   it("reopens Welcome from Customize and hides sign-in upsell copy for signed-in users", async () => {
@@ -243,7 +245,7 @@ describe("WelcomeGateScreen", () => {
     fireEvent.press(getByText("Welcome to Flare"));
 
     await waitFor(() => {
-      expect(getByText("Hold onto your support and your clarity")).toBeTruthy();
+      expect(getByText("Hold on to your support and your clarity")).toBeTruthy();
     });
 
     expect(

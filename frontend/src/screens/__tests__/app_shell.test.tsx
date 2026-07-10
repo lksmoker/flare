@@ -14,6 +14,7 @@ import type {
   PersistedBehaviorPattern,
 } from "../../services/behaviorPatternRepository";
 import type { FlareEventRepository } from "../../services/flareEventRepository";
+import type { SavedFlarePlanAction } from "../../services/flarePlanApi";
 import { DEFAULT_SUPPORT_CHANNEL_MESSAGE } from "../../services/supportChannelApi";
 import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
@@ -24,6 +25,7 @@ import * as supportChannelApi from "../../services/supportChannelApi";
 
 const defaultMockFlarePlanState = {
   archiveAction: jest.fn(),
+  canEditPlan: false,
   createCustomAction: jest.fn(),
   createFromTemplate: jest.fn(),
   ensureTemplatesLoaded: jest.fn(),
@@ -35,12 +37,13 @@ const defaultMockFlarePlanState = {
   isReorderPending: false,
   isRefreshing: false,
   isTemplatePending: () => false,
+  isUsingBuiltInDefaultPlan: false,
   plan: {
     id: "plan-1",
     is_configured: false,
     active_action_count: 0,
     maximum_active_actions: 10,
-    actions: [],
+    actions: [] as SavedFlarePlanAction[],
     updated_at: "2026-07-08T00:00:00.000Z",
   },
   planError: null,
@@ -58,6 +61,33 @@ let mockFlarePlanState = {
   ...defaultMockFlarePlanState,
   plan: { ...defaultMockFlarePlanState.plan },
 };
+
+function enableBuiltInDefaultPlan() {
+  mockFlarePlanState = {
+    ...mockFlarePlanState,
+    canEditPlan: false,
+    isPlanConfigured: true,
+    isUsingBuiltInDefaultPlan: true,
+    plan: {
+      ...mockFlarePlanState.plan,
+      id: "built-in-default-flare-plan",
+      is_configured: true,
+      active_action_count: 4,
+      actions: [
+        {
+          id: "built-in-default-action-1",
+          source_template_key: "move_to_different_room",
+          title: "Move to a different room",
+          description: "Create some distance from where the pattern was happening.",
+          position: 1,
+          is_active: true,
+          created_at: "1970-01-01T00:00:00.000Z",
+          updated_at: "1970-01-01T00:00:00.000Z",
+        },
+      ],
+    },
+  };
+}
 
 jest.mock("../../state/FlarePlanContext", () => ({
   FlarePlanProvider: ({ children }: { children: ReactNode }) => children,
@@ -242,9 +272,12 @@ function ConfiguredProviders({ children }: PropsWithChildren) {
 function enableConfiguredFlarePlan(actionCount = 1) {
   mockFlarePlanState = {
     ...mockFlarePlanState,
+    canEditPlan: true,
     isPlanConfigured: true,
+    isUsingBuiltInDefaultPlan: false,
     plan: {
       ...mockFlarePlanState.plan,
+      id: "plan-1",
       active_action_count: actionCount,
       actions: [],
       is_configured: true,
@@ -331,7 +364,8 @@ describe("V0 app shell", () => {
     (flareResponseApi.skipFlarePlanAction as jest.Mock).mockReset();
   });
 
-  it("renders the top-level navigation labels and guided setup hero when required setup is incomplete", () => {
+  it("renders the top-level navigation labels and Send Flare for signed-out users", () => {
+    enableBuiltInDefaultPlan();
     const { getAllByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
@@ -339,30 +373,32 @@ describe("V0 app shell", () => {
     expect(getAllByText("Flare").length).toBeGreaterThanOrEqual(1);
     expect(getAllByText("History").length).toBeGreaterThanOrEqual(1);
     expect(getAllByText("Customize").length).toBeGreaterThanOrEqual(1);
-    expect(getAllByText("Finish setting up Flare").length).toBeGreaterThanOrEqual(1);
-    expect(queryByText("Continue setup")).toBeTruthy();
+    expect(getAllByText("Send Flare").length).toBeGreaterThanOrEqual(1);
+    expect(queryByText("Finish setting up Flare")).toBeNull();
   });
 
-  it("renders the setup hero before the Readiness panel when setup is incomplete", () => {
+  it("renders Send Flare before the Readiness panel for signed-out users", () => {
+    enableBuiltInDefaultPlan();
     const { toJSON } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
     const rendered = JSON.stringify(toJSON());
 
-    const setupHeroIndex = rendered.indexOf("Finish setting up Flare");
+    const sendFlareIndex = rendered.indexOf("Send Flare");
     const readinessIndex = rendered.indexOf("Readiness");
 
-    expect(setupHeroIndex).toBeGreaterThan(-1);
-    expect(readinessIndex).toBeGreaterThan(setupHeroIndex);
+    expect(sendFlareIndex).toBeGreaterThan(-1);
+    expect(readinessIndex).toBeGreaterThan(sendFlareIndex);
   });
 
   it("shows the Readiness panel collapsed by default with the aggregate count", () => {
+    enableBuiltInDefaultPlan();
     const { getByLabelText, getByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
     expect(getByLabelText("Expand readiness details")).toBeTruthy();
-    expect(getByText("0 of 4 configured")).toBeTruthy();
+    expect(getByText("1 of 4 configured")).toBeTruthy();
     expect(queryByText("Setup saving")).toBeNull();
     expect(queryByText("Behavior Pattern")).toBeNull();
     expect(queryByText("Anchor Note")).toBeNull();
@@ -384,6 +420,7 @@ describe("V0 app shell", () => {
   });
 
   it("expands and collapses the Readiness panel with correct accessibility state", () => {
+    enableBuiltInDefaultPlan();
     const { getByLabelText, getByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
@@ -414,33 +451,32 @@ describe("V0 app shell", () => {
     expect(queryByText("Support Group")).toBeNull();
   });
 
-  it("surfaces signed-out guidance without competing with the primary setup CTA", () => {
-    const { getAllByText, getByText, queryByText } = render(<FlareScreen />, {
+  it("shows the signed-out built-in default plan message on Customize", () => {
+    enableBuiltInDefaultPlan();
+    const { getByText, queryByText } = render(<CustomizeScreen />, {
       wrapper: TestProviders,
     });
 
+    expect(getByText("Built-in plan ready")).toBeTruthy();
     expect(
-      getAllByText(
-        "You can start setup on this device now. Sign in when you want to save it and use it across devices.",
+      getByText(
+        "Signed-out Flare still uses the built-in default plan. Sign in to save your own personal plan.",
       ),
-    ).toHaveLength(2);
-    expect(getByText("Go to sign in")).toBeTruthy();
-    expect(queryByText("Checkpoint / Reflection")).toBeNull();
+    ).toBeTruthy();
+    expect(queryByText("Continue setup")).toBeNull();
   });
 
-  it("uses the documented priority order when multiple required setup items are incomplete", () => {
-    const { getByText } = render(<FlareScreen />, {
+  it("does not show the setup CTA for signed-out users when the built-in default plan is available", () => {
+    enableBuiltInDefaultPlan();
+    const { queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
-    fireEvent.press(getByText("Continue setup"));
-
-    expect(expoRouter.__push).toHaveBeenCalledWith(
-      "/customize?focus=behavior-pattern",
-    );
+    expect(queryByText("Continue setup")).toBeNull();
   });
 
-  it("advances the primary setup CTA to the next missing required item for partial local setup", async () => {
+  it("updates signed-out readiness when local setup is partially filled in", async () => {
+    enableBuiltInDefaultPlan();
     const partialBehaviorPatternRepository: BehaviorPatternRepository = {
       loadActiveBehaviorPattern: jest
         .fn()
@@ -474,12 +510,8 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("1 of 4 configured")).toBeTruthy();
+      expect(getByText("2 of 4 configured")).toBeTruthy();
     });
-
-    fireEvent.press(getByText("Continue setup"));
-
-    expect(expoRouter.__push).toHaveBeenCalledWith("/customize?focus=flare-plan");
   });
 
   it("uses the remaining required saved-support step for signed-in incomplete setup", async () => {
@@ -564,6 +596,37 @@ describe("V0 app shell", () => {
       queryByText("Your saved support words are attached to this Flare Event."),
     ).toBeNull();
     expect(queryByText(/status: active/i)).toBeNull();
+  });
+
+  it("lets a signed-out user send a Flare and use the built-in default plan", async () => {
+    enableBuiltInDefaultPlan();
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: TestProviders,
+    });
+
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(getByText("Flare Response")).toBeTruthy();
+      expect(getByText("Begin Flare Plan")).toBeTruthy();
+    });
+
+    expect(queryByText("Support message sent")).toBeNull();
+    expect(queryByText("No support group configured")).toBeNull();
+
+    fireEvent.press(getByText("Begin Flare Plan"));
+
+    await waitFor(() => {
+      expect(getByText("Step 1 of 4")).toBeTruthy();
+      expect(getByText("Move to a different room")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Done"));
+
+    await waitFor(() => {
+      expect(getByText("Step 2 of 4")).toBeTruthy();
+      expect(getByText("Drink a glass of water")).toBeTruthy();
+    });
   });
 
   it(
@@ -1852,6 +1915,7 @@ describe("V0 app shell", () => {
   });
 
   it("updates the Flare readiness indicator after a behavior pattern is saved", () => {
+    enableBuiltInDefaultPlan();
     const { getAllByText, getByLabelText, getByText } = render(
       <>
         <CustomizeScreen />
@@ -1862,7 +1926,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 of 4 configured")).toBeTruthy();
+    expect(getByText("1 of 4 configured")).toBeTruthy();
     fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getByText("Local-only until sign in")).toBeTruthy();
     expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
@@ -1876,6 +1940,7 @@ describe("V0 app shell", () => {
   });
 
   it("updates the Flare readiness indicator after Anchor Note is saved", () => {
+    enableBuiltInDefaultPlan();
     const { getAllByText, getByLabelText, getByText } = render(
       <>
         <CustomizeScreen />
@@ -2011,6 +2076,7 @@ describe("V0 app shell", () => {
   });
 
   it("keeps support-group guidance scoped to Customize after the flare event flow changes", () => {
+    enableBuiltInDefaultPlan();
     const { getByText } = render(
       <>
         <FlareScreen />
@@ -2022,7 +2088,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 of 4 configured")).toBeTruthy();
+    expect(getByText("1 of 4 configured")).toBeTruthy();
     expect(
       getByText(
         /Connect one GroupMe group for a single saved Flare support message\./,
@@ -2031,6 +2097,7 @@ describe("V0 app shell", () => {
   });
 
   it("settles without a maximum update depth error while auth initializes", async () => {
+    enableBuiltInDefaultPlan();
     const consoleError = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
@@ -2052,7 +2119,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("0 of 4 configured")).toBeTruthy();
+      expect(getByText("1 of 4 configured")).toBeTruthy();
     });
 
     expect(

@@ -383,3 +383,27 @@ class FlarePlanRunApiTests(unittest.TestCase):
         )
         self.assertEqual("in_progress", response.body["response"]["run"]["status"])
 
+    def test_account_owned_flare_routes_stay_unauthorized_without_authentication(self) -> None:
+        created = self.api.handle_request(
+            method="POST",
+            path="/api/flare-events",
+            headers={"idempotency-key": "send-1"},
+            body=json.dumps(
+                {
+                    "behavior_label_snapshot": "Scrolling",
+                    "response_mode": "configured",
+                }
+            ).encode("utf-8"),
+        )
+        self.assertEqual(401, created.status_code)
+        self.assertEqual("unauthorized", created.body["error"]["code"])
+
+        read_plan = self.api.handle_request(
+            method="GET",
+            path="/api/flare-plan",
+            headers={},
+            body=None,
+        )
+        self.assertEqual(401, read_plan.status_code)
+        self.assertEqual("unauthorized", read_plan.body["error"]["code"])
+

@@ -52,7 +52,12 @@ export function CustomizeScreen() {
   const { authState, authStatus } = useFlareAuth();
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
-  const { isInitialLoading, isPlanConfigured, plan } = useFlarePlan();
+  const {
+    isInitialLoading,
+    isPlanConfigured,
+    isUsingBuiltInDefaultPlan,
+    plan,
+  } = useFlarePlan();
   const {
     isSupportChannelConfigured,
     isSupportChannelLoading,
@@ -173,11 +178,15 @@ export function CustomizeScreen() {
             <Text
               style={[
                 styles.statusBadge,
-                isPlanConfigured ? styles.readyBadge : styles.pendingBadge,
+                isUsingBuiltInDefaultPlan || isPlanConfigured
+                  ? styles.readyBadge
+                  : styles.pendingBadge,
               ]}
             >
               {isInitialLoading
                 ? flareContent.components.flarePlan.loading.checking
+                : isUsingBuiltInDefaultPlan
+                  ? flareContent.components.flarePlan.builtInDefaultStatus
                 : isPlanConfigured
                   ? flareContent.common.status.configured
                   : flareContent.components.flarePlan.notConfigured}
@@ -188,13 +197,17 @@ export function CustomizeScreen() {
           </Text>
           <View style={styles.summaryCard}>
             <Text style={styles.summaryTitle}>
-              {isPlanConfigured
+              {isUsingBuiltInDefaultPlan
+                ? flareContent.components.flarePlan.builtInDefaultSummaryTitle
+                : isPlanConfigured
                 ? flareContent.components.flarePlan.summaryConfigured
                 : flareContent.components.flarePlan.summaryEmptyTitle}
             </Text>
             <Text style={styles.summaryCopy}>
               {isInitialLoading
                 ? flareContent.components.flarePlan.loading.initial
+                : isUsingBuiltInDefaultPlan
+                  ? flareContent.components.flarePlan.builtInDefaultSummaryCopy
                 : `${plan?.active_action_count ?? 0} of ${plan?.maximum_active_actions ?? 10} actions`}
             </Text>
           </View>

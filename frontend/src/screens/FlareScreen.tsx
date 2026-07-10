@@ -29,6 +29,14 @@ import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlareEvents } from "../state/FlareEventContext";
 import { useFlarePlan } from "../state/FlarePlanContext";
+import {
+  beginBuiltInDefaultRun,
+  createBuiltInDefaultRun,
+  declineBuiltInDefaultRun,
+  endBuiltInDefaultRunEarly,
+  isBuiltInDefaultRun,
+  resolveBuiltInDefaultRunAction,
+} from "../state/builtInDefaultFlarePlan";
 import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
 import {
@@ -122,7 +130,12 @@ export function FlareScreen() {
   const { activeEvent, createFlareEvent, currentEvent, upsertPersistedFlareEvent } = useFlareEvents();
   const { anchorNote, anchorNoteRecord, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { authState, authStatus } = useFlareAuth();
-  const { isInitialLoading: isPlanLoading, isPlanConfigured, plan } = useFlarePlan();
+  const {
+    isInitialLoading: isPlanLoading,
+    isPlanConfigured,
+    isUsingBuiltInDefaultPlan,
+    plan,
+  } = useFlarePlan();
   const {
     isSupportChannelConfigured,
     isSupportChannelLoading,
@@ -143,7 +156,11 @@ export function FlareScreen() {
     planMaximumActiveActions: plan?.maximum_active_actions,
     supportChannelName: supportChannel?.destination_display_name,
   });
+  const requiresSavedSetup =
+    authStatus === "ready" && authState.kind === "authenticated";
   const isSetupComplete = readinessModel.isSetupComplete;
+  const canSendFlare = !requiresSavedSetup || isSetupComplete;
+  const shouldShowSetupHero = requiresSavedSetup && !isSetupComplete;
   const setupHeroCopy =
     authStatus === "ready" && authState.kind === "no-session"
       ? flareContent.screens.flare.setupHero.signedOutCopy
@@ -194,7 +211,7 @@ export function FlareScreen() {
   }, [authState.kind, currentEvent]);
 
   async function runMutation(
-    callback: () => Promise<FlareResponseState["run"]>,
+    callback: () => Promise<FlareResponseState["run"]> | FlareResponseState["run"],
   ) {
     setIsRunMutationPending(true);
     setResponseError(null);
@@ -215,17 +232,17 @@ export function FlareScreen() {
       currentPath="/"
       screenLabel={flareContent.screens.flare.screenLabel}
       subtitle={
-        isSetupComplete
+        canSendFlare
           ? flareContent.screens.flare.subtitle
           : setupHeroCopy
       }
       title={
-        isSetupComplete
+        canSendFlare
           ? flareContent.screens.flare.title
           : flareContent.screens.flare.setupHero.title
       }
     >
-      {!isSetupComplete ? (
+      {shouldShowSetupHero ? (
         <View style={styles.setupHeroCard}>
           <View style={styles.setupHeroCopyBlock}>
             <Text style={styles.setupHeroTitle}>
@@ -251,17 +268,6 @@ export function FlareScreen() {
               {flareContent.screens.flare.setupHero.primaryAction}
             </Text>
           </Pressable>
-          {authStatus === "ready" && authState.kind === "no-session" ? (
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => navigateToCustomize("auth")}
-              style={styles.setupHeroLink}
-            >
-              <Text style={styles.setupHeroLinkLabel}>
-                {flareContent.screens.flare.setupHero.signInAction}
-              </Text>
-            </Pressable>
-          ) : null}
         </View>
       ) : (
         <SendFlareButton
@@ -333,7 +339,10 @@ export function FlareScreen() {
               setExternalSupportState(null);
               setResponseState({
                 flareEvent: localFallbackEvent,
-                run: null,
+                run:
+                  isUsingBuiltInDefaultPlan
+                    ? createBuiltInDefaultRun(localFallbackEvent.id)
+                    : null,
                 supportDelivery: null,
               });
             }
@@ -343,7 +352,7 @@ export function FlareScreen() {
         />
       )}
 
-      {isSetupComplete &&
+      {canSendFlare &&
       !(isFlareResponseVisible && responseState?.run?.status === "in_progress") ? (
         <Pressable
           accessibilityRole="button"
@@ -428,24 +437,58 @@ export function FlareScreen() {
           isMutationPending={isRunMutationPending}
           mutationError={responseError}
           onBeginPlan={(runId) =>
-            void runMutation(() => beginFlarePlanRun(runId, createIdempotencyKey()))
+            void runMutation(() => {
+              if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
+                return beginBuiltInDefaultRun(responseState.run);
+              }
+
+              return beginFlarePlanRun(runId, createIdempotencyKey());
+            })
           }
           onDeclinePlan={(runId) =>
-            void runMutation(() => declineFlarePlanRun(runId, createIdempotencyKey()))
+            void runMutation(() => {
+              if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
+                return declineBuiltInDefaultRun(responseState.run);
+              }
+
+              return declineFlarePlanRun(runId, createIdempotencyKey());
+            })
           }
           onEndPlan={(runId) =>
-            void runMutation(() => endFlarePlanRunEarly(runId, createIdempotencyKey()))
+            void runMutation(() => {
+              if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
+                return endBuiltInDefaultRunEarly(responseState.run);
+              }
+
+              return endFlarePlanRunEarly(runId, createIdempotencyKey());
+            })
           }
           onOpenCheckpoint={openCheckpoint}
           onResolveActionDone={(runId, actionId) =>
-            void runMutation(() =>
-              completeFlarePlanAction(runId, actionId, createIdempotencyKey()),
-            )
+            void runMutation(() => {
+              if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
+                return resolveBuiltInDefaultRunAction(
+                  responseState.run,
+                  actionId,
+                  "done",
+                );
+              }
+
+              return completeFlarePlanAction(runId, actionId, createIdempotencyKey());
+            })
           }
           onResolveActionSkipped={(runId, actionId) =>
-            void runMutation(() =>
-              skipFlarePlanAction(runId, actionId, createIdempotencyKey()),
-            )
+            void runMutation(() => {
+              if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
+                return resolveBuiltInDefaultRunAction(
+                  responseState.run,
+                  actionId,
+                  "skipped",
+                );
+              }
+
+              return skipFlarePlanAction(runId, actionId, createIdempotencyKey());
+            })
           }
           run={responseState?.run ?? null}
         />

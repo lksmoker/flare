@@ -27,6 +27,7 @@ import {
   type UpdateFlarePlanActionResponse,
   updateFlarePlanAction,
 } from "../services/flarePlanApi";
+import { createBuiltInDefaultPlan } from "./builtInDefaultFlarePlan";
 import { useFlareAuth } from "./FlareAuthContext";
 
 export type FlarePlanRepository = {
@@ -73,6 +74,7 @@ type FlarePlanMutationError = {
 };
 
 type FlarePlanContextValue = {
+  canEditPlan: boolean;
   ensureTemplatesLoaded: () => Promise<void>;
   createCustomAction: (input: {
     description: string;
@@ -83,6 +85,7 @@ type FlarePlanContextValue = {
   isActionPending: (actionId: string) => boolean;
   isAtActionLimit: boolean;
   isInitialLoading: boolean;
+  isUsingBuiltInDefaultPlan: boolean;
   isPlanConfigured: boolean;
   isReorderPending: boolean;
   isRefreshing: boolean;
@@ -163,17 +166,6 @@ async function runSharedLoad<T>(
   return request;
 }
 
-function createLocalFallbackPlan(): ActiveFlarePlan {
-  return {
-    id: "local-flare-plan",
-    is_configured: false,
-    active_action_count: 0,
-    maximum_active_actions: 10,
-    actions: [],
-    updated_at: new Date(0).toISOString(),
-  };
-}
-
 function applyPlanSelectionToTemplates(
   templates: StarterTemplate[],
   plan: ActiveFlarePlan | null,
@@ -231,6 +223,9 @@ export function FlarePlanProvider({
   const { authState, authStatus } = useFlareAuth();
   const authenticatedUserId =
     authState.kind === "authenticated" ? authState.userId : null;
+  const canEditPlan =
+    authStatus === "ready" && authState.kind === "authenticated";
+  const isUsingBuiltInDefaultPlan = !canEditPlan;
   const [plan, setPlan] = useState<ActiveFlarePlan | null>(null);
   const [templatesState, setTemplatesState] = useState<StarterTemplate[]>([]);
   const [planError, setPlanError] = useState<string | null>(null);
@@ -318,8 +313,8 @@ export function FlarePlanProvider({
   }, [flarePlanRepository.loadTemplates]);
 
   const refetchAll = useCallback(async () => {
-    if (authStatus !== "ready" || authState.kind !== "authenticated") {
-      setPlan(createLocalFallbackPlan());
+    if (!canEditPlan) {
+      setPlan(createBuiltInDefaultPlan());
       setTemplatesState([]);
       setPlanError(null);
       setTemplatesError(null);
@@ -333,11 +328,11 @@ export function FlarePlanProvider({
     await Promise.allSettled([loadPlan(), loadTemplates()]);
     setIsInitialLoading(false);
     setIsRefreshing(false);
-  }, [authState.kind, authStatus, loadPlan, loadTemplates]);
+  }, [canEditPlan, loadPlan, loadTemplates]);
 
   useEffect(() => {
-    if (authStatus !== "ready" || authState.kind !== "authenticated") {
-      setPlan(createLocalFallbackPlan());
+    if (!canEditPlan) {
+      setPlan(createBuiltInDefaultPlan());
       setTemplatesState([]);
       setPlanError(null);
       setTemplatesError(null);
@@ -362,10 +357,10 @@ export function FlarePlanProvider({
 
       setIsInitialLoading(false);
     });
-  }, [authState.kind, authStatus, authenticatedUserId, loadPlan]);
+  }, [authenticatedUserId, canEditPlan, loadPlan]);
 
   const ensureTemplatesLoaded = useCallback(async () => {
-    if (authStatus !== "ready" || authState.kind !== "authenticated") {
+    if (!canEditPlan) {
       setTemplatesState([]);
       setTemplatesError(null);
       setHasLoadedTemplates(true);
@@ -384,8 +379,7 @@ export function FlarePlanProvider({
 
     setIsRefreshing(false);
   }, [
-    authState.kind,
-    authStatus,
+    canEditPlan,
     hasLoadedTemplates,
     loadTemplates,
     templatesError,
@@ -428,6 +422,16 @@ export function FlarePlanProvider({
 
   const createFromTemplate = useCallback(
     async (templateKey: string) => {
+      if (!canEditPlan) {
+        setErrorBanner({
+          code: "auth_session_missing",
+          message: "Sign in before changing your personal Flare Plan.",
+          target: "create-template",
+          templateKey,
+        });
+        return false;
+      }
+
       clearErrorBanner();
       setPendingTemplateKeys((current) => new Set(current).add(templateKey));
 
@@ -461,11 +465,20 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, flarePlanRepository],
+    [canEditPlan, clearErrorBanner, flarePlanRepository],
   );
 
   const createCustomAction = useCallback(
     async (input: { description: string; title: string }) => {
+      if (!canEditPlan) {
+        setErrorBanner({
+          code: "auth_session_missing",
+          message: "Sign in before changing your personal Flare Plan.",
+          target: "create-custom",
+        });
+        return false;
+      }
+
       clearErrorBanner();
 
       try {
@@ -491,11 +504,21 @@ export function FlarePlanProvider({
         return false;
       }
     },
-    [clearErrorBanner, flarePlanRepository],
+    [canEditPlan, clearErrorBanner, flarePlanRepository],
   );
 
   const saveAction = useCallback(
     async (input: { actionId?: string; description: string; title: string }) => {
+      if (!canEditPlan) {
+        setErrorBanner({
+          actionId: input.actionId,
+          code: "auth_session_missing",
+          message: "Sign in before changing your personal Flare Plan.",
+          target: input.actionId ? "update" : "create-custom",
+        });
+        return false;
+      }
+
       if (!input.actionId) {
         return createCustomAction(input);
       }
@@ -536,11 +559,21 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, createCustomAction, flarePlanRepository],
+    [canEditPlan, clearErrorBanner, createCustomAction, flarePlanRepository],
   );
 
   const archiveAction = useCallback(
     async (actionId: string) => {
+      if (!canEditPlan) {
+        setErrorBanner({
+          actionId,
+          code: "auth_session_missing",
+          message: "Sign in before changing your personal Flare Plan.",
+          target: "archive",
+        });
+        return false;
+      }
+
       clearErrorBanner();
       setPendingActionIds((current) => new Set(current).add(actionId));
 
@@ -573,11 +606,20 @@ export function FlarePlanProvider({
         });
       }
     },
-    [clearErrorBanner, flarePlanRepository],
+    [canEditPlan, clearErrorBanner, flarePlanRepository],
   );
 
   const reorderActions = useCallback(
     async (actionIds: string[]) => {
+      if (!canEditPlan) {
+        setErrorBanner({
+          code: "auth_session_missing",
+          message: "Sign in before changing your personal Flare Plan.",
+          target: "reorder",
+        });
+        return false;
+      }
+
       clearErrorBanner();
       setIsReorderPending(true);
 
@@ -605,12 +647,13 @@ export function FlarePlanProvider({
         setIsReorderPending(false);
       }
     },
-    [clearErrorBanner, flarePlanRepository],
+    [canEditPlan, clearErrorBanner, flarePlanRepository],
   );
 
   const value = useMemo<FlarePlanContextValue>(
     () => ({
       archiveAction,
+      canEditPlan,
       createCustomAction,
       createFromTemplate,
       ensureTemplatesLoaded,
@@ -620,6 +663,7 @@ export function FlarePlanProvider({
         plan !== null &&
         plan.active_action_count >= plan.maximum_active_actions,
       isInitialLoading,
+      isUsingBuiltInDefaultPlan,
       isPlanConfigured: Boolean(plan?.active_action_count),
       isReorderPending,
       isRefreshing,
@@ -637,6 +681,7 @@ export function FlarePlanProvider({
     }),
     [
       archiveAction,
+      canEditPlan,
       createCustomAction,
       createFromTemplate,
       ensureTemplatesLoaded,
@@ -644,6 +689,7 @@ export function FlarePlanProvider({
       isInitialLoading,
       isReorderPending,
       isRefreshing,
+      isUsingBuiltInDefaultPlan,
       pendingActionIds,
       pendingTemplateKeys,
       plan,
