@@ -1618,7 +1618,7 @@ describe("V0 app shell", () => {
     expect(getByText("Configured: Hold the line for ten minutes.")).toBeTruthy();
   });
 
-  it("shows only saved why and consequences from Anchor Note in Flare Response after Send Flare", () => {
+  it("shows saved Anchor Note immediately in Flare Response after Send Flare", () => {
     const { getAllByText, getByLabelText, getByText, queryByText } = render(
       <>
         <CustomizeScreen />
@@ -1633,10 +1633,6 @@ describe("V0 app shell", () => {
     fireEvent.changeText(
       getByLabelText("Why pause this pattern?"),
       "I want tomorrow morning back.",
-    );
-    fireEvent.changeText(
-      getByLabelText("Costs of continuing"),
-      "I will be foggy tomorrow and lose trust with myself again.",
     );
     fireEvent.changeText(
       getByLabelText("Reminder from grounded self"),
@@ -1655,23 +1651,20 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Flare Response")).toBeTruthy();
-    expect(getByText("Remember why you're doing this")).toBeTruthy();
-    expect(getByText("Your Why")).toBeTruthy();
-    expect(getByText("Your Consequences")).toBeTruthy();
     expect(getByText(/status: active/i)).toBeTruthy();
     expect(queryByText("Current Flare Event")).toBeNull();
+    expect(
+      getAllByText("Pause now. You already chose differently.").length,
+    ).toBeGreaterThanOrEqual(2);
     expect(
       getAllByText("I want tomorrow morning back.").length,
     ).toBeGreaterThanOrEqual(2);
     expect(
-      getAllByText("I will be foggy tomorrow and lose trust with myself again.")
-        .length,
+      getAllByText("You do not need to obey this feeling.").length,
     ).toBeGreaterThanOrEqual(2);
     expect(
-      getAllByText("Pause now. You already chose differently.").length,
-    ).toBe(1);
-    expect(getAllByText("You do not need to obey this feeling.").length).toBe(1);
-    expect(getAllByText("Leave the room and drink water.").length).toBe(1);
+      getAllByText("Leave the room and drink water.").length,
+    ).toBeGreaterThanOrEqual(2);
   });
 
   it("creates a flare event tied to the current behavior pattern and shows it in History", () => {
@@ -1812,3 +1805,4 @@ describe("V0 app shell", () => {
     ).toBe(false);
   });
 });
+

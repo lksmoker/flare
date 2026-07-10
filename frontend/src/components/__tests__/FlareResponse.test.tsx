@@ -83,19 +83,16 @@ describe("FlareResponse", () => {
     });
 
     expect(getByText("Support message sent")).toBeTruthy();
-    expect(getByText("Remember why you're doing this")).toBeTruthy();
-    expect(getByText("Your Why")).toBeTruthy();
-    expect(getByText("Your Consequences")).toBeTruthy();
+    expect(getByText("Anchor Note")).toBeTruthy();
     expect(getByText("Begin Flare Plan")).toBeTruthy();
-    expect(queryByText("Grounded reminder")).toBeNull();
     expect(queryByText("Current Flare Event")).toBeNull();
     expect(queryByText("You paused the pattern")).toBeNull();
 
     const rendered = JSON.stringify(toJSON());
     expect(rendered.indexOf("Support message sent")).toBeLessThan(
-      rendered.indexOf("Remember why you're doing this"),
+      rendered.indexOf("Anchor Note"),
     );
-    expect(rendered.indexOf("Remember why you're doing this")).toBeLessThan(
+    expect(rendered.indexOf("Anchor Note")).toBeLessThan(
       rendered.indexOf("Begin Flare Plan"),
     );
   });
@@ -137,7 +134,7 @@ describe("FlareResponse", () => {
     expect(queryByText("Support message sent")).toBeNull();
 
     const rendered = JSON.stringify(toJSON());
-    expect(rendered.indexOf("Remember why you're doing this")).toBeLessThan(
+    expect(rendered.indexOf("Anchor Note")).toBeLessThan(
       rendered.indexOf("Checkpoint / Reflection"),
     );
     expect(rendered.indexOf("Checkpoint / Reflection")).toBeLessThan(

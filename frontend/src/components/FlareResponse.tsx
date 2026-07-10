@@ -178,41 +178,44 @@ export function FlareResponse({
       ) : null}
 
       <View style={styles.callout}>
-        <Text style={styles.calloutTitle}>
-          {flareContent.components.flareResponse.rememberTitle}
+        <Text style={styles.calloutLabel}>
+          {flareContent.components.flareResponse.anchorNoteLabel}
         </Text>
-        <View style={styles.memorySection}>
-          <Text style={styles.memoryLabel}>
-            {flareContent.components.flareResponse.whyLabel}
-          </Text>
-          <Text style={styles.calloutCopy}>
-            {anchorNote?.interruptionReasons ||
-              flareContent.components.flareResponse.defaultWhy}
-          </Text>
-        </View>
-        <View style={styles.memorySection}>
-          <Text style={styles.memoryLabel}>
-            {flareContent.components.flareResponse.consequencesLabel}
-          </Text>
-          <Text style={styles.memoryCopy}>
-            {anchorNote?.continuingCosts ||
-              flareContent.components.flareResponse.defaultConsequences}
-          </Text>
-        </View>
-        {flareEvent ? (
-          <View style={styles.contextSection}>
-            <Text style={styles.contextCopy}>
-              {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
+        <Text style={styles.calloutTitle}>
+          {anchorNote?.supportivePhrase ||
+            flareContent.components.flareResponse.defaultSupportivePhrase}
+        </Text>
+        <Text style={styles.calloutCopy}>
+          {anchorNote?.interruptionReasons ||
+            flareContent.components.flareResponse.defaultInterruptionReason}
+        </Text>
+        {anchorNote?.groundedReminders ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>
+              {flareContent.components.flareResponse.groundedReminderLabel}
             </Text>
-            {flareEvent.behaviorLabelSnapshot ? (
-              <Text style={styles.contextCopy}>
-                {flareContent.components.flareResponse.behaviorPatternPrefix}{" "}
-                {flareEvent.behaviorLabelSnapshot}
-              </Text>
-            ) : null}
+            <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
+          </View>
+        ) : null}
+        {anchorNote?.continuingCosts ? (
+          <View style={styles.memorySection}>
+            <Text style={styles.memoryLabel}>
+              {flareContent.components.flareResponse.continuingCostsLabel}
+            </Text>
+            <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
           </View>
         ) : null}
         <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
+        {flareEvent ? (
+          <Text style={styles.contextCopy}>
+            {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
+          </Text>
+        ) : null}
+        {flareEvent?.behaviorLabelSnapshot ? (
+          <Text style={styles.contextCopy}>
+            {flareContent.components.flareResponse.behaviorPatternPrefix} {flareEvent.behaviorLabelSnapshot}
+          </Text>
+        ) : null}
       </View>
 
       {run?.status === "offered" ? (
@@ -386,6 +389,13 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     backgroundColor: flareTheme.colors.primaryStrong,
   },
+  calloutLabel: {
+    color: flareTheme.colors.primaryMutedStrong,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 1.1,
+    textTransform: "uppercase",
+  },
   calloutTitle: {
     color: flareTheme.colors.onPrimary,
     fontSize: 22,
@@ -399,10 +409,7 @@ const styles = StyleSheet.create({
   },
   memorySection: {
     gap: 4,
-  },
-  contextSection: {
-    gap: 2,
-    paddingTop: 2,
+    paddingTop: 4,
   },
   memoryLabel: {
     color: flareTheme.colors.primaryMutedStrong,
