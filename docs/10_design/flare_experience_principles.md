@@ -10,6 +10,22 @@ Flare is not a dashboard. It is a calm guide that helps people prepare before di
 
 > The best Flare interface is one the user barely notices. Every screen should quietly guide the user toward the next meaningful step while keeping attention on recovery—not on the software itself.
 
+## Product promise
+
+> Flare helps people reconnect with two things that can be hardest to reach in a difficult moment: their support and their clarity.
+
+### Their support
+
+The people, messages, encouragement, and connection they have chosen ahead of time.
+
+### Their clarity
+
+The reminders, plans, reasons, and intentions they prepared while thinking clearly.
+
+Every major Flare capability should strengthen one or both of these connections.
+
+If a proposed feature does neither, it should be carefully evaluated before becoming part of the product.
+
 ## Core philosophy
 
 Flare may be used by someone who is already overwhelmed, distressed, distracted, or struggling to make a clear decision.

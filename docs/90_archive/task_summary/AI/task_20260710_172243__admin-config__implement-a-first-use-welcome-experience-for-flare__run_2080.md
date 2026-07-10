@@ -1,0 +1,82 @@
+# Build Run Summary
+## Phase 1 - Implementation
+- scope: Added a first-use Welcome gate for the Flare home route, persisted Welcome completion locally with AsyncStorage, reused the Welcome content in Customize as an "About Flare" reopen surface, and preserved the existing `FlareScreen` behavior after the gate resolves.
+- files changed:
+  - `frontend/app/index.tsx`
+  - `frontend/package.json`
+  - `frontend/package-lock.json`
+  - `frontend/src/components/WelcomeContent.tsx`
+  - `frontend/src/content/flareContent.json`
+  - `frontend/src/screens/CustomizeScreen.tsx`
+  - `frontend/src/screens/WelcomeGateScreen.tsx`
+  - `frontend/src/screens/__tests__/welcome_gate.test.tsx`
+  - `frontend/src/services/welcomeState.ts`
+- tests run:
+  - `npm test -- --runTestsByPath src/screens/__tests__/welcome_gate.test.tsx`
+  - `npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx`
+  - `npm run typecheck`
+- initial result: Welcome now appears for first-use signed-out users, completion is stored locally, authenticated users are inferred as prior users and go straight to the existing Flare screen, the sign-in CTA routes to the existing Customize auth flow, and Customize can reopen the same Welcome content without adding new navigation.
+## Phase 2 - Review and Gap Closure
+- compared against:
+  - `docs/10_design/flare_experience_principles.md`
+  - task requirements and non-goals in the run prompt
+  - feature contract and global validation-first/mobile-first constraints
+- gaps identified:
+  - Phase 1 validation covered the new Welcome tests and main Flare screen regression tests, but not the broader frontend suite despite touching the root route and shared screen composition.
+  - The authenticated bypass path was implemented but not asserted directly in the new focused Welcome tests.
+  - The product prompt suggested signed-out local storage language, but the current Flare setup model does not durably persist signed-out setup beyond the Welcome completion flag; copy needed to stay explicit about that limitation instead of implying device restore behavior.
+- fixes applied:
+  - Ran the full frontend Jest suite after the focused checks.
+  - Added a focused test proving authenticated users skip Welcome on the home route.
+  - Kept Welcome copy honest: signed-out users are told they can begin setup and try Flare in the current app session, while signed-in users are told Flare can save setup to the account, reload saved history and plan details after sign-in, and expose account-based features like Support Group.
+- remaining gaps:
+  - Signed-out setup itself is still not durably persisted across app restarts or device replacement in the current implementation. The Welcome completion flag is persisted locally, but broader signed-out setup persistence was not added in this slice.
+  - Existing users are only inferred as prior users through durable signals already present today, primarily an authenticated session. There is no safe durable inference for prior signed-out use beyond the new Welcome completion flag.
+- final assessment:
+  - First-use gating approach: `frontend/app/index.tsx` now renders `WelcomeGateScreen`, which waits for auth readiness, skips Welcome for authenticated users, otherwise reads a local AsyncStorage completion flag, and writes that flag when Welcome is completed.
+  - Behavior by user state:
+    - signed-out first use: Welcome shows with one primary `Get started` CTA and a secondary `Go to sign in` route into Customize auth.
+    - signed-out returning after completion: Welcome stays hidden and the existing Flare screen loads directly.
+    - signed-in: Welcome is skipped on the home route; reopening from Customize shows account-aware copy without a sign-in CTA.
+  - Reopening Welcome: implemented in Customize through a low-scope `About Flare` card and modal.
+  - Files changed: `frontend/app/index.tsx`, `frontend/package.json`, `frontend/package-lock.json`, `frontend/src/components/WelcomeContent.tsx`, `frontend/src/content/flareContent.json`, `frontend/src/screens/CustomizeScreen.tsx`, `frontend/src/screens/WelcomeGateScreen.tsx`, `frontend/src/screens/__tests__/welcome_gate.test.tsx`, `frontend/src/services/welcomeState.ts`, and this summary artifact.
+  - Tests run and results:
+    - `npm test -- --runTestsByPath src/screens/__tests__/welcome_gate.test.tsx` ✅
+    - `npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx` ✅
+    - `npm run typecheck` ✅
+    - `npm test` ✅
+  - Manual verification still recommended on a real phone-sized Expo runtime to confirm spacing, scroll feel, modal presentation, and AsyncStorage-backed Welcome persistence outside Jest.
+## Learning Candidates
+- status: none
+- reason: Evaluated repeated failures, schema/constraint drift, path/env issues, diagnostics gaps, and test gaps; no reusable, scoped, evidence-backed learning candidate emerged from this run.
+
+## Diff
+- terminal_state_snapshot: completed
+- files_changed: 10
+- insertions: 750
+- deletions: 3
+- note: terminal_state_snapshot reflects the run state when diff metadata was captured.
+- changed_files:
+  - docs/90_archive/task_summary/AI/task_20260710_172243__admin-config__implement-a-first-use-welcome-experience-for-flare__run_2080.md
+  - frontend/app/index.tsx
+  - frontend/package-lock.json
+  - frontend/package.json
+  - frontend/src/components/WelcomeContent.tsx
+  - frontend/src/content/flareContent.json
+  - frontend/src/screens/CustomizeScreen.tsx
+  - frontend/src/screens/WelcomeGateScreen.tsx
+  - frontend/src/screens/__tests__/welcome_gate.test.tsx
+  - frontend/src/services/welcomeState.ts
+## Validation Summary
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: npm test -- --runTestsByPath src/screens/__tests__/welcome_gate.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx, npm run typecheck
+- summary: Validation details were derived from the Build Run Summary body.
+## Final Run State
+- terminal_state: completed
+- summary_written: true
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: npm test -- --runTestsByPath src/screens/__tests__/welcome_gate.test.tsx, npm test -- --runTestsByPath src/screens/__tests__/app_shell.test.tsx, npm run typecheck

@@ -102,7 +102,32 @@
     "customize": {
       "screenLabel": "Setup",
       "title": "Customize what helps you pause",
-      "subtitle": "Set up the words and plan steps you want available during a flare."
+      "subtitle": "Set up the words and plan steps you want available during a flare.",
+      "aboutFlare": {
+        "title": "About Flare",
+        "copy": "Reopen the first-use welcome if you want a quick reminder of what Flare is for and what sign-in changes.",
+        "action": "Welcome to Flare"
+      }
+    },
+    "welcome": {
+      "screenLabel": "Welcome",
+      "title": "A quiet tool for difficult moments",
+      "subtitle": "Flare helps you prepare support ahead of time and use it when a hard moment hits.",
+      "intro": "Use Flare to set up grounded reminders, a short plan, and one simple next step you can reach for when you need a pause.",
+      "sections": {
+        "withoutSignInTitle": "Start without signing in",
+        "withoutSignInCopy": "You can begin right away, explore the setup screens, and try Flare in this app session without creating an account.",
+        "signedInTitle": "What signing in adds",
+        "signedInCopy": "Signing in lets Flare save your setup to your account, reload saved history and plan details when you sign in again, and unlock account-based features like Support Group.",
+        "alreadySignedInCopy": "You are already signed in, so Flare can save your setup to your account, reload it when you sign in again, and keep account-based features available.",
+        "clientUnavailableCopy": "This build can still guide you through setup, but account saving is not available here yet.",
+        "nextStepTitle": "What to do next",
+        "nextStepCopy": "Tap Get started, then use Customize to set up your support words and plan before you rely on Flare in the moment."
+      },
+      "actions": {
+        "primary": "Get started",
+        "signIn": "Go to sign in"
+      }
     },
     "flare": {
       "screenLabel": "In-the-moment support",

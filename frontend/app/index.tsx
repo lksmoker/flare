@@ -1,5 +1,5 @@
-import { FlareScreen } from "../src/screens/FlareScreen";
+import { WelcomeGateScreen } from "../src/screens/WelcomeGateScreen";
 
 export default function IndexRoute() {
-  return <FlareScreen />;
+  return <WelcomeGateScreen />;
 }

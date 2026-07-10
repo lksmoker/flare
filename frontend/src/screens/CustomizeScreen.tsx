@@ -9,9 +9,12 @@ import { AuthStatusCard } from "../components/AuthStatusCard";
 import { BehaviorPatternSetupModal } from "../components/BehaviorPatternSetupModal";
 import { BehaviorPatternSummary } from "../components/BehaviorPatternSummary";
 import { FlarePlanSetupModal } from "../components/FlarePlanSetupModal";
+import { PlaceholderModal } from "../components/PlaceholderModal";
 import { SupportChannelSetupModal } from "../components/SupportChannelSetupModal";
+import { WelcomeContent } from "../components/WelcomeContent";
 import flareContent from "../content/flareContent.json";
 import { readAccessTokenFromCurrentUrl } from "../services/supportChannelApi";
+import { useFlareAuth } from "../state/FlareAuthContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlarePlan } from "../state/FlarePlanContext";
@@ -42,9 +45,11 @@ export function CustomizeScreen() {
     useState(false);
   const [isAnchorNoteVisible, setIsAnchorNoteVisible] = useState(false);
   const [isFlarePlanVisible, setIsFlarePlanVisible] = useState(false);
+  const [isWelcomeVisible, setIsWelcomeVisible] = useState(false);
   const [isSupportChannelVisible, setIsSupportChannelVisible] = useState(
     () => Boolean(readAccessTokenFromCurrentUrl()),
   );
+  const { authState, authStatus } = useFlareAuth();
   const { behaviorPattern, isConfigured } = useBehaviorPattern();
   const { anchorNote, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { isInitialLoading, isPlanConfigured, plan } = useFlarePlan();
@@ -85,6 +90,24 @@ export function CustomizeScreen() {
     >
       <View style={styles.stack}>
         <AuthStatusCard />
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setIsWelcomeVisible(true)}
+          style={styles.card}
+        >
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>
+              {flareContent.screens.customize.aboutFlare.title}
+            </Text>
+          </View>
+          <Text style={styles.cardCopy}>
+            {flareContent.screens.customize.aboutFlare.copy}
+          </Text>
+          <Text style={styles.linkLabel}>
+            {flareContent.screens.customize.aboutFlare.action}
+          </Text>
+        </Pressable>
 
         <Pressable
           accessibilityRole="button"
@@ -222,6 +245,13 @@ export function CustomizeScreen() {
         onStatusChange={replaceSupportChannelStatus}
         visible={isSupportChannelVisible}
       />
+      <PlaceholderModal
+        onClose={() => setIsWelcomeVisible(false)}
+        title={flareContent.screens.customize.aboutFlare.action}
+        visible={isWelcomeVisible}
+      >
+        <WelcomeContent authState={authState} authStatus={authStatus} />
+      </PlaceholderModal>
     </AppShell>
   );
 }
@@ -257,6 +287,11 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
+  },
+  linkLabel: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 14,
+    fontWeight: "700",
   },
   summaryCard: {
     gap: 4,
