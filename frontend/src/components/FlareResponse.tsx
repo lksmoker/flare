@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
 import type { FlarePlanRun } from "../services/flareResponseApi";
-import { FlareEvent, formatFlareEventTimestamp } from "../state/FlareEventContext";
+import { FlareEvent } from "../state/FlareEventContext";
 import { useAnchorNote } from "../state/AnchorNoteContext";
 import { flareTheme } from "../theme/flareTheme";
 
@@ -52,9 +52,13 @@ function ActionButton({
   );
 }
 
+function trimCopy(value: string | null | undefined) {
+  return value?.trim() ?? "";
+}
+
 export function FlareResponse({
   externalSupportState = null,
-  flareEvent,
+  flareEvent: _flareEvent,
   isMutationPending = false,
   mutationError = null,
   onBeginPlan,
@@ -82,10 +86,16 @@ export function FlareResponse({
       run.status === "ended_early" ? `, ${run.progress.not_reached_count} not reached` : ""
     }`;
   }, [run]);
-  const interruptionReasons =
-    anchorNote?.interruptionReasons || flareContent.components.flareResponse.defaultWhy;
-  const continuingCosts =
-    anchorNote?.continuingCosts || flareContent.components.flareResponse.defaultConsequences;
+  const interruptionReasons = trimCopy(anchorNote?.interruptionReasons);
+  const continuingCosts = trimCopy(anchorNote?.continuingCosts);
+  const emergencyActions = trimCopy(anchorNote?.emergencyActions);
+  const reminderSections = [
+    interruptionReasons ? { label: "Why", value: interruptionReasons } : null,
+    continuingCosts ? { label: "If I continue...", value: continuingCosts } : null,
+  ].filter(Boolean) as Array<{ label: string; value: string }>;
+  const hasReminderSections = reminderSections.length > 0;
+  const recoveryActionCopy =
+    emergencyActions || flareContent.components.flareResponse.defaultNextStep;
 
   if (run?.status === "in_progress" && currentAction) {
     return (
@@ -162,12 +172,13 @@ export function FlareResponse({
 
   return (
     <View style={styles.container}>
-      {run?.status === "offered" ? (
+      {run?.status === "offered" || run === null ? (
         <View style={styles.recoveryCard}>
           {deliveryCardState ? (
             <View
               style={[
                 styles.deliveryCard,
+                styles.deliveryCardWithinRecovery,
                 deliveryCardState.tone === "success"
                   ? styles.deliveryCardSuccess
                   : deliveryCardState.tone === "warning"
@@ -183,142 +194,87 @@ export function FlareResponse({
             <Text style={styles.calloutTitle}>
               {flareContent.components.flareResponse.rememberTitle}
             </Text>
-            <View style={styles.memorySection}>
-              <Text style={styles.memoryLabel}>Why</Text>
-              <Text style={styles.memoryCopy}>{interruptionReasons}</Text>
-            </View>
-            <View style={styles.memorySection}>
-              <Text style={styles.memoryLabel}>If I continue...</Text>
-              <Text style={styles.memoryCopy}>{continuingCosts}</Text>
-            </View>
+            {hasReminderSections ? (
+              reminderSections.map((section) => (
+                <View key={section.label} style={styles.memorySection}>
+                  <Text style={styles.memoryLabel}>{section.label}</Text>
+                  <Text style={styles.memoryCopy}>{section.value}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.calloutCopy}>
+                {flareContent.components.flareResponse.defaultWhy}
+              </Text>
+            )}
           </View>
           {mutationError ? <Text style={styles.errorCopy}>{mutationError}</Text> : null}
-          <ActionButton
-            disabled={isMutationPending}
-            label="Begin Flare Plan"
-            onPress={() => {
-              if (run && onBeginPlan) {
-                onBeginPlan(run.id);
-              }
-            }}
-          />
-          <ActionButton
-            disabled={isMutationPending}
-            label="Skip for now"
-            muted
-            onPress={() => {
-              if (run && onDeclinePlan) {
-                onDeclinePlan(run.id);
-              }
-            }}
-          />
-        </View>
-      ) : null}
-
-      {deliveryCardState && run?.status !== "offered" ? (
-        <View
-          style={[
-            styles.deliveryCard,
-            deliveryCardState.tone === "success"
-              ? styles.deliveryCardSuccess
-              : deliveryCardState.tone === "warning"
-                ? styles.deliveryCardWarning
-                : styles.deliveryCardMuted,
-          ]}
-        >
-          <Text style={styles.deliveryLabel}>
-            {flareContent.components.flareResponse.externalSupport.label}
-          </Text>
-          <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
-          <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
-        </View>
-      ) : null}
-
-      {run?.status !== "offered" ? (
-        <View style={styles.callout}>
-          <Text style={styles.calloutLabel}>
-            {flareContent.components.flareResponse.anchorNoteLabel}
-          </Text>
-          <Text style={styles.calloutTitle}>
-            {anchorNote?.supportivePhrase ||
-              flareContent.components.flareResponse.defaultSupportivePhrase}
-          </Text>
-          <Text style={styles.calloutCopy}>
-            {anchorNote?.interruptionReasons ||
-              flareContent.components.flareResponse.defaultInterruptionReason}
-          </Text>
-          {anchorNote?.groundedReminders ? (
-            <View style={styles.memorySection}>
-              <Text style={styles.memoryLabel}>
-                {flareContent.components.flareResponse.groundedReminderLabel}
-              </Text>
-              <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
+          {run?.status === "offered" ? (
+            <View style={styles.recoveryActions}>
+              <ActionButton
+                disabled={isMutationPending}
+                label="Begin Flare Plan"
+                onPress={() => {
+                  if (run && onBeginPlan) {
+                    onBeginPlan(run.id);
+                  }
+                }}
+              />
+              <ActionButton
+                disabled={isMutationPending}
+                label="Skip for now"
+                muted
+                onPress={() => {
+                  if (run && onDeclinePlan) {
+                    onDeclinePlan(run.id);
+                  }
+                }}
+              />
             </View>
-          ) : null}
-          {anchorNote?.continuingCosts ? (
-            <View style={styles.memorySection}>
-              <Text style={styles.memoryLabel}>
-                {flareContent.components.flareResponse.continuingCostsLabel}
+          ) : (
+            <View style={styles.recoveryActionSection}>
+              <Text style={styles.recoveryActionTitle}>
+                {flareContent.components.flareResponse.nextStepTitle}
               </Text>
-              <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
+              <Text style={styles.recoveryActionCopy}>{recoveryActionCopy}</Text>
             </View>
-          ) : null}
-          <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
-          {flareEvent ? (
-            <Text style={styles.contextCopy}>
-              {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
-            </Text>
-          ) : null}
-          {flareEvent?.behaviorLabelSnapshot ? (
-            <Text style={styles.contextCopy}>
-              {flareContent.components.flareResponse.behaviorPatternPrefix} {flareEvent.behaviorLabelSnapshot}
-            </Text>
-          ) : null}
-        </View>
-      ) : null}
-
-      {run === null ? (
-        <View style={styles.actionCard}>
-          <Text style={styles.actionTitle}>
-            {flareContent.components.flareResponse.nextStepTitle}
-          </Text>
-          <Text style={styles.actionCopy}>
-            {anchorNote?.emergencyActions ||
-              flareContent.components.flareResponse.defaultNextStep}
-          </Text>
+          )}
         </View>
       ) : null}
 
       {run?.status !== "offered" && run?.status !== "in_progress" ? (
-        <Pressable
-          accessibilityRole="button"
-          onPress={onOpenCheckpoint}
-          style={styles.sheetSecondaryButton}
-        >
-          <Text style={styles.sheetSecondaryButtonLabel}>
-            {flareContent.components.flareResponse.checkpointButton}
-          </Text>
-        </Pressable>
-      ) : null}
+        <View style={styles.reflectionSection}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={onOpenCheckpoint}
+            style={styles.sheetSecondaryButton}
+          >
+            <Text style={styles.sheetSecondaryButtonLabel}>
+              {flareContent.components.flareResponse.checkpointButton}
+            </Text>
+          </Pressable>
 
-      {run?.status === "declined" ? (
-        <View style={styles.statusNote}>
-          <Text style={styles.statusNoteTitle}>Flare Plan skipped for now</Text>
-          <Text style={styles.statusNoteCopy}>You can close this response and come back to your plan later.</Text>
-        </View>
-      ) : null}
+          {run?.status === "declined" ? (
+            <View style={styles.statusNote}>
+              <Text style={styles.statusNoteTitle}>Flare Plan skipped for now</Text>
+              <Text style={styles.statusNoteCopy}>
+                Move to a short checkpoint when you are ready.
+              </Text>
+            </View>
+          ) : null}
 
-      {run?.status === "completed" ? (
-        <View style={styles.statusNote}>
-          <Text style={styles.statusNoteTitle}>Flare Plan complete</Text>
-          <Text style={styles.statusNoteCopy}>Your steps are saved. {summaryCopy}</Text>
-        </View>
-      ) : null}
+          {run?.status === "completed" ? (
+            <View style={styles.statusNote}>
+              <Text style={styles.statusNoteTitle}>Flare Plan complete</Text>
+              <Text style={styles.statusNoteCopy}>Your steps are saved. {summaryCopy}</Text>
+            </View>
+          ) : null}
 
-      {run?.status === "ended_early" ? (
-        <View style={styles.statusNote}>
-          <Text style={styles.statusNoteTitle}>Flare Plan ended</Text>
-          <Text style={styles.statusNoteCopy}>Your progress was saved. {summaryCopy}</Text>
+          {run?.status === "ended_early" ? (
+            <View style={styles.statusNote}>
+              <Text style={styles.statusNoteTitle}>Flare Plan ended</Text>
+              <Text style={styles.statusNoteCopy}>Your progress was saved. {summaryCopy}</Text>
+            </View>
+          ) : null}
         </View>
       ) : null}
     </View>
@@ -327,7 +283,7 @@ export function FlareResponse({
 
 const styles = StyleSheet.create({
   container: {
-    gap: 12,
+    gap: 18,
   },
   focusedContainer: {
     minHeight: 420,
@@ -388,79 +344,58 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   recoveryCard: {
-    gap: 12,
-    padding: 20,
+    gap: 20,
+    padding: 24,
     borderRadius: 24,
     backgroundColor: flareTheme.colors.primaryStrong,
+    minHeight: 420,
+    justifyContent: "space-between",
+  },
+  recoveryActions: {
+    gap: 12,
+    paddingTop: 8,
+  },
+  recoveryActionSection: {
+    gap: 6,
+    paddingTop: 8,
   },
   recoveryReminder: {
-    gap: 8,
-  },
-  callout: {
-    gap: 8,
-    padding: 18,
-    borderRadius: 22,
-    backgroundColor: flareTheme.colors.primaryStrong,
-  },
-  calloutLabel: {
-    color: flareTheme.colors.primaryMutedStrong,
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 1.1,
-    textTransform: "uppercase",
+    gap: 12,
   },
   calloutTitle: {
     color: flareTheme.colors.onPrimary,
-    fontSize: 22,
-    lineHeight: 26,
+    fontSize: 24,
+    lineHeight: 30,
     fontWeight: "800",
   },
   calloutCopy: {
     color: flareTheme.colors.onPrimaryMuted,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 16,
+    lineHeight: 24,
   },
   memorySection: {
-    gap: 4,
-    paddingTop: 4,
+    gap: 6,
   },
   memoryLabel: {
     color: flareTheme.colors.primaryMutedStrong,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "700",
     letterSpacing: 0.8,
     textTransform: "uppercase",
   },
   memoryCopy: {
     color: flareTheme.colors.onPrimaryMuted,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 15,
+    lineHeight: 22,
   },
-  safetyCopy: {
-    color: "#DCEBFF",
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  contextCopy: {
-    color: "#DCEBFF",
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  actionCard: {
-    gap: 6,
-    padding: 16,
-    borderRadius: 20,
-    backgroundColor: flareTheme.colors.surfaceSoft,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-  },
-  actionTitle: {
-    color: flareTheme.colors.text,
-    fontSize: 17,
+  recoveryActionTitle: {
+    color: flareTheme.colors.onPrimary,
+    fontSize: 18,
+    lineHeight: 22,
     fontWeight: "700",
   },
-  actionCopy: {
-    color: flareTheme.colors.textMuted,
+  recoveryActionCopy: {
+    color: flareTheme.colors.onPrimaryMuted,
     fontSize: 15,
     lineHeight: 22,
   },
@@ -469,6 +404,9 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 20,
     borderWidth: 1,
+  },
+  deliveryCardWithinRecovery: {
+    marginBottom: 4,
   },
   deliveryCardMuted: {
     borderColor: flareTheme.colors.border,
@@ -482,13 +420,6 @@ const styles = StyleSheet.create({
     borderColor: "#C38B34",
     backgroundColor: "#FFF2DD",
   },
-  deliveryLabel: {
-    color: flareTheme.colors.text,
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
-  },
   deliveryTitle: {
     color: flareTheme.colors.textStrong,
     fontSize: 17,
@@ -498,6 +429,9 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 20,
+  },
+  reflectionSection: {
+    gap: 10,
   },
   statusNote: {
     gap: 4,

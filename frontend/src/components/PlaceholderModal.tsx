@@ -17,6 +17,7 @@ import { flareTheme } from "../theme/flareTheme";
 type PlaceholderModalProps = PropsWithChildren<{
   footer?: React.ReactNode;
   onClose: () => void;
+  sheetStyle?: StyleProp<ViewStyle>;
   scrollContentContainerStyle?: StyleProp<ViewStyle>;
   showCloseButton?: boolean;
   subtitle?: string;
@@ -28,6 +29,7 @@ export function PlaceholderModal({
   children,
   footer,
   onClose,
+  sheetStyle,
   scrollContentContainerStyle,
   showCloseButton = true,
   subtitle,
@@ -43,7 +45,7 @@ export function PlaceholderModal({
       visible={visible}
     >
       <SafeAreaView edges={["top", "bottom"]} style={styles.overlay}>
-        <View style={styles.sheet}>
+        <View style={[styles.sheet, sheetStyle]}>
           <View style={styles.header}>
             <View style={styles.headerCopy}>
               <Text style={styles.title}>{title}</Text>

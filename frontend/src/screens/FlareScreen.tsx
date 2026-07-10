@@ -362,6 +362,7 @@ export function FlareScreen() {
 
       <PlaceholderModal
         onClose={() => setIsFlareResponseVisible(false)}
+        sheetStyle={styles.responseSheet}
         showCloseButton={responseState?.run?.status !== "in_progress"}
         title={flareContent.components.flareResponse.modalTitle}
         visible={isFlareResponseVisible}
@@ -471,6 +472,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: flareTheme.colors.border,
     backgroundColor: flareTheme.colors.surfaceStrong,
+  },
+  responseSheet: {
+    minHeight: "82%",
+    maxHeight: "98%",
   },
   secondaryButtonLabel: {
     color: flareTheme.colors.textStrong,

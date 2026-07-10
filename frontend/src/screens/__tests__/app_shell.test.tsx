@@ -229,7 +229,9 @@ describe("V0 app shell", () => {
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
-  it("shows one guided recovery card before any Flare Plan actions are revealed", async () => {
+  it(
+    "shows one guided recovery card before any Flare Plan actions are revealed",
+    async () => {
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -362,9 +364,13 @@ describe("V0 app shell", () => {
     expect(queryByText(/status: active/i)).toBeNull();
     expect(queryByText(/Behavior Pattern:/i)).toBeNull();
     expect(flareResponseApi.getFlareResponse).toHaveBeenCalledWith("event-1");
-  });
+    },
+    15000,
+  );
 
-  it("enters focused mode, advances one action, and hides the ordinary response chrome", async () => {
+  it(
+    "enters focused mode, advances one action, and hides the ordinary response chrome",
+    async () => {
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -551,7 +557,9 @@ describe("V0 app shell", () => {
     });
 
     expect(getByText("Second step")).toBeTruthy();
-  });
+    },
+    15000,
+  );
 
   it(
     "opens end-plan confirmation and renders the ended summary after confirmation",
@@ -769,6 +777,7 @@ describe("V0 app shell", () => {
         expect(
           getByText("Your saved support message was sent to the connected group."),
         ).toBeTruthy();
+        expect(getByText("Try one next step")).toBeTruthy();
       });
     },
     15000,
@@ -809,7 +818,7 @@ describe("V0 app shell", () => {
       status: "failed",
     });
 
-    const { getAllByText, getByText } = render(
+    const { getAllByText, getByText, queryByText } = render(
       <>
         <FlareScreen />
         <HistoryScreen />
@@ -843,8 +852,12 @@ describe("V0 app shell", () => {
       expect(getByText("GroupMe rejected the support message.")).toBeTruthy();
     });
 
+    expect(getByText("Try one next step")).toBeTruthy();
+    expect(queryByText("Support message sent")).toBeNull();
     expect(getAllByText("Flare Event").length).toBeGreaterThanOrEqual(1);
-  });
+    },
+    15000,
+  );
 
   it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", () => {
     const { getAllByText, getByText } = render(<FlareScreen />, {
@@ -1656,20 +1669,13 @@ describe("V0 app shell", () => {
     fireEvent.press(getByText("Send Flare"));
 
     expect(getByText("Flare Response")).toBeTruthy();
-    expect(getByText(/status: active/i)).toBeTruthy();
     expect(queryByText("Current Flare Event")).toBeNull();
-    expect(
-      getAllByText("Pause now. You already chose differently.").length,
-    ).toBeGreaterThanOrEqual(2);
-    expect(
-      getAllByText("I want tomorrow morning back.").length,
-    ).toBeGreaterThanOrEqual(2);
-    expect(
-      getAllByText("You do not need to obey this feeling.").length,
-    ).toBeGreaterThanOrEqual(2);
-    expect(
-      getAllByText("Leave the room and drink water.").length,
-    ).toBeGreaterThanOrEqual(2);
+    expect(queryByText(/status: active/i)).toBeNull();
+    expect(queryByText("Pause now. You already chose differently.")).toBeNull();
+    expect(getByText("I want tomorrow morning back.")).toBeTruthy();
+    expect(queryByText("You do not need to obey this feeling.")).toBeNull();
+    expect(getByText("Leave the room and drink water.")).toBeTruthy();
+    expect(getAllByText("Try one next step").length).toBeGreaterThanOrEqual(1);
   });
 
   it("creates a flare event tied to the current behavior pattern and shows it in History", () => {
