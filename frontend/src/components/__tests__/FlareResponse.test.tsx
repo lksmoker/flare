@@ -83,16 +83,25 @@ describe("FlareResponse", () => {
     });
 
     expect(getByText("Support message sent")).toBeTruthy();
-    expect(getByText("Anchor Note")).toBeTruthy();
+    expect(getByText("Remember why you're doing this")).toBeTruthy();
+    expect(getByText("Why")).toBeTruthy();
+    expect(getByText("If I continue...")).toBeTruthy();
     expect(getByText("Begin Flare Plan")).toBeTruthy();
+    expect(getByText("Skip for now")).toBeTruthy();
     expect(queryByText("Current Flare Event")).toBeNull();
     expect(queryByText("You paused the pattern")).toBeNull();
+    expect(queryByText("Support Group Delivery")).toBeNull();
+    expect(queryByText("You sent a Flare.")).toBeNull();
+    expect(queryByText("Keep the momentum going with your Flare Plan.")).toBeNull();
+    expect(queryByText(/Started /i)).toBeNull();
+    expect(queryByText(/status:/i)).toBeNull();
+    expect(queryByText(/Behavior Pattern:/i)).toBeNull();
 
     const rendered = JSON.stringify(toJSON());
     expect(rendered.indexOf("Support message sent")).toBeLessThan(
-      rendered.indexOf("Anchor Note"),
+      rendered.indexOf("Remember why you're doing this"),
     );
-    expect(rendered.indexOf("Anchor Note")).toBeLessThan(
+    expect(rendered.indexOf("Remember why you're doing this")).toBeLessThan(
       rendered.indexOf("Begin Flare Plan"),
     );
   });

@@ -82,6 +82,10 @@ export function FlareResponse({
       run.status === "ended_early" ? `, ${run.progress.not_reached_count} not reached` : ""
     }`;
   }, [run]);
+  const interruptionReasons =
+    anchorNote?.interruptionReasons || flareContent.components.flareResponse.defaultWhy;
+  const continuingCosts =
+    anchorNote?.continuingCosts || flareContent.components.flareResponse.defaultConsequences;
 
   if (run?.status === "in_progress" && currentAction) {
     return (
@@ -158,74 +162,36 @@ export function FlareResponse({
 
   return (
     <View style={styles.container}>
-      {deliveryCardState ? (
-        <View
-          style={[
-            styles.deliveryCard,
-            deliveryCardState.tone === "success"
-              ? styles.deliveryCardSuccess
-              : deliveryCardState.tone === "warning"
-                ? styles.deliveryCardWarning
-                : styles.deliveryCardMuted,
-          ]}
-        >
-          <Text style={styles.deliveryLabel}>
-            {flareContent.components.flareResponse.externalSupport.label}
-          </Text>
-          <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
-          <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
-        </View>
-      ) : null}
-
-      <View style={styles.callout}>
-        <Text style={styles.calloutLabel}>
-          {flareContent.components.flareResponse.anchorNoteLabel}
-        </Text>
-        <Text style={styles.calloutTitle}>
-          {anchorNote?.supportivePhrase ||
-            flareContent.components.flareResponse.defaultSupportivePhrase}
-        </Text>
-        <Text style={styles.calloutCopy}>
-          {anchorNote?.interruptionReasons ||
-            flareContent.components.flareResponse.defaultInterruptionReason}
-        </Text>
-        {anchorNote?.groundedReminders ? (
-          <View style={styles.memorySection}>
-            <Text style={styles.memoryLabel}>
-              {flareContent.components.flareResponse.groundedReminderLabel}
-            </Text>
-            <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
-          </View>
-        ) : null}
-        {anchorNote?.continuingCosts ? (
-          <View style={styles.memorySection}>
-            <Text style={styles.memoryLabel}>
-              {flareContent.components.flareResponse.continuingCostsLabel}
-            </Text>
-            <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
-          </View>
-        ) : null}
-        <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
-        {flareEvent ? (
-          <Text style={styles.contextCopy}>
-            {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
-          </Text>
-        ) : null}
-        {flareEvent?.behaviorLabelSnapshot ? (
-          <Text style={styles.contextCopy}>
-            {flareContent.components.flareResponse.behaviorPatternPrefix} {flareEvent.behaviorLabelSnapshot}
-          </Text>
-        ) : null}
-      </View>
-
       {run?.status === "offered" ? (
-        <View style={styles.offerCard}>
-          <Text style={styles.offerEyebrow}>Flare Plan</Text>
-          <Text style={styles.offerTitle}>You sent a Flare.</Text>
-          <Text style={styles.offerBody}>
-            You interrupted the pattern and reached for support. That matters.
-          </Text>
-          <Text style={styles.offerBody}>Keep the momentum going with your Flare Plan.</Text>
+        <View style={styles.recoveryCard}>
+          {deliveryCardState ? (
+            <View
+              style={[
+                styles.deliveryCard,
+                deliveryCardState.tone === "success"
+                  ? styles.deliveryCardSuccess
+                  : deliveryCardState.tone === "warning"
+                    ? styles.deliveryCardWarning
+                    : styles.deliveryCardMuted,
+              ]}
+            >
+              <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
+              <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
+            </View>
+          ) : null}
+          <View style={styles.recoveryReminder}>
+            <Text style={styles.calloutTitle}>
+              {flareContent.components.flareResponse.rememberTitle}
+            </Text>
+            <View style={styles.memorySection}>
+              <Text style={styles.memoryLabel}>Why</Text>
+              <Text style={styles.memoryCopy}>{interruptionReasons}</Text>
+            </View>
+            <View style={styles.memorySection}>
+              <Text style={styles.memoryLabel}>If I continue...</Text>
+              <Text style={styles.memoryCopy}>{continuingCosts}</Text>
+            </View>
+          </View>
           {mutationError ? <Text style={styles.errorCopy}>{mutationError}</Text> : null}
           <ActionButton
             disabled={isMutationPending}
@@ -246,6 +212,68 @@ export function FlareResponse({
               }
             }}
           />
+        </View>
+      ) : null}
+
+      {deliveryCardState && run?.status !== "offered" ? (
+        <View
+          style={[
+            styles.deliveryCard,
+            deliveryCardState.tone === "success"
+              ? styles.deliveryCardSuccess
+              : deliveryCardState.tone === "warning"
+                ? styles.deliveryCardWarning
+                : styles.deliveryCardMuted,
+          ]}
+        >
+          <Text style={styles.deliveryLabel}>
+            {flareContent.components.flareResponse.externalSupport.label}
+          </Text>
+          <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
+          <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
+        </View>
+      ) : null}
+
+      {run?.status !== "offered" ? (
+        <View style={styles.callout}>
+          <Text style={styles.calloutLabel}>
+            {flareContent.components.flareResponse.anchorNoteLabel}
+          </Text>
+          <Text style={styles.calloutTitle}>
+            {anchorNote?.supportivePhrase ||
+              flareContent.components.flareResponse.defaultSupportivePhrase}
+          </Text>
+          <Text style={styles.calloutCopy}>
+            {anchorNote?.interruptionReasons ||
+              flareContent.components.flareResponse.defaultInterruptionReason}
+          </Text>
+          {anchorNote?.groundedReminders ? (
+            <View style={styles.memorySection}>
+              <Text style={styles.memoryLabel}>
+                {flareContent.components.flareResponse.groundedReminderLabel}
+              </Text>
+              <Text style={styles.memoryCopy}>{anchorNote.groundedReminders}</Text>
+            </View>
+          ) : null}
+          {anchorNote?.continuingCosts ? (
+            <View style={styles.memorySection}>
+              <Text style={styles.memoryLabel}>
+                {flareContent.components.flareResponse.continuingCostsLabel}
+              </Text>
+              <Text style={styles.memoryCopy}>{anchorNote.continuingCosts}</Text>
+            </View>
+          ) : null}
+          <Text style={styles.safetyCopy}>{flareContent.safety.urgentHelp}</Text>
+          {flareEvent ? (
+            <Text style={styles.contextCopy}>
+              {`${flareContent.components.flareResponse.eventStartedPrefix} ${formatFlareEventTimestamp(flareEvent.createdAt)} | ${flareContent.components.flareResponse.eventStatusPrefix} ${flareEvent.status}`}
+            </Text>
+          ) : null}
+          {flareEvent?.behaviorLabelSnapshot ? (
+            <Text style={styles.contextCopy}>
+              {flareContent.components.flareResponse.behaviorPatternPrefix} {flareEvent.behaviorLabelSnapshot}
+            </Text>
+          ) : null}
         </View>
       ) : null}
 
@@ -359,29 +387,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  offerCard: {
+  recoveryCard: {
     gap: 12,
     padding: 20,
     borderRadius: 24,
     backgroundColor: flareTheme.colors.primaryStrong,
   },
-  offerEyebrow: {
-    color: flareTheme.colors.primaryMutedStrong,
-    fontSize: 12,
-    fontWeight: "800",
-    letterSpacing: 1,
-    textTransform: "uppercase",
-  },
-  offerTitle: {
-    color: flareTheme.colors.onPrimary,
-    fontSize: 30,
-    lineHeight: 34,
-    fontWeight: "800",
-  },
-  offerBody: {
-    color: flareTheme.colors.onPrimaryMuted,
-    fontSize: 16,
-    lineHeight: 24,
+  recoveryReminder: {
+    gap: 8,
   },
   callout: {
     gap: 8,

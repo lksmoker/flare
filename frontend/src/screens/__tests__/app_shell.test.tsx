@@ -229,7 +229,7 @@ describe("V0 app shell", () => {
     expect(queryByText("Are you sure?")).toBeNull();
   });
 
-  it("shows the offered Flare Plan acknowledgement before any actions are revealed", async () => {
+  it("shows one guided recovery card before any Flare Plan actions are revealed", async () => {
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -352,10 +352,15 @@ describe("V0 app shell", () => {
       fireEvent.press(getByText("Send Flare"));
     });
 
-    expect(getByText("You sent a Flare.")).toBeTruthy();
+    expect(getByText("Remember why you're doing this")).toBeTruthy();
     expect(getByText("Begin Flare Plan")).toBeTruthy();
     expect(getByText("Skip for now")).toBeTruthy();
     expect(queryByText("First step")).toBeNull();
+    expect(queryByText("You sent a Flare.")).toBeNull();
+    expect(queryByText("You interrupted the pattern and reached for support. That matters.")).toBeNull();
+    expect(queryByText("Keep the momentum going with your Flare Plan.")).toBeNull();
+    expect(queryByText(/status: active/i)).toBeNull();
+    expect(queryByText(/Behavior Pattern:/i)).toBeNull();
     expect(flareResponseApi.getFlareResponse).toHaveBeenCalledWith("event-1");
   });
 
