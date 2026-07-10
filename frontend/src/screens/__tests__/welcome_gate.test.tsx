@@ -161,12 +161,12 @@ describe("WelcomeGateScreen", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("A quiet tool for difficult moments")).toBeTruthy();
+      expect(getByText("Hold onto your support and your clarity")).toBeTruthy();
     });
 
     expect(
       getByText(
-        "You can begin right away, explore the setup screens, and try Flare in this app session without creating an account.",
+        "The people, encouragement, connection, and chosen messages you want within reach ahead of time.",
       ),
     ).toBeTruthy();
     expect(getByText("Go to sign in")).toBeTruthy();
@@ -188,7 +188,7 @@ describe("WelcomeGateScreen", () => {
       expect(getByText("Continue setup")).toBeTruthy();
     });
 
-    expect(queryByText("A quiet tool for difficult moments")).toBeNull();
+    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
     expect(asyncStorage.setItem).toHaveBeenCalledWith(
       FLARE_WELCOME_COMPLETION_KEY,
       "true",
@@ -206,7 +206,7 @@ describe("WelcomeGateScreen", () => {
       expect(getByText("Continue setup")).toBeTruthy();
     });
 
-    expect(queryByText("A quiet tool for difficult moments")).toBeNull();
+    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
   });
 
   it("routes signed-out users into the existing sign-in flow from Welcome", async () => {
@@ -232,7 +232,7 @@ describe("WelcomeGateScreen", () => {
       expect(getByText("Continue setup")).toBeTruthy();
     });
 
-    expect(queryByText("A quiet tool for difficult moments")).toBeNull();
+    expect(queryByText("Hold onto your support and your clarity")).toBeNull();
   });
 
   it("reopens Welcome from Customize and hides sign-in upsell copy for signed-in users", async () => {
@@ -243,12 +243,12 @@ describe("WelcomeGateScreen", () => {
     fireEvent.press(getByText("Welcome to Flare"));
 
     await waitFor(() => {
-      expect(getByText("A quiet tool for difficult moments")).toBeTruthy();
+      expect(getByText("Hold onto your support and your clarity")).toBeTruthy();
     });
 
     expect(
       getByText(
-        "You are already signed in, so Flare can save your setup to your account, reload it when you sign in again, and keep account-based features available.",
+        "You are already signed in, so your setup can be saved to your account, reloaded when you return, and used with account-based features like Support Group.",
       ),
     ).toBeTruthy();
     expect(queryByText("Go to sign in")).toBeNull();

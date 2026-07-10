@@ -88,19 +88,23 @@ export function WelcomeGateScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 32,
   },
   heroCard: {
     ...flareTheme.shadows.hero,
-    padding: 22,
-    borderRadius: 30,
+    paddingHorizontal: 22,
+    paddingVertical: 26,
+    borderRadius: 32,
     borderWidth: 1,
     borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.backgroundWash,
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   inner: {
     width: "100%",
-    maxWidth: 720,
+    maxWidth: 680,
     alignSelf: "center",
   },
   loadingScreen: {

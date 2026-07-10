@@ -16,7 +16,7 @@ function getSignInStateCopy(
   authState: FlareSupabaseAuthState,
 ) {
   if (authStatus !== "ready") {
-    return flareContent.screens.welcome.sections.withoutSignInCopy;
+    return flareContent.screens.welcome.sections.signedInCopy;
   }
 
   if (authState.kind === "authenticated") {
@@ -52,70 +52,99 @@ export function WelcomeContent({
         <Text style={styles.intro}>{flareContent.screens.welcome.intro}</Text>
       </View>
 
-      <View style={styles.sectionCard}>
-        <Text style={styles.sectionTitle}>
-          {flareContent.screens.welcome.sections.withoutSignInTitle}
-        </Text>
-        <Text style={styles.sectionCopy}>
-          {flareContent.screens.welcome.sections.withoutSignInCopy}
-        </Text>
+      <View style={styles.promiseBlock}>
+        <View style={styles.promiseRow}>
+          <View style={styles.promiseMarker} />
+          <View style={styles.promiseCopyBlock}>
+            <Text style={styles.sectionTitle}>
+              {flareContent.screens.welcome.sections.supportTitle}
+            </Text>
+            <Text style={styles.sectionCopy}>
+              {flareContent.screens.welcome.sections.supportCopy}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.promiseRow}>
+          <View style={styles.promiseMarker} />
+          <View style={styles.promiseCopyBlock}>
+            <Text style={styles.sectionTitle}>
+              {flareContent.screens.welcome.sections.clarityTitle}
+            </Text>
+            <Text style={styles.sectionCopy}>
+              {flareContent.screens.welcome.sections.clarityCopy}
+            </Text>
+          </View>
+        </View>
       </View>
 
-      <View style={styles.sectionCard}>
-        <Text style={styles.sectionTitle}>
+      <View style={styles.nextStepBlock}>
+        <Text style={styles.sectionEyebrow}>
+          {flareContent.screens.welcome.sections.nextStepTitle}
+        </Text>
+        <Text style={styles.nextStepCopy}>
+          {flareContent.screens.welcome.sections.nextStepCopy}
+        </Text>
+
+        {onGetStarted ? (
+          <View style={styles.actions}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={onGetStarted}
+              style={styles.primaryAction}
+            >
+              <Text style={styles.primaryActionLabel}>
+                {flareContent.screens.welcome.actions.primary}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+      </View>
+
+      <View style={styles.accountBlock}>
+        <Text style={styles.sectionEyebrow}>
           {flareContent.screens.welcome.sections.signedInTitle}
         </Text>
         <Text style={styles.sectionCopy}>
           {getSignInStateCopy(authStatus, authState)}
         </Text>
-      </View>
-
-      <View style={styles.sectionCard}>
-        <Text style={styles.sectionTitle}>
-          {flareContent.screens.welcome.sections.nextStepTitle}
-        </Text>
-        <Text style={styles.sectionCopy}>
-          {flareContent.screens.welcome.sections.nextStepCopy}
-        </Text>
-      </View>
-
-      {onGetStarted ? (
-        <View style={styles.actions}>
+        {showSignInAction ? (
           <Pressable
             accessibilityRole="button"
-            onPress={onGetStarted}
-            style={styles.primaryAction}
+            onPress={onSignIn}
+            style={styles.secondaryAction}
           >
-            <Text style={styles.primaryActionLabel}>
-              {flareContent.screens.welcome.actions.primary}
+            <Text style={styles.secondaryActionLabel}>
+              {flareContent.screens.welcome.actions.signIn}
             </Text>
           </Pressable>
-          {showSignInAction ? (
-            <Pressable
-              accessibilityRole="button"
-              onPress={onSignIn}
-              style={styles.secondaryAction}
-            >
-              <Text style={styles.secondaryActionLabel}>
-                {flareContent.screens.welcome.actions.signIn}
-              </Text>
-            </Pressable>
-          ) : null}
-        </View>
-      ) : null}
+        ) : null}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  accountBlock: {
+    gap: 10,
+    paddingTop: 4,
+  },
   actions: {
-    gap: 12,
     paddingTop: 8,
   },
   heroBlock: {
     gap: 10,
   },
   intro: {
+    color: flareTheme.colors.text,
+    fontSize: 15,
+    lineHeight: 24,
+  },
+  nextStepBlock: {
+    gap: 10,
+    paddingTop: 8,
+  },
+  nextStepCopy: {
     color: flareTheme.colors.text,
     fontSize: 15,
     lineHeight: 24,
@@ -134,6 +163,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
   },
+  promiseBlock: {
+    gap: 18,
+    paddingVertical: 6,
+  },
+  promiseCopyBlock: {
+    flex: 1,
+    gap: 6,
+  },
+  promiseMarker: {
+    width: 10,
+    alignSelf: "stretch",
+    borderRadius: 999,
+    backgroundColor: flareTheme.colors.primaryMuted,
+  },
+  promiseRow: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    gap: 12,
+  },
   screenLabel: {
     color: flareTheme.colors.primaryBright,
     fontSize: 12,
@@ -141,32 +189,31 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     textTransform: "uppercase",
   },
-  sectionCard: {
-    gap: 8,
-    padding: 18,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.surface,
-  },
   sectionCopy: {
     color: flareTheme.colors.textMuted,
     fontSize: 14,
     lineHeight: 22,
   },
+  sectionEyebrow: {
+    color: flareTheme.colors.textSubtle,
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+  },
   sectionTitle: {
     color: flareTheme.colors.textStrong,
-    fontSize: 17,
-    lineHeight: 22,
+    fontSize: 18,
+    lineHeight: 23,
     fontWeight: "700",
   },
   secondaryAction: {
-    alignSelf: "center",
+    alignSelf: "flex-start",
     minHeight: 44,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingTop: 4,
+    paddingBottom: 8,
   },
   secondaryActionLabel: {
     color: flareTheme.colors.primaryStrong,
@@ -174,18 +221,18 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   stack: {
-    gap: 16,
+    gap: 28,
   },
   subtitle: {
-    color: flareTheme.colors.textMuted,
-    fontSize: 16,
-    lineHeight: 24,
+    color: flareTheme.colors.text,
+    fontSize: 18,
+    lineHeight: 26,
     fontWeight: "600",
   },
   title: {
     color: flareTheme.colors.textStrong,
-    fontSize: 28,
-    lineHeight: 34,
+    fontSize: 31,
+    lineHeight: 37,
     fontWeight: "800",
   },
 });

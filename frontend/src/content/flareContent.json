@@ -1,4 +1,4 @@
-﻿{
+{
   "app": {
     "name": "Flare"
   },
@@ -105,24 +105,26 @@
       "subtitle": "Set up the words and plan steps you want available during a flare.",
       "aboutFlare": {
         "title": "About Flare",
-        "copy": "Reopen the first-use welcome if you want a quick reminder of what Flare is for and what sign-in changes.",
+        "copy": "Reopen the first-use welcome if you want a quick reminder of what Flare is for, what it helps you hold onto, and what sign-in adds.",
         "action": "Welcome to Flare"
       }
     },
     "welcome": {
       "screenLabel": "Welcome",
-      "title": "A quiet tool for difficult moments",
-      "subtitle": "Flare helps you prepare support ahead of time and use it when a hard moment hits.",
-      "intro": "Use Flare to set up grounded reminders, a short plan, and one simple next step you can reach for when you need a pause.",
+      "title": "Hold on to your support and your clarity",
+      "subtitle": "Difficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.",
+      "intro": "Prepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.",
       "sections": {
-        "withoutSignInTitle": "Start without signing in",
-        "withoutSignInCopy": "You can begin right away, explore the setup screens, and try Flare in this app session without creating an account.",
+        "supportTitle": "Your support",
+        "supportCopy": "The people and encouragement you have chosen to keep close when you need them.",
+        "clarityTitle": "Your clarity",
+        "clarityCopy": "The plans, reminders, and intentions you created while thinking clearly.",
         "signedInTitle": "What signing in adds",
-        "signedInCopy": "Signing in lets Flare save your setup to your account, reload saved history and plan details when you sign in again, and unlock account-based features like Support Group.",
-        "alreadySignedInCopy": "You are already signed in, so Flare can save your setup to your account, reload it when you sign in again, and keep account-based features available.",
-        "clientUnavailableCopy": "This build can still guide you through setup, but account saving is not available here yet.",
+        "signedInCopy": "You can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.",
+        "alreadySignedInCopy": "You are already signed in, so your setup can be saved to your account, reloaded when you return, and used with account-based features like Support Group.",
+        "clientUnavailableCopy": "You can still begin here, but account saving is not available in this build yet, so your setup stays on this device.",
         "nextStepTitle": "What to do next",
-        "nextStepCopy": "Tap Get started, then use Customize to set up your support words and plan before you rely on Flare in the moment."
+        "nextStepCopy": "Get started by preparing the support words, reminders, and next steps you want ready before you need them."
       },
       "actions": {
         "primary": "Get started",
