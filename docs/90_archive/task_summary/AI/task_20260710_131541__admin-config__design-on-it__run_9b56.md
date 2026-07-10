@@ -87,3 +87,35 @@
     }
   ]
 }
+
+## Diff
+- terminal_state_snapshot: completed
+- files_changed: 11
+- insertions: 1245
+- deletions: 390
+- note: terminal_state_snapshot reflects the run state when diff metadata was captured.
+- changed_files:
+  - docs/10_design/flare_v0_app_structure_navigation.md
+  - docs/90_archive/task_summary/AI/task_20260710_131541__admin-config__design-on-it__run_9b56.md
+  - frontend/src/components/FlareResponse.tsx
+  - frontend/src/components/PlaceholderModal.tsx
+  - frontend/src/components/__tests__/FlareResponse.test.tsx
+  - frontend/src/content/flareContent.json
+  - frontend/src/screens/CustomizeScreen.tsx
+  - frontend/src/screens/FlareScreen.tsx
+  - frontend/src/screens/__tests__/app_shell.test.tsx
+  - frontend/src/screens/__tests__/flare_plan_configure.test.tsx
+  - frontend/src/screens/flareReadiness.ts
+## Validation Summary
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: frontend`: `npm run typecheck, frontend`: `npm test -- --runTestsByPath src/components/__tests__/FlareResponse.test.tsx, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "opens the Checkpoint / Reflection sheet and shows guidance when no active event exists" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "shows one guided recovery card before any Flare Plan actions are revealed" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "enters focused mode, advances one action, and hides the ordinary response chrome" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "opens end-plan confirmation and renders the ended summary after confirmation" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "shows a calm sent status when Send Flare reaches the enabled support group" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "keeps the flare event flow working when external delivery fails safely" --forceExit
+- summary: Validation details were derived from the Build Run Summary body.
+## Final Run State
+- terminal_state: completed
+- summary_written: true
+- validation_requested: true
+- validation_ran: true
+- validation_result: passed
+- tests_run: frontend`: `npm run typecheck, frontend`: `npm test -- --runTestsByPath src/components/__tests__/FlareResponse.test.tsx, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "opens the Checkpoint / Reflection sheet and shows guidance when no active event exists" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "shows one guided recovery card before any Flare Plan actions are revealed" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "enters focused mode, advances one action, and hides the ordinary response chrome" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "opens end-plan confirmation and renders the ended summary after confirmation" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "shows a calm sent status when Send Flare reaches the enabled support group" --forceExit, frontend`: `node .\\node_modules\\jest\\bin\\jest.js --runInBand --runTestsByPath src/screens/__tests__/app_shell.test.tsx -t "keeps the flare event flow working when external delivery fails safely" --forceExit

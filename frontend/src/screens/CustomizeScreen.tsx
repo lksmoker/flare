@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
@@ -16,8 +17,27 @@ import { useBehaviorPattern } from "../state/BehaviorPatternContext";
 import { useFlarePlan } from "../state/FlarePlanContext";
 import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
+import type { FlareReadinessFocus } from "./flareReadiness";
+
+function normalizeFocusParam(
+  focus: string | string[] | undefined,
+): FlareReadinessFocus | null {
+  const nextFocus = Array.isArray(focus) ? focus[0] : focus;
+
+  switch (nextFocus) {
+    case "auth":
+    case "anchor-note":
+    case "behavior-pattern":
+    case "flare-plan":
+    case "support-channel":
+      return nextFocus;
+    default:
+      return null;
+  }
+}
 
 export function CustomizeScreen() {
+  const { focus } = useLocalSearchParams<{ focus?: string | string[] }>();
   const [isBehaviorPatternVisible, setIsBehaviorPatternVisible] =
     useState(false);
   const [isAnchorNoteVisible, setIsAnchorNoteVisible] = useState(false);
@@ -33,6 +53,28 @@ export function CustomizeScreen() {
     isSupportChannelLoading,
     replaceSupportChannelStatus,
   } = useSupportChannelStatus();
+  const requestedFocus = normalizeFocusParam(focus);
+
+  useEffect(() => {
+    if (requestedFocus === "behavior-pattern") {
+      setIsBehaviorPatternVisible(true);
+      return;
+    }
+
+    if (requestedFocus === "anchor-note") {
+      setIsAnchorNoteVisible(true);
+      return;
+    }
+
+    if (requestedFocus === "flare-plan") {
+      setIsFlarePlanVisible(true);
+      return;
+    }
+
+    if (requestedFocus === "support-channel") {
+      setIsSupportChannelVisible(true);
+    }
+  }, [requestedFocus]);
 
   return (
     <AppShell

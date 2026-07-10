@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { AppShell } from "../components/AppShell";
@@ -30,6 +31,10 @@ import { useFlareEvents } from "../state/FlareEventContext";
 import { useFlarePlan } from "../state/FlarePlanContext";
 import { useSupportChannelStatus } from "../state/useSupportChannelStatus";
 import { flareTheme } from "../theme/flareTheme";
+import {
+  buildFlareReadinessModel,
+  type FlareReadinessFocus,
+} from "./flareReadiness";
 
 type ExternalSupportState =
   | {
@@ -104,6 +109,7 @@ function mapPersistedSupportDelivery(
 }
 
 export function FlareScreen() {
+  const router = useRouter();
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const [isReadinessExpanded, setIsReadinessExpanded] = useState(false);
@@ -122,64 +128,39 @@ export function FlareScreen() {
     isSupportChannelLoading,
     supportChannel,
   } = useSupportChannelStatus();
-
-  const isPersistenceConfigured =
-    authStatus === "ready" && authState.kind === "authenticated";
-
-  const persistenceStatus =
-    authStatus === "loading"
-      ? flareContent.common.states.loading.checkingSession
-      : authState.kind === "authenticated"
-        ? `${flareContent.screens.flare.readiness.connectedPrefix} ${authState.userEmail ?? authState.userId}`
-        : authState.kind === "client-unavailable"
-          ? flareContent.screens.flare.readiness.localOnlyUntilConfigLoaded
-          : flareContent.screens.flare.readiness.localOnlyUntilSignIn;
-
-  const readinessItems = [
-    {
-      configured: isPersistenceConfigured,
-      label: flareContent.screens.flare.readiness.setupPersistence,
-      status: persistenceStatus,
-    },
-    {
-      configured: isConfigured,
-      label: flareContent.screens.flare.readiness.behaviorPattern,
-      status: isConfigured
-        ? `${flareContent.screens.flare.readiness.configuredPrefix} ${behaviorPattern?.behaviorName}`
-        : flareContent.screens.flare.readiness.readyToDefine,
-    },
-    {
-      configured: isPlanConfigured,
-      label: flareContent.screens.flare.readiness.flarePlan,
-      status: isPlanLoading
-        ? flareContent.components.flarePlan.loading.checking
-        : isPlanConfigured
-          ? `${flareContent.screens.flare.readiness.configuredPrefix} ${plan?.active_action_count ?? 0} of ${plan?.maximum_active_actions ?? 10} actions`
-          : flareContent.components.flarePlan.notConfigured,
-    },
-    {
-      configured: isAnchorNoteConfigured,
-      label: flareContent.screens.flare.readiness.anchorNote,
-      status: isAnchorNoteConfigured
-        ? `${flareContent.screens.flare.readiness.configuredPrefix} ${anchorNote?.supportivePhrase}`
-        : flareContent.screens.flare.readiness.readyToDefine,
-    },
-    {
-      configured: isSupportChannelConfigured,
-      label: flareContent.screens.flare.readiness.supportChannel,
-      status: isSupportChannelLoading
-        ? flareContent.common.states.loading.checkingConnection
-        : isSupportChannelConfigured
-          ? `${flareContent.screens.flare.readiness.configuredPrefix} ${supportChannel?.destination_display_name ?? flareContent.components.supportChannel.cardTitle}`
-          : flareContent.screens.flare.readiness.readyToDefine,
-    },
-  ];
-  const configuredCount = readinessItems.filter((item) => item.configured).length;
-  const readinessSummary = `${configuredCount} out of ${readinessItems.length} configured`;
+  const readinessModel = buildFlareReadinessModel({
+    anchorNotePhrase: anchorNote?.supportivePhrase,
+    authState,
+    authStatus,
+    behaviorPatternName: behaviorPattern?.behaviorName,
+    isAnchorNoteConfigured,
+    isBehaviorPatternConfigured: isConfigured,
+    isPlanConfigured,
+    isPlanLoading,
+    isSupportChannelConfigured,
+    isSupportChannelLoading,
+    planActiveActionCount: plan?.active_action_count,
+    planMaximumActiveActions: plan?.maximum_active_actions,
+    supportChannelName: supportChannel?.destination_display_name,
+  });
+  const isSetupComplete = readinessModel.isSetupComplete;
+  const setupHeroCopy =
+    authStatus === "ready" && authState.kind === "no-session"
+      ? flareContent.screens.flare.setupHero.signedOutCopy
+      : authStatus === "ready" && authState.kind === "client-unavailable"
+        ? flareContent.screens.flare.setupHero.clientUnavailableCopy
+        : flareContent.screens.flare.setupHero.copy;
+  const nextSetupLabel =
+    readinessModel.items.find(
+      (item) => item.focus === readinessModel.nextRequiredFocus,
+    )?.label ?? null;
 
   const openCheckpoint = () => {
     setIsFlareResponseVisible(false);
     setIsCheckpointVisible(true);
+  };
+  const navigateToCustomize = (focus: FlareReadinessFocus) => {
+    router.push(`/customize?focus=${focus}`);
   };
   const eventForResponse = responseState?.flareEvent ?? activeEvent ?? currentEvent;
   const deliveryStateForResponse =
@@ -233,83 +214,137 @@ export function FlareScreen() {
     <AppShell
       currentPath="/"
       screenLabel={flareContent.screens.flare.screenLabel}
-      subtitle={flareContent.screens.flare.subtitle}
-      title={flareContent.screens.flare.title}
+      subtitle={
+        isSetupComplete
+          ? flareContent.screens.flare.subtitle
+          : setupHeroCopy
+      }
+      title={
+        isSetupComplete
+          ? flareContent.screens.flare.title
+          : flareContent.screens.flare.setupHero.title
+      }
     >
-      <SendFlareButton
-        onPress={async () => {
-          setResponseError(null);
-          setResponseState(null);
-          let flareEventId: string | null = null;
+      {!isSetupComplete ? (
+        <View style={styles.setupHeroCard}>
+          <View style={styles.setupHeroCopyBlock}>
+            <Text style={styles.setupHeroTitle}>
+              {flareContent.screens.flare.setupHero.title}
+            </Text>
+            <Text style={styles.setupHeroCopy}>{setupHeroCopy}</Text>
+            {nextSetupLabel ? (
+              <Text style={styles.setupHeroNextStep}>
+                {flareContent.screens.flare.setupHero.nextStepPrefix} {nextSetupLabel}
+              </Text>
+            ) : null}
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => {
+              if (readinessModel.nextRequiredFocus) {
+                navigateToCustomize(readinessModel.nextRequiredFocus);
+              }
+            }}
+            style={styles.setupHeroButton}
+          >
+            <Text style={styles.setupHeroButtonLabel}>
+              {flareContent.screens.flare.setupHero.primaryAction}
+            </Text>
+          </Pressable>
+          {authStatus === "ready" && authState.kind === "no-session" ? (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => navigateToCustomize("auth")}
+              style={styles.setupHeroLink}
+            >
+              <Text style={styles.setupHeroLinkLabel}>
+                {flareContent.screens.flare.setupHero.signInAction}
+              </Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : (
+        <SendFlareButton
+          onPress={async () => {
+            setResponseError(null);
+            setResponseState(null);
+            let flareEventId: string | null = null;
 
-          if (authState.kind === "authenticated") {
-            try {
-              const created = await createFlareResponse({
-                anchorNoteId: anchorNoteRecord?.id ?? null,
-                anchorNoteVersion: anchorNoteRecord?.version ?? null,
-                behaviorDescriptionSnapshot: behaviorPattern?.shortDescription ?? null,
-                behaviorLabelSnapshot: behaviorPattern?.behaviorName ?? "Behavior pattern not configured",
-                behaviorPatternId: behaviorPatternRecord?.id ?? null,
-                responseMode: anchorNote ? "configured" : "fallback-generic",
-                supportActionShown: anchorNote?.emergencyActions ?? null,
-                idempotencyKey: createIdempotencyKey(),
+            if (authState.kind === "authenticated") {
+              try {
+                const created = await createFlareResponse({
+                  anchorNoteId: anchorNoteRecord?.id ?? null,
+                  anchorNoteVersion: anchorNoteRecord?.version ?? null,
+                  behaviorDescriptionSnapshot: behaviorPattern?.shortDescription ?? null,
+                  behaviorLabelSnapshot:
+                    behaviorPattern?.behaviorName ?? "Behavior pattern not configured",
+                  behaviorPatternId: behaviorPatternRecord?.id ?? null,
+                  responseMode: anchorNote ? "configured" : "fallback-generic",
+                  supportActionShown: anchorNote?.emergencyActions ?? null,
+                  idempotencyKey: createIdempotencyKey(),
+                });
+                flareEventId = created.flareEvent.id;
+                upsertPersistedFlareEvent({
+                  createdAt: created.flareEvent.createdAt,
+                  flareEvent: created.flareEvent,
+                  id: created.flareEvent.id,
+                  updatedAt: created.flareEvent.updatedAt,
+                  userId: created.flareEvent.userId ?? authState.userId,
+                });
+                setResponseState({
+                  flareEvent: created.flareEvent,
+                  run: created.run,
+                  supportDelivery: null,
+                });
+              } catch (error) {
+                setResponseError(
+                  error instanceof Error
+                    ? error.message
+                    : "Flare could not be created right now.",
+                );
+                return;
+              }
+              const externalContent =
+                flareContent.components.flareResponse.externalSupport;
+              setExternalSupportState({
+                copy: externalContent.sendingCopy,
+                title: externalContent.sendingTitle,
+                tone: "muted",
               });
-              flareEventId = created.flareEvent.id;
-              upsertPersistedFlareEvent({
-                createdAt: created.flareEvent.createdAt,
-                flareEvent: created.flareEvent,
-                id: created.flareEvent.id,
-                updatedAt: created.flareEvent.updatedAt,
-                userId: created.flareEvent.userId ?? authState.userId,
+              void sendSupportChannelFlare({
+                flareEventId,
+              })
+                .then((result) => {
+                  setExternalSupportState(mapExternalSupportState(result));
+                })
+                .catch(() => {
+                  setExternalSupportState({
+                    copy: externalContent.failedCopy,
+                    title: externalContent.failedTitle,
+                    tone: "warning",
+                  });
+                });
+            } else {
+              const localFallbackEvent = createFlareEvent({
+                behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
+                behaviorLabelSnapshot: behaviorPattern?.behaviorName,
+                supportActionShown: anchorNote?.emergencyActions,
               });
+              setExternalSupportState(null);
               setResponseState({
-                flareEvent: created.flareEvent,
-                run: created.run,
+                flareEvent: localFallbackEvent,
+                run: null,
                 supportDelivery: null,
               });
-            } catch (error) {
-              setResponseError(error instanceof Error ? error.message : "Flare could not be created right now.");
-              return;
             }
-            const externalContent =
-              flareContent.components.flareResponse.externalSupport;
-            setExternalSupportState({
-              copy: externalContent.sendingCopy,
-              title: externalContent.sendingTitle,
-              tone: "muted",
-            });
-            void sendSupportChannelFlare({
-              flareEventId,
-            })
-              .then((result) => {
-                setExternalSupportState(mapExternalSupportState(result));
-              })
-              .catch(() => {
-                setExternalSupportState({
-                  copy: externalContent.failedCopy,
-                  title: externalContent.failedTitle,
-                  tone: "warning",
-                });
-              });
-          } else {
-            const localFallbackEvent = createFlareEvent({
-              behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
-              behaviorLabelSnapshot: behaviorPattern?.behaviorName,
-              supportActionShown: anchorNote?.emergencyActions,
-            });
-            setExternalSupportState(null);
-            setResponseState({
-              flareEvent: localFallbackEvent,
-              run: null,
-              supportDelivery: null,
-            });
-          }
-          setIsCheckpointVisible(false);
-          setIsFlareResponseVisible(true);
-        }}
-      />
+            setIsCheckpointVisible(false);
+            setIsFlareResponseVisible(true);
+          }}
+        />
+      )}
 
-      {!(isFlareResponseVisible && responseState?.run?.status === "in_progress") ? (
+      {isSetupComplete &&
+      !(isFlareResponseVisible && responseState?.run?.status === "in_progress") ? (
         <Pressable
           accessibilityRole="button"
           onPress={() => setIsCheckpointVisible(true)}
@@ -341,7 +376,9 @@ export function FlareScreen() {
               {flareContent.screens.flare.readiness.title}
             </Text>
             {!isReadinessExpanded ? (
-              <Text style={styles.readinessSummary}>{readinessSummary}</Text>
+              <Text style={styles.readinessSummary}>
+                {readinessModel.readinessSummary}
+              </Text>
             ) : null}
           </View>
           <Text style={styles.readinessToggle}>
@@ -350,11 +387,29 @@ export function FlareScreen() {
         </Pressable>
         {isReadinessExpanded ? (
           <View style={styles.readinessList}>
-            {readinessItems.map((item) => (
-              <View key={item.label} style={styles.readinessPill}>
-                <Text style={styles.readinessLabel}>{item.label}</Text>
+            {readinessModel.items.map((item) => (
+              <Pressable
+                key={item.label}
+                accessibilityRole="button"
+                onPress={() => navigateToCustomize(item.focus)}
+                style={({ pressed }) => [
+                  styles.readinessPill,
+                  pressed ? styles.readinessPillPressed : null,
+                ]}
+              >
+                <View style={styles.readinessPillHeader}>
+                  <Text style={styles.readinessLabel}>{item.label}</Text>
+                  <View style={styles.readinessPillMeta}>
+                    {!item.requiredForSetup ? (
+                      <Text style={styles.readinessOptionalLabel}>
+                        {flareContent.screens.flare.readiness.optionalLabel}
+                      </Text>
+                    ) : null}
+                    <Text style={styles.readinessChevron}>{">"}</Text>
+                  </View>
+                </View>
                 <Text style={styles.readinessStatus}>{item.status}</Text>
-              </View>
+              </Pressable>
             ))}
           </View>
         ) : null}
@@ -440,6 +495,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  readinessChevron: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  readinessOptionalLabel: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 12,
+    fontWeight: "700",
+    textTransform: "uppercase",
+  },
+  readinessPillHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  readinessPillMeta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   readinessToggle: {
     color: flareTheme.colors.primary,
     fontSize: 14,
@@ -453,6 +530,9 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 18,
     backgroundColor: flareTheme.colors.surfaceSoft,
+  },
+  readinessPillPressed: {
+    backgroundColor: flareTheme.colors.surfaceStrong,
   },
   readinessLabel: {
     color: flareTheme.colors.text,
@@ -476,6 +556,57 @@ const styles = StyleSheet.create({
   responseSheet: {
     minHeight: "82%",
     maxHeight: "98%",
+  },
+  setupHeroButton: {
+    minHeight: 52,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 18,
+    backgroundColor: flareTheme.colors.primary,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+  },
+  setupHeroButtonLabel: {
+    color: flareTheme.colors.onPrimary,
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  setupHeroCard: {
+    ...flareTheme.shadows.card,
+    gap: 16,
+    padding: 22,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
+  },
+  setupHeroCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  setupHeroCopyBlock: {
+    gap: 10,
+  },
+  setupHeroLink: {
+    alignSelf: "flex-start",
+    paddingVertical: 4,
+  },
+  setupHeroLinkLabel: {
+    color: flareTheme.colors.primaryStrong,
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  setupHeroNextStep: {
+    color: flareTheme.colors.text,
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  setupHeroTitle: {
+    color: flareTheme.colors.textStrong,
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: "800",
   },
   secondaryButtonLabel: {
     color: flareTheme.colors.textStrong,

@@ -108,6 +108,15 @@
       "screenLabel": "In-the-moment support",
       "title": "Pause, remember your reasons, and choose a next step",
       "subtitle": "Use one simple action to open your saved support words and mark the moment.",
+      "setupHero": {
+        "title": "Finish setting up Flare",
+        "copy": "Set up your saved support so Flare is ready when you need it.",
+        "nextStepPrefix": "Next:",
+        "primaryAction": "Continue setup",
+        "signedOutCopy": "You can start setup on this device now. Sign in when you want to save it and use it across devices.",
+        "clientUnavailableCopy": "You can keep setting things up on this device now. Sign-in is not available yet, so your setup stays local for now.",
+        "signInAction": "Go to sign in"
+      },
       "readiness": {
         "title": "Readiness",
         "expandAccessibilityLabel": "Expand readiness details",
@@ -119,6 +128,7 @@
         "supportChannel": "Support Group",
         "configuredPrefix": "Configured:",
         "readyToDefine": "Ready to set up",
+        "optionalLabel": "Optional",
         "localOnlyUntilSignIn": "Local-only until sign in",
         "localOnlyUntilConfigLoaded": "Not saved until sign-in is configured",
         "connectedPrefix": "Connected:",

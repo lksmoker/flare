@@ -131,6 +131,28 @@ The `Flare` screen may include:
 
 `Checkpoint / Reflection` should be secondary to `Send Flare` and should likely open as a modal or sheet.
 
+### First-Use Setup Mode
+
+When the required saved-support setup is incomplete, the `Flare` screen should temporarily behave like a guided setup surface instead of an operational recovery surface.
+
+In that state:
+
+* replace the dominant `Send Flare` hero with one setup-focused hero
+* keep one obvious primary action that takes the user to the next setup task
+* keep readiness visible but visually secondary
+* keep detailed setup editing inside `Customize`
+* return to the standard `Send Flare` hero once required setup is complete
+
+The required setup order for V0 is:
+
+```text
+Behavior Pattern
+→ Flare Plan
+→ Anchor Note
+```
+
+`Support Group` remains visible as readiness progress, but does not block the return to the configured `Send Flare` experience in V0.
+
 ### Readiness Indicators
 
 The `Flare` screen may show lightweight readiness indicators such as:

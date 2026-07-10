@@ -5,6 +5,15 @@ import { act } from "@testing-library/react-native";
 import { CustomizeScreen } from "../CustomizeScreen";
 import { FlareScreen } from "../FlareScreen";
 import { HistoryScreen } from "../HistoryScreen";
+import type {
+  AnchorNoteRepository,
+  PersistedAnchorNote,
+} from "../../services/anchorNoteRepository";
+import type {
+  BehaviorPatternRepository,
+  PersistedBehaviorPattern,
+} from "../../services/behaviorPatternRepository";
+import type { FlareEventRepository } from "../../services/flareEventRepository";
 import { DEFAULT_SUPPORT_CHANNEL_MESSAGE } from "../../services/supportChannelApi";
 import { AnchorNoteProvider } from "../../state/AnchorNoteContext";
 import { BehaviorPatternProvider } from "../../state/BehaviorPatternContext";
@@ -13,39 +22,46 @@ import { FlareEventProvider } from "../../state/FlareEventContext";
 import * as flareResponseApi from "../../services/flareResponseApi";
 import * as supportChannelApi from "../../services/supportChannelApi";
 
+const defaultMockFlarePlanState = {
+  archiveAction: jest.fn(),
+  createCustomAction: jest.fn(),
+  createFromTemplate: jest.fn(),
+  ensureTemplatesLoaded: jest.fn(),
+  errorBanner: null,
+  isActionPending: () => false,
+  isAtActionLimit: false,
+  isInitialLoading: false,
+  isPlanConfigured: false,
+  isReorderPending: false,
+  isRefreshing: false,
+  isTemplatePending: () => false,
+  plan: {
+    id: "plan-1",
+    is_configured: false,
+    active_action_count: 0,
+    maximum_active_actions: 10,
+    actions: [],
+    updated_at: "2026-07-08T00:00:00.000Z",
+  },
+  planError: null,
+  refetchAll: jest.fn(),
+  retryPlan: jest.fn(),
+  retryTemplates: jest.fn(),
+  saveAction: jest.fn(),
+  templates: [],
+  templatesError: null,
+  updateLocalPlan: jest.fn(),
+  reorderActions: jest.fn(),
+};
+
+let mockFlarePlanState = {
+  ...defaultMockFlarePlanState,
+  plan: { ...defaultMockFlarePlanState.plan },
+};
+
 jest.mock("../../state/FlarePlanContext", () => ({
   FlarePlanProvider: ({ children }: { children: ReactNode }) => children,
-  useFlarePlan: () => ({
-    archiveAction: jest.fn(),
-    createCustomAction: jest.fn(),
-    createFromTemplate: jest.fn(),
-    ensureTemplatesLoaded: jest.fn(),
-    errorBanner: null,
-    isActionPending: () => false,
-    isAtActionLimit: false,
-    isInitialLoading: false,
-    isPlanConfigured: false,
-    isReorderPending: false,
-    isRefreshing: false,
-    isTemplatePending: () => false,
-    plan: {
-      id: "plan-1",
-      is_configured: false,
-      active_action_count: 0,
-      maximum_active_actions: 10,
-      actions: [],
-      updated_at: "2026-07-08T00:00:00.000Z",
-    },
-    planError: null,
-    refetchAll: jest.fn(),
-    retryPlan: jest.fn(),
-    retryTemplates: jest.fn(),
-    saveAction: jest.fn(),
-    templates: [],
-    templatesError: null,
-    updateLocalPlan: jest.fn(),
-    reorderActions: jest.fn(),
-  }),
+  useFlarePlan: () => mockFlarePlanState,
 }));
 
 jest.mock("expo-router", () => {
@@ -56,9 +72,19 @@ jest.mock("expo-router", () => {
     () => void | (() => void),
     void | (() => void)
   >();
+  const push = jest.fn();
+  let searchParams: Record<string, string | string[] | undefined> = {};
 
   return {
     Link: ({ children }: { children: ReactNode }) => children,
+    useLocalSearchParams() {
+      return searchParams;
+    },
+    useRouter() {
+      return {
+        push,
+      };
+    },
     useFocusEffect(effect: () => void | (() => void)) {
       React.useEffect(() => {
         focusEffects.add(effect);
@@ -89,6 +115,14 @@ jest.mock("expo-router", () => {
         focusCleanups.set(effect, nextCleanup);
       });
     },
+    __setSearchParams(nextParams: Record<string, string | string[] | undefined>) {
+      searchParams = nextParams;
+    },
+    __resetRouter() {
+      push.mockReset();
+      searchParams = {};
+    },
+    __push: push,
   };
 });
 
@@ -124,46 +158,202 @@ function TestProviders({ children }: PropsWithChildren) {
     >
       <BehaviorPatternProvider>
         <AnchorNoteProvider>
-          <FlareEventProvider>{children}</FlareEventProvider>
+          <FlareEventProvider flareEventRepository={emptyFlareEventRepository}>
+            {children}
+          </FlareEventProvider>
         </AnchorNoteProvider>
       </BehaviorPatternProvider>
     </FlareAuthProvider>
   );
 }
 
+const configuredBehaviorPatternRecord: PersistedBehaviorPattern = {
+  behaviorPattern: {
+    behaviorName: "Late-night scrolling",
+    shortDescription: "I keep reaching for my phone when I'm tired.",
+    commonTriggers: "Stress",
+    preferredRecoveryActions: "",
+    riskTimesOrSituations: "Late at night",
+  },
+  createdAt: "2026-07-08T00:00:00.000Z",
+  id: "behavior-1",
+  updatedAt: "2026-07-08T00:00:00.000Z",
+  userId: "user-123",
+};
+
+const configuredAnchorNoteRecord: PersistedAnchorNote = {
+  anchorNote: {
+    interruptionReasons: "I want to keep tomorrow easier.",
+    continuingCosts: "I lose sleep.",
+    groundedReminders: "Get up and breathe.",
+    emergencyActions: "Put the phone away.",
+    supportivePhrase: "Hold the line for ten minutes.",
+  },
+  createdAt: "2026-07-08T00:00:00.000Z",
+  id: "anchor-1",
+  updatedAt: "2026-07-08T00:00:00.000Z",
+  userId: "user-123",
+  version: 1,
+};
+
+const configuredBehaviorPatternRepository: BehaviorPatternRepository = {
+  loadActiveBehaviorPattern: jest
+    .fn()
+    .mockResolvedValue(configuredBehaviorPatternRecord),
+  saveBehaviorPattern: jest.fn(),
+};
+
+const configuredAnchorNoteRepository: AnchorNoteRepository = {
+  loadActiveAnchorNote: jest.fn().mockResolvedValue(configuredAnchorNoteRecord),
+  saveAnchorNote: jest.fn(),
+};
+
+const emptyFlareEventRepository: FlareEventRepository = {
+  archiveFlareEvent: jest.fn(),
+  createFlareEvent: jest.fn(),
+  loadFlareEvents: jest.fn().mockResolvedValue([]),
+  restoreFlareEvent: jest.fn(),
+  updateFlareEventStatus: jest.fn(),
+};
+
+function ConfiguredProviders({ children }: PropsWithChildren) {
+  return (
+    <FlareAuthProvider
+      initialAuthState={{
+        kind: "authenticated",
+        userEmail: "flare@example.com",
+        userId: "user-123",
+      }}
+      subscribe={() => null}
+    >
+      <BehaviorPatternProvider
+        behaviorPatternRepository={configuredBehaviorPatternRepository}
+      >
+        <AnchorNoteProvider anchorNoteRepository={configuredAnchorNoteRepository}>
+          <FlareEventProvider flareEventRepository={emptyFlareEventRepository}>
+            {children}
+          </FlareEventProvider>
+        </AnchorNoteProvider>
+      </BehaviorPatternProvider>
+    </FlareAuthProvider>
+  );
+}
+
+function enableConfiguredFlarePlan(actionCount = 1) {
+  mockFlarePlanState = {
+    ...mockFlarePlanState,
+    isPlanConfigured: true,
+    plan: {
+      ...mockFlarePlanState.plan,
+      active_action_count: actionCount,
+      actions: [],
+      is_configured: true,
+    },
+  };
+}
+
+async function waitForSendFlare(getByText: (text: string) => unknown) {
+  await waitFor(() => {
+    expect(getByText("Send Flare")).toBeTruthy();
+  });
+}
+
+function createMockFlareEvent(overrides?: Partial<{
+  behaviorDescriptionSnapshot: string | null;
+  behaviorLabelSnapshot: string | null;
+  supportActionShown: string | null;
+}>) {
+  return {
+    anchorNoteId: null,
+    anchorNoteVersion: null,
+    archivedAt: null,
+    behaviorDescriptionSnapshot:
+      overrides?.behaviorDescriptionSnapshot ??
+      "I keep reaching for my phone when I'm tired.",
+    behaviorLabelSnapshot:
+      overrides?.behaviorLabelSnapshot ?? "Late-night scrolling",
+    behaviorPatternId: "behavior-1",
+    checkpoint: null,
+    closedAt: null,
+    createdAt: "2026-07-09T00:00:00Z",
+    id: "event-1",
+    responseMode: "configured" as const,
+    status: "active" as const,
+    supportActionShown: overrides?.supportActionShown ?? "Put the phone away.",
+    supportActionTaken: null,
+    updatedAt: "2026-07-09T00:00:00Z",
+    userId: "user-123",
+  };
+}
+
+function mockConfiguredFlareResponse(
+  overrides?: Partial<ReturnType<typeof createMockFlareEvent>>,
+) {
+  return jest
+    .spyOn(flareResponseApi, "createFlareResponse")
+    .mockResolvedValue({
+      flareEvent: {
+        ...createMockFlareEvent(),
+        ...overrides,
+      },
+      run: null,
+    });
+}
+
 const expoRouter = jest.requireMock("expo-router") as {
+  __push: jest.Mock;
+  __resetRouter: () => void;
+  __setSearchParams: (
+    nextParams: Record<string, string | string[] | undefined>,
+  ) => void;
   __triggerFocus: () => void;
 };
 
 describe("V0 app shell", () => {
   afterEach(() => {
+    mockFlarePlanState = {
+      ...defaultMockFlarePlanState,
+      plan: { ...defaultMockFlarePlanState.plan },
+    };
+    expoRouter.__resetRouter();
     jest.restoreAllMocks();
+    (flareResponseApi.beginFlarePlanRun as jest.Mock).mockReset();
+    (flareResponseApi.completeFlarePlanAction as jest.Mock).mockReset();
+    (flareResponseApi.createFlareResponse as jest.Mock).mockReset();
+    (flareResponseApi.declineFlarePlanRun as jest.Mock).mockReset();
+    (flareResponseApi.endFlarePlanRunEarly as jest.Mock).mockReset();
+    (flareResponseApi.getFlareResponse as jest.Mock).mockReset();
+    (flareResponseApi.getFlareResponse as jest.Mock).mockResolvedValue({
+      flareEvent: null,
+      run: null,
+      supportDelivery: null,
+    });
+    (flareResponseApi.skipFlarePlanAction as jest.Mock).mockReset();
   });
 
-  it("renders the top-level navigation labels and dominant Send Flare action", () => {
-    const { getAllByText, getByText } = render(<FlareScreen />, {
+  it("renders the top-level navigation labels and guided setup hero when required setup is incomplete", () => {
+    const { getAllByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
     expect(getAllByText("Flare").length).toBeGreaterThanOrEqual(1);
-    expect(getByText("History")).toBeTruthy();
-    expect(getByText("Customize")).toBeTruthy();
-    expect(getByText("Send Flare")).toBeTruthy();
+    expect(getAllByText("History").length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText("Customize").length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText("Finish setting up Flare").length).toBeGreaterThanOrEqual(1);
+    expect(queryByText("Continue setup")).toBeTruthy();
   });
 
-  it("renders the flare screen hierarchy with actions before readiness cards", () => {
+  it("renders the setup hero before the Readiness panel when setup is incomplete", () => {
     const { toJSON } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
     const rendered = JSON.stringify(toJSON());
 
-    const sendFlareIndex = rendered.indexOf("Send Flare");
-    const checkpointIndex = rendered.indexOf("Checkpoint / Reflection");
+    const setupHeroIndex = rendered.indexOf("Finish setting up Flare");
     const readinessIndex = rendered.indexOf("Readiness");
 
-    expect(sendFlareIndex).toBeGreaterThan(-1);
-    expect(checkpointIndex).toBeGreaterThan(sendFlareIndex);
-    expect(readinessIndex).toBeGreaterThan(checkpointIndex);
+    expect(setupHeroIndex).toBeGreaterThan(-1);
+    expect(readinessIndex).toBeGreaterThan(setupHeroIndex);
   });
 
   it("shows the Readiness panel collapsed by default with the aggregate count", () => {
@@ -172,11 +362,25 @@ describe("V0 app shell", () => {
     });
 
     expect(getByLabelText("Expand readiness details")).toBeTruthy();
-    expect(getByText("0 out of 5 configured")).toBeTruthy();
+    expect(getByText("0 of 4 configured")).toBeTruthy();
     expect(queryByText("Setup saving")).toBeNull();
     expect(queryByText("Behavior Pattern")).toBeNull();
     expect(queryByText("Anchor Note")).toBeNull();
     expect(queryByText("Support Group")).toBeNull();
+  });
+
+  it("shows Send Flare again once the required setup is configured", async () => {
+    enableConfiguredFlarePlan(2);
+
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
+    });
+
+    await waitFor(() => {
+      expect(getByText("Send Flare")).toBeTruthy();
+    });
+
+    expect(queryByText("Continue setup")).toBeNull();
   });
 
   it("expands and collapses the Readiness panel with correct accessibility state", () => {
@@ -210,28 +414,162 @@ describe("V0 app shell", () => {
     expect(queryByText("Support Group")).toBeNull();
   });
 
-  it("shows Flare Response immediately when Send Flare is pressed", () => {
-    const { getByText, queryByText } = render(<FlareScreen />, {
+  it("surfaces signed-out guidance without competing with the primary setup CTA", () => {
+    const { getAllByText, getByText, queryByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
-    expect(queryByText("Flare Response")).toBeNull();
+    expect(
+      getAllByText(
+        "You can start setup on this device now. Sign in when you want to save it and use it across devices.",
+      ),
+    ).toHaveLength(2);
+    expect(getByText("Go to sign in")).toBeTruthy();
+    expect(queryByText("Checkpoint / Reflection")).toBeNull();
+  });
 
-    fireEvent.press(getByText("Send Flare"));
+  it("uses the documented priority order when multiple required setup items are incomplete", () => {
+    const { getByText } = render(<FlareScreen />, {
+      wrapper: TestProviders,
+    });
+
+    fireEvent.press(getByText("Continue setup"));
+
+    expect(expoRouter.__push).toHaveBeenCalledWith(
+      "/customize?focus=behavior-pattern",
+    );
+  });
+
+  it("advances the primary setup CTA to the next missing required item for partial local setup", async () => {
+    const partialBehaviorPatternRepository: BehaviorPatternRepository = {
+      loadActiveBehaviorPattern: jest
+        .fn()
+        .mockResolvedValue(configuredBehaviorPatternRecord),
+      saveBehaviorPattern: jest.fn(),
+    };
+
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{ kind: "no-session" }}
+            resolveAuthState={async () => ({ kind: "no-session" })}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider
+              behaviorPatternRepository={partialBehaviorPatternRepository}
+              authState={{
+                kind: "authenticated",
+                userEmail: "flare@example.com",
+                userId: "user-123",
+              }}
+            >
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("1 of 4 configured")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Continue setup"));
+
+    expect(expoRouter.__push).toHaveBeenCalledWith("/customize?focus=flare-plan");
+  });
+
+  it("uses the remaining required saved-support step for signed-in incomplete setup", async () => {
+    enableConfiguredFlarePlan(2);
+
+    const { getByText } = render(<FlareScreen />, {
+      wrapper({ children }) {
+        return (
+          <FlareAuthProvider
+            initialAuthState={{
+              kind: "authenticated",
+              userEmail: "flare@example.com",
+              userId: "user-123",
+            }}
+            subscribe={() => null}
+          >
+            <BehaviorPatternProvider
+              behaviorPatternRepository={configuredBehaviorPatternRepository}
+            >
+              <AnchorNoteProvider>
+                <FlareEventProvider>{children}</FlareEventProvider>
+              </AnchorNoteProvider>
+            </BehaviorPatternProvider>
+          </FlareAuthProvider>
+        );
+      },
+    });
+
+    await waitFor(() => {
+      expect(getByText("2 of 4 configured")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Continue setup"));
+
+    expect(expoRouter.__push).toHaveBeenCalledWith("/customize?focus=anchor-note");
+  });
+
+  it("navigates to Customize when a readiness card is pressed", () => {
+    const { getByLabelText, getByText } = render(<FlareScreen />, {
+      wrapper: TestProviders,
+    });
+
+    fireEvent.press(getByLabelText("Expand readiness details"));
+    fireEvent.press(getByText("Anchor Note"));
+
+    expect(expoRouter.__push).toHaveBeenCalledWith("/customize?focus=anchor-note");
+  });
+
+  it("opens the requested setup task when Customize receives a focus param", async () => {
+    expoRouter.__setSearchParams({ focus: "behavior-pattern" });
+
+    const { getByText } = render(<CustomizeScreen />, {
+      wrapper: TestProviders,
+    });
+
+    await waitFor(() => {
+      expect(getByText("Save Behavior Pattern")).toBeTruthy();
+    });
+  });
+
+  it("shows Flare Response immediately when Send Flare is pressed", async () => {
+    enableConfiguredFlarePlan();
+    mockConfiguredFlareResponse();
+
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
+    });
+
+    expect(queryByText("Flare Response")).toBeNull();
+    await waitForSendFlare(getByText);
+
+    await act(async () => {
+      fireEvent.press(getByText("Send Flare"));
+    });
 
     expect(getByText("Flare Response")).toBeTruthy();
-    expect(getByText(/status: active/i)).toBeTruthy();
+    expect(getByText("Remember why you're doing this")).toBeTruthy();
+    expect(getByText("Try one next step")).toBeTruthy();
     expect(queryByText("Current Flare Event")).toBeNull();
     expect(queryByText("You paused the pattern")).toBeNull();
     expect(
       queryByText("Your saved support words are attached to this Flare Event."),
     ).toBeNull();
-    expect(queryByText("Are you sure?")).toBeNull();
+    expect(queryByText(/status: active/i)).toBeNull();
   });
 
   it(
     "shows one guided recovery card before any Flare Plan actions are revealed",
     async () => {
+    enableConfiguredFlarePlan(2);
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -330,26 +668,10 @@ describe("V0 app shell", () => {
     });
 
     const { getByText, queryByText } = render(<FlareScreen />, {
-      wrapper({ children }) {
-        return (
-          <FlareAuthProvider
-            initialAuthState={{
-              kind: "authenticated",
-              userEmail: "flare@example.com",
-              userId: "user-123",
-            }}
-            subscribe={() => null}
-          >
-            <BehaviorPatternProvider>
-              <AnchorNoteProvider>
-                <FlareEventProvider>{children}</FlareEventProvider>
-              </AnchorNoteProvider>
-            </BehaviorPatternProvider>
-          </FlareAuthProvider>
-        );
-      },
+      wrapper: ConfiguredProviders,
     });
 
+    await waitForSendFlare(getByText);
     await act(async () => {
       fireEvent.press(getByText("Send Flare"));
     });
@@ -371,6 +693,7 @@ describe("V0 app shell", () => {
   it(
     "enters focused mode, advances one action, and hides the ordinary response chrome",
     async () => {
+    enableConfiguredFlarePlan(2);
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -520,26 +843,10 @@ describe("V0 app shell", () => {
     });
 
     const { getByText, queryByText } = render(<FlareScreen />, {
-      wrapper({ children }) {
-        return (
-          <FlareAuthProvider
-            initialAuthState={{
-              kind: "authenticated",
-              userEmail: "flare@example.com",
-              userId: "user-123",
-            }}
-            subscribe={() => null}
-          >
-            <BehaviorPatternProvider>
-              <AnchorNoteProvider>
-                <FlareEventProvider>{children}</FlareEventProvider>
-              </AnchorNoteProvider>
-            </BehaviorPatternProvider>
-          </FlareAuthProvider>
-        );
-      },
+      wrapper: ConfiguredProviders,
     });
 
+    await waitForSendFlare(getByText);
     await act(async () => {
       fireEvent.press(getByText("Send Flare"));
     });
@@ -715,6 +1022,7 @@ describe("V0 app shell", () => {
   it(
     "shows a calm sent status when Send Flare reaches the enabled support group",
     async () => {
+      enableConfiguredFlarePlan();
       jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
         flareEvent: {
           anchorNoteId: null,
@@ -750,26 +1058,10 @@ describe("V0 app shell", () => {
       });
 
       const { getByText } = render(<FlareScreen />, {
-        wrapper({ children }) {
-          return (
-            <FlareAuthProvider
-              initialAuthState={{
-                kind: "authenticated",
-                userEmail: "flare@example.com",
-                userId: "user-123",
-              }}
-              subscribe={() => null}
-            >
-              <BehaviorPatternProvider>
-                <AnchorNoteProvider>
-                  <FlareEventProvider>{children}</FlareEventProvider>
-                </AnchorNoteProvider>
-              </BehaviorPatternProvider>
-            </FlareAuthProvider>
-          );
-        },
+        wrapper: ConfiguredProviders,
       });
 
+      await waitForSendFlare(getByText);
       fireEvent.press(getByText("Send Flare"));
 
       await waitFor(() => {
@@ -784,6 +1076,7 @@ describe("V0 app shell", () => {
   );
 
   it("keeps the flare event flow working when external delivery fails safely", async () => {
+    enableConfiguredFlarePlan();
     jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
       flareEvent: {
         anchorNoteId: null,
@@ -824,27 +1117,11 @@ describe("V0 app shell", () => {
         <HistoryScreen />
       </>,
       {
-        wrapper({ children }) {
-          return (
-            <FlareAuthProvider
-              initialAuthState={{
-                kind: "authenticated",
-                userEmail: "flare@example.com",
-                userId: "user-123",
-              }}
-              subscribe={() => null}
-            >
-              <BehaviorPatternProvider>
-                <AnchorNoteProvider>
-                  <FlareEventProvider>{children}</FlareEventProvider>
-                </AnchorNoteProvider>
-              </BehaviorPatternProvider>
-            </FlareAuthProvider>
-          );
-        },
+        wrapper: ConfiguredProviders,
       },
     );
 
+    await waitForSendFlare(getByText);
     fireEvent.press(getByText("Send Flare"));
 
     await waitFor(() => {
@@ -859,12 +1136,16 @@ describe("V0 app shell", () => {
     15000,
   );
 
-  it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", () => {
-    const { getAllByText, getByText } = render(<FlareScreen />, {
-      wrapper: TestProviders,
+  it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", async () => {
+    enableConfiguredFlarePlan();
+    const { getByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
     });
 
-    fireEvent.press(getAllByText("Checkpoint / Reflection")[0]);
+    await waitFor(() => {
+      expect(getByText("Checkpoint / Reflection")).toBeTruthy();
+    });
+    fireEvent.press(getByText("Checkpoint / Reflection"));
 
     expect(getByText("No active Flare Event")).toBeTruthy();
     expect(getByText("Save Reflection")).toBeTruthy();
@@ -971,7 +1252,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("2 out of 5 configured")).toBeTruthy();
+      expect(getByText("1 of 4 configured")).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText("Expand readiness details"));
@@ -1033,7 +1314,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("1 out of 5 configured")).toBeTruthy();
+      expect(getByText("0 of 4 configured")).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText("Expand readiness details"));
@@ -1161,7 +1442,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("1 out of 5 configured")).toBeTruthy();
+      expect(getByText("0 of 4 configured")).toBeTruthy();
     });
 
     act(() => {
@@ -1169,7 +1450,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("2 out of 5 configured")).toBeTruthy();
+      expect(getByText("1 of 4 configured")).toBeTruthy();
     });
   });
 
@@ -1455,6 +1736,8 @@ describe("V0 app shell", () => {
   });
 
   it("does not expose support-message editing during the real Send Flare action", async () => {
+    enableConfiguredFlarePlan();
+    mockConfiguredFlareResponse();
     jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
       attempted_at: "2026-07-06T03:40:00Z",
       delivered_at: "2026-07-06T03:40:00Z",
@@ -1470,27 +1753,11 @@ describe("V0 app shell", () => {
     const { getByText, queryByDisplayValue, queryByText } = render(
       <FlareScreen />,
       {
-        wrapper({ children }) {
-          return (
-            <FlareAuthProvider
-              initialAuthState={{
-                kind: "authenticated",
-                userEmail: "flare@example.com",
-                userId: "user-123",
-              }}
-              subscribe={() => null}
-            >
-              <BehaviorPatternProvider>
-                <AnchorNoteProvider>
-                  <FlareEventProvider>{children}</FlareEventProvider>
-                </AnchorNoteProvider>
-              </BehaviorPatternProvider>
-            </FlareAuthProvider>
-          );
-        },
+        wrapper: ConfiguredProviders,
       },
     );
 
+    await waitForSendFlare(getByText);
     fireEvent.press(getByText("Send Flare"));
 
     await waitFor(() => {
@@ -1595,7 +1862,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 out of 5 configured")).toBeTruthy();
+    expect(getByText("0 of 4 configured")).toBeTruthy();
     fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getByText("Local-only until sign in")).toBeTruthy();
     expect(getAllByText("Ready to set up").length).toBeGreaterThanOrEqual(2);
@@ -1636,92 +1903,74 @@ describe("V0 app shell", () => {
     expect(getByText("Configured: Hold the line for ten minutes.")).toBeTruthy();
   });
 
-  it("shows saved Anchor Note immediately in Flare Response after Send Flare", () => {
-    const { getAllByText, getByLabelText, getByText, queryByText } = render(
-      <>
-        <CustomizeScreen />
-        <FlareScreen />
-      </>,
-      {
-        wrapper: TestProviders,
-      },
-    );
+  it("shows saved Anchor Note immediately in Flare Response after Send Flare", async () => {
+    enableConfiguredFlarePlan();
+    mockConfiguredFlareResponse();
+    const { getAllByText, getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
+    });
 
-    fireEvent.press(getAllByText("Anchor Note")[0]);
-    fireEvent.changeText(
-      getByLabelText("Why pause this pattern?"),
-      "I want tomorrow morning back.",
-    );
-    fireEvent.changeText(
-      getByLabelText("Reminder from grounded self"),
-      "You do not need to obey this feeling.",
-    );
-    fireEvent.changeText(
-      getByLabelText("Immediate next step"),
-      "Leave the room and drink water.",
-    );
-    fireEvent.changeText(
-      getByLabelText("Supportive phrase"),
-      "Pause now. You already chose differently.",
-    );
-    fireEvent.press(getByText("Save Anchor Note"));
-
+    await waitForSendFlare(getByText);
     fireEvent.press(getByText("Send Flare"));
 
-    expect(getByText("Flare Response")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText("Flare Response")).toBeTruthy();
+    });
     expect(queryByText("Current Flare Event")).toBeNull();
     expect(queryByText(/status: active/i)).toBeNull();
-    expect(queryByText("Pause now. You already chose differently.")).toBeNull();
-    expect(getByText("I want tomorrow morning back.")).toBeTruthy();
-    expect(queryByText("You do not need to obey this feeling.")).toBeNull();
-    expect(getByText("Leave the room and drink water.")).toBeTruthy();
+    expect(queryByText("Hold the line for ten minutes.")).toBeNull();
+    expect(getByText("I want to keep tomorrow easier.")).toBeTruthy();
+    expect(queryByText("Get up and breathe.")).toBeNull();
+    expect(getByText("Put the phone away.")).toBeTruthy();
     expect(getAllByText("Try one next step").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("creates a flare event tied to the current behavior pattern and shows it in History", () => {
-    const { getAllByText, getByLabelText, getByText } = render(
+  it("creates a flare event tied to the current behavior pattern and shows it in History", async () => {
+    enableConfiguredFlarePlan();
+    mockConfiguredFlareResponse();
+    const { getAllByText, getByText } = render(
       <>
-        <CustomizeScreen />
         <FlareScreen />
         <HistoryScreen />
       </>,
       {
-        wrapper: TestProviders,
+        wrapper: ConfiguredProviders,
       },
     );
 
-    fireEvent.press(getAllByText("Behavior Pattern")[0]);
-    fireEvent.changeText(getByLabelText("Behavior name"), "Late-night scrolling");
-    fireEvent.changeText(
-      getByLabelText("Short description"),
-      "I start checking feeds when I feel depleted.",
-    );
-    fireEvent.press(getByText("Save Behavior Pattern"));
-
+    await waitForSendFlare(getByText);
     fireEvent.press(getByText("Send Flare"));
 
-    expect(getAllByText("Flare Event").length).toBeGreaterThanOrEqual(1);
-    expect(
-      getAllByText(/Behavior Pattern: Late-night scrolling/).length,
-    ).toBeGreaterThanOrEqual(1);
-    expect(
-      getAllByText("I start checking feeds when I feel depleted.").length,
-    ).toBeGreaterThanOrEqual(1);
+    await waitFor(() => {
+      expect(getAllByText("Flare Event").length).toBeGreaterThanOrEqual(1);
+      expect(
+        getAllByText(/Behavior Pattern: Late-night scrolling/).length,
+      ).toBeGreaterThanOrEqual(1);
+      expect(
+        getAllByText("I keep reaching for my phone when I'm tired.").length,
+      ).toBeGreaterThanOrEqual(1);
+    });
   });
 
-  it("saves a checkpoint reflection for the active event and shows it in History", () => {
+  it("saves a checkpoint reflection for the active event and shows it in History", async () => {
+    enableConfiguredFlarePlan();
+    mockConfiguredFlareResponse();
     const { getAllByText, getByLabelText, getByText, queryByText } = render(
       <>
         <FlareScreen />
         <HistoryScreen />
       </>,
       {
-        wrapper: TestProviders,
+        wrapper: ConfiguredProviders,
       },
     );
 
+    await waitForSendFlare(getByText);
     fireEvent.press(getByText("Send Flare"));
-    fireEvent.press(getAllByText("Checkpoint / Reflection")[1]);
+    await waitFor(() => {
+      expect(getAllByText("Checkpoint / Reflection").length).toBeGreaterThan(0);
+    });
+    fireEvent.press(getAllByText("Checkpoint / Reflection").at(-1)!);
 
     fireEvent.changeText(
       getByLabelText("What happened?"),
@@ -1742,22 +1991,23 @@ describe("V0 app shell", () => {
     );
     fireEvent.press(getByText("Save Reflection"));
 
-    expect(queryByText("Save Reflection")).toBeNull();
-    expect(getByText("Reflection saved for this event")).toBeTruthy();
-    expect(
-      getByText(/What happened: I felt the spike right after finishing work\./),
-    ).toBeTruthy();
-    expect(
-      getByText(/What helped: I left the room and drank cold water\./),
-    ).toBeTruthy();
-    expect(
-      getByText(/How I feel now: Less flooded and more steady\./),
-    ).toBeTruthy();
-    expect(getByText(/Outcome:/i)).toBeTruthy();
-    expect(
-      getByText(/Note: The first minute was the hardest part\./),
-    ).toBeTruthy();
-    expect(getByText(/Reflected event/i)).toBeTruthy();
+    await waitFor(() => {
+      expect(queryByText("Save Reflection")).toBeNull();
+      expect(
+        getByText(/What happened: I felt the spike right after finishing work\./),
+      ).toBeTruthy();
+      expect(
+        getByText(/What helped: I left the room and drank cold water\./),
+      ).toBeTruthy();
+      expect(
+        getByText(/How I feel now: Less flooded and more steady\./),
+      ).toBeTruthy();
+      expect(getByText(/Outcome:/i)).toBeTruthy();
+      expect(
+        getByText(/Note: The first minute was the hardest part\./),
+      ).toBeTruthy();
+      expect(getByText(/Reflected event/i)).toBeTruthy();
+    });
   });
 
   it("keeps support-group guidance scoped to Customize after the flare event flow changes", () => {
@@ -1772,7 +2022,7 @@ describe("V0 app shell", () => {
       },
     );
 
-    expect(getByText("0 out of 5 configured")).toBeTruthy();
+    expect(getByText("0 of 4 configured")).toBeTruthy();
     expect(
       getByText(
         /Connect one GroupMe group for a single saved Flare support message\./,
@@ -1802,7 +2052,7 @@ describe("V0 app shell", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("0 out of 5 configured")).toBeTruthy();
+      expect(getByText("0 of 4 configured")).toBeTruthy();
     });
 
     expect(

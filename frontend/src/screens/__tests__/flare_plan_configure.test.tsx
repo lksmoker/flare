@@ -28,6 +28,14 @@ jest.mock("expo-router", () => {
   const React = require("react");
   return {
     Link: ({ children }: { children: ReactNode }) => children,
+    useLocalSearchParams() {
+      return {};
+    },
+    useRouter() {
+      return {
+        push: jest.fn(),
+      };
+    },
     useFocusEffect(effect: () => void | (() => void)) {
       React.useEffect(() => effect(), [effect]);
     },
@@ -424,7 +432,7 @@ describe("Flare Plan Configure screen", () => {
     );
 
     await waitFor(() => {
-      expect(getByText("1 out of 5 configured")).toBeTruthy();
+      expect(getByText("0 of 4 configured")).toBeTruthy();
     });
 
     await act(async () => {
@@ -459,7 +467,7 @@ describe("Flare Plan Configure screen", () => {
 
     fireEvent.press(getAllByText("Close")[0]);
     await waitFor(() => {
-      expect(getByText("2 out of 5 configured")).toBeTruthy();
+      expect(getByText("1 of 4 configured")).toBeTruthy();
     });
     fireEvent.press(getByLabelText("Expand readiness details"));
     expect(getByText("Configured: 1 of 10 actions")).toBeTruthy();
@@ -584,7 +592,7 @@ describe("Flare Plan Configure screen", () => {
 
     fireEvent.press(getAllByText("Close")[0]);
     await waitFor(() => {
-      expect(getByText("1 out of 5 configured")).toBeTruthy();
+      expect(getByText("0 of 4 configured")).toBeTruthy();
     });
   });
 
@@ -732,7 +740,7 @@ describe("Flare Plan Configure screen", () => {
     });
 
     await waitFor(() => {
-      expect(getByText("2 out of 5 configured")).toBeTruthy();
+      expect(getByText("1 of 4 configured")).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText("Expand readiness details"));
