@@ -85,6 +85,30 @@ Each stage must have one clear purpose and one primary action.
 
 ## Design Principles
 
+### Support first, personalization second
+
+A user must be able to initiate a Flare and receive an immediate recovery experience without creating an account or signing in.
+
+Authentication exists to enable personalization, persistence, synchronization, and history. It must not gate access to the core recovery flow.
+
+When no authenticated personalized configuration is available:
+
+- the user may still send a Flare
+- the user must still be able to enter the Flare Response experience
+- the user must receive a functional built-in default Flare Plan
+- unavailable personalized content should be omitted cleanly rather than blocking recovery
+- the interface should explain that signing in enables customization without suggesting that support itself is unavailable
+
+Authentication may be required to:
+
+- create or modify a personal Flare Plan
+- configure persistent support-channel settings
+- save personal Recovery Memory content
+- view account-linked history
+- synchronize configuration across devices
+
+The experience should degrade from personalized support to default support, never from support to no support.
+
 ### Design for a craving state
 
 Every element must justify the attention it requires.
