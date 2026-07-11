@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
@@ -58,7 +58,6 @@ function trimCopy(value: string | null | undefined) {
 
 export function FlareResponse({
   externalSupportState = null,
-  flareEvent: _flareEvent,
   isMutationPending = false,
   mutationError = null,
   onBeginPlan,
@@ -499,3 +498,4 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
+
