@@ -106,7 +106,7 @@ export class FlarePlanApiError extends Error {
 function readDefaultRuntimeEnv(): RuntimeEnv {
   return {
     [PUBLIC_FLARE_API_BASE_URL_ENV_NAME]:
-      process.env[PUBLIC_FLARE_API_BASE_URL_ENV_NAME],
+      process.env.EXPO_PUBLIC_FLARE_API_BASE_URL,
   };
 }
 
