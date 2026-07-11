@@ -43,9 +43,14 @@ Set-Location $RepoRoot
 
 Import-DotEnvFile -Path $EnvFile
 
-# Runtime values for Tailscale validation.
-$env:FLARE_ALLOWED_FRONTEND_ORIGINS = $FrontendOrigin.TrimEnd("/")
-$env:FLARE_PUBLIC_BACKEND_BASE_URL = $BackendBaseUrl.TrimEnd("/")
+# Prefer values loaded from the env file; use parameters only as fallbacks.
+if (-not $env:FLARE_ALLOWED_FRONTEND_ORIGINS) {
+  $env:FLARE_ALLOWED_FRONTEND_ORIGINS = $FrontendOrigin.TrimEnd("/")
+}
+
+if (-not $env:FLARE_PUBLIC_BACKEND_BASE_URL) {
+  $env:FLARE_PUBLIC_BACKEND_BASE_URL = $BackendBaseUrl.TrimEnd("/")
+}
 
 # Compatibility aliases in case the shared env file uses older names.
 if (-not $env:GROUPME_OAUTH_CLIENT_ID -and $env:GROUPME_CLIENT_ID) {
@@ -65,3 +70,5 @@ Write-Host "Invoke-WebRequest $env:FLARE_PUBLIC_BACKEND_BASE_URL/api/health"
 Write-Host ""
 
 python -m backend.app.http.server --host $HostName --port $Port
+
+
