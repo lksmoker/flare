@@ -1,64 +1,15 @@
-name: Deploy Flare to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: flare-pages
-  cancel-in-progress: true
-
-jobs:
-  build:
-    environment:
-      name: github-pages
-
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: frontend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Test
-        run: npm run test
-
       - name: Verify public env presence
         run: |
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_URL"
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY"
           test -n "$EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL"
+          test -n "$EXPO_PUBLIC_FLARE_API_BASE_URL"
           echo "Flare public env vars are present"
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
           EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
+          EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
 
       - name: Export web build
         run: npx expo export --platform web
@@ -66,21 +17,4 @@ jobs:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
           EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: frontend/dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
