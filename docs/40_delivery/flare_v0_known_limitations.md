@@ -6,7 +6,7 @@
 
 - Flare does not provide therapy, medical treatment, crisis care, emergency response, monitoring, or supporter outreach.
 - Flare does not guarantee behavior change, relapse prevention, or clinical outcomes.
-- `Telegram Support` is visible as future direction only and does not send messages in V0.
+- `Support Group` is backed by the current GroupMe integration, is optional, supports one destination at a time, and should be tested before anyone relies on it.
 
 ## Functional limitations
 
@@ -14,7 +14,7 @@
 - `Checkpoint / Reflection` is intentionally short-form and does not provide deeper journaling, scoring, or analysis.
 - `History` supports search, archive, and restore, but not export, bulk actions, or advanced filtering.
 - V0 does not yet provide self-serve hard delete, account-wide data deletion, or user data export.
-- There are no push notifications, SMS alerts, supporter notifications, or scheduled interventions.
+- There are no push notifications, SMS alerts, reply monitoring, escalation flows, or scheduled interventions.
 
 ## Deployment limitations
 
@@ -32,5 +32,5 @@
 - Complete the production deployment checklist and operator review before broader rollout.
 - Confirm final legal/privacy copy for the production surface that hosts V0.
 - Decide and contract the first deletion/export path before promising stronger data-control guarantees.
-- Define the V1 support-network workstream separately from V0 recovery persistence before adding Telegram, support-contact, or support-group data.
+- Define later support-network work separately from the current V0 recovery and GroupMe-backed support-group scope before adding supporter accounts, broader provider coverage, or escalation behavior.
 - Add release-hardening checks for deployment assets and console-noise cleanup if broader launch confidence is required.

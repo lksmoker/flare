@@ -159,7 +159,7 @@ The `Flare` screen may show lightweight readiness indicators such as:
 
 * Behavior Pattern configured
 * Anchor Note configured
-* Telegram Support not active / coming later
+* Support Group optional / connect when ready
 
 These indicators should be small and supportive. They should not clutter the urgent action surface.
 
@@ -179,7 +179,7 @@ The `Flare` screen does not own:
 * long setup forms
 * detailed history browsing
 * analytics or trends
-* Telegram configuration
+* support-group configuration
 * account or profile management
 * dense settings
 
@@ -206,7 +206,7 @@ Flare Response owns:
 Flare Response does not own:
 
 * editing the full Anchor Note
-* configuring Telegram support
+* configuring the external support channel
 * historical analysis
 * long-form journaling by default
 * account management
@@ -244,7 +244,7 @@ Checkpoint / Reflection does not own:
 * primary emergency interruption
 * Anchor Note setup
 * Behavior Pattern setup
-* Telegram setup
+* support-group setup
 * trend analysis in V0
 
 ### V0 Reflection Shape
@@ -319,7 +319,7 @@ Customize owns:
 
 * Behavior Pattern Setup
 * Anchor Note Setup
-* Telegram Support visibility for future support configuration
+* Support Group configuration
 * lightweight status for setup completeness
 
 ### Customize Non-Responsibilities
@@ -355,7 +355,7 @@ Behavior Pattern Setup does not own:
 * active flare response
 * Anchor Note content
 * checkpoint/reflection
-* Telegram setup
+* support-group setup
 * history review
 
 ### V0 Behavior Pattern Fields
@@ -396,7 +396,7 @@ Anchor Note Setup does not own:
 * behavior pattern definition
 * checkpoint/reflection
 * history browsing
-* Telegram setup
+* support-group setup
 
 ### Anchor Note Design Principles
 
@@ -409,40 +409,42 @@ Anchor Note Setup does not own:
 
 ---
 
-## Telegram Support Setup
+## Support Group Setup
 
-Telegram Support should be visible in `Customize`, but it should not be active V0 product behavior.
+Support Group setup should be visible in `Customize` as an optional V0 capability backed by the current external support channel implementation.
 
 ### V0 Treatment
 
-Telegram Support should be presented as:
+Support Group setup should be presented as:
 
 ```text
-Coming in V1
+Optional
 ```
 
-or equivalent future-scoped language.
+with clear language that the current provider is GroupMe and that users should send a test before relying on it.
 
-### Telegram Support Responsibilities
+### Support Group Responsibilities
 
-In V0, Telegram Support only owns:
+In V0, Support Group setup owns:
 
-* communicating future product direction
-* showing that support channels are part of the broader roadmap
-* avoiding surprise when support features appear later
+* connecting the supported provider
+* choosing one existing support group
+* confirming one predefined message
+* sending a clearly marked test message
+* enabling, disabling, reconnecting, or replacing the configured channel where supported
 
-### Telegram Support Non-Responsibilities
+### Support Group Non-Responsibilities
 
-In V0, Telegram Support does not own:
+In V0, Support Group setup does not own:
 
-* real Telegram authentication
-* bot setup
-* group connection
-* support contact configuration
-* outbound messages
-* support escalation
+* supporter accounts
+* reply monitoring
+* acknowledgement tracking
+* escalation
+* emergency dispatch
+* in-app group messaging
 
-This feature should not expand V0 scope.
+This feature remains optional and should not expand into supporter workflows during V0.
 
 ---
 
@@ -455,7 +457,7 @@ V0 should prefer modals or sheets for secondary flows.
 * Checkpoint / Reflection
 * Behavior Pattern Setup
 * Anchor Note Setup
-* Telegram Support preview
+* Support Group setup
 
 ### Modal / Sheet Principles
 
@@ -486,7 +488,7 @@ First-run should help the user understand:
 First-run should not:
 
 * become a long onboarding wizard
-* require Telegram setup
+* require support-group setup
 * block all use until every field is complete
 * overwhelm the user with analytics or settings
 
@@ -510,8 +512,7 @@ V0 app structure does not include:
 
 * full authentication flow
 * production account/profile management
-* real Telegram integration
-* support group setup
+* additional provider integrations beyond the current support-group implementation
 * advanced analytics
 * trend dashboards
 * clinical scoring
@@ -589,10 +590,10 @@ The V0 app structure is aligned with this contract when:
 * Checkpoint / Reflection is secondary and likely modal/sheet-based
 * Behavior Pattern Setup lives under `Customize`
 * Anchor Note Setup lives under `Customize`
-* Telegram Support is visible but future-scoped for V1
+* Support Group setup is visible as an optional GroupMe-backed V0 capability
 * History starts as a simple list of past events and reflections
 * setup flows do not compete with the urgent Flare action
-* V0 avoids auth, real Telegram behavior, and analytics-heavy history
+* V0 avoids supporter workflows, escalation behavior, and analytics-heavy history
 
 ---
 
