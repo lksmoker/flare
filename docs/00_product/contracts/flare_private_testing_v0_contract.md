@@ -6,18 +6,25 @@ Implementation-ready product contract.
 
 Purpose
 
-Flare Private Testing V0 defines the conditions under which Flare may be made available to its first bounded cohort of approximately three to five invited testers.
+Flare Private Testing V0 defines the conditions under which Flare may be made available to its first bounded cohort of approximately three to five invited participants.
+
+The cohort is also the first practical exercise of Flare's Release Operations and Learning model. It must validate not only the application, but also the lightweight human workflows used to launch, support, investigate, learn from, and improve a live release.
 
 This contract governs:
 
 * What the private test includes.
 * Who may participate.
-* How testers receive access and configure Flare.
-* What testers should expect from the application and from the developer.
+* How participants receive access and configure Flare.
+* What participants should expect from the application and from the developer.
 * What safety, privacy, operational, and product boundaries apply.
+* How product, experience, and operational evidence is gathered and interpreted.
+* How validated findings become decisions, durable knowledge, and governed work.
 * When the private test may begin, pause, resume, conclude, or expand.
+* How the cohort should improve future Flare releases and reusable application-release practices.
 
 This contract does not redefine the underlying Flare Plan, Flare response experience, authentication, or External Support Channel contracts. Those documents remain authoritative for their respective product areas.
+
+The private-cohort operating tools are intentionally provisional. The operational concepts and responsibilities defined here should remain useful even if their implementation later moves from Google Workspace into Flare, Toolbox, Exoskeleton, or another governed system.
 
 Product Intent
 
@@ -37,6 +44,228 @@ The test should validate whether a user can:
 10. Report problems and feedback through a known support path.
 
 The first private cohort is not intended to prove broad market demand, clinical effectiveness, crisis-response effectiveness, or production-scale reliability.
+
+The cohort may gather structured feedback from counselors, therapists, social workers, peer-support specialists, or other relevant professional reviewers. Such review is advisory product and experience evaluation. It is not clinical validation, research approval, treatment testing, or authorization to make health-outcome claims.
+
+Release Operations and Learning Context
+
+The Private Test Operator Package must be lightweight enough for one developer to operate with approximately three to five invited participants while being structured around concepts that can evolve into longer-term release and support operations.
+
+The package is both:
+
+* A practical operating environment for the first Flare cohort.
+* A learning environment for improving Flare's product-development, release, support, investigation, and validation systems.
+
+The objective is not to build public-scale operations in advance. The objective is to establish a clear operating model, exercise it with real participants, identify what is useful or missing, and preserve the lessons that should shape subsequent releases.
+
+Guiding Principles
+
+Human-Centered Operations
+
+* The first cohort should be managed through direct, respectful relationships.
+* Participants are people helping shape the product, not an anonymous source of telemetry.
+* Conversations, observations, and professional judgment may provide more useful evidence than aggregate analytics at this scale.
+* Operational structure must support human contact rather than replace it.
+
+Lightweight but Structured
+
+* Every operational artifact must have a defined purpose and owner.
+* The package must avoid dashboards, analytics pipelines, enterprise observability, and automation that are unnecessary for the bounded cohort.
+* A manual process is acceptable when it is clear, safe, repeatable, and realistically manageable by one operator.
+* Information must not be collected merely because it might someday be interesting.
+
+Design for Evolution
+
+* Durable operational concepts should be separated from their temporary implementation.
+* Participant, feedback, observation, investigation, decision, learning, work-item, and release-readiness concepts should remain understandable if the supporting tools change.
+* The initial implementation may use Google Workspace without committing Flare to Google Workspace as its permanent operations platform.
+* Temporary cohort procedures must be distinguishable from practices intended to survive into public release.
+
+Evidence Before Tooling
+
+* Existing Flare records must be evaluated before adding new telemetry.
+* A new operational record or automation must answer a stated operator question or learning objective.
+* Trace V0 must not be implemented solely because tracing is generally useful.
+* New observability must be justified by demonstrated investigation ambiguity, delay, repeated manual correlation, or missing evidence.
+
+Learning Is a Deliverable
+
+* The cohort must improve both Flare and the system used to build and operate Flare.
+* Significant observations must be interpreted rather than merely accumulated.
+* Validated findings should become an explicit decision, contract update, operating change, release criterion, Toolbox work item, or documented decision not to act.
+* Lessons applicable beyond Flare should be identified for future application-release processes.
+
+Validation Tracks
+
+The first cohort operates through three related but distinct validation tracks.
+
+Product Validation
+
+Product validation asks whether the software works as represented.
+
+It includes:
+
+* Authentication and account access.
+* Configuration and persistence.
+* Flare creation.
+* Flare Plan behavior.
+* GroupMe connection and delivery reporting.
+* Reliability, defects, errors, and recovery.
+* Interface comprehension and usability.
+
+Experience Validation
+
+Experience validation asks whether Flare is understandable, supportive, trustworthy, and potentially useful in the state for which it is intended.
+
+It includes:
+
+* Whether participants understand Flare's purpose.
+* Whether the experience supports clarity rather than increasing confusion.
+* Whether wording, pacing, and interaction demands feel appropriate.
+* Whether any language creates unintended shame, pressure, alarm, or false reassurance.
+* Whether participants hesitate, disengage, or lose trust at meaningful points.
+* Whether the local plan and external-support concepts feel useful in realistic scenarios.
+* Feedback from participants using Flare and advisory review from relevant professionals.
+
+Experience validation must not be described as clinical testing or proof of therapeutic effectiveness.
+
+Operations Validation
+
+Operations validation asks whether one operator can responsibly launch, support, investigate, learn from, pause, resume, and close the cohort.
+
+It includes:
+
+* Participant onboarding and status tracking.
+* Support intake and follow-up.
+* Issue classification and prioritization.
+* Correlation of user reports with existing Flare records.
+* Incident communication.
+* Release-readiness decisions.
+* Operator burden and information needs.
+* Movement of validated findings into durable documentation and Toolbox work.
+* Identification of procedures that should be retained, changed, automated, or retired before the next release stage.
+
+Operating-System Responsibilities
+
+The first-cohort operating model assigns distinct responsibilities to existing systems.
+
+GitHub Documentation
+
+GitHub is the authoritative home for durable knowledge, including:
+
+* Product contracts.
+* Design and safety boundaries.
+* Operator procedures and runbooks.
+* Release and validation guidance.
+* Decision checkpoints.
+* Synthesized cohort findings.
+* Reusable release-process lessons.
+
+Raw day-to-day participant tracking and informal notes should not be copied into GitHub merely for preservation.
+
+Google Workspace
+
+Google Workspace is the live operator layer for the cohort.
+
+It may contain:
+
+* Participant roster and onboarding state.
+* Setup and first-session checklists.
+* Structured feedback intake.
+* Professional-review intake.
+* Issue and investigation tracking.
+* Observation and learning logs.
+* Release-readiness checklists.
+* Active follow-up actions.
+
+The Google Workspace implementation must avoid collecting unnecessary sensitive information and must remain manageable by one operator.
+
+Flare Operational Data
+
+Flare remains authoritative for application behavior and account-owned application state, including:
+
+* Flare event records.
+* Flare Plan and plan-run records.
+* Action outcomes.
+* External-support configuration.
+* GroupMe delivery-attempt records.
+* Health endpoint output.
+* Existing operational logs.
+
+The operator package must not duplicate application records manually when a reference, timestamp, identifier, or investigation note is sufficient.
+
+Toolbox
+
+Toolbox is the planning and work-intake layer.
+
+Validated findings may become:
+
+* Work items.
+* Sprint candidates.
+* Prioritized defects.
+* Product or design follow-up.
+* Operational-improvement work.
+* Documentation work.
+
+Raw feedback should not become a Toolbox work item before it has been interpreted sufficiently to define actionable work.
+
+Exoskeleton
+
+Exoskeleton is the future governed execution environment for approved work.
+
+The private cohort does not require new Exoskeleton capability, but its findings should be structured so approved work can later enter governed execution without reconstructing the original evidence and decision.
+
+Operator Learning Loop
+
+The cohort must support the following loop:
+
+1. Operate the current release.
+2. Observe participant, product, and operational behavior.
+3. Capture the minimum evidence needed to understand the observation.
+4. Interpret whether the observation represents a defect, usability issue, experience concern, feature request, operational gap, or isolated preference.
+5. Decide whether to act, investigate further, defer, accept, or explicitly decline.
+6. Convert approved action into the appropriate durable artifact or Toolbox work item.
+7. Validate the resulting change.
+8. Review what the incident or feedback revealed about the operating process itself.
+
+The active operator layer should maintain a lightweight Learning Log that distinguishes at least:
+
+* Product learning.
+* UX learning.
+* Experience or emotional-safety learning.
+* Technical learning.
+* Support learning.
+* Operations learning.
+* Release-process learning.
+* Research or feedback-method learning.
+
+A learning record should state what was observed, how it was interpreted, what decision or experiment followed, and whether it applies only to the current cohort, to future Flare releases, or to reusable application-release practice.
+
+Observability and Trace Decision
+
+Before the first participant is invited, the operator package must document the operational information already available through Flare's current records, health endpoint, and logs.
+
+The observability audit must identify:
+
+* Which operator questions can already be answered.
+* Which records or logs answer each question.
+* Which investigations require correlation across multiple records.
+* Which important questions cannot currently be answered.
+* Which information would be useful but is not necessary for the first cohort.
+* What privacy or access boundaries apply to operator investigation.
+
+During the cohort, investigations should record when practical:
+
+* The participant report or triggering observation.
+* Approximate event time.
+* Records consulted.
+* Whether a definitive explanation was found.
+* Information that was missing or ambiguous.
+* Whether the investigation was materially delayed by manual correlation.
+
+A lightweight Trace V0 is justified only when this evidence demonstrates a recurring need to reconstruct a Flare chronologically and existing records do not support that task clearly enough.
+
+If justified, Trace V0 should provide the smallest useful chronological view of one Flare lifecycle by referencing or composing existing events. It must not introduce production-scale metrics, distributed tracing, analytics infrastructure, alerting platforms, or broad behavioral surveillance.
 
 Cohort Boundary
 
@@ -689,8 +918,18 @@ The private test should collect evidence about:
 * Which known limitations materially interfere with real use.
 * Whether any privacy or ownership concern arises.
 * Whether the product remains operationally manageable for the developer.
+* Whether participants experience Flare as clear, supportive, and trustworthy.
+* Whether wording or interaction creates unintended pressure, shame, confusion, alarm, or false reassurance.
+* Whether professional reviewers identify experience, safety, framing, or boundary concerns.
+* Whether existing operational records answer real support questions efficiently.
+* Whether investigation friction justifies a lightweight Trace V0.
+* Whether the Google Workspace operator layer captures useful evidence without creating unnecessary burden.
+* Whether validated findings move cleanly from observation to decision to durable knowledge or Toolbox work.
+* Which operating practices should survive into the next release stage.
+* Which procedures were only appropriate for the first bounded cohort.
+* Which lessons should inform future application-release practices.
 
-Anecdotal positive feedback alone is not sufficient evidence to expand access.
+Anecdotal positive feedback alone is not sufficient evidence to expand access. Aggregate counts alone are also insufficient at this cohort size; decisions should consider the underlying experiences, context, operational evidence, and unresolved risk.
 
 Exit Criteria for Completing the First Cohort
 
@@ -704,7 +943,11 @@ The first-cohort phase may be considered complete when:
 * All privacy, ownership, misdelivery, duplicate-send, and emergency-boundary concerns have been resolved or have a documented decision.
 * The developer has reviewed support burden and operational stability.
 * Known limitations have been updated to match observed behavior.
-* There is a written cohort outcome covering what worked, what failed, what changed, and what remains uncertain.
+* There is a written Flare Private Cohort Findings report covering functionality, usability, experience, helpfulness, trust, professional-review findings, what changed, and what remains uncertain.
+* There is a written Release Operations Learning Review covering operator needs, useful and missing information, investigation friction, support burden, effective and ineffective intake methods, practices to retain or retire, and changes required before the next release stage.
+* The active Learning Log has been reviewed and durable findings have been transferred to the appropriate contract, checkpoint, delivery guidance, or Toolbox work item.
+* Temporary cohort procedures have been distinguished from durable release-operation practices.
+* An explicit decision has been made about whether Trace V0 is unnecessary, deferred, or justified by observed investigation evidence.
 * The next decision is explicitly one of:
     * Continue the same cohort.
     * Run another bounded private cohort.
@@ -769,15 +1012,26 @@ This contract is implemented when:
 * A private-test known-limitations document or section exists and can be updated independently of this durable contract.
 * A first-cohort entry checklist exists.
 * A launch roster and onboarding status can be tracked outside the ordinary application UI.
+* The Google Workspace operator package has defined structures for participants, feedback, issues or investigations, observations or learning, and release readiness.
+* Participant and professional-review feedback can be distinguished without representing professional review as clinical approval.
+* Existing operational data sources and their supported operator questions are documented.
+* Investigation friction can be recorded before a Trace implementation decision is made.
+* A validated finding has a defined path into a decision, durable documentation, or Toolbox work item.
 * A pause, rollback, and resume checklist exists.
 * A private-test smoke-test procedure validates the actual deployed environment.
-* Each invited tester receives the required information before relying on Flare.
-* The developer can make and record an explicit go, pause, rollback, resume, or expand decision.
+* Each invited participant receives the required information before relying on Flare.
+* The developer can make and record an explicit go, pause, rollback, resume, close, or expand decision.
+* The cohort closeout requires both a Flare Private Cohort Findings report and a Release Operations Learning Review.
+* The operator package remains usable by one operator without requiring an in-app administration dashboard or enterprise operations tooling.
 
 Governing Principle
 
-The first private test should be deliberately small, honest, and reversible.
+The first private test should be deliberately small, human-centered, honest, structured, and reversible.
 
-Flare should enter the cohort only when it can clearly communicate what it does, accurately report what happened, protect each tester’s account-owned information, and fail without pretending that support was delivered.
+Flare should enter the cohort only when it can clearly communicate what it does, accurately report what happened, protect each participant's account-owned information, and fail without pretending that support was delivered.
 
-The private test is successful when it produces trustworthy product and operational learning without asking testers to assume capabilities or protections Flare does not provide.
+The operator package should support the immediate cohort while establishing durable operational concepts that can evolve into Flare's longer-term release and support model without prematurely building for public scale.
+
+The private test is successful when it produces trustworthy product, experience, operational, and release-process learning; converts validated learning into clear decisions and governed work; and does not ask participants to assume capabilities, protections, or clinical authority Flare does not provide.
+
+Flare is developed through an evolving system of contracts, workflows, tools, validation practices, and learning loops. This cohort should strengthen not only the application, but also the system by which Flare and future applications are designed, built, released, operated, and improved.
