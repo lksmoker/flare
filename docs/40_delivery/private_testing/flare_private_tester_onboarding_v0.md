@@ -97,7 +97,7 @@ If you do want to test GroupMe:
 5. Review the saved message preview.
 6. Save the support group.
 
-Read the dedicated GroupMe guide in [flare_private_testing_groupme_test_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_groupme_test_guide_v0.md) before sending a test Flare.
+Read the dedicated GroupMe guide in [flare_private_testing_groupme_test_guide_v0.md](./flare_private_testing_groupme_test_guide_v0.md) before sending a test Flare.
 
 ## Sending A Test Flare
 
@@ -141,7 +141,7 @@ It does not prove:
 
 If GroupMe delivery reports failure or blocked delivery, treat that as a real problem. The local Flare event may still exist, but the external message did not successfully go through.
 
-Report failed or confusing delivery behavior using the support guide in [flare_private_testing_support_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_support_guide_v0.md).
+Report failed or confusing delivery behavior using the support guide in [flare_private_testing_support_guide_v0.md](./flare_private_testing_support_guide_v0.md).
 
 ## Where To Find History And Settings
 
@@ -164,11 +164,11 @@ If you may be in immediate danger or need urgent help, contact local emergency s
 
 ## Current Limitations
 
-Current limitations are summarized in [flare_private_testing_known_limitations_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_known_limitations_v0.md). Read that document before relying on any private-test behavior.
+Current limitations are summarized in [flare_private_testing_known_limitations_v0.md](./flare_private_testing_known_limitations_v0.md). Read that document before relying on any private-test behavior.
 
 ## Leaving The Test
 
-Participation is voluntary. You may stop at any time. See [flare_private_testing_exit_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_exit_guide_v0.md) if you want to leave the test, remove access, or ask for help with your private-test data.
+Participation is voluntary. You may stop at any time. See [flare_private_testing_exit_guide_v0.md](./flare_private_testing_exit_guide_v0.md) if you want to leave the test, remove access, or ask for help with your private-test data.
 
 ## Support Contact
 

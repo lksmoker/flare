@@ -104,7 +104,7 @@ Do not send:
 
 ## Leaving The Test
 
-You can also use `[SUPPORT EMAIL OR CHANNEL]` to request access removal or help with private-test data. See [flare_private_testing_exit_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_exit_guide_v0.md).
+You can also use `[SUPPORT EMAIL OR CHANNEL]` to request access removal or help with private-test data. See [flare_private_testing_exit_guide_v0.md](./flare_private_testing_exit_guide_v0.md).
 
 ## Copyable Defect Template
 

@@ -31,7 +31,7 @@
 
 ## What Success Proves
 
-Success only proves that Flare appears to have delivered the predefined test message to the selected GroupMe group.
+Success only proves that Flare believes GroupMe accepted the predefined test message for the selected GroupMe group.
 
 ## What Success Does Not Prove
 

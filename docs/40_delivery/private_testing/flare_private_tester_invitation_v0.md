@@ -22,6 +22,6 @@ If you want to participate:
 
 1. Open `[PRIVATE TEST URL]`.
 2. Sign in or create access using `[APPROVED TESTER EMAIL]`.
-3. Follow the onboarding guide in [flare_private_tester_onboarding_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_tester_onboarding_v0.md).
+3. Follow the onboarding guide in [flare_private_tester_onboarding_v0.md](./flare_private_tester_onboarding_v0.md).
 
 If you have questions or want help at any point, contact `[SUPPORT EMAIL OR CHANNEL]`. Expected response window: `[EXPECTED RESPONSE WINDOW]`.

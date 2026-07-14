@@ -1,6 +1,6 @@
 # Flare Private Testing Delivery Package
 
-This folder contains the tester-facing documentation package for the first invitation-only private cohort described by [flare_private_testing_v0_contract.md](/C:/dev/Flare/docs/00_product/contracts/flare_private_testing_v0_contract.md).
+This folder contains the tester-facing documentation package for the first invitation-only private cohort described by [flare_private_testing_v0_contract.md](../../00_product/contracts/flare_private_testing_v0_contract.md).
 
 These files translate the governing contract into concise tester-facing materials. They do not replace the product contract, operations runbooks, or later live-validation records.
 
@@ -19,15 +19,15 @@ Also confirm that the known limitations in this package still match the currentl
 
 ## Files
 
-- [flare_private_tester_invitation_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_tester_invitation_v0.md)
-- [flare_private_tester_onboarding_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_tester_onboarding_v0.md)
-- [flare_private_testing_privacy_summary_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_privacy_summary_v0.md)
-- [flare_private_testing_known_limitations_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_known_limitations_v0.md)
-- [flare_private_testing_support_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_support_guide_v0.md)
-- [flare_private_testing_groupme_test_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_groupme_test_guide_v0.md)
-- [flare_private_testing_emergency_boundary_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_emergency_boundary_v0.md)
-- [flare_private_testing_exit_guide_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_exit_guide_v0.md)
-- [flare_private_testing_readiness_audit_v0.md](/C:/dev/Flare/docs/40_delivery/private_testing/flare_private_testing_readiness_audit_v0.md)
+- [flare_private_tester_invitation_v0.md](./flare_private_tester_invitation_v0.md)
+- [flare_private_tester_onboarding_v0.md](./flare_private_tester_onboarding_v0.md)
+- [flare_private_testing_privacy_summary_v0.md](./flare_private_testing_privacy_summary_v0.md)
+- [flare_private_testing_known_limitations_v0.md](./flare_private_testing_known_limitations_v0.md)
+- [flare_private_testing_support_guide_v0.md](./flare_private_testing_support_guide_v0.md)
+- [flare_private_testing_groupme_test_guide_v0.md](./flare_private_testing_groupme_test_guide_v0.md)
+- [flare_private_testing_emergency_boundary_v0.md](./flare_private_testing_emergency_boundary_v0.md)
+- [flare_private_testing_exit_guide_v0.md](./flare_private_testing_exit_guide_v0.md)
+- [flare_private_testing_readiness_audit_v0.md](./flare_private_testing_readiness_audit_v0.md)
 
 ## Safe To Send Directly To Testers
 
