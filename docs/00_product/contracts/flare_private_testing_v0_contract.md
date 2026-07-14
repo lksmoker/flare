@@ -26,6 +26,10 @@ This contract does not redefine the underlying Flare Plan, Flare response experi
 
 The private-cohort operating tools are intentionally provisional. The operational concepts and responsibilities defined here should remain useful even if their implementation later moves from Google Workspace into Flare, Toolbox, Exoskeleton, or another governed system.
 
+Terminology
+
+This contract generally uses participant for a person invited into the cohort. Tester may still be used when referring specifically to software-testing activity, existing tester-facing document names, established private-testing procedures, or technical validation roles.
+
 Product Intent
 
 The private test exists to determine whether Flare’s current V0 experience is understandable, reliable, and useful in realistic but controlled use.
@@ -115,7 +119,7 @@ It includes:
 
 Experience Validation
 
-Experience validation asks whether Flare is understandable, supportive, trustworthy, and potentially useful in the state for which it is intended.
+Experience validation asks whether Flare is understandable, supportive, trustworthy, and meaningfully helpful in the situations for which it is intended.
 
 It includes:
 
