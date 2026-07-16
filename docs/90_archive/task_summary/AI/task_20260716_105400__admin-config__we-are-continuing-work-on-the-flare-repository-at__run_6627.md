@@ -30,7 +30,7 @@
 - remaining gaps:
   - No live database inspection was performed; schema verification is based on migrations, repository code, and repository tests only.
   - No live provider send was performed by design.
-  - Draft PR creation still depends on GitHub CLI authentication and push permissions at execution time.
+  - `gh pr create --draft` failed with `GraphQL: Resource not accessible by personal access token (repository.defaultBranchRef)`, so the branch was pushed but the draft PR could not be created programmatically in this environment.
 - final assessment: The run stayed within the requested audit-only boundary, changed only documentation artifacts, and produced an implementation-grounded assessment that supports a narrow `Build Minimal Trace V0` recommendation rather than speculative instrumentation work.
 
 ## Learning Candidates
