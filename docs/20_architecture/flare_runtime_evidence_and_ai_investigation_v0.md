@@ -150,6 +150,19 @@ For each scenario, the operator identifies available evidence, determines the mo
 
 Current Evidence Inventory
 
+| Lifecycle Stage | Evidence | Current Source |
+|---|---|---|
+| Flare initiated | Flare event | Runtime |
+| Authentication | Backend authentication state | Runtime |
+| Support provider selection | Provider configuration | Runtime |
+| Support delivery | Delivery attempt and provider response | Runtime |
+| Flare Plan generation | Flare Plan run | Runtime |
+| Plan execution | Action completion records | Runtime |
+| Reflection | Checkpoint completion | Runtime |
+| Participant feedback | Signal or optional Form | Google Workspace |
+| Operator assessment | Operations Records workbook | Google Workspace |
+| Durable product learning | Contracts, checkpoints, architecture, and decisions | GitHub |
+
 Observability Philosophy
 
 Flare intentionally distinguishes between runtime evidence and observability tooling.
