@@ -183,6 +183,14 @@ Focused verification approach:
 - Verified tests that prove lifecycle behavior, persistence, and delivery-attempt recording.
 - Treated missing durable logs, crash records, and export surfaces as absence unless concrete implementation was found.
 
+Validation evidence gathered during the audit:
+
+- Ran backend `unittest` suites covering flare-plan lifecycle, support-channel delivery persistence, API behavior, and health/error-route behavior:
+  - `python -m unittest backend.tests.test_flare_plan_run_v0 backend.tests.test_support_channel_sender backend.tests.test_support_channel_http_app backend.tests.test_support_channels_api`
+- Ran frontend Jest suites covering persisted flare-event mapping, checkpoint-reflection mapping, auth state handling, history retrieval, and persistence-context behavior:
+  - `npm test -- --runTestsByPath src/services/__tests__/flareEventRepository.test.ts src/services/__tests__/checkpointReflectionRepository.test.ts src/services/__tests__/flareSupabaseAuth.test.ts src/screens/__tests__/history_screen.test.tsx src/state/__tests__/flareEventPersistenceContext.test.tsx`
+- Attempted `python -m pytest ...`, but `pytest` is not installed in the active interpreter in this workspace. The relevant backend suites are `unittest`-compatible and were run successfully through `python -m unittest`.
+
 ## Verified Runtime Evidence Inventory
 
 | Lifecycle Stage | Evidence | Implementation Location | Persistence | Correlation Fields | Retrieval Method | Status | Operator Questions Answered | Gaps |
@@ -192,7 +200,7 @@ Focused verification approach:
 | Flare response retrieval | Canonical response read model combining event, latest support delivery, and run | `backend/app/db/flare_plan_repository.py::read_flare_response`, `frontend/src/services/flareResponseApi.ts` | Derived read, not separately persisted | `flare_event.id`, latest delivery `flare_event_id`, run `flare_event_id` | `GET /api/flare-events/{id}/response` | Verified and queryable | Current event state, latest delivery state for that event, current run state | Only latest support attempt is surfaced; no request log for failed reads |
 | External support-channel configuration | `support_channels` current configuration row | `db/migrations/20260705220110_external_support_channel_v0.sql`, `backend/app/db/support_channel_repository.py` | Persisted in Postgres | `id`, `user_id`, `provider`, `external_group_id`, `external_group_name`, `provider_config_ref`, `last_delivery_status`, `last_delivery_at`, `updated_at` | `GET /api/support-channel`; direct DB query | Verified and queryable | Whether a support channel exists, whether it is enabled, which destination is configured, last delivery summary | Only one current channel surfaced; no history of config changes |
 | Backend-only provider authorization | `support_channel_provider_configs` row including access token and bot metadata | `db/migrations/20260706112500_support_channel_provider_configs.sql`, `backend/app/services/support_channel_groupme_provisioner.py` | Persisted in Postgres | `id`, `user_id`, `provider`, `status`, `bot_id`, `external_group_id`, `external_group_name`, `updated_at` | Direct DB query via service-role tooling only | Verified but difficult to retrieve | Whether GroupMe authorization and bot provisioning completed | Not user-facing; sensitive; no ordinary operator UI |
-| Support-message send attempts | `support_channel_delivery_attempts` rows for test and real sends | `db/migrations/20260705220110_external_support_channel_v0.sql`, `backend/app/services/support_channel_sender.py`, `backend/app/db/support_channel_repository.py` | Persisted in Postgres | `id`, `user_id`, `support_channel_id`, `flare_event_id`, `send_kind`, `destination_id`, `destination_name`, `status`, `provider_message_id`, `attempted_at`, `delivered_at`, `error_code`, `raw_provider_status_ref` | Direct DB query; latest attempt partially surfaced through response read model | Verified and queryable | Whether delivery was attempted, what message was attempted, which destination was used, whether send was sent/failed/blocked | No ordinary UI for full attempt history; exact message snapshot is sensitive and not surfaced in History |
+| Support-message send attempts | `support_channel_delivery_attempts` rows for sends that reach `SupportChannelSender` | `db/migrations/20260705220110_external_support_channel_v0.sql`, `backend/app/services/support_channel_sender.py`, `backend/app/db/support_channel_repository.py` | Persisted in Postgres | `id`, `user_id`, `support_channel_id`, `flare_event_id`, `send_kind`, `destination_id`, `destination_name`, `status`, `provider_message_id`, `attempted_at`, `delivered_at`, `error_code`, `raw_provider_status_ref` | Direct DB query; latest attempt partially surfaced through response read model | Verified and queryable | Whether delivery was attempted, what message was attempted, which destination was used, whether send was sent/failed/blocked after a channel was found | If no support channel is configured, `/api/support-channel/send-flare` returns a blocked response without inserting an attempt row; no ordinary UI for full attempt history; exact message snapshot is sensitive and not surfaced in History |
 | Provider response semantics | Normalized provider result from GroupMe bot POST | `backend/app/integrations/groupme_provider.py` | Persisted as delivery-attempt fields | `provider_message_id`, `status`, `attempted_at`, `delivered_at`, `error_code`, `raw_provider_status_ref` | Delivery attempt rows; safe API result payload | Verified and queryable | Whether GroupMe accepted the POST or rejected it | `status='sent'` is based on provider HTTP acceptance, not confirmed human delivery or read receipt |
 | Flare Plan configuration | `flare_plans`, `flare_plan_actions`, starter templates | `db/migrations/20260708073000_flare_plan_v0_persistence.sql`, `backend/app/db/flare_plan_repository.py` | Persisted in Postgres | `plan.id`, `user_id`, action `id`, `source_template_key`, `position`, `updated_at` | `GET /api/flare-plan`; direct DB query | Verified and queryable | Whether a plan existed, which actions were active, current order | No qualitative evidence of whether the user found the plan useful |
 | Flare Plan run creation | `flare_plan_runs` plus snapshotted `flare_plan_run_actions` | `backend/app/db/flare_plan_repository.py::_ensure_run_for_event` | Persisted in Postgres | `run.id`, `flare_event_id`, `source_plan_id`, `status`, `offered_at`; action snapshot `source_action_id`, `position` | `POST/GET /api/flare-events/{id}/flare-plan-run`; response read model; DB query | Verified and queryable | Whether a configured plan was offered for a specific flare and exactly which actions were snapshotted | No separate audit row for the user seeing the offer; offer happens on event creation, not on sheet render |
@@ -229,7 +237,7 @@ The current implementation can reliably correlate the following once at least on
 ### Partially supported correlations
 
 - Frontend send action to backend flare creation: inferable only if a `flare_events` row exists after the participant action.
-- Frontend send action to backend support send attempt: inferable only if `support_channel_delivery_attempts` contains the `flare_event_id`.
+- Frontend send action to backend support send attempt: inferable only if `support_channel_delivery_attempts` contains the `flare_event_id`, or if the participant observed the live blocked response when no channel existed.
 - Authentication success for a specific request: inferable only from the request succeeding and producing downstream records.
 - Provider acceptance to final human receipt: not supported. GroupMe success records provider acceptance, not delivery confirmation.
 
@@ -252,6 +260,7 @@ What can be established today:
 - If a `flare_events` row exists, the backend received and persisted the flare creation request.
 - If a `flare_plan_runs` row exists for that event, the backend also offered a persisted plan snapshot at creation time.
 - If a `support_channel_delivery_attempts` row exists with that `flare_event_id`, the subsequent support-send request was attempted.
+- If no support channel exists, the current configuration can be checked from `support_channels`, but that absence does not itself prove the support-send request was attempted because the missing-channel path does not persist an attempt row.
 - If the participant remained on screen and saw an error, the frontend may have held an ephemeral error message in `responseError`, but it is not durably retained.
 
 What cannot be established reliably:
@@ -271,13 +280,14 @@ What can be established today:
 
 - Whether a support channel was configured, enabled, and connected from `support_channels`.
 - Which destination group was configured from `external_group_id` and `external_group_name`.
-- Whether a real send was attempted from `support_channel_delivery_attempts`.
+- Whether a real send was attempted from `support_channel_delivery_attempts` once a support channel existed and the request reached `SupportChannelSender`.
 - Which exact message was attempted from `message_snapshot`.
 - Whether the attempt was blocked, failed, or marked sent, with safe error context and provider status ref.
 - Whether the send was tied to a specific flare through `flare_event_id`.
 
 What cannot be established reliably:
 
+- Whether the app actually called `/api/support-channel/send-flare` when no support channel was configured, because that route returns a blocked result without writing a delivery-attempt row.
 - Whether GroupMe final delivery to each device occurred.
 - Whether any human saw the message.
 - Whether notification delays happened on the recipient side after GroupMe accepted the request.
