@@ -28,8 +28,8 @@
   - Updated the correlation model and investigation scenarios to state that a missing configured channel returns a blocked API result without inserting a `support_channel_delivery_attempts` row.
 - remaining gaps:
   - No live database contents or deployment-captured logs were inspected; the audit is implementation-grounded, schema-grounded, and test-grounded rather than environment-instance-grounded.
-  - No draft PR link is included yet in this summary because PR creation depends on git/remote state after commit.
-- final assessment: The run satisfied the requested audit/documentation scope with documentation-only changes. The resulting recommendation remains `Build Minimal Trace V0`, driven by the verified absence of durable request-level evidence for the critical signed-in flare lifecycle.
+  - Draft PR creation is blocked in this environment by GitHub token permissions. Both `gh pr create --draft ...` and `gh api repos/lksmoker/flare/pulls --method POST ...` returned `403 Resource not accessible by personal access token` after the branch was pushed.
+- final assessment: The run satisfied the requested audit/documentation scope with documentation-only changes. The resulting recommendation remains `Build Minimal Trace V0`, driven by the verified absence of durable request-level evidence for the critical signed-in flare lifecycle. The commit is pushed on `origin/build/admin-config/observability-audit`, but the draft PR still requires a token with pull-request creation permission.
 
 ## Learning Candidates
 - status: none
