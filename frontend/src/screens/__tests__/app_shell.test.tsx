@@ -611,6 +611,7 @@ describe("V0 app shell", () => {
       expect(getByText("Begin Flare Plan")).toBeTruthy();
     });
 
+    expect(flareResponseApi.createFlareResponse).not.toHaveBeenCalled();
     expect(queryByText("Support message sent")).toBeNull();
     expect(queryByText("No support group configured")).toBeNull();
 

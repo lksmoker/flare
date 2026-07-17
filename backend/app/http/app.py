@@ -15,6 +15,7 @@ from backend.app.api.support_channels_api import (
 )
 from backend.app.api.flare_plan_api import FlarePlanApi
 from backend.app.db.support_channel_repository import SupportChannelRepository
+from backend.app.db.flare_trace_repository import PostgresFlareTraceRepository
 from backend.app.db.flare_plan_repository import PostgresFlarePlanRepository
 from backend.app.integrations.groupme_provider import GroupMeProvider
 from backend.app.services.support_channel_config import (
@@ -26,6 +27,7 @@ from backend.app.services.support_channel_config import (
 )
 from backend.app.services.flare_plan_config import load_flare_plan_database_config
 from backend.app.services.flare_plan_service import FlarePlanService
+from backend.app.services.flare_trace_service import FlareTraceService
 from backend.app.services.support_channel_groupme_provisioner import (
     GroupMeBotManager,
     GroupMeChannelProvisioner,
@@ -321,6 +323,11 @@ def build_support_channel_http_app(
     flare_plan_repository = PostgresFlarePlanRepository(
         config=load_flare_plan_database_config(env),
     )
+    flare_trace_service = FlareTraceService(
+        repository=PostgresFlareTraceRepository(
+            config=load_flare_plan_database_config(env),
+        )
+    )
     support_api = SupportChannelsApi(
         authenticator=SupabaseUserAuthenticator(
             supabase_url=supabase_config.url,
@@ -343,7 +350,11 @@ def build_support_channel_http_app(
             service_role_key=supabase_config.service_role_key,
             transport=auth_transport,
         ),
-        service=FlarePlanService(repository=flare_plan_repository),
+        service=FlarePlanService(
+            repository=flare_plan_repository,
+            trace_lifecycle=flare_trace_service,
+        ),
+        trace_lifecycle=flare_trace_service,
     )
     return SupportChannelHttpApp(
         runtime_config=runtime_config,

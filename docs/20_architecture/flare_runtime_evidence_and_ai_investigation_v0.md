@@ -12,7 +12,7 @@ This document describes the evidence available during private testing, how inves
 
 This is a V0 architecture reference for the private-testing operating model.
 
-The evidence inventory below is now based on a repository audit of the implementation present on July 16, 2026. It should be updated again when runtime evidence changes materially, when new private-cohort workflows expose additional retrieval surfaces, or when a Trace V0 decision is implemented.
+The evidence inventory below is now based on a repository audit of the implementation present on July 16, 2026 and was updated on July 17, 2026 after Flare Minimal Trace V0 was implemented for signed-in `POST /api/flare-events`. It should be updated again when runtime evidence changes materially or when new private-cohort workflows expose additional retrieval surfaces.
 
 ## Design Principles
 
@@ -191,12 +191,21 @@ Validation evidence gathered during the audit:
   - `npm test -- --runTestsByPath src/services/__tests__/flareEventRepository.test.ts src/services/__tests__/checkpointReflectionRepository.test.ts src/services/__tests__/flareSupabaseAuth.test.ts src/screens/__tests__/history_screen.test.tsx src/state/__tests__/flareEventPersistenceContext.test.tsx`
 - Attempted `python -m pytest ...`, but `pytest` is not installed in the active interpreter in this workspace. The relevant backend suites are `unittest`-compatible and were run successfully through `python -m unittest`.
 
+Trace implementation update on July 17, 2026:
+
+- Signed-in `POST /api/flare-events` now writes one owner-scoped mutable trace row in `public.flare_event_traces` keyed by the client-generated `trace_id`.
+- The signed-in frontend reuses that `trace_id` as the `Idempotency-Key` and records bounded client-observed failures when safe.
+- The authenticated backend updates the same row at `backend_received`, `authenticated`, `validated`, and `completed` or `failed` milestones without creating a parallel event-create path.
+- Operator investigation now has a saved query at `db/dev_queries/flare/investigate_flare_minimal_trace_v0.sql`.
+- Manual stale cleanup and bounded retention commands now live at `db/dev_queries/flare/cleanup_flare_minimal_trace_v0.sql`.
+
 ## Verified Runtime Evidence Inventory
 
 | Lifecycle Stage | Evidence | Implementation Location | Persistence | Correlation Fields | Retrieval Method | Status | Operator Questions Answered | Gaps |
 |---|---|---|---|---|---|---|---|---|
 | Participant identity and auth | Supabase session in client, bearer-token auth lookup in backend | `frontend/src/services/flareSupabaseAuth.ts`, `backend/app/http/app.py` | Session is external to this repo's product tables; no Flare-owned auth audit row | `user_id`, email in frontend auth state | Client auth UI state; backend accepts or rejects request | Partially verified | Whether the user was signed in when the current client session was read; whether backend required auth | No durable auth-attempt log, no per-request auth success record, no session-to-flare correlation record |
-| Flare event creation | `flare_events` row with snapshots and timestamps | `db/migrations/20260627_230500_flare_v0_persistence.sql`, `backend/app/db/flare_plan_repository.py::_create_flare_event` | Persisted in Postgres | `id`, `user_id`, `behavior_pattern_id`, `anchor_note_id`, `anchor_note_version`, `created_at`, `updated_at`, `closed_at`, `archived_at` | Direct DB query; History screen; `GET /api/flare-events/{id}/response` | Verified and queryable | Whether a flare event was created; which behavior snapshot and anchor-note link were stored; when it was created | No durable request receipt record before insert; no frontend request trace if create never reached backend |
+| Flare create trace | `flare_event_traces` mutable row for signed-in create attempts | `db/migrations/20260717120000_flare_minimal_trace_v0.sql`, `frontend/src/services/sendFlareWithTrace.ts`, `frontend/src/services/flareTraceRepository.ts`, `backend/app/services/flare_trace_service.py`, `backend/app/api/flare_plan_api.py` | Persisted in Postgres | `trace_id`, `user_id`, `flare_event_id`, lifecycle timestamps, `request_attempt_count` | Direct DB query through `db/dev_queries/flare/investigate_flare_minimal_trace_v0.sql` | Verified and queryable | Whether the signed-in client durably initiated the create attempt, whether the authenticated backend received and validated it, where it failed before first persistence, whether the request replayed, and which `flare_event_id` resulted | Only the signed-in `POST /api/flare-events` path is covered; signed-out flows and downstream support-send trace parity remain out of scope |
+| Flare event creation | `flare_events` row with snapshots and timestamps | `db/migrations/20260627_230500_flare_v0_persistence.sql`, `backend/app/db/flare_plan_repository.py::_create_flare_event` | Persisted in Postgres | `id`, `user_id`, `behavior_pattern_id`, `anchor_note_id`, `anchor_note_version`, `created_at`, `updated_at`, `closed_at`, `archived_at` | Direct DB query; History screen; `GET /api/flare-events/{id}/response` | Verified and queryable | Whether a flare event was created; which behavior snapshot and anchor-note link were stored; when it was created | Trace V0 now closes the pre-persistence gap only for the signed-in create path; downstream route gaps remain separate |
 | Flare response retrieval | Canonical response read model combining event, latest support delivery, and run | `backend/app/db/flare_plan_repository.py::read_flare_response`, `frontend/src/services/flareResponseApi.ts` | Derived read, not separately persisted | `flare_event.id`, latest delivery `flare_event_id`, run `flare_event_id` | `GET /api/flare-events/{id}/response` | Verified and queryable | Current event state, latest delivery state for that event, current run state | Only latest support attempt is surfaced; no request log for failed reads |
 | External support-channel configuration | `support_channels` current configuration row | `db/migrations/20260705220110_external_support_channel_v0.sql`, `backend/app/db/support_channel_repository.py` | Persisted in Postgres | `id`, `user_id`, `provider`, `external_group_id`, `external_group_name`, `provider_config_ref`, `last_delivery_status`, `last_delivery_at`, `updated_at` | `GET /api/support-channel`; direct DB query | Verified and queryable | Whether a support channel exists, whether it is enabled, which destination is configured, last delivery summary | Only one current channel surfaced; no history of config changes |
 | Backend-only provider authorization | `support_channel_provider_configs` row including access token and bot metadata | `db/migrations/20260706112500_support_channel_provider_configs.sql`, `backend/app/services/support_channel_groupme_provisioner.py` | Persisted in Postgres | `id`, `user_id`, `provider`, `status`, `bot_id`, `external_group_id`, `external_group_name`, `updated_at` | Direct DB query via service-role tooling only | Verified but difficult to retrieve | Whether GroupMe authorization and bot provisioning completed | Not user-facing; sensitive; no ordinary operator UI |
@@ -245,8 +254,7 @@ The current implementation can reliably correlate the following once at least on
 
 The following do not currently have a durable, implementation-backed correlation record:
 
-- A single end-to-end trace identifier spanning the tap, flare-event create request, support-send request, response-sheet load, and later checkpoint.
-- Durable evidence that the frontend initiated a request when no backend record was created.
+- A single end-to-end trace identifier spanning the create request, support-send request, response-sheet load, and later checkpoint. Minimal Trace V0 now covers only the signed-in create path.
 - Durable frontend crash evidence or JS exception capture.
 - Durable per-request backend access log with request id, auth result, status code, and latency.
 - Durable linkage from a participant report to the exact client build, device, browser, or app version.
@@ -399,35 +407,19 @@ Overall assessment:
 - Current runtime evidence is sufficient to begin a tightly managed first private cohort if participant expectations remain narrow and operator workflow explicitly acknowledges the blind spots above.
 - Current runtime evidence is not strong enough to support low-friction investigation of "nothing happened" and crash-style reports without manual follow-up.
 
-## Trace V0 Recommendation
+## Trace V0 Implementation Status
 
-**Recommendation: Build Minimal Trace V0**
+**Status: implemented on July 17, 2026 for signed-in `POST /api/flare-events`.**
 
-Why this recommendation follows from the implementation:
+What this now closes:
 
-- The repository already persists the most important domain records: flare events, delivery attempts, plan runs, run actions, and reflections.
-- The largest investigation failures come from gaps between requests, not from absence of domain persistence once a request succeeds.
-- The signed-in Send Flare flow is split across separate client actions and separate backend routes:
-  - `POST /api/flare-events`
-  - `POST /api/support-channel/send-flare`
-  - later `GET /api/flare-events/{id}/response`
-- There is no durable record for "frontend initiated create request", "backend received request but insert failed", or "support-send route began but no attempt row was written."
-- There is no durable request correlation id or minimal chronological envelope tying the flare lifecycle together.
+- Durable owner-scoped initiation evidence for the signed-in create attempt.
+- Shared `trace_id` and `Idempotency-Key` correlation for the authenticated create path.
+- Durable classification of validation, authenticated-backend, domain-persistence, unexpected-backend, and effective stale outcomes for that route when trace persistence succeeds.
+- One saved operator retrieval surface that joins trace, event, delivery, and run evidence without persisting participant content in the trace row.
 
-Smallest additional evidence needed before private testing:
+What remains intentionally deferred:
 
-- Required before the first participant:
-  - A minimal durable trace record for signed-in flare lifecycle requests with a shared correlation id across flare-event creation and support-send attempt.
-  - At minimum, record request start, request result, user id when authenticated, flare event id when known, route, and terminal status for:
-    - flare-event creation
-    - support-send attempt
-    - run mutation routes
-- Useful during the private cohort:
-  - A single operator retrieval surface that reconstructs one flare from existing records plus the minimal request trace records.
-  - Safe retention of the last frontend-visible error code for a flare response mutation when available.
-- Appropriate only before broader release:
-  - Crash reporting, richer performance timing, cohort-wide metrics, alerting, and broader observability tooling.
-
-This recommendation is intentionally narrow.
-
-The current implementation does not justify production-scale tracing or analytics. It does justify the smallest durable chronological layer needed to answer first-cohort support questions that currently fail when no domain row was created.
+- Support-send route trace parity.
+- Flare Plan mutation route trace parity.
+- Crash reporting, broader request logging, dashboards, and aggregate analytics.

@@ -18,6 +18,7 @@ from backend.app.services.flare_plan_service import (
     TransitionFlarePlanRunCommand,
     UpdateFlarePlanActionCommand,
 )
+from backend.app.services.flare_trace_service import FlareTraceLifecycle, NoOpFlareTraceService
 
 
 class FlarePlanApi:
@@ -26,9 +27,11 @@ class FlarePlanApi:
         *,
         authenticator: AuthenticatorLike,
         service: FlarePlanService,
+        trace_lifecycle: FlareTraceLifecycle | None = None,
     ) -> None:
         self._authenticator = authenticator
         self._service = service
+        self._trace_lifecycle = trace_lifecycle or NoOpFlareTraceService()
 
     def handle_request(
         self,
@@ -39,12 +42,15 @@ class FlarePlanApi:
         body: bytes | None = None,
     ) -> ApiResponse:
         normalized_headers = _normalize_headers(headers or {})
+        trace_id = (normalized_headers.get("idempotency-key") or "").strip()
         user = self._authenticator.authenticate(normalized_headers)
         if user is None:
             return _json_response(
                 HTTPStatus.UNAUTHORIZED,
                 {"error": {"code": "unauthorized", "message": "Authentication is required."}},
             )
+        self._trace_lifecycle.record_backend_received(trace_id=trace_id, user_id=user.user_id)
+        self._trace_lifecycle.record_authenticated(trace_id=trace_id, user_id=user.user_id)
         parsed = parse.urlsplit(path)
         route_path = parsed.path
         try:
@@ -70,8 +76,20 @@ class FlarePlanApi:
                         response_mode=_optional_str(payload.get("response_mode")) or "fallback-generic",
                         support_action_shown=_optional_str(payload.get("support_action_shown")),
                         idempotency_key=normalized_headers.get("idempotency-key") or "",
+                        trace_id=trace_id,
                     )
                 )
+                flare_event = response.body["flare_event"]
+                flare_event_id = _optional_str(flare_event.get("id")) or ""
+                flare_event_created_at = _optional_str(flare_event.get("created_at")) or ""
+                if trace_id and flare_event_id and flare_event_created_at:
+                    self._trace_lifecycle.record_completed(
+                        trace_id=trace_id,
+                        user_id=user.user_id,
+                        flare_event_id=flare_event_id,
+                        flare_event_created_at=flare_event_created_at,
+                        terminal_http_status=response.status_code,
+                    )
                 return _json_response(response.status_code, response.body)
             if method == "GET" and route_path.startswith("/api/flare-events/") and route_path.endswith("/response"):
                 flare_event_id = route_path.removeprefix("/api/flare-events/").removesuffix("/response")
@@ -208,12 +226,39 @@ class FlarePlanApi:
                     )
                     return _json_response(response.status_code, response.body)
         except ValueError:
+            if trace_id:
+                self._trace_lifecycle.record_failed(
+                    trace_id=trace_id,
+                    user_id=user.user_id,
+                    failure_stage="validation",
+                    failure_code="validation_rejected",
+                    terminal_http_status=HTTPStatus.BAD_REQUEST,
+                )
             return _json_response(
                 HTTPStatus.BAD_REQUEST,
                 {"error": {"code": "invalid_json", "message": "Request body must be valid JSON."}},
             )
         except FlarePlanError as exc:
+            if trace_id and route_path == "/api/flare-events":
+                failure_code = "idempotency_conflict" if exc.code == "FLARE_PLAN_IDEMPOTENCY_KEY_REUSED" else "validation_rejected"
+                self._trace_lifecycle.record_failed(
+                    trace_id=trace_id,
+                    user_id=user.user_id,
+                    failure_stage="validation",
+                    failure_code=failure_code,
+                    terminal_http_status=exc.status_code,
+                )
             return _json_response(exc.status_code, build_error_response(exc))
+        except Exception:
+            if trace_id and route_path == "/api/flare-events":
+                self._trace_lifecycle.record_failed(
+                    trace_id=trace_id,
+                    user_id=user.user_id,
+                    failure_stage="backend_unexpected",
+                    failure_code="unexpected_server_error",
+                    terminal_http_status=HTTPStatus.INTERNAL_SERVER_ERROR,
+                )
+            raise
         return _json_response(
             HTTPStatus.NOT_FOUND,
             {"error": {"code": "not_found", "message": "Route not found."}},

@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MIGRATION_PATH = REPO_ROOT / "db" / "migrations" / "20260708073000_flare_plan_v0_persistence.sql"
+TRACE_MIGRATION_PATH = REPO_ROOT / "db" / "migrations" / "20260717120000_flare_minimal_trace_v0.sql"
 
 
 class FlarePlanMigrationArtifactTests(unittest.TestCase):
@@ -92,6 +93,40 @@ class FlarePlanMigrationArtifactTests(unittest.TestCase):
             "create policy \"flare_plan_run_actions_owner_select\"",
             "create policy \"flare_plan_run_checkpoints_owner_select\"",
             "create policy \"flare_plan_idempotency_keys_owner_select\"",
+        ):
+            self.assertIn(fragment, self.sql)
+
+class FlareMinimalTraceMigrationArtifactTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.sql = TRACE_MIGRATION_PATH.read_text(encoding="utf-8")
+
+    def test_trace_migration_creates_required_table_and_functions(self) -> None:
+        for fragment in (
+            "create table public.flare_event_traces",
+            "create or replace function public.mark_stale_flare_event_traces_v0",
+            "create or replace function public.cleanup_flare_event_traces_v0",
+        ):
+            self.assertIn(fragment, self.sql)
+
+    def test_trace_migration_uses_bounded_domains_and_indexes(self) -> None:
+        for fragment in (
+            "status in ('initiated', 'backend_received', 'authenticated', 'validated', 'completed', 'failed')",
+            "'client_trace_write_failed'",
+            "'trace_terminal_state_unknown'",
+            "create index idx_flare_event_traces_user_client_initiated_at",
+            "create index idx_flare_event_traces_nonterminal_status_client_initiated_at",
+        ):
+            self.assertIn(fragment, self.sql)
+
+    def test_trace_migration_applies_rls_and_minimal_authenticated_grants(self) -> None:
+        for fragment in (
+            "alter table public.flare_event_traces enable row level security;",
+            "grant insert (",
+            "grant update (",
+            "create policy \"flare_event_traces_owner_insert\"",
+            "create policy \"flare_event_traces_owner_update\"",
+            "grant all on public.flare_event_traces to service_role;",
         ):
             self.assertIn(fragment, self.sql)
 

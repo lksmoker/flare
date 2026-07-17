@@ -11,7 +11,6 @@ import flareContent from "../content/flareContent.json";
 import {
   beginFlarePlanRun,
   completeFlarePlanAction,
-  createFlareResponse,
   declineFlarePlanRun,
   type FlareSupportDelivery,
   endFlarePlanRunEarly,
@@ -20,6 +19,7 @@ import {
   skipFlarePlanAction,
 } from "../services/flareResponseApi";
 import { createIdempotencyKey } from "../services/idempotency";
+import { sendSignedInFlareWithTrace } from "../services/sendFlareWithTrace";
 import {
   sendSupportChannelFlare,
   type SupportChannelFlareDeliveryResult,
@@ -126,6 +126,7 @@ export function FlareScreen() {
   const [responseState, setResponseState] = useState<FlareResponseState | null>(null);
   const [responseError, setResponseError] = useState<string | null>(null);
   const [isRunMutationPending, setIsRunMutationPending] = useState(false);
+  const [retryTraceId, setRetryTraceId] = useState<string | null>(null);
   const { behaviorPattern, behaviorPatternRecord, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent, upsertPersistedFlareEvent } = useFlareEvents();
   const { anchorNote, anchorNoteRecord, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
@@ -278,17 +279,19 @@ export function FlareScreen() {
 
             if (authState.kind === "authenticated") {
               try {
-                const created = await createFlareResponse({
+                const created = await sendSignedInFlareWithTrace({
                   anchorNoteId: anchorNoteRecord?.id ?? null,
                   anchorNoteVersion: anchorNoteRecord?.version ?? null,
                   behaviorDescriptionSnapshot: behaviorPattern?.shortDescription ?? null,
                   behaviorLabelSnapshot:
                     behaviorPattern?.behaviorName ?? "Behavior pattern not configured",
                   behaviorPatternId: behaviorPatternRecord?.id ?? null,
+                  existingTraceId: retryTraceId,
                   responseMode: anchorNote ? "configured" : "fallback-generic",
                   supportActionShown: anchorNote?.emergencyActions ?? null,
-                  idempotencyKey: createIdempotencyKey(),
+                  userId: authState.userId,
                 });
+                setRetryTraceId(null);
                 flareEventId = created.flareEvent.id;
                 upsertPersistedFlareEvent({
                   createdAt: created.flareEvent.createdAt,
@@ -303,6 +306,14 @@ export function FlareScreen() {
                   supportDelivery: null,
                 });
               } catch (error) {
+                if (
+                  error &&
+                  typeof error === "object" &&
+                  "retryTraceId" in error &&
+                  typeof error.retryTraceId === "string"
+                ) {
+                  setRetryTraceId(error.retryTraceId);
+                }
                 setResponseError(
                   error instanceof Error
                     ? error.message
@@ -331,6 +342,7 @@ export function FlareScreen() {
                   });
                 });
             } else {
+              setRetryTraceId(null);
               const localFallbackEvent = createFlareEvent({
                 behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
                 behaviorLabelSnapshot: behaviorPattern?.behaviorName,

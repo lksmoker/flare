@@ -16,6 +16,7 @@ from backend.app.domain.flare_plan import (
     MAX_FLARE_PLAN_ACTION_TITLE_LENGTH,
     StarterTemplateRecord,
 )
+from backend.app.services.flare_trace_service import FlareTraceLifecycle, NoOpFlareTraceService
 
 
 @dataclass(frozen=True)
@@ -69,6 +70,7 @@ class CreateFlareEventCommand:
     response_mode: str
     support_action_shown: str | None
     idempotency_key: str
+    trace_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -87,8 +89,14 @@ class ResolveFlarePlanRunActionCommand:
 
 
 class FlarePlanService:
-    def __init__(self, *, repository: FlarePlanRepository) -> None:
+    def __init__(
+        self,
+        *,
+        repository: FlarePlanRepository,
+        trace_lifecycle: FlareTraceLifecycle | None = None,
+    ) -> None:
         self._repository = repository
+        self._trace_lifecycle = trace_lifecycle or NoOpFlareTraceService()
 
     def list_starter_templates(self, *, user_id: str) -> list[StarterTemplateRecord]:
         return self._repository.list_active_templates(user_id=user_id)
@@ -190,18 +198,42 @@ class FlarePlanService:
             "response_mode": response_mode,
             "support_action_shown": _normalize_description(command.support_action_shown),
         }
-        return self._repository.create_flare_event(
-            user_id=command.user_id,
-            anchor_note_id=command.anchor_note_id,
-            anchor_note_version=command.anchor_note_version,
-            behavior_description_snapshot=payload["behavior_description_snapshot"],
-            behavior_label_snapshot=behavior_label_snapshot,
-            behavior_pattern_id=command.behavior_pattern_id,
-            response_mode=response_mode,
-            support_action_shown=payload["support_action_shown"],
-            idempotency_key=self._require_idempotency_key(command.idempotency_key),
-            request_fingerprint=build_request_fingerprint(payload),
-        )
+        trace_id = (command.trace_id or "").strip()
+        if trace_id:
+            self._trace_lifecycle.record_validated(trace_id=trace_id, user_id=command.user_id)
+        try:
+            return self._repository.create_flare_event(
+                user_id=command.user_id,
+                anchor_note_id=command.anchor_note_id,
+                anchor_note_version=command.anchor_note_version,
+                behavior_description_snapshot=payload["behavior_description_snapshot"],
+                behavior_label_snapshot=behavior_label_snapshot,
+                behavior_pattern_id=command.behavior_pattern_id,
+                response_mode=response_mode,
+                support_action_shown=payload["support_action_shown"],
+                idempotency_key=self._require_idempotency_key(command.idempotency_key),
+                request_fingerprint=build_request_fingerprint(payload),
+            )
+        except FlarePlanError as exc:
+            if trace_id and exc.code == "FLARE_PLAN_IDEMPOTENCY_KEY_REUSED":
+                self._trace_lifecycle.record_failed(
+                    trace_id=trace_id,
+                    user_id=command.user_id,
+                    failure_stage="validation",
+                    failure_code="idempotency_conflict",
+                    terminal_http_status=exc.status_code,
+                )
+            raise
+        except Exception:
+            if trace_id:
+                self._trace_lifecycle.record_failed(
+                    trace_id=trace_id,
+                    user_id=command.user_id,
+                    failure_stage="domain_persistence",
+                    failure_code="flare_event_insert_failed",
+                    terminal_http_status=HTTPStatus.INTERNAL_SERVER_ERROR,
+                )
+            raise
 
     def read_flare_response(self, *, user_id: str, flare_event_id: str) -> FlareResponseRecord:
         return self._repository.read_flare_response(user_id=user_id, flare_event_id=flare_event_id)
