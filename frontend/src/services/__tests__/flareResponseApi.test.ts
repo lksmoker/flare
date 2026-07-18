@@ -83,6 +83,13 @@ describe("flareResponseApi", () => {
         }),
       }),
     );
+    const request = fetchImpl.mock.calls[0][1];
+    expect(JSON.parse(String(request.body))).toEqual(
+      expect.not.objectContaining({
+        idempotencyKey: expect.anything(),
+        trace_id: expect.anything(),
+      }),
+    );
   });
 
   it("loads canonical response state from the response route and never hits a plain event-detail GET", async () => {

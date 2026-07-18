@@ -7,6 +7,8 @@ from http import HTTPStatus
 from backend.app.api.flare_plan_api import FlarePlanApi
 from backend.app.domain.flare_plan import FlarePlanError
 from backend.app.services.flare_plan_service import CreateFlareEventCommand, FlarePlanService
+from backend.app.services.flare_trace_service import FlareTraceService
+from backend.app.services.flare_plan_config import FlarePlanDatabaseConfig
 from backend.tests.flare_plan_test_support import FakeAuthenticator, InMemoryFlarePlanRepository
 
 
@@ -102,6 +104,46 @@ class FlareMinimalTraceApiTests(unittest.TestCase):
         self.assertIsNone(trace["flare_event_created_at"])
         self.assertEqual(0, len(self.repository.flare_events))
 
+    def test_missing_idempotency_key_returns_conflict_without_trace_mutation(self) -> None:
+        response = self.api.handle_request(
+            method="POST",
+            path="/api/flare-events",
+            headers={"authorization": "Bearer token"},
+            body=json.dumps(
+                {
+                    "behavior_label_snapshot": "Scrolling",
+                    "response_mode": "configured",
+                }
+            ).encode("utf-8"),
+        )
+
+        self.assertEqual(HTTPStatus.CONFLICT, response.status_code)
+        self.assertEqual("FLARE_PLAN_IDEMPOTENCY_KEY_REQUIRED", response.body["error"]["code"])
+        self.assertEqual(0, len(self.trace.rows))
+        self.assertEqual(0, len(self.repository.flare_events))
+
+    def test_mismatched_trace_owner_does_not_advance_existing_row(self) -> None:
+        self.trace.seed_initiated(trace_id="trace-1", user_id="user-2", response_mode="configured")
+
+        response = self.api.handle_request(
+            method="POST",
+            path="/api/flare-events",
+            headers={"authorization": "Bearer token", "idempotency-key": "trace-1"},
+            body=json.dumps(
+                {
+                    "behavior_label_snapshot": "Scrolling",
+                    "response_mode": "configured",
+                }
+            ).encode("utf-8"),
+        )
+
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
+        trace = self.trace.rows["trace-1"]
+        self.assertEqual("initiated", trace["status"])
+        self.assertEqual(0, trace["request_attempt_count"])
+        self.assertIsNone(trace["backend_received_at"])
+        self.assertIsNone(trace["flare_event_id"])
+
     def test_domain_persistence_failure_records_failed_trace_without_false_create_fields(self) -> None:
         trace = InMemoryTraceLifecycle()
         trace.seed_initiated(trace_id="trace-1", user_id="user-1", response_mode="configured")
@@ -162,6 +204,38 @@ class FlareMinimalTraceApiTests(unittest.TestCase):
         self.assertEqual("unexpected_server_error", stored["failure_code"])
         self.assertEqual(HTTPStatus.INTERNAL_SERVER_ERROR, stored["terminal_http_status"])
         self.assertNotIn("boom", json.dumps(stored, sort_keys=True))
+
+    def test_trace_update_database_failure_is_logged_and_does_not_block_create(self) -> None:
+        trace_service = FlareTraceService(
+            repository=ExplodingTraceRepository(
+                config=FlarePlanDatabaseConfig(dsn="postgresql://unused"),
+            )
+        )
+        api = FlarePlanApi(
+            authenticator=FakeAuthenticator(user_id="user-1"),
+            service=FlarePlanService(
+                repository=self.repository,
+                trace_lifecycle=trace_service,
+            ),
+            trace_lifecycle=trace_service,
+        )
+
+        with self.assertLogs("backend.app.services.flare_trace_service", level="WARNING") as logs:
+            response = api.handle_request(
+                method="POST",
+                path="/api/flare-events",
+                headers={"authorization": "Bearer token", "idempotency-key": "trace-1"},
+                body=json.dumps(
+                    {
+                        "behavior_label_snapshot": "Scrolling",
+                        "response_mode": "configured",
+                    }
+                ).encode("utf-8"),
+            )
+
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
+        self.assertEqual(1, len(self.repository.flare_events))
+        self.assertTrue(any("Flare trace update failed" in line for line in logs.output))
 
     def test_retry_with_same_trace_id_increments_attempt_count_without_duplicate_event(self) -> None:
         self.trace.seed_initiated(trace_id="trace-1", user_id="user-1", response_mode="configured")
@@ -301,6 +375,34 @@ class FailingCreateFlareEventRepository(InMemoryFlarePlanRepository):
 class ExplodingFlarePlanService:
     def create_flare_event(self, command: CreateFlareEventCommand):
         raise RuntimeError("boom")
+
+
+class ExplodingTraceRepository:
+    def __init__(self, *, config: FlarePlanDatabaseConfig) -> None:
+        self._config = config
+
+    def record_backend_received(self, *, trace_id: str, user_id: str) -> bool:
+        raise RuntimeError("trace backend received failed")
+
+    def record_authenticated(self, *, trace_id: str, user_id: str) -> bool:
+        raise RuntimeError("trace authenticated failed")
+
+    def record_validated(self, *, trace_id: str, user_id: str) -> bool:
+        raise RuntimeError("trace validated failed")
+
+    def record_completed(
+        self,
+        *,
+        trace_id: str,
+        user_id: str,
+        flare_event_id: str,
+        flare_event_created_at: str,
+        terminal_http_status: int,
+    ) -> bool:
+        raise RuntimeError("trace completed failed")
+
+    def record_failed(self, *, trace_id: str, user_id: str, failure) -> bool:
+        raise RuntimeError("trace failed failed")
 
 
 class FlareTracePolicyTests(unittest.TestCase):

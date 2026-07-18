@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Protocol
@@ -8,6 +9,8 @@ from backend.app.db.flare_trace_repository import (
     FlareTraceFailureUpdate,
     PostgresFlareTraceRepository,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FlareTraceLifecycle(Protocol):
@@ -81,13 +84,28 @@ class FlareTraceService:
     repository: PostgresFlareTraceRepository
 
     def record_backend_received(self, *, trace_id: str, user_id: str) -> bool:
-        return self._run(lambda: self.repository.record_backend_received(trace_id=trace_id, user_id=user_id))
+        return self._run(
+            operation="record_backend_received",
+            trace_id=trace_id,
+            user_id=user_id,
+            callback=lambda: self.repository.record_backend_received(trace_id=trace_id, user_id=user_id),
+        )
 
     def record_authenticated(self, *, trace_id: str, user_id: str) -> bool:
-        return self._run(lambda: self.repository.record_authenticated(trace_id=trace_id, user_id=user_id))
+        return self._run(
+            operation="record_authenticated",
+            trace_id=trace_id,
+            user_id=user_id,
+            callback=lambda: self.repository.record_authenticated(trace_id=trace_id, user_id=user_id),
+        )
 
     def record_validated(self, *, trace_id: str, user_id: str) -> bool:
-        return self._run(lambda: self.repository.record_validated(trace_id=trace_id, user_id=user_id))
+        return self._run(
+            operation="record_validated",
+            trace_id=trace_id,
+            user_id=user_id,
+            callback=lambda: self.repository.record_validated(trace_id=trace_id, user_id=user_id),
+        )
 
     def record_completed(
         self,
@@ -99,7 +117,10 @@ class FlareTraceService:
         terminal_http_status: int,
     ) -> bool:
         return self._run(
-            lambda: self.repository.record_completed(
+            operation="record_completed",
+            trace_id=trace_id,
+            user_id=user_id,
+            callback=lambda: self.repository.record_completed(
                 trace_id=trace_id,
                 user_id=user_id,
                 flare_event_id=flare_event_id,
@@ -123,7 +144,10 @@ class FlareTraceService:
             else terminal_http_status
         )
         return self._run(
-            lambda: self.repository.record_failed(
+            operation="record_failed",
+            trace_id=trace_id,
+            user_id=user_id,
+            callback=lambda: self.repository.record_failed(
                 trace_id=trace_id,
                 user_id=user_id,
                 failure=FlareTraceFailureUpdate(
@@ -134,9 +158,19 @@ class FlareTraceService:
             )
         )
 
-    @staticmethod
-    def _run(callback) -> bool:
+    def _run(self, *, operation: str, trace_id: str, user_id: str, callback) -> bool:
         try:
             return bool(callback())
-        except Exception:
+        except Exception as exc:
+            _LOGGER.warning(
+                "Flare trace update failed",
+                extra={
+                    "operation": operation,
+                    "trace_id": trace_id,
+                    "trace_update_failure_code": exc.__class__.__name__,
+                    "trace_user_id": user_id,
+                    "trace_db_env": self.repository._config.source_env_name,
+                },
+                exc_info=True,
+            )
             return False

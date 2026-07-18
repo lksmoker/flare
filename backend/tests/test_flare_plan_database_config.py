@@ -12,6 +12,19 @@ from backend.app.services.flare_plan_config import (
 
 
 class FlarePlanDatabaseConfigTests(unittest.TestCase):
+    def test_connect_uses_the_configured_dsn(self) -> None:
+        config = load_flare_plan_database_config(
+            {
+                FLARE_POSTGRES_DSN_ENV_NAME: "postgresql://primary-user:pw@db.example.com:5432/app",
+            }
+        )
+
+        with patch("backend.app.services.flare_plan_config.psycopg2.connect") as connect:
+            returned = config.connect()
+
+        connect.assert_called_once_with("postgresql://primary-user:pw@db.example.com:5432/app")
+        self.assertEqual(connect.return_value, returned)
+
     def test_prefers_explicit_postgres_dsn_over_legacy_env(self) -> None:
         config = load_flare_plan_database_config(
             {
@@ -77,15 +90,19 @@ class FlarePlanBackendConstructionTests(unittest.TestCase):
         with (
             patch("backend.app.http.app.SupportChannelRepository") as support_repo_cls,
             patch("backend.app.http.app.PostgresFlarePlanRepository") as flare_plan_repo_cls,
+            patch("backend.app.http.app.PostgresFlareTraceRepository") as flare_trace_repo_cls,
         ):
             build_support_channel_http_app(env=env)
 
         support_config = support_repo_cls.call_args.kwargs["config"]
         flare_plan_config = flare_plan_repo_cls.call_args.kwargs["config"]
+        flare_trace_config = flare_trace_repo_cls.call_args.kwargs["config"]
         self.assertEqual("https://project.supabase.co", support_config.url)
         self.assertEqual("service-role-key", support_config.service_role_key)
         self.assertEqual("postgresql://plan-user:pw@db.example.com:5432/flare", flare_plan_config.dsn)
         self.assertEqual(FLARE_POSTGRES_DSN_ENV_NAME, flare_plan_config.source_env_name)
+        self.assertEqual("postgresql://plan-user:pw@db.example.com:5432/flare", flare_trace_config.dsn)
+        self.assertEqual(FLARE_POSTGRES_DSN_ENV_NAME, flare_trace_config.source_env_name)
 
 
 if __name__ == "__main__":

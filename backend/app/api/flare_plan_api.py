@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 from http import HTTPStatus
 from typing import Any
 from urllib import parse
@@ -19,6 +20,8 @@ from backend.app.services.flare_plan_service import (
     UpdateFlarePlanActionCommand,
 )
 from backend.app.services.flare_trace_service import FlareTraceLifecycle, NoOpFlareTraceService
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FlarePlanApi:
@@ -43,16 +46,44 @@ class FlarePlanApi:
     ) -> ApiResponse:
         normalized_headers = _normalize_headers(headers or {})
         trace_id = (normalized_headers.get("idempotency-key") or "").strip()
+        parsed = parse.urlsplit(path)
+        route_path = parsed.path
         user = self._authenticator.authenticate(normalized_headers)
         if user is None:
             return _json_response(
                 HTTPStatus.UNAUTHORIZED,
                 {"error": {"code": "unauthorized", "message": "Authentication is required."}},
             )
-        self._trace_lifecycle.record_backend_received(trace_id=trace_id, user_id=user.user_id)
-        self._trace_lifecycle.record_authenticated(trace_id=trace_id, user_id=user.user_id)
-        parsed = parse.urlsplit(path)
-        route_path = parsed.path
+        if method == "POST" and route_path == "/api/flare-events":
+            _LOGGER.info(
+                "Flare event create request received",
+                extra={
+                    "authenticated_user_id": user.user_id,
+                    "idempotency_key": trace_id,
+                    "route_path": route_path,
+                },
+            )
+        backend_received_updated = self._trace_lifecycle.record_backend_received(trace_id=trace_id, user_id=user.user_id)
+        if method == "POST" and route_path == "/api/flare-events":
+            _LOGGER.info(
+                "Flare trace backend_received attempt finished",
+                extra={
+                    "authenticated_user_id": user.user_id,
+                    "backend_received_update_result": backend_received_updated,
+                    "idempotency_key": trace_id,
+                    "trace_lookup_result": "found_and_advanced" if backend_received_updated else "missing_or_update_failed",
+                },
+            )
+        authenticated_updated = self._trace_lifecycle.record_authenticated(trace_id=trace_id, user_id=user.user_id)
+        if method == "POST" and route_path == "/api/flare-events":
+            _LOGGER.info(
+                "Flare trace authenticated attempt finished",
+                extra={
+                    "authenticated_user_id": user.user_id,
+                    "authenticated_update_result": authenticated_updated,
+                    "idempotency_key": trace_id,
+                },
+            )
         try:
             if method == "GET" and route_path == "/api/flare-plan/templates":
                 templates = self._service.list_starter_templates(user_id=user.user_id)
@@ -83,12 +114,21 @@ class FlarePlanApi:
                 flare_event_id = _optional_str(flare_event.get("id")) or ""
                 flare_event_created_at = _optional_str(flare_event.get("created_at")) or ""
                 if trace_id and flare_event_id and flare_event_created_at:
-                    self._trace_lifecycle.record_completed(
+                    completed_updated = self._trace_lifecycle.record_completed(
                         trace_id=trace_id,
                         user_id=user.user_id,
                         flare_event_id=flare_event_id,
                         flare_event_created_at=flare_event_created_at,
                         terminal_http_status=response.status_code,
+                    )
+                    _LOGGER.info(
+                        "Flare trace completed attempt finished",
+                        extra={
+                            "authenticated_user_id": user.user_id,
+                            "completed_update_result": completed_updated,
+                            "flare_event_id": flare_event_id,
+                            "idempotency_key": trace_id,
+                        },
                     )
                 return _json_response(response.status_code, response.body)
             if method == "GET" and route_path.startswith("/api/flare-events/") and route_path.endswith("/response"):

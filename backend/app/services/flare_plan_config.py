@@ -4,7 +4,9 @@ import os
 from dataclasses import dataclass
 from urllib.parse import urlsplit
 
+import psycopg2
 from psycopg2.extensions import parse_dsn
+from psycopg2.extensions import connection as PgConnection
 
 FLARE_POSTGRES_DSN_ENV_NAME = "FLARE_POSTGRES_DSN"
 LEGACY_FLARE_SUPABASE_DB_URL_ENV_NAME = "FLARE_SUPABASE_DB_URL"
@@ -19,9 +21,12 @@ class FlarePlanDatabaseConfig:
     def db_url(self) -> str:
         return self.dsn
 
+    def connect(self) -> PgConnection:
+        return psycopg2.connect(self.dsn)
+
 
 def load_flare_plan_database_config(env: dict[str, str] | None = None) -> FlarePlanDatabaseConfig:
-    source = env or os.environ
+    source = os.environ if env is None else env
     explicit_dsn = (source.get(FLARE_POSTGRES_DSN_ENV_NAME) or "").strip()
     legacy_dsn = (source.get(LEGACY_FLARE_SUPABASE_DB_URL_ENV_NAME) or "").strip()
 
