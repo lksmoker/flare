@@ -56,6 +56,7 @@ Instead, it continuously synthesizes authoritative evidence into an up-to-date o
 
 Verified implementation-backed runtime evidence currently includes:
 
+- `flare_event_traces`
 - `flare_events`
 - `checkpoint_reflections`
 - `support_channels`
@@ -198,6 +199,7 @@ Trace implementation update on July 17, 2026:
 - The authenticated backend updates the same row at `backend_received`, `authenticated`, `validated`, and `completed` or `failed` milestones without creating a parallel event-create path.
 - Operator investigation now has a saved query at `db/dev_queries/flare/investigate_flare_minimal_trace_v0.sql`.
 - Manual stale cleanup and bounded retention commands now live at `db/dev_queries/flare/cleanup_flare_minimal_trace_v0.sql`.
+- Automated stale completion and retention execution are still not implemented. Trace lifecycle cleanup remains an explicit follow-up rather than a background-owned runtime behavior.
 
 ## Verified Runtime Evidence Inventory
 
@@ -219,7 +221,7 @@ Trace implementation update on July 17, 2026:
 | Plan finishing | Run status `completed` and `completed_at` | `backend/app/db/flare_plan_repository.py::_resolve_run_action` | Persisted in Postgres | `run.id`, `flare_event_id`, `completed_at` | Run read model; DB query | Verified and queryable | Whether the user completed the plan | No checkpoint route implemented yet in backend run API |
 | Plan declining | Run status `declined`, `declined_at`, unresolved actions set `not_reached` | `db/migrations/20260709030000_flare_plan_run_declined_at.sql`, `backend/app/db/flare_plan_repository.py::_decline_run` | Persisted in Postgres | `run.id`, `flare_event_id`, `declined_at` | Run read model; DB query | Verified and queryable | Whether the user skipped the plan before starting | No persisted explanation for decline |
 | Plan ending early | Run status `ended_early`, `ended_at`, unresolved actions `not_reached` | `backend/app/db/flare_plan_repository.py::_end_run_early` | Persisted in Postgres | `run.id`, `flare_event_id`, `ended_at` | Run read model; DB query | Verified and queryable | Whether the user ended the plan and how many steps were not reached | No persisted end reason |
-| Checkpoint / reflection creation | `checkpoint_reflections` row plus flare-event status update to `reflected` | `db/migrations/20260627_230500_flare_v0_persistence.sql`, `frontend/src/services/checkpointReflectionRepository.ts`, `frontend/src/state/FlareEventContext.tsx` | Persisted in Postgres | reflection `id`, `flare_event_id`, `user_id`, `created_at`, `updated_at`; flare event `status` | History screen; direct DB query | Verified and queryable | Whether a reflection exists and its qualitative content | Separate from `flare_plan_run_checkpoints`; backend run checkpoint routes are not implemented |
+| Checkpoint / reflection creation | `checkpoint_reflections` row plus flare-event status update to `reflected` | `db/migrations/20260627_230500_flare_v0_persistence.sql`, `frontend/src/services/checkpointReflectionRepository.ts`, `frontend/src/state/FlareEventContext.tsx` | Persisted in Postgres | reflection `id`, `flare_event_id`, `user_id`, `created_at`, `updated_at`; flare event `status` | History screen; direct DB query | Verified and queryable | Whether a reflection exists and its qualitative content | Separate from `flare_plan_run_checkpoints`; backend run checkpoint routes are not implemented; current signed-in save is still client-coordinated across two writes rather than one backend-owned mutation |
 | Backend request errors | API error response payloads | `backend/app/api/flare_plan_api.py`, `backend/app/api/support_channels_api.py` | Response only, not durably retained by server | Error `code`, HTTP status, sometimes `details` | Client-visible error on failed live request | Partially verified | Why a current request failed when the client observed it | No durable request-error table or structured request log |
 | Provider errors | Failed or blocked delivery-attempt rows | `backend/app/integrations/groupme_provider.py`, `backend/app/services/support_channel_sender.py` | Persisted in Postgres | `error_code`, `error_message_safe`, `raw_provider_status_ref`, `attempted_at` | Delivery-attempt query; latest delivery in response read model | Verified and queryable | Whether GroupMe rejected, was unreachable, or local channel state blocked sending | No raw provider payload retention beyond safe status ref |
 | Persistence errors | Frontend `console.warn`, backend exception path | `frontend/src/state/*.tsx`, `backend/app/http/app.py` | Frontend warnings are ephemeral; backend only logs unhandled exceptions | None durable in product tables | Device console, backend process log | Present only in ephemeral logs | That a local save/load failed during the active session | No durable persistence-failure audit surface |
