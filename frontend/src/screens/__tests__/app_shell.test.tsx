@@ -245,6 +245,7 @@ const emptyFlareEventRepository: FlareEventRepository = {
   restoreFlareEvent: jest.fn(),
   updateFlareEventStatus: jest.fn(),
 };
+const emptyFlareEventRepositoryMocks = emptyFlareEventRepository as jest.Mocked<FlareEventRepository>;
 
 function ConfiguredProviders({ children }: PropsWithChildren) {
   return (
@@ -362,6 +363,12 @@ describe("V0 app shell", () => {
       supportDelivery: null,
     });
     (flareResponseApi.skipFlarePlanAction as jest.Mock).mockReset();
+    emptyFlareEventRepositoryMocks.archiveFlareEvent.mockReset();
+    emptyFlareEventRepositoryMocks.createFlareEvent.mockReset();
+    emptyFlareEventRepositoryMocks.loadFlareEvents.mockReset();
+    emptyFlareEventRepositoryMocks.loadFlareEvents.mockResolvedValue([]);
+    emptyFlareEventRepositoryMocks.restoreFlareEvent.mockReset();
+    emptyFlareEventRepositoryMocks.updateFlareEventStatus.mockReset();
   });
 
   it("renders the top-level navigation labels and Send Flare for signed-out users", () => {
@@ -1087,28 +1094,32 @@ describe("V0 app shell", () => {
     "shows a calm sent status when Send Flare reaches the enabled support group",
     async () => {
       enableConfiguredFlarePlan();
-      jest.spyOn(flareResponseApi, "createFlareResponse").mockResolvedValue({
-        flareEvent: {
-          anchorNoteId: null,
-          anchorNoteVersion: null,
-          archivedAt: null,
-          behaviorDescriptionSnapshot: null,
-          behaviorLabelSnapshot: "Late-night scrolling",
-          behaviorPatternId: null,
-          checkpoint: null,
-          closedAt: null,
-          createdAt: "2026-07-09T00:00:00Z",
-          id: "event-1",
-          responseMode: "configured",
-          status: "active",
-          supportActionShown: null,
-          supportActionTaken: null,
-          updatedAt: "2026-07-09T00:00:00Z",
-          userId: "user-123",
-        },
-        run: null,
-      });
-      jest.spyOn(supportChannelApi, "sendSupportChannelFlare").mockResolvedValue({
+      const backendCreateSpy = jest
+        .spyOn(flareResponseApi, "createFlareResponse")
+        .mockResolvedValue({
+          flareEvent: {
+            anchorNoteId: null,
+            anchorNoteVersion: null,
+            archivedAt: null,
+            behaviorDescriptionSnapshot: null,
+            behaviorLabelSnapshot: "Late-night scrolling",
+            behaviorPatternId: null,
+            checkpoint: null,
+            closedAt: null,
+            createdAt: "2026-07-09T00:00:00Z",
+            id: "event-1",
+            responseMode: "configured",
+            status: "active",
+            supportActionShown: null,
+            supportActionTaken: null,
+            updatedAt: "2026-07-09T00:00:00Z",
+            userId: "user-123",
+          },
+          run: null,
+        });
+      const supportSendSpy = jest
+        .spyOn(supportChannelApi, "sendSupportChannelFlare")
+        .mockResolvedValue({
         attempted_at: "2026-07-06T03:40:00Z",
         delivered_at: "2026-07-06T03:40:00Z",
         destination_display_name: "Close Friends",
@@ -1135,9 +1146,50 @@ describe("V0 app shell", () => {
         ).toBeTruthy();
         expect(getByText("Try one next step")).toBeTruthy();
       });
+
+      expect(backendCreateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          anchorNoteId: "anchor-1",
+          anchorNoteVersion: 1,
+          behaviorDescriptionSnapshot: "I keep reaching for my phone when I'm tired.",
+          behaviorLabelSnapshot: "Late-night scrolling",
+          behaviorPatternId: "behavior-1",
+          idempotencyKey: expect.any(String),
+          responseMode: "configured",
+          supportActionShown: "Put the phone away.",
+        }),
+        undefined,
+      );
+      expect(supportSendSpy).toHaveBeenCalledWith({ flareEventId: "event-1" });
+      expect(emptyFlareEventRepository.createFlareEvent).not.toHaveBeenCalled();
     },
     15000,
   );
+
+  it("keeps the primary signed-in path on the backend create route when event creation fails", async () => {
+    enableConfiguredFlarePlan();
+    jest
+      .spyOn(flareResponseApi, "createFlareResponse")
+      .mockRejectedValue(new Error("Flare could not be created right now."));
+    const supportSendSpy = jest.spyOn(supportChannelApi, "sendSupportChannelFlare");
+
+    const createSpy = jest.spyOn(flareResponseApi, "createFlareResponse");
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
+    });
+
+    await waitForSendFlare(getByText);
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+
+    expect(supportSendSpy).not.toHaveBeenCalled();
+    expect(emptyFlareEventRepository.createFlareEvent).not.toHaveBeenCalled();
+    expect(queryByText("Support message sent")).toBeNull();
+    expect(queryByText("Flare Response")).toBeNull();
+  });
 
   it("keeps the flare event flow working when external delivery fails safely", async () => {
     enableConfiguredFlarePlan();

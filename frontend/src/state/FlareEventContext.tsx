@@ -284,7 +284,6 @@ export function FlareEventProvider({
   const { anchorNote, anchorNoteRecord } = useAnchorNote();
   const { behaviorPattern, behaviorPatternRecord } = useBehaviorPattern();
   const [flareEvents, setFlareEvents] = useState<FlareEvent[]>([]);
-  const createPromisesRef = useRef(new Map<string, Promise<PersistedFlareEvent>>());
   const flareEventsRef = useRef<FlareEvent[]>([]);
 
   useEffect(() => {
@@ -299,8 +298,6 @@ export function FlareEventProvider({
         authStateOverride ?? authContext?.authState ?? (await resolveAuthState());
 
       if (activeAuthState.kind !== "authenticated") {
-        createPromisesRef.current.clear();
-
         if (isActive) {
           setFlareEvents([]);
         }
@@ -315,29 +312,7 @@ export function FlareEventProvider({
         );
 
         if (isActive) {
-          setFlareEvents((currentEvents) => {
-            const pendingLocalEvents = currentEvents.filter((flareEvent) =>
-              createPromisesRef.current.has(flareEvent.id),
-            );
-            const persistedFlareEvents = persistedEvents.map(
-              (record) => record.flareEvent,
-            );
-
-            if (pendingLocalEvents.length === 0) {
-              return persistedFlareEvents;
-            }
-
-            return [
-              ...pendingLocalEvents,
-              ...persistedFlareEvents.filter(
-                (persistedFlareEvent) =>
-                  !pendingLocalEvents.some(
-                    (pendingFlareEvent) =>
-                      pendingFlareEvent.id === persistedFlareEvent.id,
-                  ),
-              ),
-            ];
-          });
+          setFlareEvents(persistedEvents.map((record) => record.flareEvent));
         }
       } catch (error) {
         console.warn("Failed to load persisted Flare Events.", error);
@@ -429,11 +404,6 @@ export function FlareEventProvider({
         );
       },
       createFlareEvent: (input) => {
-        const previousActiveEvent =
-          flareEventsRef.current.find(
-            (flareEvent) =>
-              flareEvent.status === "active" && !isArchivedFlareEvent(flareEvent),
-          ) ?? null;
         const nextEvent = createLocalFlareEventRecord({
           anchorNoteId: anchorNoteRecord?.id ?? null,
           anchorNoteVersion: anchorNoteRecord?.version ?? null,
@@ -471,73 +441,6 @@ export function FlareEventProvider({
               : flareEvent,
           ),
         ]);
-
-        void (async () => {
-          try {
-            const authState =
-              authStateOverride ??
-              authContext?.authState ??
-              (await resolveAuthState());
-
-            if (authState.kind !== "authenticated") {
-              return;
-            }
-
-            if (previousActiveEvent) {
-              const previousPersistedEvent =
-                createPromisesRef.current.get(previousActiveEvent.id) ??
-                Promise.resolve({
-                  createdAt: previousActiveEvent.createdAt,
-                  flareEvent: previousActiveEvent,
-                  id: previousActiveEvent.id,
-                  updatedAt: previousActiveEvent.updatedAt,
-                  userId: authState.userId,
-                });
-              const resolvedPreviousEvent = await previousPersistedEvent;
-
-              if (
-                resolvedPreviousEvent.id &&
-                resolvedPreviousEvent.flareEvent.userId === authState.userId
-              ) {
-                await flareEventRepository.updateFlareEventStatus({
-                  closedAt: new Date().toISOString(),
-                  eventId: resolvedPreviousEvent.id,
-                  status: "closed",
-                  userId: authState.userId,
-                });
-              }
-            }
-
-            const createPromise = flareEventRepository.createFlareEvent({
-              anchorNoteId: nextEvent.anchorNoteId,
-              anchorNoteVersion: nextEvent.anchorNoteVersion,
-              behaviorDescriptionSnapshot: nextEvent.behaviorDescriptionSnapshot,
-              behaviorLabelSnapshot:
-                nextEvent.behaviorLabelSnapshot ?? UNCONFIGURED_BEHAVIOR_LABEL,
-              behaviorPatternId: nextEvent.behaviorPatternId,
-              responseMode: nextEvent.responseMode,
-              supportActionShown: nextEvent.supportActionShown,
-              supportActionTaken: nextEvent.supportActionTaken,
-              userId: authState.userId,
-            });
-            createPromisesRef.current.set(nextEvent.id, createPromise);
-            const persistedRecord = await createPromise;
-            createPromisesRef.current.set(
-              nextEvent.id,
-              Promise.resolve(persistedRecord),
-            );
-
-            setFlareEvents((currentEvents) =>
-              replaceFlareEvent(
-                currentEvents,
-                nextEvent.id,
-                mergePersistedFlareEvent(nextEvent, persistedRecord),
-              ),
-            );
-          } catch (error) {
-            console.warn("Failed to persist Flare Event.", error);
-          }
-        })();
 
         return nextEvent;
       },
@@ -652,27 +555,15 @@ export function FlareEventProvider({
                   flareEvent.id === currentActiveEvent.id ||
                   flareEvent.createdAt === currentActiveEvent.createdAt,
               ) ?? currentActiveEvent;
-
-            const persistedEvent =
-              createPromisesRef.current.get(currentActiveEvent.id) ??
-              Promise.resolve({
-                createdAt: latestMatchingEvent.createdAt,
-                flareEvent: latestMatchingEvent,
-                id: latestMatchingEvent.id,
-                updatedAt: latestMatchingEvent.updatedAt,
-                userId: authState.userId,
-              });
-            const resolvedEvent = await persistedEvent;
-            const durableEventId = resolvedEvent.id;
             const persistedCheckpointReflection =
               await checkpointReflectionRepository.saveCheckpointReflection({
                 checkpointReflection: input,
-                flareEventId: durableEventId,
+                flareEventId: latestMatchingEvent.id,
                 userId: authState.userId,
               });
             const persistedFlareEvent =
               await flareEventRepository.updateFlareEventStatus({
-                eventId: durableEventId,
+                eventId: latestMatchingEvent.id,
                 status: "reflected",
                 userId: authState.userId,
               });
@@ -681,7 +572,7 @@ export function FlareEventProvider({
               currentEvents.map((flareEvent) => {
                 if (
                   flareEvent.id !== currentActiveEvent.id &&
-                  flareEvent.id !== durableEventId
+                  flareEvent.id !== latestMatchingEvent.id
                 ) {
                   return flareEvent;
                 }

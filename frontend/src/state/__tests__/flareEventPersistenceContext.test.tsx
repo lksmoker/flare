@@ -31,6 +31,7 @@ function FlareEventHarness() {
     flareEvents,
     restoreFlareEvent,
     saveCheckpointReflection,
+    upsertPersistedFlareEvent,
   } = useFlareEvents();
 
   return (
@@ -62,6 +63,37 @@ function FlareEventHarness() {
         }}
       >
         <Text>send flare</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          upsertPersistedFlareEvent({
+            createdAt: "2026-07-02T02:00:00.000Z",
+            flareEvent: {
+              anchorNoteId: "anchor-1",
+              anchorNoteVersion: 4,
+              archivedAt: null,
+              behaviorDescriptionSnapshot:
+                "I start checking feeds when I feel depleted.",
+              behaviorLabelSnapshot: "Late-night scrolling",
+              behaviorPatternId: "pattern-1",
+              checkpoint: null,
+              closedAt: null,
+              createdAt: "2026-07-02T02:00:00.000Z",
+              id: "event-1",
+              responseMode: "configured",
+              status: "active",
+              supportActionShown: "Leave the room and drink water.",
+              supportActionTaken: null,
+              updatedAt: "2026-07-02T02:00:00.000Z",
+              userId: "user-123",
+            },
+            id: "event-1",
+            updatedAt: "2026-07-02T02:00:00.000Z",
+            userId: "user-123",
+          });
+        }}
+      >
+        <Text>hydrate persisted event</Text>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -183,35 +215,10 @@ const anchorNoteRecord: PersistedAnchorNote = {
 };
 
 describe("FlareEventProvider persistence", () => {
-  it("creates a durable flare event with the authenticated user id and snapshots", async () => {
-    const createFlareEvent = jest.fn().mockResolvedValue({
-      createdAt: "2026-07-02T02:00:00.000Z",
-      flareEvent: {
-        anchorNoteId: "anchor-1",
-        anchorNoteVersion: 4,
-        archivedAt: null,
-        behaviorDescriptionSnapshot:
-          "I start checking feeds when I feel depleted.",
-        behaviorLabelSnapshot: "Late-night scrolling",
-        behaviorPatternId: "pattern-1",
-        checkpoint: null,
-        closedAt: null,
-        createdAt: "2026-07-02T02:00:00.000Z",
-        id: "event-1",
-        responseMode: "configured",
-        status: "active",
-        supportActionShown: "Leave the room and drink water.",
-        supportActionTaken: null,
-        updatedAt: "2026-07-02T02:00:00.000Z",
-        userId: "user-123",
-      },
-      id: "event-1",
-      updatedAt: "2026-07-02T02:00:00.000Z",
-      userId: "user-123",
-    });
+  it("keeps createFlareEvent local-only even when a session exists", async () => {
     const flareEventRepository: FlareEventRepository = {
       archiveFlareEvent: jest.fn(),
-      createFlareEvent,
+      createFlareEvent: jest.fn(),
       loadFlareEvents: jest.fn().mockResolvedValue([]),
       restoreFlareEvent: jest.fn(),
       updateFlareEventStatus: jest.fn(),
@@ -235,26 +242,11 @@ describe("FlareEventProvider persistence", () => {
     fireEvent.press(getByText("send flare"));
 
     await waitFor(() => {
-      expect(createFlareEvent).toHaveBeenCalledWith({
-        anchorNoteId: "anchor-1",
-        anchorNoteVersion: 4,
-        behaviorDescriptionSnapshot:
-          "I start checking feeds when I feel depleted.",
-        behaviorLabelSnapshot: "Late-night scrolling",
-        behaviorPatternId: "pattern-1",
-        responseMode: "configured",
-        supportActionShown: "Leave the room and drink water.",
-        supportActionTaken: null,
-        userId: "user-123",
-      });
+      expect(getByText("event count: 1")).toBeTruthy();
+      expect(getByText("event labels: Late-night scrolling")).toBeTruthy();
     });
 
-    expect(createFlareEvent.mock.calls[0][0]).not.toHaveProperty(
-      "interruptionReasons",
-    );
-    expect(createFlareEvent.mock.calls[0][0]).not.toHaveProperty(
-      "supportivePhrase",
-    );
+    expect(flareEventRepository.createFlareEvent).not.toHaveBeenCalled();
   });
 
   it("keeps send flare local-only and skips repository writes when there is no session", async () => {
@@ -282,31 +274,6 @@ describe("FlareEventProvider persistence", () => {
   });
 
   it("persists a checkpoint reflection against the durable event and marks the event reflected", async () => {
-    const createFlareEvent = jest.fn().mockResolvedValue({
-      createdAt: "2026-07-02T02:00:00.000Z",
-      flareEvent: {
-        anchorNoteId: "anchor-1",
-        anchorNoteVersion: 4,
-        archivedAt: null,
-        behaviorDescriptionSnapshot:
-          "I start checking feeds when I feel depleted.",
-        behaviorLabelSnapshot: "Late-night scrolling",
-        behaviorPatternId: "pattern-1",
-        checkpoint: null,
-        closedAt: null,
-        createdAt: "2026-07-02T02:00:00.000Z",
-        id: "event-1",
-        responseMode: "configured",
-        status: "active",
-        supportActionShown: "Leave the room and drink water.",
-        supportActionTaken: null,
-        updatedAt: "2026-07-02T02:00:00.000Z",
-        userId: "user-123",
-      },
-      id: "event-1",
-      updatedAt: "2026-07-02T02:00:00.000Z",
-      userId: "user-123",
-    });
     const updateFlareEventStatus = jest.fn().mockResolvedValue({
       createdAt: "2026-07-02T02:00:00.000Z",
       flareEvent: {
@@ -352,7 +319,7 @@ describe("FlareEventProvider persistence", () => {
     });
     const flareEventRepository: FlareEventRepository = {
       archiveFlareEvent: jest.fn(),
-      createFlareEvent,
+      createFlareEvent: jest.fn(),
       loadFlareEvents: jest.fn().mockResolvedValue([]),
       restoreFlareEvent: jest.fn(),
       updateFlareEventStatus,
@@ -373,7 +340,11 @@ describe("FlareEventProvider persistence", () => {
       flareEventRepository,
     });
 
-    fireEvent.press(getByText("send flare"));
+    await waitFor(() => {
+      expect(getByText("event count: 0")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("hydrate persisted event"));
 
     await waitFor(() => {
       expect(getByText("event count: 1")).toBeTruthy();
