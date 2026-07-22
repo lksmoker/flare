@@ -49,6 +49,10 @@ The test should validate whether a user can:
 
 The first private cohort is not intended to prove broad market demand, clinical effectiveness, crisis-response effectiveness, or production-scale reliability.
 
+For this first cohort, each participant must choose one primary behavior or situation and configure and evaluate the current active Flare Plan for that context. The cohort may validly test functional reliability and helpfulness within that one defined situation; it does not evaluate switching among multiple behavior-specific plans or Flare's usefulness across several situations for the same person.
+
+This constraint does not settle Flare's long-term capability or commercial packaging. The intended architecture should be able to support multiple behavior-owned plans while keeping the generic external flare signal independent of behavior selection. Access to more than one active plan may later vary by subscription or entitlement. This contract does not choose tier names, prices, plan limits, or whether multi-plan access is paid.
+
 The cohort may gather structured feedback from counselors, therapists, social workers, peer-support specialists, or other relevant professional reviewers. Such review is advisory product and experience evaluation. It is not clinical validation, research approval, treatment testing, or authorization to make health-outcome claims.
 
 Release Operations and Learning Context
@@ -306,7 +310,8 @@ Authentication
 Personal Flare Configuration
 
 * Configuring the supported personal preparation content.
-* Creating and ordering a Flare Plan.
+* Selecting one primary behavior or situation for this cohort.
+* Creating and ordering a Flare Plan for that context.
 * Adding starter actions.
 * Adding custom actions.
 * Editing, reordering, and archiving active plan actions.
@@ -715,6 +720,8 @@ The initial private cohort must be informed of at least the following current li
 * Only one active external support channel is supported per tester.
 * Only one GroupMe destination is supported at a time.
 * Message customization occurs during configuration, not at send time.
+* Only one primary behavior or situation is evaluated per tester during this first cohort.
+* The current build does not support selecting among multiple behavior-specific plans during a Flare.
 * Flare Plan actions are intentionally bounded and are presented one at a time during an active run.
 * The tester may use Flare without a configured GroupMe channel.
 * The tester may have no configured Flare Plan.
@@ -809,6 +816,7 @@ Onboarding Criteria
 * The tester eligibility criteria are applied.
 * Each tester acknowledges the unfinished nature of the software.
 * Each tester receives the privacy summary, known limitations, support path, and emergency boundary.
+* Each tester is instructed to choose one primary behavior or situation and use that same context for the cohort.
 * GroupMe testers understand that the test message will appear in the real selected group.
 
 Entry requires all mandatory criteria, not merely a successful local development run.
@@ -912,6 +920,8 @@ The private test should collect evidence about:
 * Whether signed-out versus signed-in behavior is clear.
 * Whether account access is reliable enough for the cohort.
 * Whether testers can create a meaningful short plan.
+* Whether one configured plan remains useful for the participant's chosen primary behavior or situation.
+* Whether participants wanted to use Flare for a different behavior or situation than the one they configured, and what was happening when that need arose.
 * Whether GroupMe setup is understandable.
 * Whether testers understand that test messages enter the real group.
 * Whether external delivery status is trusted and understandable.
@@ -934,6 +944,8 @@ The private test should collect evidence about:
 * Which lessons should inform future application-release practices.
 
 Anecdotal positive feedback alone is not sufficient evidence to expand access. Aggregate counts alone are also insufficient at this cohort size; decisions should consider the underlying experiences, context, operational evidence, and unresolved risk.
+
+Evidence that participants wanted additional behavior-specific plans may inform future capability and entitlement decisions, but this cohort does not by itself determine pricing, subscription boundaries, or the number of plans available in any tier.
 
 Exit Criteria for Completing the First Cohort
 
