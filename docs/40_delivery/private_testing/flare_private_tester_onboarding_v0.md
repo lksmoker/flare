@@ -14,6 +14,8 @@ Flare is a personal support tool for difficult moments. It helps you prepare a s
 
 This private test is trying to learn whether the current Flare experience is understandable, honest about its limits, and usable in realistic but controlled testing.
 
+This first cohort intentionally uses one primary behavior or situation per tester. It is not testing multiple behavior-specific plans or switching between plans.
+
 ## Before You Begin
 
 - Use `[SUPPORTED DEVICE AND BROWSER]`.
@@ -70,12 +72,14 @@ Signing in enables the account-backed parts of the private test, including:
 
 ## Configuring A Short Flare Plan
 
+Before you configure Flare, choose one primary behavior or situation for this test. Pick a context in which a short plan could realistically help, and use that same context throughout the cohort.
+
 Follow this first-session sequence:
 
 1. Read the Welcome content.
 2. Sign in with `[APPROVED TESTER EMAIL]`.
 3. Open `Customize`.
-4. Review `Behavior Pattern` and `Anchor Note` if you want to personalize them.
+4. Use `Behavior Pattern` to describe the one primary behavior or situation you chose, and review `Anchor Note` if you want to personalize it.
 5. Open `Flare Plan`.
 6. Add at least one short action you could realistically follow in the moment.
 7. Keep the plan short. One to three meaningful actions is enough for this test.
@@ -124,6 +128,10 @@ You can safely test the local Flare flow without creating a real emergency.
 3. Review the response flow.
 4. If your plan is offered, begin it and move through one or two steps.
 5. If you want, complete or skip the short checkpoint or reflection flow.
+
+## Feedback About Other Situations
+
+During the test, please tell us if there were moments when you wanted to use Flare for a different behavior or situation than the one you configured. If so, describe what was happening and whether having another plan would have helped.
 
 ## What Delivery Success Means
 
