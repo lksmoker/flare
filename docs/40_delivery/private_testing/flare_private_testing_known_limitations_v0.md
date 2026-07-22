@@ -21,6 +21,8 @@
 - Flare does not dispatch help.
 - Local Flare behavior is separate from external GroupMe delivery.
 - Your Flare Plan may be empty or very short.
+- This cohort asks you to use Flare for one primary behavior or situation.
+- The current build does not let you maintain or choose among multiple behavior-specific plans.
 - History, deletion, export, cross-device behavior, and account-recovery behavior may not match a final production product.
 - Private-test data may need to be reset before a later release.
 - Screens, wording, and behavior may change during the test.
@@ -32,6 +34,7 @@
 - read receipts
 - escalation
 - multiple support groups
+- multiple behavior-specific plans and in-the-moment plan selection
 - in-app developer announcements
 - automated post-Flare follow-up
 - public distribution
