@@ -335,20 +335,23 @@ export function SupportChannelSetupModal({
   async function sendTest() {
     setIsSendingTest(true);
     setErrorMessage(null);
+    setNotice(null);
 
     try {
       const result = await sendSupportChannelTest();
       setLastTestResult(result);
-      setNotice(
-        result.status === "sent"
-          ? flareContent.components.supportChannel.notice.testSent
-          : result.error_message_safe ??
-              flareContent.components.supportChannel.errors.testFailed,
-      );
+      if (result.status === "sent") {
+        setNotice(flareContent.components.supportChannel.notice.testSent);
+      } else {
+        setErrorMessage(
+          result.error_message_safe ??
+            flareContent.components.supportChannel.errors.testFailed,
+        );
+      }
       await loadChannel();
     } catch (error) {
       if (error instanceof SupportChannelApiError) {
-        setNotice(error.message);
+        setErrorMessage(error.message);
       } else {
         setErrorMessage(flareContent.components.supportChannel.errors.testFailed);
       }
@@ -407,6 +410,17 @@ export function SupportChannelSetupModal({
             </View>
           </View>
         </View>
+
+        {isLoading ? (
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>
+              {flareContent.common.states.loading.checkingConnection}
+            </Text>
+            <Text style={styles.cardCopy}>
+              {flareContent.components.supportChannel.currentStatus.copy}
+            </Text>
+          </View>
+        ) : null}
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>
@@ -495,35 +509,41 @@ export function SupportChannelSetupModal({
             <Text style={styles.cardCopy}>
               {flareContent.components.supportChannel.steps.choose.copy}
             </Text>
-            <View style={styles.optionList}>
-              {destinations.map((destination) => {
-                const isSelected = destination.id === selectedDestinationId;
+            {destinations.length === 0 ? (
+              <Text style={styles.destinationMeta}>
+                No GroupMe groups were returned yet. Reconnect if you expected one.
+              </Text>
+            ) : (
+              <View style={styles.optionList}>
+                {destinations.map((destination) => {
+                  const isSelected = destination.id === selectedDestinationId;
 
-                return (
-                  <Pressable
-                    key={destination.id}
-                    accessibilityRole="button"
-                    onPress={() => setSelectedDestinationId(destination.id)}
-                    style={[
-                      styles.destinationCard,
-                      isSelected && styles.destinationCardSelected,
-                    ]}
-                  >
-                    <Text style={styles.destinationName}>{destination.name}</Text>
-                    {destination.description ? (
-                      <Text style={styles.destinationMeta}>
-                        {destination.description}
-                      </Text>
-                    ) : null}
-                    {destination.group_type ? (
-                      <Text style={styles.destinationMeta}>
-                        {destination.group_type}
-                      </Text>
-                    ) : null}
-                  </Pressable>
-                );
-              })}
-            </View>
+                  return (
+                    <Pressable
+                      key={destination.id}
+                      accessibilityRole="button"
+                      onPress={() => setSelectedDestinationId(destination.id)}
+                      style={[
+                        styles.destinationCard,
+                        isSelected && styles.destinationCardSelected,
+                      ]}
+                    >
+                      <Text style={styles.destinationName}>{destination.name}</Text>
+                      {destination.description ? (
+                        <Text style={styles.destinationMeta}>
+                          {destination.description}
+                        </Text>
+                      ) : null}
+                      {destination.group_type ? (
+                        <Text style={styles.destinationMeta}>
+                          {destination.group_type}
+                        </Text>
+                      ) : null}
+                    </Pressable>
+                  );
+                })}
+              </View>
+            )}
           </View>
         ) : null}
 
@@ -604,6 +624,17 @@ export function SupportChannelSetupModal({
 
         {notice ? <Text style={styles.notice}>{notice}</Text> : null}
         {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
+        {errorMessage && !isLoading ? (
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => void loadChannel()}
+            style={styles.secondaryRetryButton}
+          >
+            <Text style={styles.secondaryButtonLabel}>
+              {flareContent.common.actions.retry}
+            </Text>
+          </Pressable>
+        ) : null}
       </View>
     </PlaceholderModal>
   );
@@ -732,6 +763,17 @@ const styles = StyleSheet.create({
     borderColor: flareTheme.colors.border,
     backgroundColor: flareTheme.colors.surfaceStrong,
     paddingHorizontal: 18,
+  },
+  secondaryRetryButton: {
+    alignSelf: "flex-start",
+    minHeight: 44,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
+    paddingHorizontal: 16,
   },
   secondaryButtonLabel: {
     color: flareTheme.colors.text,

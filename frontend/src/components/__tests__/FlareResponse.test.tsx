@@ -17,6 +17,7 @@ function renderFlareResponse({
   anchorNote?: AnchorNote | null;
   externalSupportState?: {
     copy: string;
+    kind: "blocked" | "disabled" | "failed" | "not-configured" | "sending" | "sent";
     title: string;
     tone: "muted" | "success" | "warning";
   } | null;
@@ -87,6 +88,7 @@ describe("FlareResponse", () => {
       },
       externalSupportState: {
         copy: "Your saved support message was sent to the connected group.",
+        kind: "sent",
         title: "Support message sent",
         tone: "success",
       },
@@ -194,6 +196,7 @@ describe("FlareResponse", () => {
       },
       externalSupportState: {
         copy: "The support message did not go through, but your flare was still recorded here.",
+        kind: "failed",
         title: "Support message failed",
         tone: "warning",
       },
@@ -234,6 +237,7 @@ describe("FlareResponse", () => {
     const { getByText, queryByText, toJSON } = renderFlareResponse({
       externalSupportState: {
         copy: "Your saved support message was sent to the connected group.",
+        kind: "sent",
         title: "Support message sent",
         tone: "success",
       },

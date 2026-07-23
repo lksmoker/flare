@@ -1,4 +1,5 @@
 import {
+  useCallback,
   createContext,
   PropsWithChildren,
   useContext,
@@ -80,7 +81,10 @@ type FlareEventContextValue = {
   archiveFlareEvent: (eventId: string) => void;
   currentEvent: FlareEvent | null;
   flareEvents: FlareEvent[];
+  flareEventsError: string | null;
   createFlareEvent: (input: CreateFlareEventInput) => FlareEvent;
+  isLoadingEvents: boolean;
+  reloadFlareEvents: () => Promise<void>;
   restoreFlareEvent: (eventId: string) => void;
   saveCheckpointReflection: (input: SaveCheckpointReflectionInput) => void;
   upsertPersistedFlareEvent: (persistedRecord: PersistedFlareEvent) => void;
@@ -284,52 +288,68 @@ export function FlareEventProvider({
   const { anchorNote, anchorNoteRecord } = useAnchorNote();
   const { behaviorPattern, behaviorPatternRecord } = useBehaviorPattern();
   const [flareEvents, setFlareEvents] = useState<FlareEvent[]>([]);
+  const [flareEventsError, setFlareEventsError] = useState<string | null>(null);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   const flareEventsRef = useRef<FlareEvent[]>([]);
+  const loadRequestIdRef = useRef(0);
 
   useEffect(() => {
     flareEventsRef.current = flareEvents;
   }, [flareEvents]);
 
-  useEffect(() => {
-    let isActive = true;
+  const reloadFlareEvents = useCallback(async () => {
+    const requestId = loadRequestIdRef.current + 1;
+    loadRequestIdRef.current = requestId;
+    setIsLoadingEvents(true);
+    setFlareEventsError(null);
 
-    async function loadFlareEvents() {
+    try {
       const activeAuthState =
         authStateOverride ?? authContext?.authState ?? (await resolveAuthState());
 
-      if (activeAuthState.kind !== "authenticated") {
-        if (isActive) {
-          setFlareEvents([]);
-        }
-
+      if (requestId !== loadRequestIdRef.current) {
         return;
       }
 
-      try {
-        const persistedEvents = await flareEventRepository.loadFlareEvents(
-          activeAuthState.userId,
-          { includeArchived: true },
-        );
+      if (activeAuthState.kind !== "authenticated") {
+        setFlareEvents([]);
+        setFlareEventsError(null);
+        return;
+      }
 
-        if (isActive) {
-          setFlareEvents(persistedEvents.map((record) => record.flareEvent));
-        }
-      } catch (error) {
-        console.warn("Failed to load persisted Flare Events.", error);
+      const persistedEvents = await flareEventRepository.loadFlareEvents(
+        activeAuthState.userId,
+        { includeArchived: true },
+      );
+
+      if (requestId !== loadRequestIdRef.current) {
+        return;
+      }
+
+      setFlareEvents(persistedEvents.map((record) => record.flareEvent));
+      setFlareEventsError(null);
+    } catch (error) {
+      if (requestId !== loadRequestIdRef.current) {
+        return;
+      }
+
+      console.warn("Failed to load persisted Flare Events.", error);
+      setFlareEventsError("Flare Event history could not be loaded right now.");
+    } finally {
+      if (requestId === loadRequestIdRef.current) {
+        setIsLoadingEvents(false);
       }
     }
-
-    void loadFlareEvents();
-
-    return () => {
-      isActive = false;
-    };
   }, [
     authContext?.authState,
     authStateOverride,
     flareEventRepository,
     resolveAuthState,
   ]);
+
+  useEffect(() => {
+    void reloadFlareEvents();
+  }, [reloadFlareEvents]);
 
   const value = useMemo<FlareEventContextValue>(() => {
     const currentEvent =
@@ -398,6 +418,9 @@ export function FlareEventProvider({
       },
       currentEvent,
       flareEvents,
+      flareEventsError,
+      isLoadingEvents,
+      reloadFlareEvents,
       upsertPersistedFlareEvent: (persistedRecord) => {
         setFlareEvents((currentEvents) =>
           insertPersistedFlareEvent(currentEvents, persistedRecord),
@@ -599,6 +622,9 @@ export function FlareEventProvider({
     checkpointReflectionRepository,
     flareEventRepository,
     flareEvents,
+    flareEventsError,
+    isLoadingEvents,
+    reloadFlareEvents,
     resolveAuthState,
   ]);
 

@@ -166,6 +166,7 @@ jest.mock("expo-linking", () => ({
 }));
 
 jest.mock("../../services/flareResponseApi", () => ({
+  ...jest.requireActual("../../services/flareResponseApi"),
   beginFlarePlanRun: jest.fn(),
   completeFlarePlanAction: jest.fn(),
   createFlareResponse: jest.fn(),
@@ -1189,6 +1190,8 @@ describe("V0 app shell", () => {
     expect(emptyFlareEventRepository.createFlareEvent).not.toHaveBeenCalled();
     expect(queryByText("Support message sent")).toBeNull();
     expect(queryByText("Flare Response")).toBeNull();
+    expect(getByText("Flare could not be sent")).toBeTruthy();
+    expect(getByText("Flare could not be created right now.")).toBeTruthy();
   });
 
   it("keeps the flare event flow working when external delivery fails safely", async () => {
@@ -1251,6 +1254,62 @@ describe("V0 app shell", () => {
     },
     15000,
   );
+
+  it("retries external support delivery without creating a duplicate Flare Event", async () => {
+    enableConfiguredFlarePlan();
+    const createSpy = jest
+      .spyOn(flareResponseApi, "createFlareResponse")
+      .mockResolvedValue({
+        flareEvent: createMockFlareEvent(),
+        run: null,
+      });
+    const supportSendSpy = jest
+      .spyOn(supportChannelApi, "sendSupportChannelFlare")
+      .mockResolvedValueOnce({
+        attempted_at: "2026-07-06T03:45:00Z",
+        delivered_at: null,
+        destination_display_name: "Close Friends",
+        error_code: "groupme_http_500",
+        error_message_safe: "GroupMe rejected the support message.",
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        send_kind: "real",
+        status: "failed",
+      })
+      .mockResolvedValueOnce({
+        attempted_at: "2026-07-06T03:46:00Z",
+        delivered_at: "2026-07-06T03:46:00Z",
+        destination_display_name: "Close Friends",
+        error_code: null,
+        error_message_safe: null,
+        message_preview: DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+        provider: "groupme",
+        send_kind: "real",
+        status: "sent",
+      });
+
+    const { getByText, queryByText } = render(<FlareScreen />, {
+      wrapper: ConfiguredProviders,
+    });
+
+    await waitForSendFlare(getByText);
+    fireEvent.press(getByText("Send Flare"));
+
+    await waitFor(() => {
+      expect(getByText("Support message failed")).toBeTruthy();
+      expect(getByText("Retry support message")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("Retry support message"));
+
+    await waitFor(() => {
+      expect(getByText("Support message sent")).toBeTruthy();
+    });
+
+    expect(createSpy).toHaveBeenCalledTimes(1);
+    expect(supportSendSpy).toHaveBeenCalledTimes(2);
+    expect(queryByText("Support message failed")).toBeNull();
+  });
 
   it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", async () => {
     enableConfiguredFlarePlan();

@@ -65,6 +65,30 @@ function AuthenticatedHistoryProviders({
 }
 
 describe("HistoryScreen", () => {
+  it("shows a loading state instead of the empty state while saved events are still loading", () => {
+    const flareEventRepository = createHistoryRepositoryStub({
+      loadFlareEvents: jest.fn(
+        () =>
+          new Promise(() => {
+            // Keep pending to verify the interim loading state.
+          }),
+      ),
+    });
+
+    const { getByText, queryByText } = render(<HistoryScreen />, {
+      wrapper({ children }) {
+        return (
+          <AuthenticatedHistoryProviders flareEventRepository={flareEventRepository}>
+            {children}
+          </AuthenticatedHistoryProviders>
+        );
+      },
+    });
+
+    expect(getByText("Loading saved Flare Events")).toBeTruthy();
+    expect(queryByText("No Flare Events yet")).toBeNull();
+  });
+
   it("excludes archived events from the default History view and shows them in the archived filter", async () => {
     const flareEventRepository = createHistoryRepositoryStub({
       loadFlareEvents: jest.fn().mockResolvedValue([

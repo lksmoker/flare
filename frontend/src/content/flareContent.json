@@ -11,6 +11,7 @@
     "actions": {
       "cancel": "Cancel",
       "save": "Save",
+      "retry": "Try again",
       "archiveEvent": "Archive event",
       "restoreEvent": "Restore event"
     },
@@ -171,6 +172,14 @@
       "title": "Review past flares",
       "subtitle": "A simple timeline of Flare Events and saved Checkpoint Reflections.",
       "intro": "Signed-in sessions can reload saved event history. Signed-out sessions stay local-only. Flare does not monitor you in real time or score your behavior.",
+      "loading": {
+        "title": "Loading saved Flare Events",
+        "copy": "Checking your saved event history now."
+      },
+      "error": {
+        "title": "Flare Event history could not be loaded",
+        "copy": "Try again to reload your saved events."
+      },
       "controls": {
         "title": "Find a past moment",
         "searchAccessibilityLabel": "Search Flare Event history",
@@ -417,8 +426,10 @@
     },
     "sendFlare": {
       "label": "Send Flare",
+      "sendingLabel": "Sending Flare...",
       "hint": "Starts a new Flare Event and opens Flare Response.",
-      "copy": "Mark this moment, open your saved support words, and choose a next step."
+      "copy": "Mark this moment, open your saved support words, and choose a next step.",
+      "sendingCopy": "Saving this Flare Event before the response opens."
     },
     "flareResponse": {
       "modalTitle": "Flare Response",
@@ -452,7 +463,10 @@
         "notConfiguredTitle": "No support group configured",
         "notConfiguredCopy": "Set up a support group in Customize if you want Send Flare to also notify someone.",
         "disabledTitle": "Support group is disabled",
-        "disabledCopy": "Reconnect the saved group in Customize before Send Flare can notify it."
+        "disabledCopy": "Reconnect the saved group in Customize before Send Flare can notify it.",
+        "retryAction": "Retry support message",
+        "retryingAction": "Retrying support message...",
+        "openSetupAction": "Open support setup"
       }
     },
     "checkpointReflection": {

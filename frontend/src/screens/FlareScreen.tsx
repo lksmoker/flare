@@ -47,19 +47,28 @@ import {
 type ExternalSupportState =
   | {
       copy: string;
+      kind:
+        | "blocked"
+        | "disabled"
+        | "failed"
+        | "not-configured"
+        | "sending"
+        | "sent";
       title: string;
       tone: "muted" | "success" | "warning";
     }
   | null;
+type ResolvedExternalSupportState = Exclude<ExternalSupportState, null>;
 
 function mapExternalSupportState(
   result: SupportChannelFlareDeliveryResult,
-): ExternalSupportState {
+): ResolvedExternalSupportState {
   const externalContent = flareContent.components.flareResponse.externalSupport;
 
   if (result.status === "sent") {
     return {
       copy: externalContent.sentCopy,
+      kind: "sent",
       title: externalContent.sentTitle,
       tone: "success",
     };
@@ -68,6 +77,7 @@ function mapExternalSupportState(
   if (result.error_code === "support_channel_not_configured") {
     return {
       copy: externalContent.notConfiguredCopy,
+      kind: "not-configured",
       title: externalContent.notConfiguredTitle,
       tone: "muted",
     };
@@ -76,6 +86,7 @@ function mapExternalSupportState(
   if (result.error_code === "support_channel_disabled") {
     return {
       copy: externalContent.disabledCopy,
+      kind: "disabled",
       title: externalContent.disabledTitle,
       tone: "muted",
     };
@@ -84,6 +95,7 @@ function mapExternalSupportState(
   if (result.status === "blocked") {
     return {
       copy: result.error_message_safe ?? externalContent.blockedCopy,
+      kind: "blocked",
       title: externalContent.blockedTitle,
       tone: "muted",
     };
@@ -91,6 +103,7 @@ function mapExternalSupportState(
 
   return {
     copy: result.error_message_safe ?? externalContent.failedCopy,
+    kind: "failed",
     title: externalContent.failedTitle,
     tone: "warning",
   };
@@ -121,12 +134,18 @@ export function FlareScreen() {
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
   const [isReadinessExpanded, setIsReadinessExpanded] = useState(false);
+  const [isSendingFlare, setIsSendingFlare] = useState(false);
+  const [isRetryingSupportDelivery, setIsRetryingSupportDelivery] = useState(false);
   const [externalSupportState, setExternalSupportState] =
     useState<ExternalSupportState>(null);
   const [responseState, setResponseState] = useState<FlareResponseState | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
   const [responseError, setResponseError] = useState<string | null>(null);
   const [isRunMutationPending, setIsRunMutationPending] = useState(false);
   const [retryTraceId, setRetryTraceId] = useState<string | null>(null);
+  const [supportDeliveryRetryEventId, setSupportDeliveryRetryEventId] = useState<
+    string | null
+  >(null);
   const { behaviorPattern, behaviorPatternRecord, isConfigured } = useBehaviorPattern();
   const { activeEvent, createFlareEvent, currentEvent, upsertPersistedFlareEvent } = useFlareEvents();
   const { anchorNote, anchorNoteRecord, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
@@ -183,6 +202,46 @@ export function FlareScreen() {
   const eventForResponse = responseState?.flareEvent ?? activeEvent ?? currentEvent;
   const deliveryStateForResponse =
     externalSupportState ?? mapPersistedSupportDelivery(responseState?.supportDelivery ?? null);
+  const canOpenSecondaryCheckpoint =
+    canSendFlare &&
+    !isSendingFlare &&
+    !(isFlareResponseVisible && responseState?.run?.status === "in_progress");
+
+  async function attemptSupportDelivery(flareEventId: string) {
+    const externalContent = flareContent.components.flareResponse.externalSupport;
+
+    setIsRetryingSupportDelivery(true);
+    setSupportDeliveryRetryEventId(null);
+    setExternalSupportState({
+      copy: externalContent.sendingCopy,
+      kind: "sending",
+      title: externalContent.sendingTitle,
+      tone: "muted",
+    });
+
+    try {
+      const result = await sendSupportChannelFlare({
+        flareEventId,
+      });
+      const nextState = mapExternalSupportState(result);
+      setExternalSupportState(nextState);
+      setSupportDeliveryRetryEventId(
+        nextState.kind === "failed" || nextState.kind === "blocked"
+          ? flareEventId
+          : null,
+      );
+    } catch {
+      setExternalSupportState({
+        copy: externalContent.failedCopy,
+        kind: "failed",
+        title: externalContent.failedTitle,
+        tone: "warning",
+      });
+      setSupportDeliveryRetryEventId(flareEventId);
+    } finally {
+      setIsRetryingSupportDelivery(false);
+    }
+  }
 
   useEffect(() => {
     if (authState.kind !== "authenticated" || !currentEvent) {
@@ -272,13 +331,23 @@ export function FlareScreen() {
         </View>
       ) : (
         <SendFlareButton
+          disabled={isSendingFlare}
+          isPending={isSendingFlare}
           onPress={async () => {
+            if (isSendingFlare) {
+              return;
+            }
+
+            setIsSendingFlare(true);
+            setSendError(null);
             setResponseError(null);
             setResponseState(null);
+            setExternalSupportState(null);
+            setSupportDeliveryRetryEventId(null);
             let flareEventId: string | null = null;
 
-            if (authState.kind === "authenticated") {
-              try {
+            try {
+              if (authState.kind === "authenticated") {
                 const created = await sendSignedInFlareWithTrace({
                   anchorNoteId: anchorNoteRecord?.id ?? null,
                   anchorNoteVersion: anchorNoteRecord?.version ?? null,
@@ -305,67 +374,60 @@ export function FlareScreen() {
                   run: created.run,
                   supportDelivery: null,
                 });
-              } catch (error) {
-                if (
-                  error &&
-                  typeof error === "object" &&
-                  "retryTraceId" in error &&
-                  typeof error.retryTraceId === "string"
-                ) {
-                  setRetryTraceId(error.retryTraceId);
-                }
-                setResponseError(
-                  error instanceof Error
-                    ? error.message
-                    : "Flare could not be created right now.",
-                );
-                return;
-              }
-              const externalContent =
-                flareContent.components.flareResponse.externalSupport;
-              setExternalSupportState({
-                copy: externalContent.sendingCopy,
-                title: externalContent.sendingTitle,
-                tone: "muted",
-              });
-              void sendSupportChannelFlare({
-                flareEventId,
-              })
-                .then((result) => {
-                  setExternalSupportState(mapExternalSupportState(result));
-                })
-                .catch(() => {
-                  setExternalSupportState({
-                    copy: externalContent.failedCopy,
-                    title: externalContent.failedTitle,
-                    tone: "warning",
-                  });
+                setIsCheckpointVisible(false);
+                setIsFlareResponseVisible(true);
+                void attemptSupportDelivery(created.flareEvent.id);
+              } else {
+                setRetryTraceId(null);
+                const localFallbackEvent = createFlareEvent({
+                  behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
+                  behaviorLabelSnapshot: behaviorPattern?.behaviorName,
+                  supportActionShown: anchorNote?.emergencyActions,
                 });
-            } else {
-              setRetryTraceId(null);
-              const localFallbackEvent = createFlareEvent({
-                behaviorDescriptionSnapshot: behaviorPattern?.shortDescription,
-                behaviorLabelSnapshot: behaviorPattern?.behaviorName,
-                supportActionShown: anchorNote?.emergencyActions,
-              });
-              setExternalSupportState(null);
-              setResponseState({
-                flareEvent: localFallbackEvent,
-                run:
-                  isUsingBuiltInDefaultPlan
-                    ? createBuiltInDefaultRun(localFallbackEvent.id)
-                    : null,
-                supportDelivery: null,
-              });
+                setExternalSupportState(null);
+                setResponseState({
+                  flareEvent: localFallbackEvent,
+                  run:
+                    isUsingBuiltInDefaultPlan
+                      ? createBuiltInDefaultRun(localFallbackEvent.id)
+                      : null,
+                  supportDelivery: null,
+                });
+                setIsCheckpointVisible(false);
+                setIsFlareResponseVisible(true);
+              }
+            } catch (error) {
+              if (
+                error &&
+                typeof error === "object" &&
+                "retryTraceId" in error &&
+                typeof error.retryTraceId === "string"
+              ) {
+                setRetryTraceId(error.retryTraceId);
+              }
+              setSendError(
+                error instanceof Error
+                  ? error.message
+                  : "Flare could not be created right now.",
+              );
+            } finally {
+              setIsSendingFlare(false);
             }
-            setIsCheckpointVisible(false);
-            setIsFlareResponseVisible(true);
           }}
         />
       )}
 
-      {canSendFlare &&
-      !(isFlareResponseVisible && responseState?.run?.status === "in_progress") ? (
+      {sendError && !isFlareResponseVisible ? (
+        <View style={styles.inlineStateCard}>
+          <Text style={styles.inlineStateTitle}>Flare could not be sent</Text>
+          <Text style={styles.inlineStateCopy}>{sendError}</Text>
+          <Text style={styles.inlineStateHint}>
+            {flareContent.common.actions.retry} when you are ready.
+          </Text>
+        </View>
+      ) : null}
+
+      {canOpenSecondaryCheckpoint ? (
         <Pressable
           accessibilityRole="button"
           onPress={() => setIsCheckpointVisible(true)}
@@ -447,6 +509,7 @@ export function FlareScreen() {
           externalSupportState={deliveryStateForResponse}
           flareEvent={eventForResponse}
           isMutationPending={isRunMutationPending}
+          isSupportRetryPending={isRetryingSupportDelivery}
           mutationError={responseError}
           onBeginPlan={(runId) =>
             void runMutation(() => {
@@ -476,6 +539,7 @@ export function FlareScreen() {
             })
           }
           onOpenCheckpoint={openCheckpoint}
+          onOpenSupportSetup={() => navigateToCustomize("support-channel")}
           onResolveActionDone={(runId, actionId) =>
             void runMutation(() => {
               if (isBuiltInDefaultRun(responseState?.run ?? null) && responseState?.run) {
@@ -502,6 +566,13 @@ export function FlareScreen() {
               return skipFlarePlanAction(runId, actionId, createIdempotencyKey());
             })
           }
+          onRetrySupportDelivery={() => {
+            if (!supportDeliveryRetryEventId) {
+              return;
+            }
+
+            void attemptSupportDelivery(supportDeliveryRetryEventId);
+          }}
           run={responseState?.run ?? null}
         />
       </PlaceholderModal>
@@ -607,6 +678,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: flareTheme.colors.border,
     backgroundColor: flareTheme.colors.surfaceStrong,
+  },
+  inlineStateCard: {
+    ...flareTheme.shadows.card,
+    gap: 6,
+    padding: 18,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: "#D7A07A",
+    backgroundColor: "#FFF3EA",
+  },
+  inlineStateTitle: {
+    color: flareTheme.colors.textStrong,
+    fontSize: 18,
+    lineHeight: 22,
+    fontWeight: "700",
+  },
+  inlineStateCopy: {
+    color: flareTheme.colors.text,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  inlineStateHint: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
   },
   responseSheet: {
     minHeight: "82%",

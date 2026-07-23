@@ -4,20 +4,34 @@ import flareContent from "../content/flareContent.json";
 import { flareTheme } from "../theme/flareTheme";
 
 type SendFlareButtonProps = {
+  disabled?: boolean;
+  isPending?: boolean;
   onPress: () => void;
 };
 
-export function SendFlareButton({ onPress }: SendFlareButtonProps) {
+export function SendFlareButton({
+  disabled = false,
+  isPending = false,
+  onPress,
+}: SendFlareButtonProps) {
   return (
     <Pressable
       accessibilityHint={flareContent.components.sendFlare.hint}
       accessibilityRole="button"
+      accessibilityState={{ busy: isPending, disabled }}
+      disabled={disabled}
       onPress={onPress}
-      style={styles.button}
+      style={[styles.button, disabled ? styles.buttonDisabled : null]}
     >
-      <Text style={styles.label}>{flareContent.components.sendFlare.label}</Text>
+      <Text style={styles.label}>
+        {isPending
+          ? flareContent.components.sendFlare.sendingLabel
+          : flareContent.components.sendFlare.label}
+      </Text>
       <Text style={styles.supportingCopy}>
-        {flareContent.components.sendFlare.copy}
+        {isPending
+          ? flareContent.components.sendFlare.sendingCopy
+          : flareContent.components.sendFlare.copy}
       </Text>
     </Pressable>
   );
@@ -31,6 +45,9 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderRadius: 28,
     backgroundColor: flareTheme.colors.primary,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   label: {
     color: flareTheme.colors.onPrimary,

@@ -9,6 +9,13 @@ import { flareTheme } from "../theme/flareTheme";
 
 type DeliveryState = {
   copy: string;
+  kind:
+    | "blocked"
+    | "disabled"
+    | "failed"
+    | "not-configured"
+    | "sending"
+    | "sent";
   title: string;
   tone: "muted" | "success" | "warning";
 } | null;
@@ -17,36 +24,42 @@ type FlareResponseProps = {
   externalSupportState?: DeliveryState;
   flareEvent: FlareEvent | null;
   isMutationPending?: boolean;
+  isSupportRetryPending?: boolean;
   mutationError?: string | null;
   onBeginPlan?: (runId: string) => void;
   onDeclinePlan?: (runId: string) => void;
   onEndPlan?: (runId: string) => void;
   onOpenCheckpoint: () => void;
+  onOpenSupportSetup?: () => void;
   onResolveActionDone?: (runId: string, actionId: string) => void;
   onResolveActionSkipped?: (runId: string, actionId: string) => void;
+  onRetrySupportDelivery?: () => void;
   run: FlarePlanRun | null;
 };
 
 function ActionButton({
+  busyLabel,
+  disabled = false,
   label,
   muted = false,
   onPress,
-  disabled = false,
 }: {
+  busyLabel?: string;
+  disabled?: boolean;
   label: string;
   muted?: boolean;
   onPress: () => void;
-  disabled?: boolean;
 }) {
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
       style={[styles.primaryButton, muted ? styles.primaryButtonMuted : null, disabled ? styles.buttonDisabled : null]}
     >
       <Text style={[styles.primaryButtonLabel, muted ? styles.primaryButtonMutedLabel : null]}>
-        {label}
+        {disabled && busyLabel ? busyLabel : label}
       </Text>
     </Pressable>
   );
@@ -59,13 +72,16 @@ function trimCopy(value: string | null | undefined) {
 export function FlareResponse({
   externalSupportState = null,
   isMutationPending = false,
+  isSupportRetryPending = false,
   mutationError = null,
   onBeginPlan,
   onDeclinePlan,
   onEndPlan,
   onOpenCheckpoint,
+  onOpenSupportSetup,
   onResolveActionDone,
   onResolveActionSkipped,
+  onRetrySupportDelivery,
   run,
 }: FlareResponseProps) {
   const { anchorNote } = useAnchorNote();
@@ -95,6 +111,13 @@ export function FlareResponse({
   const hasReminderSections = reminderSections.length > 0;
   const recoveryActionCopy =
     emergencyActions || flareContent.components.flareResponse.defaultNextStep;
+  const showSupportRetryAction =
+    (deliveryCardState?.kind === "failed" || deliveryCardState?.kind === "blocked") &&
+    Boolean(onRetrySupportDelivery);
+  const showSupportSetupAction =
+    (deliveryCardState?.kind === "disabled" ||
+      deliveryCardState?.kind === "not-configured") &&
+    Boolean(onOpenSupportSetup);
 
   if (run?.status === "in_progress" && currentAction) {
     return (
@@ -120,6 +143,7 @@ export function FlareResponse({
             </Text>
             <ActionButton
               disabled={isMutationPending}
+              busyLabel="Ending plan..."
               label="End plan"
               onPress={() => {
                 if (run && onEndPlan) {
@@ -138,6 +162,7 @@ export function FlareResponse({
           <View style={styles.focusedActions}>
             <ActionButton
               disabled={isMutationPending}
+              busyLabel="Saving..."
               label="Done"
               onPress={() => {
                 if (run && onResolveActionDone) {
@@ -147,6 +172,7 @@ export function FlareResponse({
             />
             <ActionButton
               disabled={isMutationPending}
+              busyLabel="Saving..."
               label="Skip this step"
               muted
               onPress={() => {
@@ -157,6 +183,7 @@ export function FlareResponse({
             />
             <Pressable
               accessibilityRole="button"
+              accessibilityState={{ disabled: isMutationPending }}
               disabled={isMutationPending}
               onPress={() => setIsEndConfirmVisible(true)}
               style={styles.linkButton}
@@ -187,6 +214,31 @@ export function FlareResponse({
             >
               <Text style={styles.deliveryTitle}>{deliveryCardState.title}</Text>
               <Text style={styles.deliveryCopy}>{deliveryCardState.copy}</Text>
+              {showSupportRetryAction ? (
+                <ActionButton
+                  disabled={isSupportRetryPending}
+                  busyLabel={
+                    flareContent.components.flareResponse.externalSupport.retryingAction
+                  }
+                  label={
+                    flareContent.components.flareResponse.externalSupport.retryAction
+                  }
+                  onPress={() => {
+                    onRetrySupportDelivery?.();
+                  }}
+                />
+              ) : null}
+              {showSupportSetupAction ? (
+                <ActionButton
+                  label={
+                    flareContent.components.flareResponse.externalSupport.openSetupAction
+                  }
+                  muted
+                  onPress={() => {
+                    onOpenSupportSetup?.();
+                  }}
+                />
+              ) : null}
             </View>
           ) : null}
           <View style={styles.recoveryReminder}>
@@ -211,6 +263,7 @@ export function FlareResponse({
             <View style={styles.recoveryActions}>
               <ActionButton
                 disabled={isMutationPending}
+                busyLabel="Starting plan..."
                 label="Begin Flare Plan"
                 onPress={() => {
                   if (run && onBeginPlan) {
@@ -220,6 +273,7 @@ export function FlareResponse({
               />
               <ActionButton
                 disabled={isMutationPending}
+                busyLabel="Saving..."
                 label="Skip for now"
                 muted
                 onPress={() => {

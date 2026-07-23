@@ -100,7 +100,14 @@ function DetailRow({
 }
 
 export function HistoryScreen() {
-  const { archiveFlareEvent, flareEvents, restoreFlareEvent } = useFlareEvents();
+  const {
+    archiveFlareEvent,
+    flareEvents,
+    flareEventsError,
+    isLoadingEvents,
+    reloadFlareEvents,
+    restoreFlareEvent,
+  } = useFlareEvents();
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("active");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEvent, setSelectedEvent] = useState<FlareEvent | null>(null);
@@ -176,12 +183,41 @@ export function HistoryScreen() {
           })}
         </View>
       </View>
-      <FlareEventHistoryList
-        emptyCopy={emptyState.copy}
-        emptyTitle={emptyState.title}
-        flareEvents={filteredEvents}
-        onSelectFlareEvent={setSelectedEvent}
-      />
+      {isLoadingEvents ? (
+        <View style={styles.stateCard}>
+          <Text style={styles.stateTitle}>
+            {flareContent.screens.history.loading.title}
+          </Text>
+          <Text style={styles.stateCopy}>
+            {flareContent.screens.history.loading.copy}
+          </Text>
+        </View>
+      ) : flareEventsError ? (
+        <View style={styles.stateCard}>
+          <Text style={styles.stateTitle}>
+            {flareContent.screens.history.error.title}
+          </Text>
+          <Text style={styles.stateCopy}>
+            {flareContent.screens.history.error.copy}
+          </Text>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => void reloadFlareEvents()}
+            style={styles.retryButton}
+          >
+            <Text style={styles.retryButtonLabel}>
+              {flareContent.common.actions.retry}
+            </Text>
+          </Pressable>
+        </View>
+      ) : (
+        <FlareEventHistoryList
+          emptyCopy={emptyState.copy}
+          emptyTitle={emptyState.title}
+          flareEvents={filteredEvents}
+          onSelectFlareEvent={setSelectedEvent}
+        />
+      )}
       <PlaceholderModal
         onClose={() => setSelectedEvent(null)}
         subtitle={flareContent.components.flareEventHistory.detailModal.subtitle}
@@ -393,6 +429,40 @@ const styles = StyleSheet.create({
   },
   filterButtonLabelActive: {
     color: flareTheme.colors.onPrimary,
+  },
+  stateCard: {
+    ...flareTheme.shadows.card,
+    gap: 10,
+    padding: 18,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surface,
+  },
+  stateTitle: {
+    color: flareTheme.colors.textStrong,
+    fontSize: 18,
+    lineHeight: 22,
+    fontWeight: "700",
+  },
+  stateCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  retryButton: {
+    minHeight: 46,
+    alignSelf: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
+    backgroundColor: flareTheme.colors.primary,
+    paddingHorizontal: 16,
+  },
+  retryButtonLabel: {
+    color: flareTheme.colors.onPrimary,
+    fontSize: 14,
+    fontWeight: "700",
   },
   detailContent: {
     gap: 14,
