@@ -66,7 +66,7 @@ class SupportChannelHttpAppTests(unittest.TestCase):
             response.headers["Access-Control-Allow-Methods"],
         )
         self.assertEqual(
-            "authorization, content-type, idempotency-key",
+            "authorization, content-type, idempotency-key, x-flare-frontend-url",
             response.headers["Access-Control-Allow-Headers"],
         )
 
@@ -89,12 +89,15 @@ class SupportChannelHttpAppTests(unittest.TestCase):
             method="POST",
             path="/api/support-channel/groupme/connect/start",
             origin="http://100.64.0.10:8081",
+            extra_headers={
+                "HTTP_X_FLARE_FRONTEND_URL": "http://100.64.0.10:8081/flare",
+            },
         )
 
         self.assertEqual(200, response.status_code)
         payload = json.loads(response.body.decode("utf-8"))
         query = parse.parse_qs(parse.urlsplit(payload["auth_url"]).query)
-        self.assertEqual(["http://100.64.0.10:8081"], query["state"])
+        self.assertEqual(["http://100.64.0.10:8081/flare"], query["state"])
 
     def test_groupme_callback_bridge_redirects_to_allowed_frontend_customize_route(self) -> None:
         response = _invoke(
@@ -108,7 +111,8 @@ class SupportChannelHttpAppTests(unittest.TestCase):
         html = response.body.decode("utf-8")
         self.assertIn("window.location.replace", html)
         self.assertIn('var defaultOrigin = "https://flare-web.tailnet.ts.net";', html)
-        self.assertIn('targetOrigin + "/customize?"', html)
+        self.assertIn('window.location.replace(targetOrigin.replace(', html)
+        self.assertIn('+ "/customize?" + redirectParams.toString()', html)
 
     def test_legacy_groupme_callback_alias_is_public_without_authorization(self) -> None:
         response = _invoke(
@@ -131,9 +135,16 @@ class SupportChannelHttpAppTests(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         html = response.body.decode("utf-8")
-        self.assertIn('var stateOrigin = hashParams.get("state") || searchParams.get("state");', html)
         self.assertIn(
-            "var targetOrigin = allowedOrigins.indexOf(stateOrigin) >= 0 ? stateOrigin : defaultOrigin;",
+            'var stateTarget = hashParams.get("state") || searchParams.get("state");',
+            html,
+        )
+        self.assertIn(
+            "var parsedTarget = new URL(stateTarget);",
+            html,
+        )
+        self.assertIn(
+            "targetOrigin = parsedTarget.origin + parsedTarget.pathname.replace(",
             html,
         )
 
@@ -371,6 +382,7 @@ def _invoke(
     origin: str | None = None,
     authorization: str | None = None,
     body: bytes | None = None,
+    extra_headers: dict[str, str] | None = None,
 ):
     raw_body = body or b""
     environ = {
@@ -385,6 +397,8 @@ def _invoke(
         environ["HTTP_ORIGIN"] = origin
     if authorization is not None:
         environ["HTTP_AUTHORIZATION"] = authorization
+    if extra_headers:
+        environ.update(extra_headers)
 
     captured: dict[str, object] = {}
 

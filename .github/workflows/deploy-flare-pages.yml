@@ -59,15 +59,17 @@ jobs:
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
-          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
+          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: https://lksmoker.github.io/flare/
           EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
 
       - name: Export web build
-        run: npx expo export --platform web
+        run: |
+          npx expo export --platform web
+          node ./scripts/prepare-pages-build.mjs
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
-          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: ${{ vars.EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL }}
+          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: https://lksmoker.github.io/flare/
           EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
 
       - name: Upload Pages artifact

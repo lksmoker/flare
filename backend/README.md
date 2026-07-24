@@ -19,6 +19,7 @@ python -m backend.app.http.server --host 0.0.0.0 --port 9001
 Runtime notes:
 
 - CORS stays exact and fail-closed: only origins listed in `FLARE_ALLOWED_FRONTEND_ORIGINS` receive browser access, and `*` is rejected.
+- For the GitHub Pages project deployment, allow `https://lksmoker.github.io` in `FLARE_ALLOWED_FRONTEND_ORIGINS`. Do not include `/flare/` in the CORS allowlist because CORS matches browser origins, not page paths.
 - The health probe is `GET /api/health`.
 - GroupMe callback setup should point to `https://<backend-host>:<port>/api/support-channel/groupme/connect/callback`.
-- The callback bridge redirects the browser back to `/customize` on the allowed frontend origin that initiated the connect flow.
+- The callback bridge redirects the browser back to `/customize` on the frontend base URL that initiated the connect flow, including `/flare` for the GitHub Pages project deployment.

@@ -6,6 +6,7 @@ export const PUBLIC_FLARE_API_BASE_URL_ENV_NAME =
   "EXPO_PUBLIC_FLARE_API_BASE_URL";
 export const DEFAULT_SUPPORT_CHANNEL_MESSAGE =
   "Luke sent a Flare and may need support. Please check in when you can.";
+export const FRONTEND_BASE_URL_HEADER = "x-flare-frontend-url";
 
 type RuntimeEnv = Record<string, string | undefined>;
 
@@ -90,6 +91,35 @@ function readDefaultRuntimeEnv(): RuntimeEnv {
   return {
     EXPO_PUBLIC_FLARE_API_BASE_URL: process.env.EXPO_PUBLIC_FLARE_API_BASE_URL,
   };
+}
+
+function normalizeFrontendBasePath(pathname: string) {
+  const normalizedPathname = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  const matchedRouteSuffix = normalizedPathname.match(
+    /\/(customize|history|_sitemap|\+not-found)\/?$/,
+  );
+
+  if (matchedRouteSuffix) {
+    const basePath = normalizedPathname.slice(
+      0,
+      normalizedPathname.length - matchedRouteSuffix[0].length,
+    );
+
+    return basePath || "/";
+  }
+
+  return normalizedPathname === "/" ? "/" : normalizedPathname.replace(/\/+$/, "");
+}
+
+export function readFrontendBaseUrl() {
+  if (typeof window === "undefined" || !window.location?.origin) {
+    return null;
+  }
+
+  const basePath = normalizeFrontendBasePath(window.location.pathname ?? "/");
+  const normalizedBasePath = basePath === "/" ? "" : basePath;
+
+  return `${window.location.origin}${normalizedBasePath}`;
 }
 
 function readApiBaseUrl(env: RuntimeEnv = readDefaultRuntimeEnv()) {
@@ -180,9 +210,18 @@ export function hasUsableSupportChannel(channel: SupportChannel | null) {
 }
 
 export async function startGroupMeConnect(deps?: RequestDeps) {
+  const frontendBaseUrl = readFrontendBaseUrl();
+
   return performRequest<SupportChannelConnectStart>(
     "/api/support-channel/groupme/connect/start",
-    { method: "POST" },
+    {
+      method: "POST",
+      headers: frontendBaseUrl
+        ? {
+            [FRONTEND_BASE_URL_HEADER]: frontendBaseUrl,
+          }
+        : undefined,
+    },
     deps,
   );
 }

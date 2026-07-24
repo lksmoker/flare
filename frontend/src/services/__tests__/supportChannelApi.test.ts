@@ -3,11 +3,14 @@ import {
   completeGroupMeConnect,
   configureSupportChannel,
   DEFAULT_SUPPORT_CHANNEL_MESSAGE,
+  FRONTEND_BASE_URL_HEADER,
   getSupportChannel,
   hasUsableSupportChannel,
+  readFrontendBaseUrl,
   readAccessTokenFromCurrentUrl,
   readAccessTokenFromUrl,
   sendSupportChannelFlare,
+  startGroupMeConnect,
   sendSupportChannelTest,
   SupportChannelApiError,
 } from "../supportChannelApi";
@@ -216,6 +219,12 @@ describe("supportChannelApi", () => {
     );
   });
 
+  it("derives the frontend base URL from the GitHub Pages project path", () => {
+    installMockWindow("https://lksmoker.github.io/flare/customize?focus=auth");
+
+    expect(readFrontendBaseUrl()).toBe("https://lksmoker.github.io/flare");
+  });
+
   it("surfaces safe backend errors from test sends", async () => {
     const fetchImpl = jest.fn().mockResolvedValue(
       createJsonResponse(
@@ -312,6 +321,34 @@ describe("supportChannelApi", () => {
       "http://localhost/api/support-channel/groupme/connect/callback?access_token=access-123",
       expect.objectContaining({
         method: "GET",
+      }),
+    );
+  });
+
+  it("includes the current frontend base URL when starting GroupMe connect", async () => {
+    installMockWindow("https://lksmoker.github.io/flare/customize");
+    const fetchImpl = jest.fn().mockResolvedValue(
+      createJsonResponse({
+        auth_url: "https://oauth.groupme.com/oauth/authorize?client_id=client-123",
+        provider: "groupme",
+      }),
+    );
+
+    await startGroupMeConnect({
+      env: {
+        EXPO_PUBLIC_FLARE_API_BASE_URL: "https://flare-api.example.test",
+      },
+      fetchImpl,
+      getAccessToken: async () => "token-123",
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://flare-api.example.test/api/support-channel/groupme/connect/start",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          [FRONTEND_BASE_URL_HEADER]: "https://lksmoker.github.io/flare",
+        }),
+        method: "POST",
       }),
     );
   });

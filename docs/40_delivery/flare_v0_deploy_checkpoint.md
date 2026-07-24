@@ -6,15 +6,16 @@ Date: 2026-07-04
 
 Flare V0 is deployed and working at:
 
-https://flare.lukesmoker.com/
+https://lksmoker.github.io/flare/
 
 The V0 release-readiness loop is now effectively complete for personal and limited external testing. The app has the core solo-user loop implemented, polished copy/theme, production GitHub Pages hosting, Supabase auth/config wired correctly, and working magic-link redirect behavior.
 
 ## Current production state
 
 - Host: GitHub Pages
-- Production URL: https://flare.lukesmoker.com/
-- Custom domain: working
+- Production URL: https://lksmoker.github.io/flare/
+- GitHub Pages base path: /flare/
+- Custom domain: removed
 - Supabase public config: loaded in deployed Expo web bundle
 - Supabase auth redirect: working
 - Magic link redirect: working
@@ -39,7 +40,7 @@ The V0 release-readiness loop is now effectively complete for personal and limit
 - Fixed reflection save flow so saving Checkpoint / Reflection returns to reflected Flare Response.
 - Applied blue theme polish.
 - Configured GitHub Pages deployment workflow.
-- Configured custom domain `flare.lukesmoker.com`.
+- Removed the old custom-domain dependency and standardized on the GitHub Pages project URL.
 - Fixed GitHub Actions Supabase env wiring.
 - Fixed Expo web env access for Supabase config and auth redirect URL.
 
@@ -72,11 +73,11 @@ The auth redirect reader now uses direct access to:
 
 Confirmed after deploy:
 
-- Production app loads at `https://flare.lukesmoker.com/`
+- Production app loads at `https://lksmoker.github.io/flare/`
 - Supabase config no longer shows local-only
 - Magic link redirect no longer reports missing redirect URL
 - UI looks good on the deployed app
-- Custom domain works
+- GitHub Pages project URL works
 
 ## Remaining follow-up candidates
 

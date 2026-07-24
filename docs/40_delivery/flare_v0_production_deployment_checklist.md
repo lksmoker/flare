@@ -4,7 +4,7 @@
 
 ## Release target
 
-- Current production target: Expo web static export hosted on a static web host.
+- Current production target: Expo web static export hosted on GitHub Pages at `https://lksmoker.github.io/flare/`.
 - Current validated user path: signed-in mobile-sized web browser flow backed by Supabase Auth and Postgres persistence.
 - This checklist does not cover native iOS/Android store release work.
 
@@ -21,7 +21,7 @@ Set these in the production host environment before building or serving the stat
 | --- | --- | --- |
 | `EXPO_PUBLIC_FLARE_SUPABASE_URL` | yes | Public Supabase project URL used by the web client. |
 | `EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY` | yes | Public anon key used by the web client. |
-| `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` | yes | Absolute production web URL used for Supabase email/password follow-up and magic-link redirect behavior. |
+| `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` | yes | Absolute production web URL used for Supabase email/password follow-up and magic-link redirect behavior. Set production to `https://lksmoker.github.io/flare/`. |
 | `FLARE_APP_ENV` | recommended | Deployment label such as `production` for operator clarity. |
 
 Do not load server/admin-only variables into the Expo web client bundle:
@@ -43,7 +43,7 @@ Verify the production Supabase project matches these assumptions:
   - Email OTP / magic link allowed if that path will remain visible in production.
   - Outbound auth email delivery is configured and working for the production project.
 - Auth URLs:
-  - Supabase `Site URL` set to the production app origin.
+  - Supabase `Site URL` set to `https://lksmoker.github.io/flare/`.
   - Supabase allowed redirect URLs include the exact `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` value.
   - If preview/staging URLs are used, add them explicitly instead of relying on localhost fallback behavior.
 - Persistence:
@@ -60,7 +60,7 @@ Before limited external testing, an operator should verify the production Supaba
 1. Confirm the project is using the intended built-in or custom SMTP provider.
 2. Send a real sign-up or magic-link email from the production project.
 3. Confirm the email is delivered successfully.
-4. Confirm the link resolves back to the exact production `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` origin instead of localhost or another fallback URL.
+4. Confirm the link resolves back to the exact production `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` page URL `https://lksmoker.github.io/flare/` instead of localhost or another fallback URL.
 5. Record the verification date and account used alongside the deploy smoke notes.
 
 ## Database migrations and expected tables
@@ -128,24 +128,24 @@ npm run build
 
 5. Confirm the Expo web export completed successfully.
 
-6. Publish the generated static site from `frontend/dist` to the chosen static host.
+6. Publish the generated static site from `frontend/dist` to GitHub Pages.
 
-7. Ensure the deployed origin exactly matches the configured `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` and Supabase allowed redirect entry.
+7. Ensure GitHub Pages serves the app from `https://lksmoker.github.io/flare/`, the generated bundle assets stay under `/flare/`, and `frontend/dist/404.html` is present for route refresh fallback.
 
 ## Manual deploy notes
 
-Because this repo does not include a host-specific deployment config, use the static host's manual or CI-driven upload flow:
+This repo includes a GitHub Pages workflow at `.github/workflows/deploy-flare-pages.yml`:
 
 - run `npm run build` from the repo root
-- upload or publish the contents of `frontend/dist`
-- configure the host to serve the static export at the same origin used in Supabase Auth
+- publish the contents of `frontend/dist` through the GitHub Pages workflow
+- keep the GitHub Pages project base path at `/flare/`
 - keep production env vars in the host secret/config surface rather than in repo-local files
 
 ## Post-deploy smoke test
 
 Run the smoke test against the deployed production URL on a mobile-sized browser viewport:
 
-1. Open the production app URL.
+1. Open `https://lksmoker.github.io/flare/`.
 2. Confirm the app loads without missing-config auth gating.
 3. Sign in with a production-ready test account.
 4. Confirm setup persistence status appears ready for Supabase-backed save behavior.
@@ -171,6 +171,8 @@ Run the smoke test against the deployed production URL on a mobile-sized browser
 Capture at minimum:
 
 - deployed URL
+- deployed origin
+- configured GitHub Pages base path
 - smoke date/time
 - account used
 - pass/fail result

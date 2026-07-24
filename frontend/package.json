@@ -11,7 +11,7 @@
     "lint": "eslint app src --ext .ts,.tsx",
     "test": "jest --runInBand",
     "typecheck": "tsc --noEmit",
-    "build": "expo export --platform web"
+    "build": "expo export --platform web && node ./scripts/prepare-pages-build.mjs"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^3.1.1",

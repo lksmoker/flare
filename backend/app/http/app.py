@@ -39,12 +39,13 @@ from backend.app.services.support_channel_sender import SupportChannelSender
 StartResponse = Callable[[str, list[tuple[str, str]]], Any]
 
 _CORS_ALLOWED_METHODS = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-_CORS_ALLOWED_HEADERS = "authorization, content-type, idempotency-key"
+_CORS_ALLOWED_HEADERS = "authorization, content-type, idempotency-key, x-flare-frontend-url"
 _API_PREFIX = "/api/"
 _GROUPME_CALLBACK_PATH = "/api/support-channel/groupme/connect/callback"
 _GROUPME_PUBLIC_CALLBACK_PATH = "/api/support-channel/groupme/callback"
 _LOGGER = logging.getLogger(__name__)
 _GROUPME_CONNECT_START_PATH = "/api/support-channel/groupme/connect/start"
+_FRONTEND_BASE_URL_HEADER = "x-flare-frontend-url"
 
 
 class UserLookupTransport(Protocol):
@@ -208,7 +209,10 @@ class SupportChannelHttpApp:
             if path == _GROUPME_CONNECT_START_PATH and response.status_code == HTTPStatus.OK:
                 response = _append_groupme_oauth_state(
                     response=response,
-                    origin=self._select_callback_frontend_origin(origin),
+                    frontend_url=self._select_callback_frontend_url(
+                        request_origin=origin,
+                        headers=headers,
+                    ),
                 )
             return self._respond(
                 start_response,
@@ -301,6 +305,20 @@ class SupportChannelHttpApp:
             return request_origin
         return self._runtime_config.allowed_frontend_origins[0]
 
+    def _select_callback_frontend_url(
+        self,
+        *,
+        request_origin: str | None,
+        headers: dict[str, str],
+    ) -> str:
+        frontend_url = _clean_frontend_base_url(
+            headers.get(_FRONTEND_BASE_URL_HEADER),
+            allowed_origins=self._runtime_config.allowed_frontend_origins,
+        )
+        if frontend_url is not None:
+            return frontend_url
+        return self._select_callback_frontend_origin(request_origin)
+
 
 def build_support_channel_http_app(
     *,
@@ -363,13 +381,13 @@ def build_support_channel_http_app(
     )
 
 
-def _append_groupme_oauth_state(*, response: ApiResponse, origin: str) -> ApiResponse:
+def _append_groupme_oauth_state(*, response: ApiResponse, frontend_url: str) -> ApiResponse:
     auth_url = response.body.get("auth_url")
     if not isinstance(auth_url, str) or not auth_url:
         return response
     parsed = parse.urlsplit(auth_url)
     query = parse.parse_qs(parsed.query, keep_blank_values=True)
-    query["state"] = [origin]
+    query["state"] = [frontend_url]
     next_query = parse.urlencode(query, doseq=True)
     next_url = parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, next_query, parsed.fragment))
     return ApiResponse(
@@ -415,6 +433,24 @@ def _clean_origin(value: object) -> str | None:
     return cleaned or None
 
 
+def _clean_frontend_base_url(
+    value: object,
+    *,
+    allowed_origins: tuple[str, ...],
+) -> str | None:
+    cleaned = _clean_origin(value)
+    if cleaned is None:
+        return None
+    parsed = parse.urlsplit(cleaned)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        return None
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    if origin not in allowed_origins or parsed.query or parsed.fragment:
+        return None
+    path = parsed.path.rstrip("/")
+    return f"{origin}{path}" if path else origin
+
+
 def _build_groupme_callback_bridge_html(
     *,
     default_frontend_origin: str,
@@ -439,8 +475,20 @@ def _build_groupme_callback_bridge_html(
       var hashParams = new URLSearchParams(window.location.hash.startsWith("#") ? window.location.hash.slice(1) : window.location.hash);
       var searchParams = new URLSearchParams(window.location.search.startsWith("?") ? window.location.search.slice(1) : window.location.search);
       var accessToken = hashParams.get("access_token") || searchParams.get("access_token") || hashParams.get("code") || searchParams.get("code");
-      var stateOrigin = hashParams.get("state") || searchParams.get("state");
-      var targetOrigin = allowedOrigins.indexOf(stateOrigin) >= 0 ? stateOrigin : defaultOrigin;
+      var stateTarget = hashParams.get("state") || searchParams.get("state");
+      var targetOrigin = defaultOrigin;
+      if (stateTarget) {{
+        try {{
+          var parsedTarget = new URL(stateTarget);
+          if (allowedOrigins.indexOf(parsedTarget.origin) >= 0) {{
+            targetOrigin = parsedTarget.origin + parsedTarget.pathname.replace(/\\/+$/, "");
+          }}
+        }} catch (error) {{
+          if (allowedOrigins.indexOf(stateTarget) >= 0) {{
+            targetOrigin = stateTarget;
+          }}
+        }}
+      }}
       if (!accessToken) {{
         document.body.innerHTML = "<p>GroupMe callback is missing an access token or code.</p>";
         return;
@@ -463,7 +511,7 @@ def _build_groupme_callback_bridge_html(
           redirectParams.set(name, value);
         }}
       }});
-      window.location.replace(targetOrigin + "/customize?" + redirectParams.toString());
+      window.location.replace(targetOrigin.replace(/\\/+$/, "") + "/customize?" + redirectParams.toString());
     }})();
   </script>
   <noscript>

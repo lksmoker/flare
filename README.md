@@ -82,6 +82,7 @@ npm run build
 
 - Define `EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL` in your external env file before starting Expo.
 - For Tailscale or other mobile web testing, set it to the Expo web URL you are actually using, for example `http://<tailscale-ip>:8081`.
+- For the GitHub Pages private-test deployment, set it to `https://lksmoker.github.io/flare/`.
 - In the Supabase Dashboard, add the same URL to the allowed Auth redirect URLs.
 - If the Supabase project Site URL still points to `http://localhost`, magic links may still send users back to localhost when the redirect URL is missing or not allowed.
 
@@ -89,7 +90,9 @@ npm run build
 
 - Frontend support-channel calls use `EXPO_PUBLIC_FLARE_API_BASE_URL`; point it at the backend URL you will open through Tailscale, for example `https://flare-api.tailnet.ts.net:9001`.
 - Backend support-channel HTTP runtimes should expose the same public base through `FLARE_PUBLIC_BACKEND_BASE_URL` and restrict browser callers with `FLARE_ALLOWED_FRONTEND_ORIGINS` as a comma-separated exact-origin list.
+- The GitHub Pages deployment uses the page URL `https://lksmoker.github.io/flare/` but the browser origin `https://lksmoker.github.io`; add the origin, not the `/flare/` path, to `FLARE_ALLOWED_FRONTEND_ORIGINS`.
 - `GROUPME_OAUTH_REDIRECT_URL` should be `https://<backend-host>/api/support-channel/groupme/connect/callback`. If it is omitted, the backend config loader now derives that callback from `FLARE_PUBLIC_BACKEND_BASE_URL`.
+- The GroupMe callback bridge returns to the frontend base URL that initiated the connect flow, including the `/flare` project path when using GitHub Pages.
 - Detailed setup steps and the live validation checklist live in `docs/40_delivery/flare_external_support_channel_tailscale_validation.md`.
 
 Example backend startup for local/Tailscale validation:

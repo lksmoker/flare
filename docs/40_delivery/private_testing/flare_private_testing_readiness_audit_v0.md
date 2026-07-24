@@ -89,7 +89,7 @@ Minimum work before launch is therefore bounded but real:
 
 ### What was not live-validated
 
-- The currently deployed web build at `https://flare.lukesmoker.com/`
+- The currently deployed web build at `https://lksmoker.github.io/flare/`
 - Supabase production auth email delivery and redirect behavior
 - GroupMe OAuth callback against the currently approved private-test environment
 - GroupMe test-send and real-send behavior against a current approved tester group
