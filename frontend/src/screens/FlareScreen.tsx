@@ -344,8 +344,6 @@ export function FlareScreen() {
             setResponseState(null);
             setExternalSupportState(null);
             setSupportDeliveryRetryEventId(null);
-            let flareEventId: string | null = null;
-
             try {
               if (authState.kind === "authenticated") {
                 const created = await sendSignedInFlareWithTrace({
@@ -361,7 +359,6 @@ export function FlareScreen() {
                   userId: authState.userId,
                 });
                 setRetryTraceId(null);
-                flareEventId = created.flareEvent.id;
                 upsertPersistedFlareEvent({
                   createdAt: created.flareEvent.createdAt,
                   flareEvent: created.flareEvent,
