@@ -26,6 +26,10 @@ jobs:
       run:
         working-directory: frontend
 
+    env:
+      EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: https://lksmoker.github.io/flare/
+      EXPO_PUBLIC_FLARE_API_BASE_URL: https://flare-api.lukesmoker.com
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,14 +57,12 @@ jobs:
         run: |
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_URL"
           test -n "$EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY"
-          test -n "$EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL"
-          test -n "$EXPO_PUBLIC_FLARE_API_BASE_URL"
-          echo "Flare public env vars are present"
+          test "$EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL" = "https://lksmoker.github.io/flare/"
+          test "$EXPO_PUBLIC_FLARE_API_BASE_URL" = "https://flare-api.lukesmoker.com"
+          echo "Flare public env vars are present and target the private-test deployment"
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
-          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: https://lksmoker.github.io/flare/
-          EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
 
       - name: Export web build
         run: |
@@ -69,8 +71,6 @@ jobs:
         env:
           EXPO_PUBLIC_FLARE_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_URL }}
           EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_FLARE_SUPABASE_ANON_KEY }}
-          EXPO_PUBLIC_FLARE_AUTH_REDIRECT_URL: https://lksmoker.github.io/flare/
-          EXPO_PUBLIC_FLARE_API_BASE_URL: ${{ vars.EXPO_PUBLIC_FLARE_API_BASE_URL }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
