@@ -1,26 +1,38 @@
-﻿Set-Location "C:\dev\Flare"
+param(
+  [string]$RepoRoot = "C:\dev\Flare",
+  [string]$EnvFile = "C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env",
+  [int]$Port = 8081,
+  [string]$NpmCmd = "C:\Program Files\nodejs\npm.cmd",
+  [string]$NodeExe = "C:\Program Files\nodejs\node.exe",
+  [switch]$NonInteractive,
+  [switch]$SkipPortCleanup
+)
 
-$envFile = "C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env"
-$port = 8081
+Set-Location $RepoRoot
+
+$envFile = $EnvFile
+$port = $Port
 
 Write-Host "Checking port $port..." -ForegroundColor Cyan
 
-$connections = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+if (-not $SkipPortCleanup) {
+  $connections = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
 
-if ($connections) {
-  $processIds = $connections | Select-Object -ExpandProperty OwningProcess -Unique
+  if ($connections) {
+    $processIds = $connections | Select-Object -ExpandProperty OwningProcess -Unique
 
-  foreach ($processId in $processIds) {
-    $proc = Get-Process -Id $processId -ErrorAction SilentlyContinue
-    if ($proc) {
-      Write-Host "Killing PID $processId on port $port ($($proc.ProcessName))" -ForegroundColor Yellow
-      Stop-Process -Id $processId -Force
+    foreach ($processId in $processIds) {
+      $proc = Get-Process -Id $processId -ErrorAction SilentlyContinue
+      if ($proc) {
+        Write-Host "Killing PID $processId on port $port ($($proc.ProcessName))" -ForegroundColor Yellow
+        Stop-Process -Id $processId -Force
+      }
     }
-  }
 
-  Start-Sleep -Seconds 1
-} else {
-  Write-Host "No process found on port $port"
+    Start-Sleep -Seconds 1
+  } else {
+    Write-Host "No process found on port $port"
+  }
 }
 
 $allowed = @(
@@ -32,7 +44,19 @@ $allowed = @(
 
 if (-not (Test-Path $envFile)) {
   Write-Host "Missing env file: $envFile" -ForegroundColor Red
-  Read-Host "Press Enter to close"
+  if (-not $NonInteractive) {
+    Read-Host "Press Enter to close"
+  }
+  exit 1
+}
+
+if (-not (Test-Path $NpmCmd)) {
+  Write-Host "Missing npm.cmd: $NpmCmd" -ForegroundColor Red
+  exit 1
+}
+
+if (-not (Test-Path $NodeExe)) {
+  Write-Host "Missing node.exe: $NodeExe" -ForegroundColor Red
   exit 1
 }
 
@@ -60,13 +84,15 @@ Get-Content $envFile | ForEach-Object {
 
 Write-Host ""
 Write-Host "Starting Flare dev server..." -ForegroundColor Cyan
-Write-Host "Repo: C:\dev\Flare"
+Write-Host "Repo: $RepoRoot"
 Write-Host "Port: $port"
 Write-Host ""
 
 $env:EXPO_NO_TELEMETRY = "1"
 
-npm run dev -- --clear
+& $NpmCmd run dev -- --clear
 
 Write-Host ""
-Read-Host "Press Enter to close"
+if (-not $NonInteractive) {
+  Read-Host "Press Enter to close"
+}
