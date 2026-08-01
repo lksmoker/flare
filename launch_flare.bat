@@ -1,6 +1,8 @@
 @echo off
 setlocal EnableExtensions
 
+if /i "%~1"=="control-restart" goto :control_restart
+
 if not defined OPS_DIR set "OPS_DIR=C:\dev\ops"
 if not defined OPS_PYTHON_EXE set "OPS_PYTHON_EXE=%OPS_DIR%\venv\Scripts\python.exe"
 if not defined OPS_NOTIFIER_SCRIPT set "OPS_NOTIFIER_SCRIPT=%OPS_DIR%\telegram_notify.py"
@@ -63,6 +65,20 @@ if "%FLARE_EXIT_CODE%"=="0" (
 
 echo [Flare launcher exited with code %FLARE_EXIT_CODE%]
 endlocal & exit /b %FLARE_EXIT_CODE%
+
+:control_restart
+set "CONTROL_PYTHON_EXE=C:\Users\lukes\AppData\Local\Programs\Python\Python312\python.exe"
+set "CONTROL_SCRIPT=C:\dev\Flare\scripts\control_restart_flare_stack.py"
+if not exist "%CONTROL_PYTHON_EXE%" (
+    echo [ERROR] Control Python was not found at "%CONTROL_PYTHON_EXE%"
+    endlocal & exit /b 20
+)
+if not exist "%CONTROL_SCRIPT%" (
+    echo [ERROR] Control restart helper was not found at "%CONTROL_SCRIPT%"
+    endlocal & exit /b 21
+)
+"%CONTROL_PYTHON_EXE%" "%CONTROL_SCRIPT%"
+endlocal & exit /b %ERRORLEVEL%
 
 :notify_event
 "%OPS_PYTHON_EXE%" "%OPS_NOTIFIER_SCRIPT%" --event "%~1" --run-id "%RUN_ID%" --hostname "%COMPUTERNAME%" --dedupe-key "%~1:%COMPUTERNAME%:%RUN_ID%" %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9 >NUL 2>&1

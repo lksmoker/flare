@@ -1,10 +1,12 @@
-﻿param(
+param(
   [string]$RepoRoot = "C:\dev\Flare",
   [string]$EnvFile = "C:\Users\lukes\.toolbox-secrets\dev-toolbox-starter.env",
   [string]$FrontendOrigin = "http://100.118.27.101:8081",
   [string]$BackendBaseUrl = "http://100.118.27.101:9001",
   [string]$HostName = "0.0.0.0",
-  [int]$Port = 9001
+  [int]$Port = 9001,
+  [string]$PythonExe = "C:\Users\lukes\AppData\Local\Programs\Python\Python312\python.exe",
+  [switch]$NonInteractive
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,6 +17,10 @@ if (-not (Test-Path $RepoRoot)) {
 
 if (-not (Test-Path $EnvFile)) {
   throw "Env file not found: $EnvFile"
+}
+
+if (-not (Test-Path $PythonExe)) {
+  throw "Python executable not found: $PythonExe"
 }
 
 function Import-DotEnvFile {
@@ -43,7 +49,6 @@ Set-Location $RepoRoot
 
 Import-DotEnvFile -Path $EnvFile
 
-# Prefer values loaded from the env file; use parameters only as fallbacks.
 if (-not $env:FLARE_ALLOWED_FRONTEND_ORIGINS) {
   $env:FLARE_ALLOWED_FRONTEND_ORIGINS = $FrontendOrigin.TrimEnd("/")
 }
@@ -52,7 +57,6 @@ if (-not $env:FLARE_PUBLIC_BACKEND_BASE_URL) {
   $env:FLARE_PUBLIC_BACKEND_BASE_URL = $BackendBaseUrl.TrimEnd("/")
 }
 
-# Compatibility aliases in case the shared env file uses older names.
 if (-not $env:GROUPME_OAUTH_CLIENT_ID -and $env:GROUPME_CLIENT_ID) {
   $env:GROUPME_OAUTH_CLIENT_ID = $env:GROUPME_CLIENT_ID
 }
@@ -69,6 +73,4 @@ Write-Host "Health check from another window:" -ForegroundColor Yellow
 Write-Host "Invoke-WebRequest $env:FLARE_PUBLIC_BACKEND_BASE_URL/api/health"
 Write-Host ""
 
-python -m backend.app.http.server --host $HostName --port $Port
-
-
+& $PythonExe -m backend.app.http.server --host $HostName --port $Port
