@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -52,7 +52,7 @@ BACKEND_COMPONENT = Component(
     health_url="http://127.0.0.1:9001/api/health",
     script_path=SCRIPTS_DIR / "start-flare-support-backend.ps1",
     expected_process_name="python.exe",
-    command_markers=("backend.app.http.server", str(REPO_ROOT).lower()),
+    command_markers=("backend.app.http.server", "--port 9001"),
     log_path=LOG_DIR / "flare_backend.log",
 )
 FRONTEND_COMPONENT = Component(
@@ -315,3 +315,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
