@@ -2,7 +2,7 @@
 
 # Flare V0 Launch Gate Status
 
-Status date: July 2, 2026
+Status date: August 3, 2026
 
 ## Purpose
 
@@ -18,7 +18,7 @@ It records what is already verified in-repo, what still requires operator confir
 | Production SMTP / outbound auth email configuration | operator verify before deploy | `docs/40_delivery/flare_v0_production_deployment_checklist.md` | Flare depends on Supabase Auth email delivery for password reset / magic-link style flows. This repo does not own production SMTP credentials, so final verification remains an operator task in Supabase. |
 | Authenticated ownership and RLS behavior | verified in repo; operator confirm after migrations | `db/migrations/20260627_230500_flare_v0_persistence.sql`, `C:/dev/dev-toolbox-starter/.toolbox/schema_supabase.json`, `frontend/src/services/__tests__/behaviorPatternRepository.test.ts`, `frontend/src/services/__tests__/anchorNoteRepository.test.ts`, `frontend/src/services/__tests__/flareEventRepository.test.ts`, `frontend/src/services/__tests__/checkpointReflectionRepository.test.ts` | Migration grants `authenticated` access, revokes `anon`, enables RLS on all four tables, and enforces owner-only policies with linked-record ownership checks for `flare_events` and `checkpoint_reflections`. Repository queries also scope updates and loads by `user_id`. |
 | Signed-out / local-only fallback | verified | `frontend/src/state/__tests__/flareEventPersistenceContext.test.tsx`, `frontend/src/screens/__tests__/app_shell.test.tsx`, `frontend/src/state/FlareEventContext.tsx`, `frontend/src/components/AuthStatusCard.tsx` | When no session exists, the app still supports local-only setup and flare usage, skips Supabase writes, and clears authenticated persisted history on sign-out. |
-| V0 data deletion and export expectations | documented; implementation deferred | `docs/20_architecture/flare_v0_data_persistence_contract.md`, `docs/40_delivery/flare_v0_known_limitations.md` | Export and deletion UX are not implemented in V0. External testing should treat archive/restore as history management only, not account-level deletion or data portability. |
+| Private-test account deletion handling | blocked pending operator control and retention decisions | `docs/20_architecture/flare_v0_data_persistence_contract.md`, `docs/40_delivery/flare_v0_known_limitations.md`, live read-only Postgres schema inspection on August 3, 2026 | The live schema confirms that most Flare-owned records cascade from `auth.users`, but this repo still lacks an implemented Supabase Auth deletion control and the retention disposition for Minimal Trace and support delivery-attempt evidence is not yet approved. Limited private testing must not promise executable account deletion until those gaps are resolved. |
 | Telegram / support-group follow-up | documented for V1 | `docs/40_delivery/flare_v0_known_limitations.md`, `docs/10_design/flare_v0_app_structure_navigation.md` | `Telegram Support` remains visible as future-scoped direction only. No V0 supporter messaging, contact management, or support-group routing exists. |
 | Final mobile viewport pass after blue theme update | verified by source and test pass; live browser spot-check still recommended after deploy | `frontend/src/components/AppShell.tsx`, `frontend/src/screens/FlareScreen.tsx`, `frontend/src/screens/HistoryScreen.tsx`, `frontend/src/screens/CustomizeScreen.tsx`, `frontend/src/screens/__tests__/app_shell.test.tsx`, `docs/90_archive/task_summary/AI/task_20260702_192129__admin-config__blues__run_64a5.md` | Mobile-first layout protections remain in place: single-column shell, scrollable root, wrapped action/filter rows, modal close controls, and no primary action requiring horizontal scrolling in the tested flows. |
 
@@ -64,9 +64,15 @@ Current V0 expectation for external testers:
 - archiving a flare event is not account-level deletion
 - no self-serve export exists yet
 - no self-serve hard-delete flow exists yet
+- the current private-test deletion path is operator-mediated and fail-closed
+- deleting the Supabase Auth identity and deleting Flare-owned application rows are separate governed steps
+- live schema inspection on August 3, 2026 confirmed that core Flare tables cascade from `auth.users`, but executable deletion remains blocked until:
+  - an approved auth-user deletion control exists
+  - trace and support delivery-attempt retention decisions are made
+  - a disposable synthetic identity dry run is separately approved and completed
 - product/legal review for broader launch should decide whether V1 starts with hard delete, soft delete, export, or a staged combination
 
-Until that work exists, external testing should avoid promising deletion or export behavior beyond the currently visible archive / restore controls.
+Until that work exists, external testing should avoid promising deletion or export behavior beyond the currently visible archive / restore controls and the documented manual review process.
 
 ## V1 Follow-Up Workstream
 

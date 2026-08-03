@@ -489,6 +489,79 @@ Because Flare records may contain sensitive recovery content, future persistence
 
 V0 does not need to implement full export behavior before persistence exists, but durable storage work should not proceed without an explicit deletion path for user-authored content.
 
+### Private-Test Account Deletion Decision On August 3, 2026
+
+The current private-test deletion model is operator-mediated and remains blocked from executable use until separate approval and implementation gaps are resolved.
+
+Two different operations are involved and must not be collapsed into one promise:
+
+- deleting the Supabase Auth identity in `auth.users`
+- deleting or intentionally retaining Flare-owned application records linked to that identity
+
+Current repository and live-schema evidence shows that most Flare-owned rows are linked to `auth.users` through `on delete cascade`, so deleting the auth identity would remove most application rows automatically. That cascade behavior is real, but it is not yet sufficient to declare the private-test deletion procedure ready because:
+
+- this repo has no implemented operator route or script that deletes a Supabase Auth user and records readback evidence
+- Minimal Trace V0 requires human review for whether trace rows should be deleted immediately or retained for a bounded incident window
+- support delivery-attempt and other operational evidence retention is not yet fully contracted for private-test exits
+
+### Current Private-Test Data Category Matrix
+
+| Data category | Current live table or surface | Live linkage / delete behavior | Current disposition |
+| --- | --- | --- | --- |
+| Auth identity | `auth.users` | Authoritative Supabase Auth identity; separate admin boundary from app tables | `blocked` until an approved admin deletion path exists |
+| Behavior setup | `public.behavior_patterns` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Anchor-note setup | `public.anchor_notes` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Flare event history | `public.flare_events` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Checkpoint / Reflection | `public.checkpoint_reflections` | `user_id -> auth.users.id` `on delete cascade`; `flare_event_id -> flare_events.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan container | `public.flare_plans` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan saved actions | `public.flare_plan_actions` | `plan_id -> flare_plans.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan run | `public.flare_plan_runs` | `flare_event_id -> flare_events.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan run actions | `public.flare_plan_run_actions` | `run_id -> flare_plan_runs.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan run checkpoints | `public.flare_plan_run_checkpoints` | `run_id -> flare_plan_runs.id` `on delete cascade` | `delete` with auth deletion |
+| Flare Plan idempotency records | `public.flare_plan_idempotency_keys` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Support-channel configuration | `public.support_channels` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Support delivery attempts | `public.support_channel_delivery_attempts` | `user_id -> auth.users.id` `on delete cascade`; `support_channel_id -> support_channels.id` `on delete set null` | `unresolved` pending retention decision |
+| Backend-only provider config | `public.support_channel_provider_configs` | `user_id -> auth.users.id` `on delete cascade` | `delete` with auth deletion |
+| Minimal Trace V0 | `public.flare_event_traces` | `user_id -> auth.users.id` `on delete cascade`; `flare_event_id -> flare_events.id` `on delete set null` | `unresolved` pending retention decision |
+| Signed-out local-only state | in-memory / device-local browser or app state | not Flare-owned server persistence; sign-out already clears authenticated persisted history | `participant-device cleanup required` |
+| GroupMe-side provider records and messages | external GroupMe systems | outside Flare authority | `retained outside Flare control` |
+
+`support_channel_delivery_attempts` deserves explicit caution: the current backend does not write an attempt row when `/api/support-channel/send-flare` is blocked because no support channel is configured, so absence of a row is not proof that no participant asked for help.
+
+### Private-Test Operator Procedure Shape
+
+Until the blocking gaps are closed, the bounded private-test procedure is:
+
+1. Intake the request through the private-test support channel and record the participant identifier, request time, and requested scope.
+2. Verify the requester controls the Flare account email before any destructive action is approved.
+3. Confirm the participant understands the current limitations:
+   - no self-serve delete or export flow exists
+   - GroupMe messages already delivered remain subject to GroupMe retention outside Flare control
+   - device-local cleanup may still require sign-out, uninstall, or browser-storage clearing on the participant device
+4. Review whether any open incident, support investigation, or required audit window means trace or delivery-attempt records must be retained temporarily.
+5. If trace or delivery-attempt retention is unresolved, stop and escalate for human review rather than deleting by default.
+6. If deletion is approved, perform application-record verification and auth deletion as separate governed steps:
+   - read back the participant-owned Flare rows before deletion
+   - execute the approved auth deletion path
+   - read back the same Flare tables after deletion and confirm no participant-owned rows remain except any explicitly retained records
+7. Send participant confirmation that distinguishes:
+   - what Flare deleted
+   - what Flare intentionally retained and why
+   - what third-party or device-local data may remain outside Flare control
+8. If any step fails or readback is incomplete, stop, record the evidence, and keep the cohort closed rather than claiming deletion succeeded.
+
+### Current Blocking Gaps
+
+As of August 3, 2026, the private-test deletion procedure is still blocked by:
+
+- no implemented Supabase Auth deletion control in this repo
+- no approved retention decision for `flare_event_traces`
+- no approved retention decision for `support_channel_delivery_attempts` or other operational audit evidence
+- no controlled synthetic deletion harness proving the full sequence against a disposable identity
+- no participant-facing export surface
+
+Private testing must not promise executable account deletion beyond this operator-mediated, fail-closed review process until those gaps are resolved deliberately.
+
 Open decisions:
 
 - whether deletion is hard delete or soft/archive for each entity
