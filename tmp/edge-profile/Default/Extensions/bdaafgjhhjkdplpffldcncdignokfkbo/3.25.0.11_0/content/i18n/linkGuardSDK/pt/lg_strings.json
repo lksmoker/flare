@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Ser\u00e1 alertado para liga\u00e7\u00f5es suspeitas em Webmails, no Facebook, no Twitter e noutras contas."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Saber Mais"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "LIGA\u00c7\u00c3O SUSPEITA"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Agora, o Norton avisa-o de liga\u00e7\u00f5es suspeitas no seu e-mail, para o proteger contra atividades maliciosas."
+    }
+}

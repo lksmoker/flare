@@ -1,0 +1,158 @@
+/*———————————————————————————————————————————————————————————————————————————————————————
+NortonLifeLock copyright header start
+
+Copyright (c) 2024 NortonLifeLock Inc. All rights reserved.
+
+THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+The Licensed Software and Documentation are deemed to be commercial computer
+software as defined in FAR 12.212 and subject to restricted rights as defined
+in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+Computer Software Documentation", as applicable, and any successor regulations.
+Any use, modification, reproduction release, performance, display or disclosure
+of the Licensed Software and Documentation by the U.S. Government shall be
+solely in accordance with the terms of this Agreement.
+
+NortonLifeLock copyright header stop
+———————————————————————————————————————————————————————————————————————————————————————*/
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter-Regular.woff2') format("woff2");
+  }
+  
+  @font-face {
+    font-family: 'Inter Bold';
+    src: url('../fonts/Inter-Bold.woff2') format("woff2");
+  }
+  
+  body {
+    margin: 0;
+  }
+  
+  .banner-notification-container {
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    border-bottom: solid #D40404 8px;
+    margin: auto;
+    background-color: #fff;
+  }
+  
+  .banner-notification-content {
+    display: flex;
+    margin: auto;
+  }
+  
+  .banner-notification-icon {
+    background: url(../images/notification-banner-icon.svg) no-repeat;
+    width: 19px;
+    height: 24px;
+    margin-top: 28px;
+  }
+  
+  .banner-notification-product-name {
+    font-family: 'Inter Bold';
+    font-size: 20px;
+    font-style: normal;
+    line-height: 32px;
+    letter-spacing: -0.3px;
+    margin-top: 24px;
+    margin-left: 13px;
+  }
+  
+  .banner-notification-description {
+    width: 681px;
+    margin-bottom: 9px;
+    margin-top: 15px;
+    margin-left: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .banner-notification-description-text {
+    color: var(--bgtextColor);
+    font-family: 'Inter';
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: unset;
+  }
+  
+  .banner-notification-description-header {
+    font-family: 'Inter Bold';
+    font-weight: 800;
+  }
+  
+  .banner-notification-exit-button {
+    display: flex;
+    min-width: 217px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 24px;
+    border: 2px solid #242424;
+    cursor: pointer;
+    margin: auto;
+    margin-left: 93px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .banner-notification-exit-text {
+    display: inline-block;
+    color: #242424;
+    text-align: center;
+    font-family: "Inter Bold";
+    font-size: 13px;
+    font-style: normal;
+    line-height: 16px;
+    letter-spacing: -0.3px;
+    font-weight: 800;
+  }
+  
+  .banner-notification-close-icon {
+    background: url(../) no-repeat;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    margin-left: 36px;
+    cursor: pointer;
+  }
+  
+  .banner-notification-settings {
+    background: url(../images/banner-notification-gear.svg) no-repeat;
+    width: 24px;
+    height: 24px;
+    margin: auto;
+    margin-left: 50px;
+    cursor: pointer;
+  }
+  
+  .banner-notification-container[state="collapsed"] {
+    min-height: unset;
+    height: 0;
+  }
+  
+  .banner-notification-content[state="collapsed"] {
+    display: none;
+  }
+  
+  [dir="rtl"] .banner-notification-product-name {
+    margin-right: 13px;
+  }
+  
+  [dir="rtl"] .banner-notification-description {
+    margin-right: 32px;
+  }
+  
+  [dir="rtl"] .banner-notification-close-icon {
+    margin-right: 36px;
+  }
+  
+  [dir="rtl"] .banner-notification-settings {
+    margin-right: 50px;
+  }

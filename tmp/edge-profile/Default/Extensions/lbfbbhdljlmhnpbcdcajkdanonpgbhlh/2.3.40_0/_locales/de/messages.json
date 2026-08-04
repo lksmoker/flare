@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "de"
+   },
+   "downloadButton": {
+      "message": "Laden"
+   },
+   "downloadMessage": {
+      "message": "Lade „iCloud für Windows“, um „iCloud-Lesezeichen“ zu verwenden."
+   },
+   "enableBookmarksMessage": {
+      "message": "Aktiviere Lesezeichen in „iCloud für Windows“, um „iCloud-Lesezeichen“ mit Edge zu verwenden."
+   },
+   "extDescription": {
+      "message": "Synchronisiere deine Edge-Lesezeichen auf Windows mit den Safari-Lesezeichen auf deinem iPhone, iPad und Mac."
+   },
+   "extName": {
+      "message": "iCloud-Lesezeichen"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "„iCloud für Windows“ öffnen"
+   },
+   "syncedMessage": {
+      "message": "Deine Edge-Lesezeichen sind mit iCloud synchronisiert."
+   },
+   "unsupportedOS": {
+      "message": "Die Erweiterung, die du zu installieren versuchst, wurde für Windows entwickelt. Wenn du einen Mac verwendest, werden deine Safari-Lesezeichen automatisch mit deinem iPhone, iPad und Mac synchronisiert, sobald du dich auf all deinen Geräten bei iCloud anmeldest."
+   }
+}

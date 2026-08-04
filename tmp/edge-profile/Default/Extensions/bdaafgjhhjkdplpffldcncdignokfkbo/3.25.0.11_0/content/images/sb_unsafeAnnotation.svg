@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>D74BCCC8-ED7D-42B4-B168-3D8E88696008</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="-Base-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Assets" transform="translate(-29.000000, -118.000000)" fill="#C81A00">
+            <g id="Serp" transform="translate(15.000000, 77.000000)">
+                <path d="M25.2324865,51.093035 L24.093035,52.2324865 L22,50.1394515 L19.906965,52.2324865 L18.7675135,51.093035 L20.8605485,49 L18.7675135,46.906965 L19.906965,45.7675135 L22,47.8605485 L24.093035,45.7675135 L25.2324865,46.906965 L23.1394515,49 L25.2324865,51.093035 Z M22,41 C17.581595,41 14,44.581595 14,49 C14,53.418405 17.581595,57 22,57 C26.418405,57 30,53.418405 30,49 C30,44.581595 26.418405,41 22,41 L22,41 Z" id="ic_serp_warning"></path>
+            </g>
+        </g>
+    </g>
+</svg>

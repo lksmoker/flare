@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Verranno segnalati i collegamenti sospetti in Webmail, Facebook, Twitter e altri account."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Ulteriori informazioni"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "COLLEGAMENTO SOSPETTO"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton ora ti avvisa se le e-mail contengono collegamenti sospetti per proteggerti da attivit\u00e0 dannose."
+    }
+}

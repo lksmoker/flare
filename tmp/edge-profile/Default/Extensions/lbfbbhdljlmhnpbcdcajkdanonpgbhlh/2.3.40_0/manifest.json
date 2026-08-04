@@ -1,0 +1,24 @@
+{
+   "action": {
+      "default_icon": {
+         "19": "images/icloud-icon-19x19.png",
+         "38": "images/icloud-icon-38x38.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "default_locale": "en",
+   "description": "__MSG_extDescription__",
+   "icons": {
+      "128": "images/icloud-icon-128x128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxRnxlgfiMrlWdp7O7UmlBSkQvI67v5BTtphO+VnmTpPOlY6QSDW3bI++fcNzAYOBUF5paBrpLJw+YXxWKjXjg/YjrenW0eDTPbhRxEm+IProHKjqIGHp6jq7G0MirP+djjrCXTzhGdvBwP7sWE1hkrdzsVap723e0CL+2tdFxIdq5ChEx1RMB77bOIuRu+yWvsxh5R7JJ3xu1NAxuAf+FHYngLhzrLZrDEe2d7mqzMFAHFyErxMDCLhrfiVTEr5tpHe9ZdmCNnWDd36e8jfqkAvd5q0WsVjYKGOSL9w8Ys/Y+rDBc0ehZAiHN3ZbQ/PmNbb7bfbOzs/KLv7ol0pKzQIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "100",
+   "name": "__MSG_extName__",
+   "permissions": [ "bookmarks", "nativeMessaging", "storage" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "2.3.40"
+}

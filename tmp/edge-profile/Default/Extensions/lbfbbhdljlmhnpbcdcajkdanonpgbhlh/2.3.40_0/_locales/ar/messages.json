@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "ar"
+   },
+   "downloadButton": {
+      "message": "تنزيل"
+   },
+   "downloadMessage": {
+      "message": "يرجى تنزيل iCloud لـ Windows لاستخدام الإشارات المرجعية iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "يرجى تمكين إشارات iCloud المرجعية لـ Windows لاستخدام إشارات iCloud المرجعية مع Edge."
+   },
+   "extDescription": {
+      "message": "الاحتفاظ بالإشارات المرجعية في Edge على Windows محدّثة أولاً بأول مع الإشارات المرجعية في سفاري على iPhone و iPad و Mac."
+   },
+   "extName": {
+      "message": "إشارات iCloud المرجعية"
+   },
+   "okButton": {
+      "message": "موافق"
+   },
+   "signinButton": {
+      "message": "‫فتح iCloud لـ Windows‬"
+   },
+   "syncedMessage": {
+      "message": "تتم مزامنة الإشارات المرجعية في Edge مع iCloud."
+   },
+   "unsupportedOS": {
+      "message": "الملحق الذي تحاول تثبيته مصمم للتشغيل على Windows. إذا كنت تستخدم كمبيوتر Mac، فستتم مزامنة الإشارات المرجعية في سفاري تلقائيًا مع iPhone و iPad و Mac عند تسجيل الدخول إلى iCloud على جميع أجهزتك."
+   }
+}

@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Vom scoate \u00een eviden\u021b\u0103 linkurile suspecte din Webmail, Facebook, Twitter \u0219i alte conturi."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Mai multe informa\u0163ii"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "LINK SUSPECT"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Acum, Norton v\u0103 avertizeaz\u0103 referitor la linkurile suspecte din e-mailul dvs., pentru a v\u0103 proteja \u00eempotriva activit\u0103\u021bii r\u0103u inten\u021bionate."
+    }
+}

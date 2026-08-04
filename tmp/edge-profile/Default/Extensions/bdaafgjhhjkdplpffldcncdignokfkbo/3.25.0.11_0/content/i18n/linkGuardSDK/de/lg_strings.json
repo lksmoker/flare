@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Verd\u00e4chtige Links in Webmail, Facebook, Twitter und anderen Konten werden hervorgehoben."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Weitere Infos"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "Verd\u00e4chtiger Link"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Das Norton-Produkt warnt jetzt zum Schutz vor b\u00f6sartigen Aktivit\u00e4ten vor verd\u00e4chtigen Links in E-Mails."
+    }
+}

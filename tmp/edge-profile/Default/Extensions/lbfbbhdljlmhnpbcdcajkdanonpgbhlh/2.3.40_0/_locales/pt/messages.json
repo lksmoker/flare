@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "pt"
+   },
+   "downloadButton": {
+      "message": "Baixar"
+   },
+   "downloadMessage": {
+      "message": "Baixe o iCloud para Windows para usar os Favoritos do iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "Ative os Favoritos no iCloud para Windows para usar os Favoritos do iCloud com o Edge."
+   },
+   "extDescription": {
+      "message": "Mantenha os seus favoritos do Edge no Windows atualizados com os favoritos do Safari no iPhone, iPad e Mac."
+   },
+   "extName": {
+      "message": "Favoritos do iCloud"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Abrir iCloud para Windows"
+   },
+   "syncedMessage": {
+      "message": "Os favoritos do Edge estão sincronizados com o iCloud."
+   },
+   "unsupportedOS": {
+      "message": "A extensão que você está tentando instalar é projetada para funcionar no Windows. Se você estiver usando um Mac, os favoritos do Safari serão sincronizados automaticamente com o iPhone, iPad e Mac quando você iniciar uma sessão no iCloud em todos os dispositivos."
+   }
+}

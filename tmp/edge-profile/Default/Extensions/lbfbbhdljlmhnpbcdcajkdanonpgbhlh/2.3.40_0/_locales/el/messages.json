@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "el"
+   },
+   "downloadButton": {
+      "message": "Λήψη"
+   },
+   "downloadMessage": {
+      "message": "Για χρήση των Σελιδοδεικτών iCloud, πραγματοποιήστε λήψη του iCloud για Windows."
+   },
+   "enableBookmarksMessage": {
+      "message": "Για χρήση των Σελιδοδεικτών iCloud με το Edge, ενεργοποιήστε τους Σελιδοδείκτες στο iCloud για Windows."
+   },
+   "extDescription": {
+      "message": "Διατηρήστε ενημερωμένους τους σελιδοδείκτες Edge στα Windows με τους σελιδοδείκτες Safari σε iPhone, iPad και Mac."
+   },
+   "extName": {
+      "message": "Σελιδοδείκτες iCloud"
+   },
+   "okButton": {
+      "message": "ΟΚ"
+   },
+   "signinButton": {
+      "message": "Άνοιγμα του iCloud για Windows"
+   },
+   "syncedMessage": {
+      "message": "Οι σελιδοδείκτες σας στο Edge συγχρονίζονται με το iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Η επέκταση που προσπαθείτε να εγκαταστήσετε έχει σχεδιαστεί να εκτελείται σε Windows. Αν χρησιμοποιείτε Mac, οι σελιδοδείκτες σας στο Safari θα συγχρονίζονται αυτόματα με τα iPhone, iPad και Mac σας όταν είστε συνδεδεμένοι στο iCloud σε όλες τις συσκευές σας."
+   }
+}

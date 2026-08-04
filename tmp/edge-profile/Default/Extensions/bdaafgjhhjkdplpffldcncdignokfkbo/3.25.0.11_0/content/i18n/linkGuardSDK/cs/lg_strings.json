@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Ozna\u010d\u00edme podez\u0159el\u00e9 odkazy ve webov\u00e9 po\u0161t\u011b, ve slu\u017eb\u011b Facebook, Twitter a v dal\u0161\u00edch \u00fa\u010dtech."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Dal\u0161\u00ed informace"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "PODEZ\u0158EL\u00dd ODKAZ"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Ochrana Norton v\u00e1s nyn\u00ed upozorn\u00ed na podez\u0159el\u00e9 odkazy ve va\u0161em e-mailu, aby v\u00e1s ochr\u00e1nila p\u0159ed nebezpe\u010dnou aktivitou."
+    }
+}

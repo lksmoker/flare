@@ -1,0 +1,370 @@
+/*
+ NortonLifeLock copyright header start
+
+ Copyright (c) 2020 NortonLifeLock Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+*/
+
+/**SettingsPageModal style starts here**/
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter-Regular.woff2') format("woff2");
+  }
+  
+  @font-face {
+    font-family: 'Inter Bold';
+    src: url('../fonts/Inter-Bold.woff2') format("woff2");
+  }
+  
+  @font-face {
+    font-family: 'Inter-medium';
+    src: url('../fonts/Inter-Medium.woff2') format("woff2");
+  }
+
+.settings-wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 30;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+  }
+  
+  @media (max-height: 767px) {
+    .settings-wrapper {
+      align-items: flex-start;
+    }
+  }
+
+  .settings-modal {
+    width: 700px;
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .settings-header {
+    height: 64px;
+    width: 100%;
+    border-bottom: 1px solid #dddbd9;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .header-text {
+    font-family: 'Inter Bold';
+    font-size: 24px;
+    line-height: 32px;
+    color: #242424;
+    padding-left: 30px;
+    padding-top: 16px;
+  }
+  
+  body[dir="rtl"] .header-text{
+    padding-right: 30px;
+    padding-left: 0;
+  }
+
+  .settings-close {
+    background: url(../images/close-icon-light.svg) no-repeat;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    cursor: pointer;
+    margin-top: 18px;
+    background-position: center;
+  }
+  
+  .settings-close:focus {
+    outline: 2px solid #0F71F0;
+  }
+
+  .settings-close:hover {
+    background-color: #CFE3FC;
+    border-radius: 50%;
+  }
+  
+  body[dir="rtl"] .settings-close {
+    margin-left: 20px;
+    margin-right: 0;
+  }
+  
+  body.dark .settings-wrapper .settings-close {
+    background: url(../images/close-icon-dark.svg) no-repeat;
+  }
+
+  .settings-area {
+    height: 720px;
+    overflow: auto;
+  }
+
+  .settings-body {
+    display: flex;
+  }
+
+  .settings-sidebar {
+    min-width: 186px;
+    min-height: 585px;
+  }
+  
+  .moz-sidebar {
+    min-height: 530px;
+  }
+
+  .sidebar-item {
+    font-family: 'Inter-medium';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    color: #242424;
+    height: 64px;
+    padding-top: 20px;
+    padding-left: 27px;
+    box-sizing: border-box;
+    background-color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  body[dir="rtl"] .sidebar-item {
+    padding-right: 27px;
+    padding-left: 0;
+  }
+  
+  .sidebar-item.highlight {
+    background-color: #cfe3fc;
+    color: #242424;
+  }
+
+  .settings-content {
+    padding: 0 36px 0px 37px;
+    width: 100%;
+    border-left: 1px solid #dddbd9;
+    min-height: 720px;
+  }
+  
+  .moz-settings-content {
+    min-height: 530px;
+  }
+  
+  .restore-button-span {
+    padding: 0px 10px 0px 10px;
+  }
+  
+  .settings-content div.settings-row:last-child {
+    margin-bottom: 21px;
+  }
+
+  .settings-subheader {
+    margin-top: 58px;
+  }
+  
+  .settings-subheader~.settings-row:first-child {
+    padding-top: 8px;
+  }
+  
+  .settings-subheader span {
+    font-family: 'Inter Bold';
+    font-style: normal;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+    color: #777774;
+  }
+
+  .other-header {
+    margin-top: 24px;
+  }
+
+  .settings-row {
+    padding-top: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .settings-row.most-visited {
+    padding-top: 8px;
+  }
+  
+  .settings-row.choose-image {
+    padding-top: 4px;
+  }
+
+  .settings-left-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .other-row {
+    padding-right: 40px;
+  }
+  
+  body[dir="rtl"] .other-row {
+    padding-left: 40px;
+    padding-right: 0;
+  }
+  
+  .other-row .settings-text {
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+    color: #242424;
+  }
+
+  .settings-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    color: #242424;
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    height: 24px;
+    width: 40px;
+    cursor: pointer;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-radius: 26px;
+  }
+  
+  .toggle-switch:focus {
+    outline: 2px solid #0F71F0;
+  }
+  
+  .toggle-check {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+  
+  .toggle-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 20px;
+    transition: background-color 0.2s, color 0.2s;
+    background-color: rgba(7, 29, 43, 0.10);
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+  }
+  
+  .toggle-check:checked~.toggle-area {
+    background-color: green;
+  }
+  
+  .toggle-area::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    left: 4px;
+    -webkit-transition: background-color 0.2s, left 0.4s;
+    transition: background-color 0.2s, left 0.4s;
+    background-color: rgba(7, 29, 43, 0.4);
+  }
+
+  .toggle-check:not(:checked)~.toggle-area::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    background: url(../images/toggle-disable-icon.svg) no-repeat;
+    width: 12px;
+    height: 12px;
+  }
+  
+  .toggle-check:checked~.toggle-area::after {
+    border-left: solid 1.5px;
+    border-bottom: solid 1.5px;
+    content: '';
+    width: 9px;
+    border-color: white;
+    height: 3px;
+    top: 8px;
+    position: absolute;
+    right: 8px;
+    transform: rotate(-45deg);
+  }
+  
+  .toggle-check:checked~.toggle-area::before {
+    left: calc(100% - 17.6px - 4px);
+  }
+  
+  .toggle-check:checked~.toggle-area::before {
+    color: #fff;
+  }
+
+  .privacy, .tour {
+    padding-top: 26px;
+  }
+
+.privacy-link, .tour-link{
+  font-family: 'Inter Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #0F71F0;
+  cursor: pointer;
+}
+
+.new-flag {
+    width: 30px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: #242e39;
+    margin-left: 8px;
+    font-size: 9px;
+    color: #ffffff;
+    padding: 4px;
+}
+
+body[dir="rtl"] .settings-content {
+  border-right: 1px solid #dddbd9;
+}
+/**SettingsPageModal style ends here**/

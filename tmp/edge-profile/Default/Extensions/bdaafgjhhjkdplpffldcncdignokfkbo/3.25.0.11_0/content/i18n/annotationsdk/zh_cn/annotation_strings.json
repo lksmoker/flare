@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "\u5a01\u80c1: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "\u6b64\u7ad9\u70b9\u5c1a\u672a\u6d4b\u8bd5"
+	},
+    "SAFE":
+    {
+        "message" : "\u5b89\u5168"
+    },
+    "SECURE":
+    {
+        "message" : "\u5b89\u5168"
+    },
+    "CAUTION":
+    {
+        "message" : "\u6ce8\u610f"
+    },
+    "UNTESTED":
+    {
+        "message" : "\u672a\u6d4b\u8bd5"
+    },
+    "UNSAFE":
+    {
+        "message" : "\u4e0d\u5b89\u5168"
+    },
+	"Full Report" :
+	{
+		"message" : "\u5b8c\u6574\u62a5\u544a"
+	}
+}

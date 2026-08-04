@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "hu"
+   },
+   "downloadButton": {
+      "message": "Letöltés"
+   },
+   "downloadMessage": {
+      "message": "Az iCloud-könyvjelzők használatához töltse le az iCloud Windowshoz appot."
+   },
+   "enableBookmarksMessage": {
+      "message": "Az iCloud-könyvjelzők Edge-dzsel való használatához engedélyezze a könyvjelzőket az iCloud Windowshoz appban."
+   },
+   "extDescription": {
+      "message": "Tartsa naprakészen a Windows rendszeren lévő Edge-könyvjelzőit az iPhone-ján, iPadjén és Mac gépén lévő Safari-könyvjelzőivel."
+   },
+   "extName": {
+      "message": "iCloud-könyvjelzők"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Az iCloud Windowshoz app megnyitása"
+   },
+   "syncedMessage": {
+      "message": "Az Edge-könyvjelzői szinkronizálva vannak az iClouddal."
+   },
+   "unsupportedOS": {
+      "message": "A telepíteni próbált bővítmény Windows rendszeren történő futtatásra lett tervezve. Ha Mac gépet használ, a Safari-könyvjelzői automatikusan szinkronizálva lesznek az iPhone-jával, iPadjével és Mac gépével, amikor bejelentkezik az iCloudba az eszközein."
+   }
+}

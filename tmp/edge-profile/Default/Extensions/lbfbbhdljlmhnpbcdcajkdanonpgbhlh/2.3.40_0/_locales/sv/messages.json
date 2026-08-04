@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "sv"
+   },
+   "downloadButton": {
+      "message": "Hämta"
+   },
+   "downloadMessage": {
+      "message": "Hämta iCloud för Windows om du vill använda iCloud-bokmärken."
+   },
+   "enableBookmarksMessage": {
+      "message": "Aktivera bokmärken i iCloud för Windows om du vill använda iCloud-bokmärken med Edge."
+   },
+   "extDescription": {
+      "message": "Håll dina Edge-bokmärken i Windows uppdaterade med Safari-bokmärkena på din iPhone, iPad och Mac."
+   },
+   "extName": {
+      "message": "iCloud-bokmärken"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Öppna iCloud för Windows"
+   },
+   "syncedMessage": {
+      "message": "Dina Edge-bokmärken synkroniseras med iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Tillägget du försöker installera är avsett att köras i Windows. Om du använder en Mac synkroniseras Safari-bokmärkena automatiskt med din iPhone, iPad och Mac när du loggar in på iCloud på alla dina enheter."
+   }
+}

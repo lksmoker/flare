@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Zagro\u017cenia: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Ta witryna nie zosta\u0142a jeszcze przetestowana"
+	},
+    "SAFE":
+    {
+        "message" : "BEZPIECZNA"
+    },
+    "SECURE":
+    {
+        "message" : "BEZPIECZNA"
+    },
+    "CAUTION":
+    {
+        "message" : "Uwaga"
+    },
+    "UNTESTED":
+    {
+        "message" : "NIETESTOWANA"
+    },
+    "UNSAFE":
+    {
+        "message" : "NIEBEZPIECZNA"
+    },
+	"Full Report" :
+	{
+		"message" : "Pe\u0142ny raport"
+	}
+}

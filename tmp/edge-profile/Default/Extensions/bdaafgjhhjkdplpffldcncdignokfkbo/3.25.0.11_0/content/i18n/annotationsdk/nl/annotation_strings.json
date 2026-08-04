@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Bedreigingen: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Deze site is nog niet getest"
+	},
+    "SAFE":
+    {
+        "message" : "VEILIG"
+    },
+    "SECURE":
+    {
+        "message" : "VEILIG"
+    },
+    "CAUTION":
+    {
+        "message" : "Let op"
+    },
+    "UNTESTED":
+    {
+        "message" : "NIET GETEST"
+    },
+    "UNSAFE":
+    {
+        "message" : "ONVEILIG"
+    },
+	"Full Report" :
+	{
+		"message" : "Volledig rapport"
+	}
+}

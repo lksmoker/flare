@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "Upozorn\u011bn\u00ed"
+	},
+
+	"Untested":
+	{
+		"message": "NETESTOV\u00c1NO"
+	},
+
+	"Warning":
+	{
+		"message": "Upozorn\u011bn\u00ed"
+	},
+	"Norton Secured":
+	{
+		"message": "ZABEZPE\u010cENO"
+	},
+	"Not Licensed":
+	{
+		"message": "Bez licence"
+	},
+	"Safe":
+	{
+		"message": "Bezpe\u010dn\u00e9"
+	},
+	"Safe Web is off":
+	{
+		"message": "BEZPE\u010cN\u00c9"
+	},
+	"Page not analyzed":
+	{
+		"message": "Str\u00e1nka nebyla analyzov\u00e1na."
+	},
+	"Norton Rating":
+	{
+		"message": "Hodnocen\u00ed Norton"
+	},
+	"Computer Threats":
+	{
+		"message": "Hrozby pro po\u010d\u00edta\u010d"
+	},
+	"Identity Threats":
+	{
+		"message": "Hrozby pro identitu"
+	},
+	"Annoyance Threats":
+	{
+		"message": "Hrozby obt\u011b\u017eov\u00e1n\u00ed"
+	},
+	"Total Threats":
+	{
+		"message": "Celkov\u00fd po\u010det hrozeb"
+	},
+	"Full Safe Web report":
+	{
+		"message": "\u00dapln\u00e1 zpr\u00e1va slu\u017eby Safe Web"
+	},
+	"Report this site":
+	{
+		"message": "Nahl\u00e1sit str\u00e1nku"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "Nastaven\u00ed prohl\u00ed\u017ee\u010de"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "NEBEZPE\u010cN\u00c9"
+	},
+    "total_threats_id":
+    {
+        "message" : "Hrozby: "
+    },
+		"untested_text":
+		{
+			"message" : "Tato str\u00e1nka je\u0161t\u011b nebyla testov\u00e1na."
+		},
+    "safe_status_id":
+    {
+        "message" : "BEZPE\u010cN\u00c9"
+    },
+    "secure_status_id":
+    {
+        "message" : "ZABEZPE\u010cENO"
+    },
+    "caution_status_id":
+    {
+        "message" : "Upozorn\u011bn\u00ed"
+    },
+    "untested_status_id":
+    {
+        "message" : "NETESTOV\u00c1NO"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "NEBEZPE\u010cN\u00c9"
+    },
+		"full_report_id" :
+		{
+				"message" : "\u00dapln\u00e1 zpr\u00e1va"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Hodnocen\u00ed Norton:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "Bylo zji\u0161t\u011bno nebezpe\u010dn\u00e9 stahov\u00e1n\u00ed."
+	},
+	"Download Cancelled":
+	{
+		"message" : "Stahov\u00e1n\u00ed bylo zru\u0161eno."
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "Byla zablokov\u00e1na \u0161kodliv\u00e1 webov\u00e1 str\u00e1nka"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "Byl zablokov\u00e1n \u0161kodliv\u00fd web!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "Pokusili jste se o p\u0159\u00edstup k n\u00e1sleduj\u00edc\u00ed webov\u00e9 str\u00e1nce:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "Pokusili jste se o\u00a0p\u0159\u00edstup k\u00a0webu"
+	},
+	"Website you tried to access:": {
+		"message" : "Weby, na kter\u00e9 jste se sna\u017eili dostat:"
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "Jedn\u00e1 se o zn\u00e1mou \u0161kodlivou webovou str\u00e1nku. Doporu\u010dujeme tuto webovou str\u00e1nku NENAV\u0160T\u011aVOVAT."
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "Tato webov\u00e1 str\u00e1nka je zn\u00e1m\u00e1 \u0161kodliv\u00e1 webov\u00e1 str\u00e1nka."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "Tato str\u00e1nka je zn\u00e1m\u00e1 \u0161kodliv\u00e1 webov\u00e1 str\u00e1nka."
+	},
+	"detailed report" :
+	{
+		"message" : "hl\u00e1\u0161en\u00ed"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "vysv\u011btluje bezpe\u010dnostn\u00ed rizika spojen\u00e1 s t\u00edmto webem."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "Z d\u016fvodu ochrany byla tato webov\u00e1 str\u00e1nka zablokov\u00e1na. Nav\u0161tivte"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "naleznete v\u00edce informac\u00ed o phishingu a bezpe\u010dnosti na internetu."
+	},
+	"Exit this site" :
+	{
+		"message" : "Opustit tuto str\u00e1nku"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "P\u0159esto chci tuto webovou str\u00e1nku zobrazit"
+	},
+	"It is recommended that you" :
+	{
+		"message" : "Doporu\u010dujeme tuto webovou str\u00e1nku"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "NENAV\u0160T\u011aVOVAT tuto webovou str\u00e1nku"
+	},
+	"Norton":
+	{
+		"message" : "Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Domovsk\u00e1 str\u00e1nka Norton"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "Podez\u0159el\u00e1 webov\u00e1 str\u00e1nka byla zablokov\u00e1na"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "Z d\u016fvodu ochrany byla tato webov\u00e1 str\u00e1nka zablokov\u00e1na a odesl\u00e1na k prov\u011b\u0159en\u00ed."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "Tenhle web byl zablokov\u00e1n kv\u016fli pir\u00e1tstv\u00ed nebo jin\u00fdm omezen\u00edm ve va\u0161\u00ed oblasti. D\u016frazn\u011b doporu\u010dujeme tuhle str\u00e1nku nenav\u0161t\u011bvovat."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "D\u016frazn\u011b doporu\u010dujeme tuto webovou str\u00e1nku NENAV\u0160T\u011aVOVAT."
+	},
+	"Visit" :
+	{
+		"message" : "Nav\u0161t\u00edvit"
+	},
+	"Continue to the site" :
+	{
+		"message" : "Pokra\u010dovat na web"
+	},
+	"View Full Report" :
+	{
+		"message" : "Zobrazit celou zpr\u00e1vu"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "Vyhledat bezpe\u010dn\u011bj\u0161\u00ed web"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "Byla zablokov\u00e1na podvodn\u00e1 webov\u00e1 str\u00e1nka"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "Tato webov\u00e1 str\u00e1nka je zn\u00e1m\u00e1 podvodn\u00e1 webov\u00e1 str\u00e1nka."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "Nebezpe\u010dn\u00e1 webov\u00e1 str\u00e1nka byla zablokov\u00e1na"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "Jedn\u00e1 se o zn\u00e1mou nebezpe\u010dnou webovou str\u00e1nku."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "D\u011bkujeme, \u017ee pou\u017e\u00edv\u00e1te produkt {0}! Anonymn\u011b sd\u00edlejte data o pou\u017e\u00edv\u00e1n\u00ed a chyb\u00e1ch s t\u00fdmem Norton, \u010d\u00edm\u017e n\u00e1m pom\u016f\u017eete vylep\u0161it na\u0161e produkty."
+	},
+	"OK" :
+	{
+	    "message" : "OK"
+	},
+	"No, thanks" :
+	{
+	    "message" : "Ne, d\u011bkuji"
+	},
+	"Learn More" :
+	{
+	    "message" : "Dal\u0161\u00ed informace"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "Safe Search"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "Domovsk\u00e1 str\u00e1nka"
+	},
+	"Settings"	:
+	{
+			"message" :	"Nastaven\u00ed"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "SD\u00cdLET DATA S\u00a0T\u00ddMEM NORTONU"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "Anonymn\u011b sd\u00edlet s t\u00fdmem Norton data o pou\u017e\u00edv\u00e1n\u00ed a chyb\u00e1ch, kter\u00e1 n\u00e1m pomohou je\u0161t\u011b v\u00edce vylep\u0161it na\u0161e produkty"
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Scam Insight: Riziko pro osobn\u00ed \u00fadaje"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "Tento web je bezpe\u010dn\u00fd, ale\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "Po\u017eaduje osobn\u00ed \u00fadaje a mezi u\u017eivateli komunity Norton nen\u00ed p\u0159\u00edli\u0161 roz\u0161\u00ed\u0159en\u00fd. P\u0159i zad\u00e1v\u00e1n\u00ed \u00fadaj\u016f na tomto webu bu\u010fte obez\u0159etn\u00ed. "
+	},
+	"Visit " :
+	{
+		"message" : "Nav\u0161t\u00edvit "
+	},
+	"Norton " :
+	{
+		"message" : "Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "a zjist\u011bte v\u00edce informac\u00ed o ohro\u017een\u00ed osobn\u00edch \u00fadaj\u016f na webov\u00fdch str\u00e1nk\u00e1ch."
+	},
+	"Age: " :
+	{
+		"message" : "St\u00e1\u0159\u00ed: "
+	},
+	"Very New" :
+	{
+		"message" : "\u00dapln\u011b nov\u00e1"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "Tato webov\u00e1 str\u00e1nka je nov\u00e1."
+	},
+	"New" :
+	{
+		"message" : "Nov\u00e1"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "Tato webov\u00e1 str\u00e1nka je v provozu kr\u00e1tkou dobu."
+	},
+	"Prevalence: " :
+	{
+		"message" : "\u010cetnost v\u00fdskytu: "
+	},
+	"No Users" :
+	{
+		"message" : "\u017d\u00e1dn\u00ed u\u017eivatel\u00e9"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "Tento web nepou\u017e\u00edvaj\u00ed \u017e\u00e1dn\u00ed u\u017eivatel\u00e9 komunity Norton."
+	},
+	"Few Users" :
+	{
+		"message" : "M\u00e1lo u\u017eivatel\u016f"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "Tento web pou\u017e\u00edv\u00e1 velmi m\u00e1lo u\u017eivatel\u016f komunity Norton."
+	},
+	"Continue to Site" :
+	{
+		"message" : "Pokra\u010dovat na web"
+	},
+	"Exit Site" :
+	{
+		"message" : "Opustit web"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "Pokud se domn\u00edv\u00e1te, \u017ee tato webov\u00e9 str\u00e1nka nen\u00ed spr\u00e1vn\u011b za\u0159azena do kategorie, "
+	},
+	"Report Issue." :
+	{
+		"message" : "nahlaste probl\u00e9m."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "U\u017eivatel p\u0159ihl\u00e1\u0161en jako"
+	},
+	"Sign out"			:
+	{
+		"message"		: "Odhl\u00e1sit"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"\u00dasp\u011b\u0161n\u011b jste se odhl\u00e1sili z \u00fa\u010dtu NortonLifeLock."
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"Litujeme, ale n\u011bco se pokazilo. Zkuste to znovu."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "Identifikujte nebezpe\u010dn\u00e9 odkazy ve slu\u017eb\u00e1ch Webmail, Facebook a Twitter."
+	},
+	"Websites": {
+  		"message": "Weby"
+	},
+	"Isolation Mode On": {
+  		"message": "Re\u017eim izolace zapnut\u00fd"
+	},
+	"Isolation Mode Off": {
+  		"message": "Re\u017eim izolace vypnut\u00fd"
+	},
+	"Ask Me": {
+  		"message": "Zeptat se"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "Odkazy pro rychl\u00fd p\u0159\u00edstup"
+	},
+	"Privacy": {
+		"message": "Ochrana osobn\u00edch \u00fadaj\u016f"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Copyright \u00a9 {0} Gen Digital Inc. V\u0161echna pr\u00e1va vyhrazena."
+	},
+	"Legal": {
+		"message": "Pr\u00e1vn\u00ed informace"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "Nejnov\u011bj\u0161\u00ed aktualizace od spole\u010dnosti NortonLifeLock"
+  },
+  "Security & Privacy Center": {
+    "message": "Centrum zabezpe\u010den\u00ed a\u00a0ochrany osobn\u00edch \u00fadaj\u016f"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "V\u00edt\u00e1 v\u00e1s produkt Norton Safe Search"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "Prohl\u00e9dn\u011bte si, co se zm\u011bnilo, a\u00a0vyu\u017e\u00edvejte funkce Safe Search naplno."
+  },
+  "Start Tour": {
+    "message": "Spustit prohl\u00eddku"
+  },
+  "Peace of mind with every search": {
+    "message": "Pocit bezpe\u010d\u00ed p\u0159i ka\u017ed\u00e9m hled\u00e1n\u00ed"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "Funkce Norton Safe Search zobrazuje hodnocen\u00ed bezpe\u010dnosti web\u016f ve v\u00fdsledc\u00edch vyhled\u00e1v\u00e1n\u00ed."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "Z\u00edskejte tipy a\u00a0aktualizace zabezpe\u010den\u00ed od t\u00fdmu Norton"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "Chcete-li se dozv\u011bd\u011bt v\u00edce informac\u00ed o\u00a0digit\u00e1ln\u00ed bezpe\u010dnosti, prozkoumejte nejnov\u011bj\u0161\u00ed blogy o\u00a0zabezpe\u010den\u00ed a\u00a0ochran\u011b osobn\u00edch \u00fadaj\u016f spole\u010dnosti NortonLifeLock."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "V Nastaven\u00ed je k dispozici prohl\u00eddka Domovsk\u00e9 str\u00e1nky Nortonu."
+  },
+  "Next": {
+    "message": "Dal\u0161\u00ed"
+  },
+  "Done": {
+    "message": "Hotovo"
+  },
+  "Welcome to {0}": {
+	"message": "V\u00edt\u00e1 v\u00e1s produkt {0}"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "D\u011bkujeme, \u017ee jste si vybrali produkt spole\u010dnosti NortonLifeLock."
+  },
+  "Keep It": {
+	"message": "Zachovat"
+  },
+  "Keep it": {
+	"message": "Zachovat"
+  },
+  "Keep changes": {
+    "message": "Zachovat zm\u011bny"
+  },
+  "Keep Changes": {
+    "message": "Ponechat zm\u011bny"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "Zobraz\u00ed-li se v\u00a0horn\u00ed \u010d\u00e1sti obrazovky zpr\u00e1va prohl\u00ed\u017ee\u010de Chrome, pak svoji ochranu {0} v\u00a0tomto prohl\u00ed\u017ee\u010di ponech\u00e1te kliknut\u00edm na mo\u017enost {1}."
+  },
+  "Thanks for choosing {0}": {
+    "message": "D\u011bkujeme, \u017ee jste si vybrali produkt {0}"
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "Pokud budete cht\u00edt po instalaci roz\u0161\u00ed\u0159en\u00ed prohl\u00ed\u017ee\u010de i\u00a0nad\u00e1le vyu\u017e\u00edvat produkt {0} a\u00a0zobraz\u00ed se v\u00e1m v\u00fdzva v\u00a0prohl\u00ed\u017ee\u010di Microsoft Edge, klikn\u011bte na mo\u017enost {1}."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "D\u011bkujeme, \u017ee jste si vybrali produkt spole\u010dnosti NortonLifeLock."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Zobraz\u00ed-li se v\u00a0horn\u00ed \u010d\u00e1sti obrazovky zpr\u00e1va prohl\u00ed\u017ee\u010de Chrome, pak svoji ochranu {0} v\u00a0tomto prohl\u00ed\u017ee\u010di zachov\u00e1te kliknut\u00edm na mo\u017enost {1}."
+	},
+  "Let us help protect you": {
+    "message" : "Nechte se od n\u00e1s chr\u00e1nit"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "Roz\u0161\u00ed\u0159en\u00ed Norton Safe Web pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat adresy URL web\u016f, kter\u00e9 nav\u0161t\u011bvujete, a\u00a0p\u0159istupovat k\u00a0nim. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "Pot\u00e9 budeme moci poskytovat hodnocen\u00ed bezpe\u010dnosti, abyste byli p\u0159i proch\u00e1zen\u00ed internetu l\u00e9pe chr\u00e1n\u011bni."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "Roz\u0161\u00ed\u0159en\u00ed Norton Safe Search pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat adresy URL v\u00e1mi vyhled\u00e1van\u00fdch web\u016f a\u00a0p\u0159istupovat k\u00a0nim. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "Roz\u0161\u00ed\u0159en\u00ed Norton Safe Search pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat adresy URL web\u016f, kter\u00e9 proch\u00e1z\u00edte prost\u0159ednictv\u00edm adresn\u00edho \u0159\u00e1dku a\u00a0roz\u0161\u00ed\u0159en\u00ed Domovsk\u00e1 str\u00e1nka Norton, a\u00a0p\u0159istupovat k\u00a0nim. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "Pot\u0159ebujeme od v\u00e1s svolen\u00ed ke shroma\u017e\u010fov\u00e1n\u00ed webov\u00fdch adres (URL), kter\u00e9 vyhled\u00e1v\u00e1te, abychom mohli odhalovat potenci\u00e1ln\u011b nebezpe\u010dn\u00e9 odkazy. Kdy\u017e ho odm\u00edtnete ud\u011blit, roz\u0161\u00ed\u0159en\u00ed se odinstaluje."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "Pot\u0159ebujeme od v\u00e1s svolen\u00ed ke shroma\u017e\u010fov\u00e1n\u00ed webov\u00fdch adres (URL), kter\u00e9 proch\u00e1z\u00edte, abychom mohli odhalovat potenci\u00e1ln\u011b nebezpe\u010dn\u00e9 webov\u00e9 str\u00e1nky. Kdy\u017e ho odm\u00edtnete ud\u011blit, roz\u0161\u00ed\u0159en\u00ed se odinstaluje."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "Za \u00fa\u010delem anal\u00fdzy a\u00a0zlep\u0161ov\u00e1n\u00ed v\u00fdkonu taky shroma\u017e\u010fujeme \u00fadaje o\u00a0pou\u017e\u00edv\u00e1n\u00ed produktu a\u00a0protokoly chyb. Kdy\u017e sd\u00edlen\u00ed takov\u00fdch \u00fadaj\u016f odm\u00edtnete, roz\u0161\u00ed\u0159en\u00ed bude d\u00e1l fungovat."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "Umo\u017en\u011bte n\u00e1m shroma\u017e\u010fovat \u00fadaje o\u00a0pou\u017e\u00edv\u00e1n\u00ed."
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "Pot\u00e9 budeme moci zji\u0161\u0165ovat, zda jsou v\u00e1mi vyhled\u00e1van\u00e9 weby \u0161kodliv\u00e9, je\u0161t\u011b p\u0159edt\u00edm, ne\u017e na n\u011b vstoup\u00edte, a\u00a0poskytovat v\u00e1m bezpe\u010dn\u00e9 v\u00fdsledky vyhled\u00e1v\u00e1n\u00ed."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "Umo\u017en\u00ed n\u00e1m to zji\u0161\u0165ovat, zda jsou \u0161kodliv\u00e9, a\u00a0varovat v\u00e1s je\u0161t\u011b p\u0159edt\u00edm, ne\u017e na n\u011b vstoup\u00edte."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "Roz\u0161\u00ed\u0159en\u00ed Domovsk\u00e1 str\u00e1nka Norton pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat adresy URL v\u00e1mi vyhled\u00e1van\u00fdch web\u016f a\u00a0p\u0159istupovat k\u00a0nim."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "Pot\u00e9 budeme moci zji\u0161\u0165ovat, zda jsou tyto weby \u0161kodliv\u00e9, je\u0161t\u011b p\u0159edt\u00edm, ne\u017e na n\u011b vstoup\u00edte."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "Chcete-li l\u00e9pe porozum\u011bt na\u0161im z\u00e1sad\u00e1m o\u00a0shroma\u017e\u010fov\u00e1n\u00ed \u00fadaj\u016f, p\u0159e\u010dt\u011bte si na\u0161e"
+  },
+  "Accept": {
+    "message" : "P\u0159ijmout"
+  },
+  "Decline": {
+    "message" : "Odm\u00edtnout"
+  },
+  "Your Permission Is Required": {
+    "message" : "Je vy\u017eadov\u00e1no povolen\u00ed"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "Pokud odm\u00edtnete, nebude roz\u0161\u00ed\u0159en\u00ed Norton Safe Web fungovat a\u00a0nebude v\u00e1m moci poskytovat hodnocen\u00ed bezpe\u010dnosti web\u016f."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "Pokud odm\u00edtnete, nebude roz\u0161\u00ed\u0159en\u00ed Norton Safe Search v\u00a0tomto za\u0159\u00edzen\u00ed fungovat a\u00a0nebude v\u00e1s moci chr\u00e1nit p\u0159ed \u0161kodliv\u00fdmi weby."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "Pokud odm\u00edtnete, nebude roz\u0161\u00ed\u0159en\u00ed Domovsk\u00e1 str\u00e1nka Norton fungovat a\u00a0nebude v\u00e1s moci chr\u00e1nit p\u0159ed \u0161kodliv\u00fdmi weby."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "Pokud odm\u00edtnete, nebude roz\u0161\u00ed\u0159en\u00ed Norton Safe Search fungovat a\u00a0nebude v\u00e1s moci chr\u00e1nit p\u0159ed \u0161kodliv\u00fdmi weby. Nebudeme v\u00e1m moci poskytovat ani bezpe\u010dn\u00e9 v\u00fdsledky vyhled\u00e1v\u00e1n\u00ed."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Po odinstalaci roz\u0161\u00ed\u0159en\u00ed Safe Web nebude produkt Norton moci zjistit, zda jsou weby \u0161kodliv\u00e9, a\u00a0nebude v\u00e1s moci chr\u00e1nit. Doporu\u010dujeme kliknout na mo\u017enost Ponechat nainstalov\u00e1no a\u00a0potvrdit povolen\u00ed pro pou\u017e\u00edv\u00e1n\u00ed roz\u0161\u00ed\u0159en\u00ed Safe Web ve va\u0161em za\u0159\u00edzen\u00ed."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "Kliknut\u00edm n\u00ed\u017ee zkontrolujte povolen\u00ed a potvr\u010fte n\u00e1\u0161 po\u017eadavek ohledn\u011b p\u0159\u00edstupu k informac\u00edm, kter\u00e9 jsou shroma\u017e\u010fov\u00e1ny anonymn\u011b."
+  },
+	"Search more safely, protect your device": {
+		"message" : "Vyhled\u00e1vejte bezpe\u010dn\u011bji a\u00a0chra\u0148te sv\u00e9 za\u0159\u00edzen\u00ed"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "Prohl\u00ed\u017ee\u010d Mozilla Forefix aktualizoval sv\u00e9 z\u00e1sady t\u00fdkaj\u00edc\u00ed se dopl\u0148k\u016f. Chcete-li i\u00a0nad\u00e1le pou\u017e\u00edvat roz\u0161\u00ed\u0159en\u00ed Norton Safe Search, \u017e\u00e1d\u00e1me v\u00e1s o\u00a0op\u011btovn\u00e9 poskytnut\u00ed povolen\u00ed."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "Roz\u0161\u00ed\u0159en\u00ed Safe Search pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat vyhled\u00e1van\u00e9 webov\u00e9 adresy a\u00a0p\u0159ed nav\u0161t\u00edven\u00edm p\u0159\u00edslu\u0161n\u00fdch web\u016f vyhodnocovat, zda jsou \u0161kodliv\u00e9."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "Pokud povolen\u00ed neposkytnete, nebude v\u00e1m roz\u0161\u00ed\u0159en\u00ed Safe Search moci pomoct chr\u00e1nit va\u0161e za\u0159\u00edzen\u00ed p\u0159ed \u0161kodliv\u00fdmi weby."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "Anonymn\u011b sd\u00edlet s\u00a0ochranou Norton data o\u00a0pou\u017e\u00edv\u00e1n\u00ed a\u00a0chyb\u00e1ch, kter\u00e1 n\u00e1m pomohou je\u0161t\u011b v\u00edce vylep\u0161it na\u0161e produkty a\u00a0slu\u017eby."
+	},
+	"Decline & Uninstall": {
+		"message" : "Odm\u00edtnout a\u00a0odinstalovat"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "Roz\u0161\u00ed\u0159en\u00ed Domovsk\u00e1 str\u00e1nka pot\u0159ebuje povolen\u00ed, aby mohlo shroma\u017e\u010fovat webov\u00e9 adresy v\u00e1mi vyhled\u00e1van\u00fdch web\u016f a\u00a0p\u0159istupovat k\u00a0nim. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "Pokud povolen\u00ed neposkytnete, nebude v\u00e1m roz\u0161\u00ed\u0159en\u00ed Domovsk\u00e1 str\u00e1nka moci pomoct chr\u00e1nit v\u00e1s p\u0159ed \u0161kodliv\u00fdmi weby."
+	},
+	"Search more safely from your home page": {
+		"message" : "Vyhled\u00e1vejte ze sv\u00e9 domovsk\u00e9 str\u00e1nky bezpe\u010dn\u011bji"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "Ochrana Norton pot\u0159ebuje povolen\u00ed, aby mohla shroma\u017e\u010fovat webov\u00e9 adresy web\u016f, kter\u00e9 proch\u00e1z\u00edte prost\u0159ednictv\u00edm adresn\u00edho \u0159\u00e1dku a\u00a0domovsk\u00e9 str\u00e1nky, a\u00a0p\u0159istupovat k\u00a0nim. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "Pokud povolen\u00ed neposkytnete, nebude v\u00e1m ochrana Norton moci pomoct chr\u00e1nit va\u0161e za\u0159\u00edzen\u00ed p\u0159ed \u0161kodliv\u00fdmi weby a\u00a0nebude v\u00e1m moci poskytovat ani bezpe\u010dn\u00e9 v\u00fdsledky vyhled\u00e1v\u00e1n\u00ed."
+	},
+  "Review Your Permissions": {
+    "message" : "Zkontrolovat povolen\u00ed"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "Odebrat roz\u0161\u00ed\u0159en\u00ed Norton Safe Web"
+  },
+  "Global Privacy Statement": {
+	"message" : "Glob\u00e1ln\u00ed prohl\u00e1\u0161en\u00ed o ochran\u011b osobn\u00edch \u00fadaj\u016f"
+  },
+  "addQuickLink": {
+    "message" : "P\u0159idat z\u00e1stupce"
+  },
+	"addNewText": {
+		"message" : "P\u0159idat z\u00e1stupce"
+	},
+  "Title": {
+    "message" : "N\u00e1zev"
+  },
+  "URL": {
+    "message" : "Adresa URL"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "Z\u00e1stupce, kter\u00fd se pokou\u0161\u00edte p\u0159idat, u\u017e je k dispozici."
+  },
+  "Edit shortcut": {
+    "message" : "Upravit z\u00e1stupce"
+  },
+  "Add": {
+    "message" : "P\u0159idat"
+  },
+  "Cancel": {
+    "message" : "Zru\u0161it"
+  },
+  "Save": {
+    "message" : "Ulo\u017eit"
+  },
+  "Edit": {
+    "message" : "Upravit"
+  },
+  "Remove": {
+    "message" : "Odebrat"
+  },
+  "Quick Links is all new!": {
+    "message" : "Panel Rychl\u00e9 odkazy je zcela nov\u00fd!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "P\u0159idejte sv\u00e9 obl\u00edben\u00e9 weby na nov\u00fd panel Rychl\u00e9 odkazy."
+  },
+  "Got it": {
+    "message" : "Rozum\u00edm"
+  },
+  "Type a valid URL": {
+    "message" : "Zadejte platnou adresu URL."
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "Panel s\u00a0rychl\u00fdmi odkazy umo\u017e\u0148uje snadno p\u0159istupovat na obl\u00edben\u00e9 weby."
+  },
+  "Editable quick links": {
+    "message" : "Upraviteln\u00fd panel s\u00a0rychl\u00fdmi odkazy"
+  },
+  "This website is considered safe.": {
+	  "message" : "Tato webov\u00e1 str\u00e1nka je pova\u017eov\u00e1na za bezpe\u010dnou."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "Tato webov\u00e1 str\u00e1nka je\u0161t\u011b nebyla hodnocena."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "Tato webov\u00e1 str\u00e1nka m\u016f\u017ee obsahovat men\u0161\u00ed po\u010det hrozeb."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "Jedn\u00e1 se o\u00a0zn\u00e1mou \u0161kodlivou webovou str\u00e1nku."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "Jedn\u00e1 se o\u00a0podez\u0159elou webovou str\u00e1nku."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "Zobrazit \u00faplnou zpr\u00e1vu slu\u017eby Safe Web"
+  },
+    "Accept risk and continue" : {
+		"message" : "P\u0159ijmout riziko a\u00a0pokra\u010dovat"
+	},
+	"Accept and display risk": {
+		"message": "P\u0159ijmout a\u00a0zobrazit riziko"
+	},
+	"Close this website (recommended)": {
+		"message": "Zav\u0159\u00edt tenhle web (doporu\u010duje se)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "Nov\u00e1 funkce aplikace Norton Safe Web"
+	},
+	"Protection from Formjacking": {
+		"message": "Ochrana proti formjackingu"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "Aplikace Norton Safe Web v\u00e1m pom\u016f\u017ee vyhnout se p\u0159i nakupov\u00e1n\u00ed online formjackingu."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "Upozorn\u00edme v\u00e1s, pokud zjist\u00edme, \u017ee web, kde nakupujete, m\u00e1 napaden\u00fd platebn\u00ed syst\u00e9m."
+	},
+	"Thanks for installing": {
+		"message": "D\u011bkujeme, \u017ee jste si nainstalovali aplikaci"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web."
+	},
+	"Take advantage of all these great features:": {
+		"message": "M\u016f\u017eete vyu\u017e\u00edvat v\u0161echny tyto skv\u011bl\u00e9 funkce:"
+	},
+	"Website Ratings": {
+		"message": "Hodnocen\u00ed web\u016f"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "Na\u0161e hodnocen\u00ed web\u016f v\u00e1s informuje o\u00a0tom, zda je dan\u00fd web bezpe\u010dn\u00fd, nebo zda byste m\u011bli b\u00fdt p\u0159ed zad\u00e1v\u00e1n\u00edm \u00fadaj\u016f na n\u011bj obez\u0159etn\u00ed."
+	},
+	"Intrusion Prevention": {
+		"message": "Prevence naru\u0161en\u00ed"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "Aplikace Norton Safe Web pom\u00e1h\u00e1 chr\u00e1nit p\u0159ed zn\u00e1m\u00fdmi chybami a\u00a0kybernetick\u00fdmi hrozbami v\u00a0obl\u00edben\u00fdch prohl\u00ed\u017ee\u010d\u00edch."
+	},
+	"Formjacking Prevention": {
+		"message": "Prevence formjackingu"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "Aplikace Norton Safe Web v\u00e1s upozorn\u00ed, pokud zjist\u00ed, \u017ee web elektronick\u00e9ho obchodov\u00e1n\u00ed e-commerce m\u00e1 napaden\u00fd platebn\u00ed syst\u00e9m."
+	},
+	"Website Blocking": {
+		"message": "Blokov\u00e1n\u00ed web\u016f"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "Aplikace Norton Safe Web v\u00e1s na to upozorn\u00ed a\u00a0pom\u016f\u017ee v\u00e1m zablokovat \u0161kodliv\u00e9 weby je\u0161t\u011b p\u0159ed va\u0161\u00edm kliknut\u00edm."
+	},
+	"Anti-Phishing Protection": {
+		"message": "Ochrana p\u0159ed phishingem"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "Tato funkce v\u00e1m umo\u017en\u00ed zjistit, zda je web, na kter\u00fd klik\u00e1te, ofici\u00e1ln\u011b certifikovan\u00fd a zda se nejedn\u00e1 o\u00a0phishingov\u00fd web."
+	},
+	"Link Guard": {
+		"message": "Ochrana odkaz\u016f"
+	},
+	"Blocking options": {
+		"message": "Mo\u017enosti blokov\u00e1n\u00ed"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "Zvolte si \u00farove\u0148 ochrany pro p\u0159\u00edpady, kdy n\u00e1stroj Bezpe\u010dn\u00fd web zjist\u00ed \u0161kodliv\u00fd nebo phishingov\u00fd web."
+	},
+	"Block the site": {
+		"message": "Blokovat str\u00e1nku <span>doporu\u010deno</span>"
+	},
+	"Show notification banner": {
+		"message": "Zobrazit banner s\u00a0ozn\u00e1men\u00edm"
+	},
+	"Alert me from extension icon only": {
+		"message": "Upozornit m\u011b jen pomoc\u00ed ikony roz\u0161\u00ed\u0159en\u00ed"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "Prov\u011b\u0159uje, zda webov\u00e9 e-maily a\u00a0kan\u00e1ly soci\u00e1ln\u00edch m\u00e9di\u00ed neobsahuj\u00ed podez\u0159el\u00e9 nebo \u0161kodliv\u00e9 odkazy."
+	},
+	"Learn more": {
+		"message": "Dal\u0161\u00ed informace"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "D\u016frazn\u011b doporu\u010dujeme, abyste na tuto str\u00e1nku nezad\u00e1vali \u017e\u00e1dn\u00e9 osobn\u00ed ani finan\u010dn\u00ed \u00fadaje."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "Norton Safe Web bude poskytovat hodnocen\u00ed web\u016f jen v\u00a0Norton Safe Search"
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "Chra\u0148te sv\u00e1 vyhled\u00e1v\u00e1n\u00ed pomoc\u00ed Norton Safe Search"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "Roz\u0161\u00ed\u0159en\u00ed Norton Safe Web p\u0159est\u00e1v\u00e1 poskytovat hodnocen\u00ed web\u016f ve v\u0161ech vyhled\u00e1va\u010d\u00edch krom\u011b Norton Safe Search."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "Budeme i\u00a0nad\u00e1le blokovat nebezpe\u010dn\u00e9 weby, abyste mohli proch\u00e1zet internet v\u00a0bezpe\u010d\u00ed."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "Pokud chcete d\u00e1l vid\u011bt hodnocen\u00ed web\u016f, nainstalujte si roz\u0161\u00ed\u0159en\u00ed Norton Safe Search."
+	},
+	"See Forecast": {
+		"message": "Zobrazit p\u0159edpov\u011b\u010f"
+	},
+	"Fahrenheit": {
+		"message": "Fahrenheit"
+	},
+	"Celsius": {
+		"message": "Celsius"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0C"
+	},
+	"January": {
+		"message": "leden"
+	},
+	"February": {
+		"message": "\u00fanor"
+	},
+	"March": {
+		"message": "b\u0159ezen"
+	},
+	"April": {
+		"message": "duben"
+	},
+	"May": {
+		"message": "kv\u011bten"
+	},
+	"June": {
+		"message": "\u010derven"
+	},
+	"July": {
+		"message": "\u010dervenec"
+	},
+	"August": {
+		"message": "srpen"
+	},
+	"September": {
+		"message": "z\u00e1\u0159\u00ed"
+	},
+	"October": {
+		"message": "\u0159\u00edjen"
+	},
+	"November": {
+		"message": "listopad"
+	},
+	"December": {
+		"message": "prosinec"
+	},
+	"Monday": {
+		"message": "Pond\u011bl\u00ed"
+	},
+	"Tuesday": {
+		"message": "\u00dater\u00fd"
+	},
+	"Wednesday": {
+		"message": "St\u0159eda"
+	},
+	"Thursday": {
+		"message": "\u010ctvrtek"
+	},
+	"Friday": {
+		"message": "P\u00e1tek"
+	},
+	"Saturday": {
+		"message": "Sobota"
+	},
+	"Sunday": {
+		"message": "Ned\u011ble"
+	},
+	"General": {
+		"message": "Obecn\u00e9"
+	},
+	"settingsShare": {
+		"message" : "Jin\u00e9"
+	},
+	"New tab": {
+		"message": "Nov\u00e1 karta"
+	},
+	"Shortcuts": {
+		"message": "Z\u00e1stupci"
+	},
+	"Launch the search links in a new tab": {
+		"message": "Spu\u0161t\u011bn\u00ed vyhled\u00e1vac\u00edch odkaz\u016f na nov\u00e9 kart\u011b"
+	},
+	"Show bookmark bar": {
+		"message": "Zobrazit panel z\u00e1lo\u017eek"
+	},
+	"Requires additional permission": {
+		"message": "Vy\u017eaduje dal\u0161\u00ed opr\u00e1vn\u011bn\u00ed"
+	},
+	"Quick links": {
+		"message": "Rychl\u00e9 odkazy"
+	},
+	"Most-visited sites": {
+		"message": "Nejnav\u0161t\u011bvovan\u011bj\u0161\u00ed weby"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "Vytvo\u0159it z\u00e1stupce m\u00fdch nejnav\u0161t\u011bvovan\u011bj\u0161\u00edch web\u016f "
+	},
+	"Shown based on websites": {
+		"message": "Zobrazeno na z\u00e1klad\u011b web\u016f, kter\u00e9 \u010dasto nav\u0161t\u011bvujete  |  Vy\u017eaduje dal\u0161\u00ed opr\u00e1vn\u011bn\u00ed"
+	},
+	"Custom quick links": {
+		"message": "Vlastn\u00ed rychl\u00e9 odkazy"
+	},
+	"Create custom shortcuts":{
+		"message": "Vytvo\u0159it vlastn\u00ed z\u00e1stupce"
+	},
+	"Quick links added by you": {
+		"message": "Rychl\u00e9 odkazy, kter\u00e9 jste p\u0159idali vy"
+	},
+	"Customize": {
+		"message": "P\u0159izp\u016fsoben\u00ed"
+	},
+	"Widgets below shortcuts": {
+		"message": "Widgety pod z\u00e1stupci"
+	},
+	"BookmarkBar": {
+		"message": "Panel z\u00e1lo\u017eek"
+	},
+	"Extension theme": {
+		"message": "Motiv roz\u0161\u00ed\u0159en\u00ed"
+	},
+	"Show weather widget": {
+		"message": "Zobrazit widget pro po\u010das\u00ed"
+	},
+	"Show time widget": {
+		"message": "Zobrazit widget pro \u010das"
+	},
+	"Background image": {
+		"message": "Obr\u00e1zek pozad\u00ed"
+	},
+	"Background": {
+		"message": "Pozad\u00ed"
+	},
+	"Choose": {
+		"message": "Vybrat"
+	},
+	"Restore defaults": {
+		"message": "Obnovit v\u00fdchoz\u00ed"
+	},
+	"Reset to default": {
+		"message": "Obnovit v\u00fdchoz\u00ed"
+	},
+	"Share usage and error data anonymously": {
+		"message": "Anonymn\u011b sd\u00edlet s t\u00fdmem Norton data o pou\u017e\u00edv\u00e1n\u00ed a chyb\u00e1ch, kter\u00e1 n\u00e1m pomohou je\u0161t\u011b v\u00edce vylep\u0161it na\u0161e produkty"
+	},
+	"Light mode": {
+		"message": "Sv\u011btl\u00fd re\u017eim"
+	},
+	"Dark mode": {
+		"message": "Tmav\u00fd re\u017eim"
+	},
+	"Manage bookmarks": {
+		"message": "Spravovat z\u00e1lo\u017eky"
+	},
+	"Choose image": {
+		"message": "Vybrat obr\u00e1zek"
+	},
+	"Choose an image from your device": {
+		"message": "Vyberte si obr\u00e1zek ze sv\u00e9ho za\u0159\u00edzen\u00ed"
+	},
+	"Gallery": {
+		"message": "Galerie"
+	},
+	"Choose from one of five images": {
+		"message": "Vyberte si n\u011bkter\u00e9 ze \u010dty\u0159 pozad\u00ed dole nebo pou\u017eijte obr\u00e1zek ze sv\u00e9ho za\u0159\u00edzen\u00ed."
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "Aktualizujte si pozad\u00ed"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "Vyberte si ze \u010dty\u0159 nab\u00edzen\u00fdch pozad\u00ed nebo nahrajte n\u011bjak\u00e9 vlastn\u00ed!"
+	},
+	"Available for Chrome": {
+		"message": "K\u00a0dispozici pro Chrome"
+	},
+	"Show most-visited sites": {
+		"message": "Zobrazit nejnav\u0161t\u011bvovan\u011bj\u0161\u00ed weby"
+	},
+	"Quick links to websites you visit most": {
+		"message": "Rychl\u00e9 odkazy na weby, kter\u00e9 nav\u0161t\u011bvujete nej\u010dast\u011bji"
+	},
+	"Got It": {
+		"message": "Rozum\u00edm"
+	},
+	"Account": {
+		"message": "\u00da\u010det"
+	},
+	"Maps": {
+		"message": "Mapy"
+	},
+	"Play": {
+		"message": "Play"
+	},
+	"Drive": {
+		"message": "Disk"
+	},
+	"Calendar": {
+		"message": "Kalend\u00e1\u0159"
+	},
+	"News": {
+		"message": "Zpr\u00e1vy"
+	},
+	"Translate": {
+		"message": "P\u0159eklada\u010d"
+	},
+	"Photos": {
+		"message": "Fotky"
+	},
+	"Chat": {
+		"message": "Chat"
+	},
+	"Duo": {
+		"message": "Duo"
+	},
+	"Meet": {
+		"message": "Meet"
+	},
+	"Docs": {
+		"message": "Dokumenty"
+	},
+	"Contacts": {
+		"message": "Kontakty"
+	},
+	"Classroom": {
+		"message": "Classroom"
+	},
+	"More Apps": {
+		"message": "Dal\u0161\u00ed aplikace"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "SD\u00cdLET DATA S\u00a0T\u00ddMEM NORTONU"
+	},
+	"PM": {
+		"message": "odp."
+	},
+	"AM": {
+		"message": "dop."
+	},
+	"Default theme": {
+		"message": "V\u00fdchoz\u00ed motiv"
+	},
+	"Hidden bookmarks": {
+		"message": "Skryt\u00e9 z\u00e1lo\u017eky"
+	},
+	"Available for Edge": {
+		"message": "K\u00a0dispozici pro Edge"
+	},
+	"Manage favorites": {
+		"message": "Spravovat obl\u00edben\u00e9 polo\u017eky"
+	},
+	"Show favorites bar": {
+		"message": "Zobrazit panel obl\u00edben\u00fdch polo\u017eek"
+	},
+	"Hidden favourites": {
+		"message": "Skryt\u00e9 obl\u00edben\u00e9 polo\u017eky"
+	},
+	"Accept Risk and Continue": {
+		"message": "P\u0159ijmout riziko a\u00a0pokra\u010dovat"
+	},
+	"ProductName":
+	{
+		"message" : "Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "Vyberte si ze \u010dty\u0159 nab\u00edzen\u00fdch pozad\u00ed nebo nahrajte n\u011bjak\u00e9 vlastn\u00ed!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "Domovsk\u00e1 str\u00e1nka Nortonu!"
+	},
+	"PrivacyAndPermissions": {
+		"message": "Opr\u00e1vn\u011bn\u00ed"
+	},
+	"Permissions": {
+		"message": "Opr\u00e1vn\u011bn\u00ed"
+	},
+	"Install": {
+		"message": "Nainstalovat"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "roz\u0161\u00ed\u0159en\u00ed, kter\u00e1 v\u00e1m pom\u016f\u017eou chr\u00e1nit se p\u0159i vyhled\u00e1v\u00e1n\u00ed p\u0159ed potenci\u00e1ln\u00edmi \u0161kodliv\u00fdmi odkazy. Proch\u00e1zejte web bezpe\u010dn\u011bji."
+	},
+	"Install Extensions": {
+		"message": "Nainstalovat roz\u0161\u00ed\u0159en\u00ed"
+	},
+	"Ad": {
+		"message": "Inzerce"
+	},
+	"Almost done!": {
+		"message": "M\u00e1te skoro hotovo!"
+	},
+	"To complete installation, click": {
+		"message": "Pro dokon\u010den\u00ed instalace klikn\u011bte na"
+	},
+	"Install Norton Safe Search": {
+		"message": "Nainstalovat Norton Safe Search"
+	},
+	"No search protection": {
+		"message": "\u017d\u00e1dn\u00e1 ochrana p\u0159i vyhled\u00e1v\u00e1n\u00ed"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"Pokra\u010dovat bez ochrany vyhled\u00e1v\u00e1n\u00ed"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"Nastavte funkci Norton Safe Search jako v\u00fdchoz\u00ed vyhled\u00e1va\u010d."
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"Povolit funkci Norton Safe Search"
+	},
+	"Your searches are not protected":
+	{
+		"message":"Va\u0161e vyhled\u00e1v\u00e1n\u00ed nejsou chr\u00e1n\u011bna"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"Doporu\u010dujeme povolit Norton Safe Search, abyste mohli blokovat \u0161kodliv\u00e9 odkazy a phishingov\u00e9 podvody."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Pou\u017e\u00edvejte Norton Safe Search pro bezpe\u010dn\u011bj\u0161\u00ed proch\u00e1zen\u00ed"
+	},
+	"Choose search protection":{
+		"message":"{0} v\u00e1s nyn\u00ed vyzve k v\u00fdb\u011bru ochrany vyhled\u00e1v\u00e1n\u00ed. N\u00ed\u017ee vyberte mo\u017enost \u201ePovolit funkci Norton Safe Search\u201c, abyste blokovali \u0161kodliv\u00e9 odkazy a pokra\u010dovali v bezpe\u010dn\u00e9m prohl\u00ed\u017een\u00ed."
+	},
+	"Recommended":{
+		"message":"Doporu\u010deno"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "Vyhled\u00e1vejte s Nortonem bezpe\u010dn\u011bji"
+	},
+	"Detect risky sites and scams":{
+		"message": "Povolit Norton Safe Search, aby pomohl odhalovat nebezpe\u010dn\u00e9 weby a podvody."
+	},
+	"Peace of mind with every search ": {
+		"message": "Pocit bezpe\u010d\u00ed p\u0159i ka\u017ed\u00e9m hled\u00e1n\u00ed"
+	},
+	"To keep your searches secure": {
+		"message": "Kv\u016fli zaji\u0161t\u011bn\u00ed ochrany p\u0159i vyhled\u00e1v\u00e1n\u00ed <span>d\u016frazn\u011b doporu\u010dujeme</span> nainstalovat roz\u0161\u00ed\u0159en\u00ed Norton Safe Search."
+	},
+	"Install now": {
+		"message": "Nainstalovat"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "Funkce Norton Safe Web byla aktualizov\u00e1na"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "Norton bude <span>pokra\u010dovat</span> v\u00a0testov\u00e1n\u00ed web\u016f, kter\u00e9 nav\u0161t\u00edv\u00edte a\u00a0<span>upozorn\u00ed v\u00e1s</span> na potenci\u00e1ln\u00ed rizika jako jsou:"
+	},
+	"Malicious websites": {
+		"message": "\u0160kodliv\u00e9 weby"
+	},
+	"Phishing websites": {
+		"message": "Phishingov\u00e9 weby"
+	},
+	"Viruses or other online threats": {
+		"message": "Viry nebo jin\u00e9 online hrozby"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "Pro zaji\u0161t\u011bn\u00ed vy\u0161\u0161\u00ed bezpe\u010dnosti p\u0159i proch\u00e1zen\u00ed internetu bude Norton <span>zobrazovat hodnocen\u00ed web\u016f prost\u0159ednictv\u00edm dopl\u0148ku Norton Safe Search</span>."
+	},
+	"Dangerous website detected": {
+		"message": "Byl zji\u0161t\u011bn nebezpe\u010dn\u00fd web"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "D\u016frazn\u011b doporu\u010dujeme nesd\u00edlet \u017e\u00e1dn\u00e9 osobn\u00ed \u00fadaje a\u00a0nepou\u017e\u00edvat tyto str\u00e1nky."
+	},
+	"Exit this page (recommended)": {
+		"message": "Zav\u0159\u00edt tuto str\u00e1nku (doporu\u010deno)"
+	},
+	"BLOCKED BY": {
+		"message": "ZABLOKOV\u00c1NO \u2013"
+	},
+	"Show sponsored banner": {
+		"message": "Zobrazit banner s inzerc\u00ed"
+	},
+	"Sponsored": {
+		"message": "Inzerce"
+	},
+	"Hide": {
+		"message": "Skr\u00fdt"
+	},
+	"homePageTitle": {
+		"message": "Domovsk\u00e1 str\u00e1nka"
+	},
+	"Add protection to your searches": {
+		"message": "P\u0159idejte ochranu sv\u00fdm vyhled\u00e1v\u00e1n\u00edm."
+	},
+	"Detect malicious links": {
+		"message": "Zapn\u011bte Norton Safe Search, abyste odhalili \u0161kodliv\u00e9 odkazy a phishingov\u00e9 podvody."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "Nej\u010dast\u011bj\u0161\u00ed p\u0159\u00edb\u011bhy"
+	},
+	"crypto": {
+		"message": "Krypto"
+	},
+	"stock": {
+		"message": "Akcie"
+	},
+	"weather": {
+		"message": "Po\u010das\u00ed"
+	},
+	"tools": {
+		"message": "Optimaliza\u010dn\u00ed n\u00e1stroje"
+	},
+	"Select your search protection:": {
+		"message": "Vyberte ochranu vyhled\u00e1v\u00e1n\u00ed:"
+	},
+	"Bookmark bar": {
+		"message": "Panel z\u00e1lo\u017eek"
+	},
+	"Favorites bar": {
+		"message": "Panel obl\u00edben\u00fdch polo\u017eek"
+	},
+	"Other bookmarks": {
+		"message": "Jin\u00e9 z\u00e1lo\u017eky"
+	},
+	"Welcome to": {
+		"message": "V\u00edt\u00e1 v\u00e1s"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "Vydejte se na prohl\u00eddku, zjist\u011bte, co je nov\u00e9ho, a vyu\u017eijte funkce Safe Search naplno."
+	},
+	"Skip tour": {
+		"message": "P\u0159esko\u010dit prohl\u00eddku"
+	},
+	"Start tour": {
+		"message": "Spustit prohl\u00eddku"
+	},
+	"Personalise your home page": {
+		"message": "P\u0159izp\u016fsobit domovskou str\u00e1nku"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "P\u0159izp\u016fsobte si domovskou str\u00e1nku s vlastn\u00edmi obr\u00e1zky a sv\u011btl\u00fdm nebo tmav\u00fdm re\u017eimem."
+	},
+	"Customizable shortcuts": {
+		"message": "P\u0159izp\u016fsobiteln\u00e9 z\u00e1stupce"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "Zkratky v\u00e1m umo\u017en\u00ed snadno se dostat na obl\u00edben\u00e9 weby"
+	},
+	"Useful widgets": {
+		"message": "U\u017eite\u010dn\u00e9 widgety"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "Zobrazte a\u017e 5 widget\u016f: po\u010das\u00ed, akcie, kryptom\u011bny, kalkula\u010dka a p\u0159evodn\u00edk jednotek"
+	},
+	"Read today's top news": {
+		"message": "P\u0159e\u010dt\u011bte si dne\u0161n\u00ed hlavn\u00ed zpr\u00e1vy"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "Z\u016fsta\u0148te v obraze d\u00edky nejnov\u011bj\u0161\u00edm sv\u011btov\u00fdm titulk\u016fm z r\u016fzn\u00fdch oblast\u00ed."
+	},
+	"Link to your apps": {
+		"message": "Odkaz na va\u0161e aplikace"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "Dosta\u0148te se ke sv\u00fdm aplikac\u00edm rychle a snadno z Domovsk\u00e9 str\u00e1nky Nortonu"
+	},
+	"Begin tour": {
+		"message": "Zah\u00e1jit prohl\u00eddku"
+	},
+	"Take a quick tour of features": {
+		"message": "Rychl\u00e1 prohl\u00eddka funkc\u00ed"
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Uhkat: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "T\u00e4t\u00e4 sivustoa ei ole viel\u00e4 testattu"
+	},
+    "SAFE":
+    {
+        "message" : "TURVALLINEN"
+    },
+    "SECURE":
+    {
+        "message" : "SUOJATTU"
+    },
+    "CAUTION":
+    {
+        "message" : "Varoitus"
+    },
+    "UNTESTED":
+    {
+        "message" : "TESTAAMATON"
+    },
+    "UNSAFE":
+    {
+        "message" : "VAARALLINEN"
+    },
+	"Full Report" :
+	{
+		"message" : "Koko raportti"
+	}
+}

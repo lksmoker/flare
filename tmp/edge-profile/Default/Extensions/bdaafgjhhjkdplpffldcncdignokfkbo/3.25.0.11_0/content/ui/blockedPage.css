@@ -1,0 +1,528 @@
+/*
+ NortonLifeLock copyright header start
+
+ Copyright (c) 2020 NortonLifeLock Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+*/
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-Regular.woff2') format("woff2");
+}
+
+@font-face {
+  font-family: 'Inter Bold';
+  src: url('../fonts/Inter-Bold.woff2') format("woff2");
+}
+
+@font-face {
+  font-family: 'Inter-medium';
+  src: url('../fonts/Inter-Medium.woff2') format("woff2");
+}
+
+.block-page-header {
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+.block-page-search {
+  width: 100%;
+  height: 150px;
+  position:absolute;
+  top: 360px;
+  left:0;
+  min-width: 1440px;
+}
+
+.block-page-settings-icon {
+  background-image: url("../images/blockPage-settings-icon.svg");
+  width: 36px;
+  height: 36px;
+  margin: 24px 24px 0px auto;
+}
+
+.block-page-settings-icon:hover {
+  cursor: pointer;
+}
+
+.block-page-header-content {
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+}
+
+.block-page-nav {
+  display: flex;
+  padding: 24px 0 24px 289px;
+  background-color: #D40404;
+}
+
+.block-page-header[pageType="suspectedbad"] .block-page-nav {
+  background-color: #B85C00;
+}
+
+.block-page-nav-image {
+  width: 28px;
+  height: 36px;
+  margin-right: 12px;
+  background-image: url("../images/safeweb-block.svg");
+  background-repeat: no-repeat;
+}
+
+.block-page-nav-text {
+  color: #FFF;
+  font-family: "Inter-medium";
+  font-size: 24px;
+  font-style: normal;
+  line-height: 36px; /* 150% */
+  letter-spacing: -0.3px;
+}
+
+.header-content {
+  display: inline-block;
+  position: relative;
+}
+
+.block-page-header-content-left {
+  width: 140px;
+}
+
+.block-page-header-content-center {
+  width:816px;
+}
+
+.block-page-image {
+  width: 72px;
+  height: 73px;
+  position: relative;
+  background-image: url("../images/blocked-img.svg");
+  display: inline-block;
+}
+
+.block-page-header[pageType="suspectedbad"] .block-page-image {
+  background-image: url("../images/blocked-img-suspicious.svg");
+}
+
+.block-page-text1 {
+  color: #555551;
+  text-align: center;
+  font-family: "Inter Bold";
+  font-size: 14px;
+  font-style: normal;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.3px;
+  margin-top: 20px;
+  margin-left: -5px;
+}
+
+.block-page-norton-logo {
+  width: 81px;
+  height: 18px;
+  background-image: url("../images/norton-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  margin-top: 10px;
+  margin-left: -3px;
+}
+
+.block-page-header-text {
+  display: inline-block;
+  width: 674px;
+}
+
+.block-page-heading {
+  color: #242424;
+  font-family: "Inter Bold";
+  font-size: 36px;
+  font-style: normal;
+  line-height: 48px; /* 133.333% */
+  letter-spacing: -0.3px;
+}
+
+.block-page-text2 {
+  display: inline-block;
+  color: #242424;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.3px;
+  margin-top: 24px;
+  margin-right: 4px;
+}
+
+.block-page-sitename {
+  display: inline-block;
+  color: #242424;
+  font-family: "Inter Bold";
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.3px;
+}
+
+.block-page-text3 {
+  color: #242424;
+  font-family: "Inter Bold";
+  font-size: 14px;
+  font-style: normal;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.3px;
+  margin-top: 32px;
+}
+
+.block-page-text3 .block-page-text3-line2 {
+  color: #242424;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.3px;
+  margin-top: 32px;
+}
+
+.block-page-text3-line2 .text3_4 {
+  color: #0F71F0;
+  font-family: "Inter Bold";
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+  text-decoration-line: underline;
+}
+
+.text3_3, .text3_4, .text3_5 {
+  display: inline;
+  margin-right: 4px;
+}
+
+.block-page-action {
+  display: flex;
+  justify-content: space-between;
+}
+
+.block-page-link {
+  color: #0F71F0;
+  font-family: "Inter Bold";
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.3px;
+  text-decoration-line: underline;
+  margin-top: 60px;
+}
+
+.block-page-exit-btn {
+  display: flex;
+  width: 300px;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 24px;
+  border: 3px solid #242424;
+  background-color: #242424;
+  margin-top: 44px;
+  cursor: pointer;
+}
+
+.block-page-exit-btn:hover {
+  background-color: #ffff;
+}
+
+.block-page-exit-text {
+  display: inline-block;
+  color: #FBFAF9;
+  text-align: center;
+  font-family: "Inter bold";
+  font-size: 15px;
+  font-style: normal;
+  line-height: 20px; /* 133.333% */
+  letter-spacing: -0.3px;
+}
+
+.block-page-exit-btn:hover .block-page-exit-text {
+  color: #242424;
+}
+
+.block-page-view-report {
+  max-width: 260px;
+  min-width: 159px;
+  height: 40px;
+  background-color: #ffe283;
+  position: absolute;
+  top: 161px;
+  cursor: pointer;
+  right:0px;
+  display: none;
+}
+
+.block-page-view-report:hover {
+  background-color: #ffd664;
+}
+
+.block-page-view-report:active {
+  background-color: #f8a156;
+}
+
+.view-report-text {
+  height: 16px;
+  font-family: Segoe UI, Symantec Sans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  color: #333333;
+  margin:11px auto 13px auto;
+  padding-left: 18px;
+  padding-right: 18px;
+  text-align: center;
+}
+
+.block-page-search-box {
+  width: 960px;
+  height: 70px;
+  box-shadow: 0 1px 9px 0 rgba(0, 0, 0, 0.15);
+  position: absolute;
+  left:calc(50% - 480px);
+  top: 40px;
+}
+
+.links {
+  color: #0F71F0;
+}
+
+.block-page-search-text {
+  width: 891px;
+  height: 100%;
+  font-size: 24px;
+  display: inline-block;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-family: Segoe UI, Symantec Sans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  outline: none;
+  border: solid 1px #dadada;
+  background-color: #f8f8f8;
+  border-right: none;
+}
+
+.block-page-search-icon {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  background-image: url("../images/btn-search.svg");
+  position:absolute;
+  right:0px;
+  display: inline-block;
+  cursor: pointer;
+  border: solid 1px #dadada;
+  border-left: none;
+}
+
+
+.block-page-search-icon:hover {
+  background-color: #ffd664;
+}
+
+.block-page-search-icon:active {
+  background-color: #f8a156;
+}
+
+.wrapper {
+  position: absolute;
+  width:auto;
+}
+
+.block-page-dshp-promotion-wrapper {
+  margin-top: 88px;
+  width: 100%;
+  visibility: hidden;
+}
+
+.block-page-dshp-promotion-container {
+  display: flex;
+  min-height: 280px;
+  margin: 36px 71px 58px 71px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.block-page-dshp-promotion-container:before {
+  content: "";
+  background-image: url("../images/landing-page-promotion.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  z-index: -1000;
+}
+
+.block-page-dshp-promotion-text-wrapper {
+  margin-left: 40px;
+}
+
+.promotion-extension-title-section {
+  display: flex;
+  margin-top: 30px;
+}
+
+.promotion-title-image {
+  background-image: url("../images/search-icon.svg");
+  width: 30px;
+  height: 30px;
+}
+
+.promotion-title-text {
+  color: #242424;
+  font-family: "Inter Bold";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.3px;
+  margin-left: 8px;
+}
+
+.product-name {
+  color: #242424;
+  font-family: "Inter Bold";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 36px;
+  letter-spacing: -0.3px;
+}
+
+.promotion-extension-content-section {
+   margin-top: 24px;
+   max-width: 820px;
+}
+
+.promotion-content-text {
+  color: #242424;
+  font-family: "Inter";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 36px;
+  letter-spacing: -0.3px;
+}
+
+.promotion-extension-install-button-div {
+  display: flex;
+  margin-top: 32px;
+  border-radius: 30px;
+}
+
+.promotion-extension-install-button {
+  border: 3px solid #000;
+  display: flex;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+  background-color: #FEEB29;
+  cursor: pointer;
+  border-radius: 30px;
+  min-width: 264px;
+}
+
+.promotion-extension-install-button:hover {
+  background-color: #FFF488;
+}
+
+.promotion-extension-install-text {
+  display: inline-block;
+  color: #242424;
+  text-align: center;
+  font-family: "Inter bold";
+  font-size: 18px;
+  font-style: normal;
+  line-height: 26px;
+  letter-spacing: -0.3px;
+}
+
+body[dir="rtl"] .block-page-search-text {
+  border-left: none;
+  border-right: solid 1px #dadada;
+}
+
+body[dir="rtl"] .block-page-search-icon {
+  left: 0px;
+  border-right: none;
+  right: auto;
+  border-left: solid 1px #dadada;
+}
+
+body[dir="rtl"] .block-page-view-report {
+  left: 0px;
+  right: auto;
+}
+
+body[dir="rtl"] .block-page-nav {
+  padding: 24px 289px 24px 0;
+}
+
+body[dir="rtl"] .block-page-nav-image {
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+body[dir="rtl"] .block-page-settings-icon {
+  margin: 24px 100% 0px 24px;
+  float: left;
+}
+
+@media (max-height: 770px) {
+  .block-page-nav {
+    padding: 14px 289px 14px 0;
+  }
+
+  .block-page-header-content {
+    padding-top: 12px;
+  }
+
+  .block-page-text2 {
+    margin-top: 12px;
+  }
+
+  .block-page-text3 .block-page-text3-line2 {
+    margin-top: 8px;
+  }
+
+  .block-page-link {
+    margin-top: 44px;
+  }
+
+  .block-page-text3 {
+    margin-top: 8px;
+  }
+
+  .block-page-exit-btn {
+    margin-top: 32px;
+  }
+
+  .block-page-dshp-promotion-wrapper {
+    margin-top: 44px;
+  }
+}

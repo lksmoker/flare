@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Felh\u00edvjuk figyelm\u00e9t a gyan\u00fas hivatkoz\u00e1sokra a Webmail-, a Facebook-, a Twitter- \u00e9s az egy\u00e9b fi\u00f3kokban."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Tov\u00e1bbi r\u00e9szletek"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "GYAN\u00daS HIVATKOZ\u00c1S"
+    },
+    "suspicious.links.popup.content": {
+        "message": "A Norton figyelmezteti \u00d6nt az e-mailben szerepl\u0151 gyan\u00fas linkekre, hogy meg\u00f3vja a rosszindulat\u00fa tev\u00e9kenys\u00e9gekt\u0151l."
+    }
+}

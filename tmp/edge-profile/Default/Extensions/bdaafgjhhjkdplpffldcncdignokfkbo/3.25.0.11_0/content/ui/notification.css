@@ -1,0 +1,423 @@
+/*
+     NortonLifeLock copyright header start
+
+ Copyright (c) 2020, NortonLifeLock Inc, All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, “Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation”, as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+
+*/
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url(../fonts/segoeui.ttf) format("truetype");
+}
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  float: right;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+/* 
+Used to smooth the font on the level of the pixel, as opposed to the subpixel. 
+Switching from subpixel rendering to antialiasing for light text on dark backgrounds makes it look lighter.
+*/
+.antialiased{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.notify-center {
+  min-width: 430px;
+  height: 100%;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+.notify  {
+  padding: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  position: relative;
+  -webkit-animation: fadeInFromNone 1s ease-out;
+  -moz-animation: fadeInFromNone 1s ease-out;
+  -o-animation: fadeInFromNone 1s ease-out;
+  animation: fadeInFromNone 1s ease-out;
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeInFromNone {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeInFromNone {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInFromNone {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.acquire {
+  height: 170px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 65px;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  float: left;
+  object-fit: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+}
+
+.notification-message-content {
+  min-height: 60px;
+  margin-right: 15px;
+}
+
+.message {
+  min-width: 330px;
+  max-width: 330px;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin-left:60px;
+  font-size: 14px;
+}
+
+.extra-message {
+  padding-top: 5px;
+  font-size: 14px;
+}
+
+.line1 {
+  font-weight: bold;
+}
+
+.line2 {
+  margin-top: 5px;
+}
+
+.actions {
+  width: 100%;
+  min-height: 40px;
+  padding-top: 10px;
+}
+
+.dont-ask {
+  float: left;
+  color: #0089c6;
+  text-align: center;
+  font-size: 14px;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+.action-button {
+  min-width: 131px;
+  height: 40px;
+  background-color: #ffe283;
+  float: right;
+  font-size: 14px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.action-button:active {
+  background-color: #ffd664;
+}
+
+.third-action-button {
+  min-width: 131px;
+  height: 40px;
+  background-color: #ffe283;
+  margin-right: 8px;
+  float: right;
+  font-size: 14px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.third-action-button:active {
+  background-color: #ffd664;
+}
+
+.cancel-button {
+  float: right;
+  min-width: 131px;
+  height: 40px;
+  font-size: 14px;
+  line-height: 40px;
+  color: #0089c6;
+  text-align: center;
+  cursor: pointer;
+}
+
+.divider {
+  height: 10px;
+}
+
+.collapse,
+.info .extra-message,
+.alert .extra-message,
+.error .extra-message,
+.good .extra-message,
+.actionable .extra-message,
+.info .actions,
+.alert .actions,
+.error .actions,
+.good .actions,
+.acquire .dont-ask,
+.actionable .cancel-button {
+  display: none;
+}
+
+.icon-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 14px;
+  height: 14px;
+  background-image: url(../images/ic-global-close.svg);
+  cursor: pointer;
+}
+
+body[dir="rtl"] .notify-center {
+  margin-right: 5px;
+  margin-left: 0;
+}
+
+
+body[dir="rtl"] .icon {
+  float: right;
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+body[dir="rtl"] .dont-ask {
+  float: right;
+}
+
+body[dir="rtl"] .action-button {
+  float: left;
+}
+
+body[dir="rtl"] .third-action-button {
+  float: left;
+  margin-right: 0px;
+  margin-left: 8px;
+}
+
+body[dir="rtl"] .cancel-button {
+  float: left;
+}
+
+body[dir="rtl"] .icon-close {
+  left: 5px;
+  right: auto;
+}
+
+body[dir="rtl"] .header {
+   margin-right: 0px;
+}
+
+body[dir="rtl"] .notification-message-content {
+  margin-right: 0px;
+  margin-left: 15px;
+}
+
+body[dir="rtl"] .message {
+  margin-right: 60px;
+  margin-left: 0;
+}
+
+.title-danger {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 340px;
+}
+.actionable-warning {
+  color: white;
+  background-color: #bc0000;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.12);
+  position: relative;
+  min-height: 40px;
+}
+.notification-body{
+  width: fit-content;
+}
+.message-body-danger{
+  background-color: #242e39;
+  color: white;
+  font-size: 15px;
+  padding: 15px;
+  border-bottom: 5px solid #ffc200;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.12);
+}
+
+.notification-header {
+  height: 50px;
+  background-color: #242e39;
+  color: white;
+  position: relative;
+  display: flex;
+}
+
+.notification-header-title {
+  font-size: 16px;
+  letter-spacing: -0.39px;
+  margin: auto 0px auto 7px;
+}
+
+.notification-header-title-icon {
+  width: 88px;
+  height: 20px;
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODgiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA4OCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01Ny4xMTQyIDE0Ljc0NjhDNTcuNTUxMiAxNS4xODMyIDU4LjEyMDkgMTUuNDAxIDU4LjgyMzIgMTUuNDAxSDYxLjgzMjlWMTMuMTY5OUg1OS43NjkyQzU5LjM2NzcgMTMuMTY5OSA1OS4xNjcyIDEyLjk1NTQgNTkuMTY3MiAxMi41MjYzVjYuOTkxNDJINjIuMDkwOVY0Ljc2MDI3SDU5LjE2NzJWMS40NTY0Mkg1Ni40NTg1VjQuNzYwMjdINTMuNzkyOEw1My43MjY0IDQuNzYwMjdDNTMuMjM4OSA0Ljc2MDI3IDUyLjgyODIgNC44NDMzOCA1Mi40NjI4IDUuMDQzNDNDNTIuMDk3MyA1LjI0Mzg5IDUxLjgyMDEgNS41MzI2IDUxLjY2MjYgNS45NjE2Mkg1MS4yNzU2VjQuNzYwMjdINDguNjA5OVYxNS40MDFINTEuMzE4NlY5LjM1MTNDNTEuMzE4NiA4LjU5MzM4IDUxLjU0MDcgOC4wMzE4OSA1MS45ODUgNy42NjcxNEM1Mi40MjkxIDcuMzAyNDggNTIuOTAwMSA3LjAwODg0IDUzLjY4MzQgNi45OTE0Mkg1NS4wMTYyTDU2LjQ1ODUgNi45OTE0MlYxMi45OTgyQzU2LjQ1ODUgMTMuNzI3OCA1Ni42NzY4IDE0LjMxMDYgNTcuMTE0MiAxNC43NDY4Wk00My42NzAyIDEyLjQ5NDJDNDMuMTI1NCAxMy4wMzA1IDQyLjQzNzUgMTMuMjk4NiA0MS42MDY1IDEzLjI5ODZDNDAuNzc1MSAxMy4yOTg2IDQwLjA4NzIgMTMuMDMwNSAzOS41NDI3IDEyLjQ5NDJDMzguOTk3OCAxMS45NTc4IDM4LjcyNTggMTEuMTg5MiAzOC43MjU4IDEwLjE4NzlWOS45NzMzMkMzOC43MjU4IDguOTcyNDQgMzguOTk3OCA4LjIwMzU0IDM5LjU0MjcgNy42NjcxM0M0MC4wODcyIDcuMTMwODMgNDAuNzc1MSA2Ljg2MjY4IDQxLjYwNjUgNi44NjI2OEM0Mi40NTIgNi44NjI2OCA0My4xNDM1IDcuMTMwODMgNDMuNjgxIDcuNjY3MTNDNDQuMjE4NCA4LjIwMzU0IDQ0LjQ4NzEgOC45NzI0NCA0NC40ODcxIDkuOTczMzJWMTAuMTg3OUM0NC40ODcxIDExLjE4OTIgNDQuMjE0NyAxMS45NTc4IDQzLjY3MDIgMTIuNDk0MlpNMzguNzQ3MyAxNS4wNTc4QzM5LjU5MjggMTUuNDg2OSA0MC41NDU3IDE1LjcwMTMgNDEuNjA2NSAxNS43MDEzQzQyLjY2NjggMTUuNzAxMyA0My42MTk4IDE1LjQ4NjkgNDQuNDY1NiAxNS4wNTc4QzQ1LjMxMTEgMTQuNjI4NyA0NS45Nzc1IDE0LjAwNjYgNDYuNDY0OSAxMy4xOTEzQzQ2Ljk1MTkgMTIuMzc2MSA0Ny4xOTU4IDExLjM5NjcgNDcuMTk1OCAxMC4yNTIzVjkuOTA5MDZDNDcuMTk1OCA4Ljc2NDkzIDQ2Ljk1MTkgNy43ODUwOSA0Ni40NjQ5IDYuOTY5OTZDNDUuOTc3NSA2LjE1NDcyIDQ1LjMxMTEgNS41MzI2IDQ0LjQ2NTYgNS4xMDM1N0M0My42MTk4IDQuNjc0NDUgNDIuNjY2OCA0LjQ1OTg5IDQxLjYwNjUgNC40NTk4OUM0MC41NDU3IDQuNDU5ODkgMzkuNTkyOCA0LjY3NDQ1IDM4Ljc0NzMgNS4xMDM1N0MzNy45MDE1IDUuNTMyNiAzNy4yMzUxIDYuMTU0NzIgMzYuNzQ4IDYuOTY5OTZDMzYuMjYwNiA3Ljc4NTA5IDM2LjAxNzEgOC43NjQ5MyAzNi4wMTcxIDkuOTA5MDZWMTAuMjUyM0MzNi4wMTcxIDExLjM5NjcgMzYuMjYwNiAxMi4zNzYxIDM2Ljc0OCAxMy4xOTEzQzM3LjIzNTEgMTQuMDA2NiAzNy45MDE1IDE0LjYyODcgMzguNzQ3MyAxNS4wNTc4Wk0yNC4yODQyIDE1LjQwMVY0Ljc2MDI3SDI2Ljk0OTlWNi4xNTQ3MkgyNy4zMzY5QzI3LjUwODggNS43ODMwMiAyNy44MzEzIDUuNDI5MDQgMjguMzA0MiA1LjA5Mjc5QzI4Ljc3NzIgNC43NTY5NSAyOS40OTM2IDQuNTg4NjIgMzAuNDUzOSA0LjU4ODYyQzMxLjI4NSA0LjU4ODYyIDMyLjAxMjYgNC43Nzg0MSAzMi42MzYgNS4xNTcxNkMzMy4yNTk0IDUuNTM2MzIgMzMuNzQzMSA2LjA1ODIyIDM0LjA4NyA2LjcyMzI2QzM0LjQzMTEgNy4zODgzIDM0LjYwMyA4LjE2NDI1IDM0LjYwMyA5LjA1MDkxVjE1LjQwMUgzMS44OTQzVjkuMjY1MzdDMzEuODk0MyA4LjQ2NDY0IDMxLjY5NzEgNy44NjM5NyAzMS4zMDMyIDcuNDYzMzVDMzAuOTA4OCA3LjA2MzE0IDMwLjM0NjUgNi44NjI2OCAyOS42MTU1IDYuODYyNjhDMjguNzg0MyA2Ljg2MjY4IDI4LjEzOTIgNy4xMzgxOCAyNy42ODA4IDcuNjg4NTlDMjcuMjIyIDguMjM5NCAyNi45OTI5IDkuMDA4IDI2Ljk5MjkgOS45OTQ4OFYxNS40MDFIMjQuMjg0MlpNODYuNDk4MyA1Ljk4ODY2VjQuNzU1MDdIODYuOTQzN0w4Ny4xNzc2IDUuNzc3NTJIODcuMjMzMkw4Ny40NjcxIDQuNzU1MDdIODcuOTEyNlY1Ljk4ODY2SDg3LjY3ODdWNC45NjYyMUg4Ny42MjMxTDg3LjM4OTIgNS45ODg2Nkg4Ny4wMjE3TDg2Ljc4NzggNC45NjYyMUg4Ni43MzIyVjUuOTg4NjZIODYuNDk4M1pNODUuNjg1MyA1Ljk4ODY2VjQuOTY2MjFIODUuMjczM1Y0Ljc1NTA3SDg2LjMzMTJWNC45NjYyMUg4NS45MTkyVjUuOTg4NjZIODUuNjg1M1pNNjguMTQ4NiAxMy4yOTg2QzY4Ljk3OTYgMTMuMjk4NiA2OS42Njc2IDEzLjAzMDUgNzAuMjEyMyAxMi40OTQyQzcwLjc1NjggMTEuOTU3OCA3MS4wMjkzIDExLjE4OTIgNzEuMDI5MyAxMC4xODc5VjkuOTczMzJDNzEuMDI5MyA4Ljk3MjQ0IDcwLjc2MDUgOC4yMDM1NCA3MC4yMjMxIDcuNjY3MTNDNjkuNjg1NiA3LjEzMDgzIDY4Ljk5NDEgNi44NjI2OCA2OC4xNDg2IDYuODYyNjhDNjcuMzE3MiA2Ljg2MjY4IDY2LjYyOTMgNy4xMzA4MyA2Ni4wODQ4IDcuNjY3MTNDNjUuNTM5OSA4LjIwMzU0IDY1LjI2NzkgOC45NzI0NCA2NS4yNjc5IDkuOTczMzJWMTAuMTg3OUM2NS4yNjc5IDExLjE4OTIgNjUuNTM5OSAxMS45NTc4IDY2LjA4NDggMTIuNDk0MkM2Ni42MjkzIDEzLjAzMDUgNjcuMzE3MiAxMy4yOTg2IDY4LjE0ODYgMTMuMjk4NlpNNjguMTQ4NiAxNS43MDEzQzY3LjA4NzggMTUuNzAxMyA2Ni4xMzQ5IDE1LjQ4NjkgNjUuMjg5NCAxNS4wNTc4QzY0LjQ0MzYgMTQuNjI4NyA2My43NzcyIDE0LjAwNjYgNjMuMjkwMSAxMy4xOTEzQzYyLjgwMjcgMTIuMzc2MSA2Mi41NTkyIDExLjM5NjcgNjIuNTU5MiAxMC4yNTIzVjkuOTA5MDZDNjIuNTU5MiA4Ljc2NDkzIDYyLjgwMjcgNy43ODUwOSA2My4yOTAxIDYuOTY5OTZDNjMuNzc3MiA2LjE1NDcyIDY0LjQ0MzYgNS41MzI2IDY1LjI4OTQgNS4xMDM1N0M2Ni4xMzQ5IDQuNjc0NDUgNjcuMDg3OCA0LjQ1OTg5IDY4LjE0ODYgNC40NTk4OUM2OS4yMDkgNC40NTk4OSA3MC4xNjE5IDQuNjc0NDUgNzEuMDA3NyA1LjEwMzU3QzcxLjg1MzIgNS41MzI2IDcyLjUxOTYgNi4xNTQ3MiA3My4wMDcgNi45Njk5NkM3My40OTQgNy43ODUwOSA3My43Mzc5IDguNzY0OTMgNzMuNzM3OSA5LjkwOTA2VjEwLjI1MjNDNzMuNzM3OSAxMS4zOTY3IDczLjQ5NCAxMi4zNzYxIDczLjAwNyAxMy4xOTEzQzcyLjUxOTYgMTQuMDA2NiA3MS44NTMyIDE0LjYyODcgNzEuMDA3NyAxNS4wNTc4QzcwLjE2MTkgMTUuNDg2OSA2OS4yMDkgMTUuNzAxMyA2OC4xNDg2IDE1LjcwMTNaTTc1LjE1MiA0Ljc2MDI3VjE1LjQwMUg3Ny44NjA3VjkuOTk0ODhDNzcuODYwNyA5LjAwOCA3OC4wODk4IDguMjM5NCA3OC41NDg2IDcuNjg4NTlDNzkuMDA3MSA3LjEzODE4IDc5LjY1MjEgNi44NjI2OCA4MC40ODM0IDYuODYyNjhDODEuMjE0MyA2Ljg2MjY4IDgxLjc3NjYgNy4wNjMxNCA4Mi4xNzA5IDcuNDYzMzVDODIuNTY1IDcuODYzOTcgODIuNzYyMSA4LjQ2NDY0IDgyLjc2MjEgOS4yNjUzN1YxNS40MDFIODUuNDcwOFY5LjA1MDkxQzg1LjQ3MDggOC4xNjQyNSA4NS4yOTg5IDcuMzg4MyA4NC45NTQ5IDYuNzIzMjZDODQuNjExIDYuMDU4MjIgODQuMTI3MyA1LjUzNjMyIDgzLjUwMzkgNS4xNTcxNkM4Mi44ODA0IDQuNzc4NDEgODIuMTUyOSA0LjU4ODYyIDgxLjMyMTggNC41ODg2MkM4MC4zNjE0IDQuNTg4NjIgNzkuNjQ1MSA0Ljc1Njk1IDc5LjE3MiA1LjA5Mjc5Qzc4LjY5OTEgNS40MjkwNCA3OC4zNzY2IDUuNzgzMDIgNzguMjA0NyA2LjE1NDcySDc3LjgxNzdWNC43NjAyN0g3NS4xNTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIwLjA0MTQgMTAuMDAwM0MyMC4wNDE0IDE1LjUxNDIgMTUuNTQ2MyAyMCAxMC4wMjEgMjBDNC40OTUxNCAyMCAwIDE1LjUxNDIgMCAxMC4wMDAzQzAgNC40ODU4NiA0LjQ5NTE0IDAgMTAuMDIxIDBDMTEuNTQ4MSAwIDEyLjk5NjUgMC4zNDIzOTMgMTQuMjkzIDAuOTU0ODUxTDEyLjYyODcgMy4wOTQ1M0MxMS44MTcxIDIuNzg4NiAxMC45Mzg3IDIuNjIxMDggMTAuMDIxIDIuNjIxMDhDNi4xMjQ2NCAyLjYyMTA4IDIuOTIyOTcgNS42NDMzOCAyLjY0NTg4IDkuNDYyNjlDMi42NDA0MyA5LjUzOTc1IDIuNjM2MTkgOS42MTczMSAyLjYzMjk2IDkuNjk1MzhDMi42Mjg3MiA5Ljc5NjUyIDIuNjI2NSA5Ljg5ODE2IDIuNjI2NSAxMC4wMDAzQzIuNjI2NSAxNC4wNjg5IDUuOTQzNDUgMTcuMzc4OSAxMC4wMjEgMTcuMzc4OUMxNC4wOTc5IDE3LjM3ODkgMTcuNDE0OSAxNC4wNjg5IDE3LjQxNDkgMTAuMDAwM0MxNy40MTQ5IDkuNDU2MzQgMTcuMzU1NCA4LjkyNTY4IDE3LjI0MzQgOC40MTUzNkwxOS4xNzQ2IDUuOTMyNzlDMTkuNzMxNiA3LjE3NTk0IDIwLjA0MTQgOC41NTI4NiAyMC4wNDE0IDEwLjAwMDMiIGZpbGw9IiNGRkUwMUEiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNy45OTg4IDMuOTU1NzhMMTYuMzEwOCA2LjEyNDg3TDEwLjM4NTcgMTMuNzQxNUw1LjU1MTc2IDkuNDI5MDJMNy4zMDE4OSA3LjQ3NUwxMC4wMzcyIDkuOTE1MjZMMTQuNTIyNyA0LjE0OTk5TDE2LjEzMjQgMi4wODAzMkMxNi44MzQgMi42MjA2NiAxNy40NjIyIDMuMjUxODUgMTcuOTk4OCAzLjk1NTc4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
+  display: flex;
+  background-repeat: no-repeat;
+  background-size: 88px;
+  margin: auto 0px auto 15px;
+}
+
+.focused-title{
+  padding-top: 10px;
+  font-weight: bold;
+}
+body[dir="rtl"] .focused-title {
+  text-align: right;
+}
+.learn-more-link{
+  color: white;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+body[dir="rtl"] .learn-more-link {
+  text-align: right;
+}
+.learn-more-redirect-link{
+  color: white;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.learn-more-content{
+  padding-top: 10px
+}
+.danger-action-button {
+  height: 30px;
+  background-color: #ffe283;
+  color: #333333;
+  float: right;
+  font-size: 15px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 26px;
+  padding-right: 26px;
+}
+
+.danger-action-button:active {
+  background-color: #ffd664;
+}
+
+body[dir="rtl"] .danger-action-button {
+  float: left;
+}
+
+.icon-close-white {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 14px;
+  height: 14px;
+  background-image: url(../images/ic-close-white.svg);
+  cursor: pointer;
+  background-size: 20px;
+  background-position: -3px -1px;
+}
+
+body[dir="rtl"] .icon-close-white {
+  left: 10px;
+  right: auto;
+}
+
+.icon-danger {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  background-repeat: no-repeat;
+  margin-right: 20px;
+  background-size: 52px;
+  display: inline-block;
+  background-position: 0px 4px;
+  vertical-align: top;
+}
+
+body[dir="rtl"] .icon-danger {
+  float: right;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.learn-more-second-paragraph{
+    padding-bottom: 15px;
+    padding-top: 5px;
+}

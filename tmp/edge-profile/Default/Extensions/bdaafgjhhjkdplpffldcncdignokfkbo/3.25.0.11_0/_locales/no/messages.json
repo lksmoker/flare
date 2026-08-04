@@ -1,0 +1,41 @@
+{
+   "3in1Desc": {
+      "message": "Search safely online by enabling Norton Safe Search Enhanced as your default search provider for maximum protection on Edge."
+   },
+   "3in1Name": {
+      "message": "Norton Safe Search Enhanced"
+   },
+   "SecureDesc": {
+      "message": "Search safely online by enabling Norton Secure Search as your default search provider for maximum protection on Edge."
+   },
+   "SecureName": {
+      "message": "Norton Secure Search"
+   },
+   "combinedDesc": {
+      "message": "Norton Safe Search provides protection from online threats while you browse the web."
+   },
+   "dsDesc": {
+      "message": "Search safely online by enabling Norton Safe Search as your default search provider for maximum protection on Edge."
+   },
+   "dsName": {
+      "message": "Norton Safe Search"
+   },
+   "hpDesc": {
+      "message": "Safely search the web from your home page on Edge, with Norton. Stay away from phishing and other risky sites."
+   },
+   "hpName": {
+      "message": "Norton Home Page"
+   },
+   "langCodeIAC": {
+      "message": "no"
+   },
+   "regionCodeYahoo": {
+      "message": "us"
+   },
+   "swDesc": {
+      "message": "Norton Safe Web provides protection from online threats while you browse the web."
+   },
+   "swName": {
+      "message": "Norton Safe Web"
+   }
+}

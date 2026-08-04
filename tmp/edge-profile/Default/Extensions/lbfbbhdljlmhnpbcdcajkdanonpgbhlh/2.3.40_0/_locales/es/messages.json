@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "es"
+   },
+   "downloadButton": {
+      "message": "Descargar"
+   },
+   "downloadMessage": {
+      "message": "Para usar los marcadores en iCloud, descarga iCloud para Windows."
+   },
+   "enableBookmarksMessage": {
+      "message": "Activa los marcadores en iCloud para Windows para usar los marcadores en iCloud con Edge."
+   },
+   "extDescription": {
+      "message": "Mantén actualizados los marcadores de Edge en Windows con los marcadores de Safari en el iPhone, iPad y Mac."
+   },
+   "extName": {
+      "message": "Marcadores en iCloud"
+   },
+   "okButton": {
+      "message": "Aceptar"
+   },
+   "signinButton": {
+      "message": "Abrir iCloud para Windows"
+   },
+   "syncedMessage": {
+      "message": "Tus marcadores de Edge se han sincronizado con iCloud."
+   },
+   "unsupportedOS": {
+      "message": "La extensión que estás intentando instalar está diseñada para ejecutarse en Windows. Si estás usando un ordenador Mac, tus marcadores de Safari se sincronizarán automáticamente en todos tus dispositivos con el iPhone, el iPad y el Mac cuando inicies sesión en iCloud."
+   }
+}

@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Vi markerer mistenkelige koblinger i Webmail, Facebook, Twitter og andre kontoer."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Les mer"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "MISTENKELIG KOBLING"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton advarer deg n\u00e5 om mistenkelige koblinger i e-postmeldingene dine for \u00e5 beskytte deg mot skadelig aktivitet."
+    }
+}

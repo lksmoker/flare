@@ -1,0 +1,67 @@
+{
+   "action": {
+      "default_icon": "content/images/safe-web-icon-untested@2x.png",
+      "default_popup": "content/ui/popup.html",
+      "default_title": "__MSG_swName__"
+   },
+   "author": "NortonLifeLock Inc",
+   "background": {
+      "service_worker": "serviceWorker.js"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "content/libs/uri.min.js", "content/scripts/ClientEvents.js", "content/scripts/BfwCS.js", "NSSS_CS.js", "content/scripts/beforeLoad.js" ],
+      "match_about_blank": false,
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": false,
+      "js": [ "content/scripts/multiVariateTestingCS.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_idle"
+   }, {
+      "all_frames": true,
+      "css": [ "content/ui/annotationStyles.css" ],
+      "include_globs": [ "https://*.google.*/*", "https://nortonsafe.search.ask.com/*", "https://*.adsensecustomsearchads.com/*", "https://*.syndicatedsearch.goog/*" ],
+      "js": [ "NSSS_CS.js", "content/libs/react-latest.min.js", "content/libs/react-dom-latest.min.js", "content/scripts/annotationCS.js" ],
+      "matches": [ "https://*/*" ],
+      "run_at": "document_end"
+   }, {
+      "all_frames": false,
+      "js": [ "content/scripts/BfwCS.js", "content/scripts/BfwNotificationCenterProxy.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   }, {
+      "all_frames": true,
+      "js": [ "content/scripts/BfwCS.js", "NSSS_CS.js", "content/scripts/portalInstallFlowCS.js", "content/scripts/webCommunication.js", "content/scripts/nsssEdgeGuidedFlowsManagerCS.js" ],
+      "matches": [ "https://*.norton.com/*", "https://secure.norton.myway.com/*" ],
+      "run_at": "document_end"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+   },
+   "default_locale": "en",
+   "description": "__MSG_swDesc__",
+   "host_permissions": [ "\u003Call_urls>", "https://*.norton.com/*" ],
+   "icons": {
+      "128": "Icon-128.png",
+      "16": "Icon-16.png",
+      "32": "Icon-32.png",
+      "48": "Icon-48.png",
+      "64": "Icon-64.png"
+   },
+   "incognito": "split",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpLALAF6qDq6tCOsIkniHHUydsaPAsTq+aamF1au62xNXusiaR+j+YPFBOynMxJ5akc2sZ9DIl6da0xVw4TX/182is1Z3OLb9GB9uVnPSX35qQQyFqNNjRhSY+mrvltn5GLNzLp9QW9C1SFz0WRlC2q4KssN8yx7u1+iD95CwAII95uXzgY4R0orvCXqYtNR9EOtIrgoddJlMb3UtLNH+vku7bku/YZJFuqa/kN3BurqAXgzqjvkudgE8NzUS4uZxmkR7ZAjbS4JCFGQkUCDm2GsUrPzZ9HwhLfssHRINdnDV4X5N+bYAnh624CuWt+ptMfffLmxl9azl9M56mV3ZQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_swName__",
+   "options_page": "content/ui/settings.html",
+   "permissions": [ "tabs", "background", "webNavigation", "activeTab", "storage", "scripting", "alarms", "webRequest", "declarativeNetRequest", "declarativeNetRequestFeedback", "browsingData", "cookies", "downloads", "history", "notifications", "management" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "3.25.0.11",
+   "version_name": "3.25.0.11",
+   "web_accessible_resources": [ {
+      "extension_ids": [  ],
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "content/images/*.png", "content/images/*.svg", "content/fonts/*", "content/scripts/*.js", "content/libs/*.js", "_locales/*", "content/ui/content-page.css", "content/ui/*.html" ]
+   } ]
+}

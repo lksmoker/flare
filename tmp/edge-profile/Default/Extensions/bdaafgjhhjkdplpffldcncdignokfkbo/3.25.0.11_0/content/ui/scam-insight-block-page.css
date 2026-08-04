@@ -1,0 +1,294 @@
+/*
+ NortonLifeLock copyright header start
+
+ Copyright (c) 2020 NortonLifeLock Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+*/
+
+.SI-block-page-header-title {
+  width: 829px;
+  height: 50px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 24px;
+  line-height: 2.08;
+  color: #585858;
+  position: relative;
+  left: 158px;
+  top: -46px;
+}
+
+.SI-block-page-header{
+  height: 8%;
+}
+
+.SI-block-page-header-description {
+  width: 100%;
+  height: 160px;
+  background-color: #f2f2f2;
+}
+
+.SI-block-page-header-line {
+  border: solid 1px #d8d8d8;
+  position: relative;
+  display: inline;
+  border-top-width: 20px;
+  margin-left: 135px;
+  top: -5px;
+}
+
+.SI-block-page-alert-image {
+  width: 70px;
+  height: 65.8px;
+  background-image: url(../images/ic-alert.svg);
+  position: relative;
+  top: 50px;
+}
+
+.SI-block-page-norton-image{
+  width: 193px;
+  height: 41px;
+  background-image: url(../images/norton-logo.svg);
+  background-repeat: no-repeat;
+  position: relative;
+  top: 16px;
+}
+
+.SI-header{
+  width: 1170px;
+  margin: auto;
+}
+
+.SI-block-page-header-description-content {
+  width: 800px;
+  height: 45px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #4d4d4d;
+  margin-left: 100px;
+  margin-top: -18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.SI-block-page-header-description-page-url {
+  width: 1070px;
+  height: 21px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.13;
+  color: #4d4d4d;
+  margin-left: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.SI-block-page-content-description
+{
+  margin-top: 25px;
+  height: 215px;
+  position: relative;
+  left: 100px;
+  width: 1070px;
+}
+
+.SI-block-page-content-description1 {
+  height: 35px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.46;
+  color: #333333;
+}
+
+.SI-block-page-content-description2 {
+  width: 967px;
+  height: 40px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #333333;
+  margin-top: 20px;
+}
+
+.description2_text1, .description2_text2, .description2_text3 {
+  display: inline;
+}
+
+.description2_text2-link {
+  color: #0089c6;
+  text-decoration: none;
+}
+
+.SI-block-page-age{
+  margin-top: 56px;
+}
+
+.SI-block-page-prevalence-left-align{
+  margin-top: 56px;
+}
+
+.SI-block-page-prevalence{
+  position: relative;
+  left: 310px;
+  top: -67px;
+}
+
+.SI-block-page-age-image {
+  width: 173px;
+  height: 20px;
+  border: solid 1px #ffffff;
+}
+
+.SI-block-page-age-rating {
+  width: 170px;
+  height: 17px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #434343;
+}
+
+.age-rating-text1, .age-rating-text2 {
+  display: inline;
+}
+
+.age-rating-text1 {
+  font-weight: 500;
+}
+
+.SI-block-page-age-description {
+  width: 170px;
+  height: 28px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 11px;
+  line-height: 1.27;
+  color: #434343;
+}
+
+.SI-block-page-prevalence-image {
+  width: 173px;
+  height: 20px;
+  border: solid 1px #ffffff;
+}
+
+.SI-block-page-prevalence-rating {
+  width: 300px;
+  height: 17px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #434343;
+}
+
+.prevalence-rating-text1, .prevalence-rating-text2 {
+  display: inline;
+}
+
+.prevalence-rating-text1 {
+  font-weight: 500;
+}
+
+.SI-block-page-prevalence-description {
+  width: 170px;
+  height: 28px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 11px;
+  line-height: 1.27;
+  color: #434343;
+}
+
+.SI-block-page-continue-to-site {
+  width: 135px;
+  height: 20px;
+  font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, "Lucida Sans Unicode", Arial, Sans-serif;
+  font-size: 14px;
+  line-height: 1.43;
+  margin-top: 170px;
+  margin-left: 850px;
+}
+
+.SI-block-page-continue-to-site-link {
+  color: #0089c6;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.SI-block-page-desc{
+  width: 1170px;
+  height: auto;
+  margin: auto;
+}
+
+.SI-block-page-center{
+  margin: auto;
+  width: 1170px;
+}
+
+.SI-block-page-exit-site {
+  width: 140px;
+  height: 40px;
+  background-color: #fdd572;
+  position: relative;
+  left: 970px;
+  bottom: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.SI-block-page-footer-line {
+  width: 1170px;
+  border: solid 0.5px #e4e4e4;
+  margin-top: 20px;
+  margin: auto;
+}
+
+body[dir="rtl"] .SI-block-page-header-line{
+  margin-right: 210px;
+}
+
+body[dir="rtl"] .SI-block-page-header-title{
+  right: 230px;
+}
+
+body[dir="rtl"] .SI-block-page-header-description-content{
+  margin-right: 100px;
+}
+
+body[dir="rtl"] .SI-block-page-header-description-page-url{
+  margin-right: 100px;
+}
+
+body[dir="rtl"] .SI-block-page-content-description{
+  right: 100px;
+}
+
+body[dir="rtl"] .SI-block-page-prevalence{
+  right: 310px;
+}
+
+body[dir="rtl"] .SI-block-page-exit-site{
+  right: 970px;
+}
+
+body[dir="rtl"] .SI-block-page-continue-to-site{
+  margin-right: 850px;
+}

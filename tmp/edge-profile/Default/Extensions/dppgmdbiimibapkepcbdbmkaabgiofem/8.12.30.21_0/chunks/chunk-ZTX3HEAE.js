@@ -1,0 +1,1 @@
+import{x as r}from"/chunks/chunk-NJ45OJHT.js";function e(){return t().toString(36)}function t(){return globalThis.crypto.getRandomValues(new Uint32Array(1))[0]}function o(){return r.assertLogSafe(e())}export{o as a};

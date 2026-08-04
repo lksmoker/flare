@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "Figyelem"
+	},
+
+	"Untested":
+	{
+		"message": "NEM ELLEN\u0150RZ\u00d6TT"
+	},
+
+	"Warning":
+	{
+		"message": "Figyelmeztet\u00e9s"
+	},
+	"Norton Secured":
+	{
+		"message": "BIZTONS\u00c1GOS"
+	},
+	"Not Licensed":
+	{
+		"message": "Nincs enged\u00e9lye"
+	},
+	"Safe":
+	{
+		"message": "Biztons\u00e1gos"
+	},
+	"Safe Web is off":
+	{
+		"message": "BIZTONS\u00c1GOS"
+	},
+	"Page not analyzed":
+	{
+		"message": "Az oldal nincs ki\u00e9rt\u00e9kelve"
+	},
+	"Norton Rating":
+	{
+		"message": "Norton-besorol\u00e1s"
+	},
+	"Computer Threats":
+	{
+		"message": "Sz\u00e1m\u00edt\u00f3g\u00e9p-fenyeget\u00e9sek"
+	},
+	"Identity Threats":
+	{
+		"message": "Szem\u00e9lyazon.-\nkock\u00e1zatok"
+	},
+	"Annoyance Threats":
+	{
+		"message": "Zavar\u00f3 fenyeget\u00e9sek"
+	},
+	"Total Threats":
+	{
+		"message": "\u00d6sszesen"
+	},
+	"Full Safe Web report":
+	{
+		"message": "Teljes Safe Web-jelent\u00e9s"
+	},
+	"Report this site":
+	{
+		"message": "Webhely jelent\u00e9se"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "B\u00f6ng\u00e9sz\u0151be\u00e1ll\u00edt\u00e1sok"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "NEM BIZTONS\u00c1GOS"
+	},
+    "total_threats_id":
+    {
+        "message" : "Fenyeget\u00e9sek: "
+    },
+		"untested_text":
+		{
+			"message" : "Ezt a webhelyet m\u00e9g nem tesztelt\u00e9k"
+		},
+    "safe_status_id":
+    {
+        "message" : "BIZTONS\u00c1GOS"
+    },
+    "secure_status_id":
+    {
+        "message" : "BIZTONS\u00c1GOS"
+    },
+    "caution_status_id":
+    {
+        "message" : "Figyelem"
+    },
+    "untested_status_id":
+    {
+        "message" : "NEM ELLEN\u0150RZ\u00d6TT"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "NEM BIZTONS\u00c1GOS"
+    },
+		"full_report_id" :
+		{
+				"message" : "Teljes jelent\u00e9s"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Norton-besorol\u00e1s:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "K\u00e1rt\u00e9kony let\u00f6lt\u00e9sek \u00e9szlelve"
+	},
+	"Download Cancelled":
+	{
+		"message" : "Let\u00f6lt\u00e9s megszak\u00edtva"
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "Rosszindulat\u00fa webhely blokkolva"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "Rosszindulat\u00fa webhely letiltva!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "Ezt pr\u00f3b\u00e1lta el\u00e9rni:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "A k\u00f6vetkez\u0151 webhelyet pr\u00f3b\u00e1lta felkeresni:"
+	},
+	"Website you tried to access:": {
+		"message" : "A webhely, amelyet megpr\u00f3b\u00e1lt el\u00e9rni:"
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "Ez egy ismert rosszindulat\u00fa webhely. Ezt a webhelyet NEM aj\u00e1nlott felkeresni. A"
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "Ez a weboldal egy ismert rosszindulat\u00fa weboldal."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "Ez a webhely egy ismert rosszindulat\u00fa webhely."
+	},
+	"detailed report" :
+	{
+		"message" : "r\u00e9szletes jelent\u00e9s"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "bemutatja a webhely biztons\u00e1gi kock\u00e1zatait."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "Az \u00d6n v\u00e9delme \u00e9rdek\u00e9ben ezt a webhelyet blokkoltuk. L\u00e1togasson el a"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "webhely\u00e9re az adathal\u00e1szatr\u00f3l \u00e9s a biztons\u00e1gos internetez\u00e9sr\u0151l sz\u00f3l\u00f3 tudnival\u00f3k\u00e9rt."
+	},
+	"Exit this site" :
+	{
+		"message" : "Kil\u00e9p\u00e9s a webhelyr\u0151l"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "Mindenk\u00e9ppen meg szeretn\u00e9m tekinteni ezt a webhelyet"
+	},
+	"It is recommended that you" :
+	{
+		"message" : "NEM aj\u00e1nlott"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "NE keresse fel ezt a webhelyet."
+	},
+	"Norton":
+	{
+		"message" : "Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Norton kezd\u0151lap"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "Gyan\u00fas webhely letiltva"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "Az \u00d6n v\u00e9delme \u00e9rdek\u00e9ben ezt a weboldalt blokkoltuk, \u00e9s elk\u00fcldt\u00fck fel\u00fclvizsg\u00e1latra."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "Ez a webhely blokkolva van kal\u00f3zkod\u00e1si tev\u00e9kenys\u00e9gek vagy a r\u00e9gi\u00f3ban tapasztalhat\u00f3 egy\u00e9b korl\u00e1toz\u00e1sok miatt. Nyomat\u00e9kosan javasoljuk, hogy a webhelyet ne keresse fel."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "Ezt az oldalt egy\u00e1ltal\u00e1n NEM aj\u00e1nlott felkeresni."
+	},
+	"Visit" :
+	{
+		"message" : "L\u00e1togasson el a"
+	},
+	"Continue to the site" :
+	{
+		"message" : "Tov\u00e1bb a webhelyre"
+	},
+	"View Full Report" :
+	{
+		"message" : "Teljes jelent\u00e9s megtekint\u00e9se"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "Biztons\u00e1gosabb webhely keres\u00e9se"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "Csal\u00e1ssal fenyeget\u0151 weboldal blokkolva"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "Ez a weboldal egy ismert csal\u00f3 webhely."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "Vesz\u00e9lyes weboldal letiltva"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "Ez egy ismert vesz\u00e9lyes weboldal."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "K\u00f6sz\u00f6nj\u00fck, hogy a(z) {0} term\u00e9ket haszn\u00e1lja. Ossza meg a haszn\u00e1lati \u00e9s a hibaadatokat a Nortonnal, \u00e9s seg\u00edtse term\u00e9keink fejleszt\u00e9s\u00e9t."
+	},
+	"OK" :
+	{
+	    "message" : "OK"
+	},
+	"No, thanks" :
+	{
+	    "message" : "Nem, k\u00f6sz\u00f6n\u00f6m"
+	},
+	"Learn More" :
+	{
+	    "message" : "Tov\u00e1bbi r\u00e9szletek"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "Safe Search"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "Kezd\u0151lap"
+	},
+	"Settings"	:
+	{
+			"message" :	"Be\u00e1ll\u00edt\u00e1sok"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "AZ ADATOK MEGOSZT\u00c1SA A NORTONNAL"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "Ossza meg a haszn\u00e1lati \u00e9s a hibaadatokat a Nortonnal, \u00e9s seg\u00edtse term\u00e9keink fejleszt\u00e9s\u00e9t"
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Vissza\u00e9l\u00e9s Insight: Szem\u00e9lyes adatokkal kapcsolatos kock\u00e1zat"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "Ez az oldal biztons\u00e1gos, de\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "Szem\u00e9lyes adatokat k\u00e9r, \u00e9s nincs megnyugtat\u00f3 elfogadotts\u00e1ga a Norton Community \u00e1ltal. B\u00e1rmilyen adatot kell\u0151 \u00f3vatoss\u00e1ggal adjon meg ezen a webhelyen. "
+	},
+	"Visit " :
+	{
+		"message" : "L\u00e1togasson el a "
+	},
+	"Norton " :
+	{
+		"message" : "Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "ha t\u00f6bbet szeretne megtudni az egyes webhelyeken a szem\u00e9lyes adatokat \u00e9rint\u0151 kock\u00e1zatokr\u00f3l."
+	},
+	"Age: " :
+	{
+		"message" : "\u00c9letkor: "
+	},
+	"Very New" :
+	{
+		"message" : "Nagyon \u00faj"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "Ezt a webhelyet nemr\u00e9g tett\u00e9k k\u00f6zz\u00e9."
+	},
+	"New" :
+	{
+		"message" : "\u00daj"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "Ez a webhely csak r\u00f6vid ideje \u00e9rhet\u0151 el."
+	},
+	"Prevalence: " :
+	{
+		"message" : "Elterjedts\u00e9g: "
+	},
+	"No Users" :
+	{
+		"message" : "Nincs felhaszn\u00e1l\u00f3"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "Ezt a webhelyet m\u00e9g nem haszn\u00e1lta Norton Community-tag."
+	},
+	"Few Users" :
+	{
+		"message" : "Kev\u00e9s felhaszn\u00e1l\u00f3"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "Ezt a webhelyet csak n\u00e9h\u00e1ny Norton Community-tag haszn\u00e1lta."
+	},
+	"Continue to Site" :
+	{
+		"message" : "Tov\u00e1bb a webhelyre"
+	},
+	"Exit Site" :
+	{
+		"message" : "Kil\u00e9p\u00e9s a webhelyr\u0151l"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "Ha \u00fagy gondolja, hogy ez a webhely helytelen\u00fcl van kategoriz\u00e1lva, "
+	},
+	"Report Issue." :
+	{
+		"message" : "Jelentse a probl\u00e9m\u00e1t."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "Bejelentkezve, mint"
+	},
+	"Sign out"			:
+	{
+		"message"		: "Kijelentkez\u00e9s"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"Sikeresen kijelentkezett a NortonLifeLock-fi\u00f3kb\u00f3l"
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"Hiba t\u00f6rt\u00e9nt. Pr\u00f3b\u00e1lja meg \u00fajra."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "Nem biztons\u00e1gos hivatkoz\u00e1sok azonos\u00edt\u00e1sa Webmail-ben, Facebookon \u00e9s Twitteren"
+	},
+	"Websites": {
+  		"message": "Webhelyek"
+	},
+	"Isolation Mode On": {
+  		"message": "Elk\u00fcl\u00f6n\u00edt\u00e9si m\u00f3d bekapcsolva"
+	},
+	"Isolation Mode Off": {
+  		"message": "Elk\u00fcl\u00f6n\u00edt\u00e9si m\u00f3d kikapcsolva"
+	},
+	"Ask Me": {
+  		"message": "K\u00e9rdezze meg"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "Gyors hivatkoz\u00e1sok"
+	},
+	"Privacy": {
+		"message": "Adatv\u00e9delem"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Szerz\u0151i jog \u00a9 {0} Gen Digital Inc. Minden jog fenntartva."
+	},
+	"Legal": {
+		"message": "Jogi inform\u00e1ci\u00f3k"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "A NortonLifeLock leg\u00fajabb friss\u00edt\u00e9sei"
+  },
+  "Security & Privacy Center": {
+    "message": "Biztons\u00e1gi \u00e9s adatv\u00e9delmi k\u00f6zpont"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "\u00dcdv\u00f6zli \u00d6nt a Norton Safe Search"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "A bemutat\u00f3 ismerteti a v\u00e1ltoz\u00e1sokat, \u00e9s seg\u00edt \u00d6nnek abban, hogy min\u00e9l jobban kihaszn\u00e1lhassa a Safe Search funkci\u00f3it."
+  },
+  "Start Tour": {
+    "message": "Bemutat\u00f3 ind\u00edt\u00e1sa"
+  },
+  "Peace of mind with every search": {
+    "message": "Aggodalommentes keres\u00e9s"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "A Norton Safe Search a webhelybiztons\u00e1gi min\u0151s\u00edt\u00e9seket a keres\u00e9si eredm\u00e9nyek k\u00f6z\u00f6tt jelen\u00edti meg."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "Biztons\u00e1gi friss\u00edt\u00e9seket \u00e9s tippeket kaphat a Nortont\u00f3l"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "Fedezze fel a NortonLifeLock leg\u00fajabb biztons\u00e1gi \u00e9s adatv\u00e9delmi blogjait, \u00e9s m\u00e9g t\u00f6bbet tudhat meg a digit\u00e1lis biztons\u00e1gr\u00f3l."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "A Norton kezd\u0151lap bemutat\u00f3ja a Be\u00e1ll\u00edt\u00e1sokn\u00e1l \u00e9rhet\u0151 el."
+  },
+  "Next": {
+    "message": "Tov\u00e1bb"
+  },
+  "Done": {
+    "message": "K\u00e9sz"
+  },
+  "Welcome to {0}": {
+	"message": "\u00dcdv\u00f6zli \u00d6nt a(z) {0}!"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "K\u00f6sz\u00f6nj\u00fck, hogy a NortonLifeLock term\u00e9ket v\u00e1lasztotta."
+  },
+  "Keep It": {
+	"message": "Megtartom"
+  },
+  "Keep it": {
+	"message": "Megtartom"
+  },
+  "Keep changes": {
+    "message": "M\u00f3dos\u00edt\u00e1sok megtart\u00e1sa"
+  },
+  "Keep Changes": {
+    "message": "M\u00f3dos\u00edt\u00e1sok megtart\u00e1sa"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "A Chrome-ban fenntarthatja a(z) {0}-v\u00e9delmet. Ehhez kattintson a(z) {1} gombra, ha a k\u00e9perny\u0151 tetej\u00e9n megjelenik egy Chrome-\u00fczenet."
+  },
+  "Thanks for choosing {0}": {
+    "message": "K\u00f6sz\u00f6nj\u00fck, hogy a {0} term\u00e9ket v\u00e1lasztotta"
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "Miut\u00e1n telep\u00edtette a b\u00f6ng\u00e9sz\u0151b\u0151v\u00edtm\u00e9nyt, kattintson a {1} gombra, ha a Microsoft Edge erre k\u00e9ri, hogy tov\u00e1bbra is haszn\u00e1lhassa a {0} szolg\u00e1ltat\u00e1st."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "K\u00f6sz\u00f6nj\u00fck, hogy a NortonLifeLock term\u00e9ket v\u00e1lasztotta."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Ha a k\u00e9perny\u0151 tetej\u00e9n megjelenik egy Chrome-\u00fczenet, kattintson a(z) {1} gombra, hogy a(z) {0} megmaradjon a Chrome-ban."
+	},
+  "Let us help protect you": {
+    "message" : "Engedje meg, hogy seg\u00edts\u00fcnk a v\u00e9delm\u00e9ben"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "A Norton Safe Web enged\u00e9llyel kell, hogy rendelkezzen az \u00d6n \u00e1ltal felkeresett URL-ek el\u00e9r\u00e9s\u00e9hez \u00e9s gy\u0171jt\u00e9s\u00e9hez. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "\u00cdgy olyan biztons\u00e1gi besorol\u00e1sokat tudunk adni, amelyek el\u0151seg\u00edtik a biztons\u00e1gos b\u00f6ng\u00e9sz\u00e9st."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "Enged\u00e9lyt kell adnia a Norton Safe Search sz\u00e1m\u00e1ra, hogy hozz\u00e1f\u00e9rjen \u00e9s \u00f6sszegy\u0171jtse azokat az URL-eket, amelyekre \u00d6n r\u00e1keres. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "Enged\u00e9lyt kell adnia a Norton Safe Search sz\u00e1m\u00e1ra, hogy hozz\u00e1f\u00e9rjen \u00e9s \u00f6sszegy\u0171jtse azokat az URL-eket, amelyeket \u00d6n a c\u00edmsorb\u00f3l \u00e9s a Norton kezd\u0151lapj\u00e1r\u00f3l megnyitna. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "Az enged\u00e9ly\u00e9re van sz\u00fcks\u00e9g\u00fcnk az \u00d6n \u00e1ltal keresett webc\u00edmek (URL-c\u00edmek) begy\u0171jt\u00e9s\u00e9hez a potenci\u00e1lisan vesz\u00e9lyes hivatkoz\u00e1sok \u00e9szlel\u00e9s\u00e9hez. Ha elutas\u00edtja a k\u00e9r\u00e9st, elt\u00e1vol\u00edtjuk ezt a b\u0151v\u00edtm\u00e9nyt."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "Az enged\u00e9ly\u00e9re van sz\u00fcks\u00e9g\u00fcnk az \u00d6n \u00e1ltal felkeresett webc\u00edmek (URL-c\u00edmek) begy\u0171jt\u00e9s\u00e9hez a potenci\u00e1lisan vesz\u00e9lyes webhelyek \u00e9szlel\u00e9s\u00e9hez. Ha elutas\u00edtja a k\u00e9r\u00e9st, elt\u00e1vol\u00edtjuk ezt a b\u0151v\u00edtm\u00e9nyt."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "Term\u00e9khaszn\u00e1lati adatokat \u00e9s hibanapl\u00f3kat is gy\u0171jt\u00fcnk elemz\u00e9si c\u00e9lra, hogy jav\u00edtani tudjuk a teljes\u00edtm\u00e9nyt. D\u00f6nthet \u00fagy, hogy nem osztja meg ezeket az adatokat; ett\u0151l m\u00e9g m\u0171k\u00f6dni fog a b\u0151v\u00edtm\u00e9ny."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "Enged\u00e9lyezi sz\u00e1munkra a haszn\u00e1lati adatok gy\u0171jt\u00e9s\u00e9t."
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "\u00cdgy seg\u00edthet\u00fcnk felismerni, hogy az adott webhely rosszindulat\u00fa-e, miel\u0151tt azt \u00d6n megnyitn\u00e1, illetve megjelen\u00edtj\u00fck a Safe Search eredm\u00e9nyeit."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "\u00cdgy felismerj\u00fck, hogy az adott webhely rosszindulat\u00fa-e, \u00e9s figyelmeztetni fogjuk \u00d6nt, miel\u0151tt megnyitn\u00e1."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "A Norton-kezd\u0151lap csak enged\u00e9llyel \u00e9rheti el \u00e9s gy\u0171jtheti az \u00d6n \u00e1ltal megnyitni k\u00edv\u00e1nt URL-eket."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "\u00cdgy seg\u00edthet\u00fcnk felismerni, hogy az adott webhely rosszindulat\u00fa-e, miel\u0151tt \u00d6n megnyitn\u00e1 azt."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "Az adatgy\u0171jt\u00e9si ir\u00e1nyelveink jobb meg\u00e9rt\u00e9se \u00e9rdek\u00e9ben l\u00e1togasson el ide:"
+  },
+  "Accept": {
+    "message" : "Elfogad\u00e1s"
+  },
+  "Decline": {
+    "message" : "Elutas\u00edt\u00e1s"
+  },
+  "Your Permission Is Required": {
+    "message" : "Az \u00d6n enged\u00e9lye sz\u00fcks\u00e9ges"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "Ha elutas\u00edtja, a Norton Safe Web nem fog m\u0171k\u00f6dni, \u00e9s nem fog tudni biztons\u00e1gi besorol\u00e1sokat ny\u00fajtani \u00d6nnek."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "Ha elutas\u00edtja, a Norton Safe Search nem fog m\u0171k\u00f6dni ezen az eszk\u00f6z\u00f6n, \u00e9s nem fog tudni seg\u00edts\u00e9get ny\u00fajtani a rosszindulat\u00fa webhelyekkel szembeni v\u00e9delemhez."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "Ha elutas\u00edtja, a Norton-kezd\u0151lap nem fog m\u0171k\u00f6dni, \u00e9s nem fog tudni seg\u00edts\u00e9get ny\u00fajtani a rosszindulat\u00fa webhelyekkel szembeni v\u00e9delemhez."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "Ha elutas\u00edtja, a Norton Safe Search nem fog m\u0171k\u00f6dni, \u00e9s nem tudja megv\u00e9deni \u00d6nt a rosszindulat\u00fa webhelyekt\u0151l, \u00e9s mi sem tudunk biztons\u00e1gos keres\u00e9si eredm\u00e9nyeket biztos\u00edtani \u00d6nnek."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Ha elt\u00e1vol\u00edtja a Safe Web alkalmaz\u00e1st, a Norton nem lesz k\u00e9pes felismerni a rosszindulat\u00fa webhelyeket, \u00e9s nem tud seg\u00edteni a v\u00e9delemben. Javasoljuk, hogy tartsa meg az alkalmaz\u00e1st, \u00e9s enged\u00e9lyezze, hogy a Safe Web m\u0171k\u00f6dj\u00f6n az eszk\u00f6z\u00f6n."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "Kattintson az al\u00e1bbi hivatkoz\u00e1sra az enged\u00e9ly \u00e1ttekint\u00e9s\u00e9hez \u00e9s az anonim m\u00f3don bek\u00fcld\u00f6tt inform\u00e1ci\u00f3k gy\u0171jt\u00e9s\u00e9re vonatkoz\u00f3 k\u00e9r\u00e9s\u00fcnk elfogad\u00e1s\u00e1hoz."
+  },
+	"Search more safely, protect your device": {
+		"message" : "M\u00e9g biztons\u00e1gosabb keres\u00e9s \u00e9s az eszk\u00f6z v\u00e9delme"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "A Mozilla Firefox friss\u00edtette a b\u0151v\u00edtm\u00e9nyekre vonatkoz\u00f3 ir\u00e1nyelveit. Adjon \u00fajb\u00f3l enged\u00e9lyt a Norton Safe Search haszn\u00e1lat\u00e1nak folytat\u00e1s\u00e1hoz."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "Enged\u00e9lyt kell adnia a Safe Search sz\u00e1m\u00e1ra, hogy el\u00e9rje \u00e9s \u00f6sszegy\u0171jtse azokat az URL-eket, amelyekre \u00d6n r\u00e1keres. \u00cdgy m\u00e9g azel\u0151tt tudhatja, hogy az adott webhelyek rosszindulat\u00faak-e, miel\u0151tt azokat felkeresn\u00e9."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "Ha elutas\u00edtja, a Safe Search nem fog tudni seg\u00edts\u00e9get ny\u00fajtani az eszk\u00f6z sz\u00e1m\u00e1ra a rosszindulat\u00fa webhelyekkel szembeni v\u00e9delemhez."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "N\u00e9v n\u00e9lk\u00fcl megoszthatja a Nortonnal a haszn\u00e1lati \u00e9s a hibaadatokat, \u00e9s ezzel el\u0151seg\u00edtheti term\u00e9keink \u00e9s szolg\u00e1ltat\u00e1saink fejleszt\u00e9s\u00e9t."
+	},
+	"Decline & Uninstall": {
+		"message" : "Elutas\u00edt\u00e1s \u00e9s elt\u00e1vol\u00edt\u00e1s"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "Enged\u00e9lyt kell adnia a kezd\u0151lap sz\u00e1m\u00e1ra, hogy el\u00e9rje \u00e9s \u00f6sszegy\u0171jtse azokat az URL-eket, amelyekre \u00d6n r\u00e1keres. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "Ha elutas\u00edtja, a kezd\u0151lap nem fog tudni seg\u00edts\u00e9get ny\u00fajtani a rosszindulat\u00fa webhelyekkel szembeni v\u00e9delemhez."
+	},
+	"Search more safely from your home page": {
+		"message" : "Biztons\u00e1gosabb keres\u00e9s a kezd\u0151lapr\u00f3l"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "Enged\u00e9lyt kell adnia a Norton sz\u00e1m\u00e1ra, hogy el\u00e9rje \u00e9s \u00f6sszegy\u0171jtse azokat az URL-eket, amelyeket \u00d6n a c\u00edmsorb\u00f3l \u00e9s a kezd\u0151lapr\u00f3l meg szeretne nyitni. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "Ha elutas\u00edtja, a Norton nem tudja megv\u00e9deni \u00d6nt a rosszindulat\u00fa webhelyekt\u0151l, \u00e9s mi sem tudunk biztons\u00e1gos keres\u00e9si eredm\u00e9nyeket biztos\u00edtani \u00d6nnek."
+	},
+  "Review Your Permissions": {
+    "message" : "Enged\u00e9lyek \u00e1ttekint\u00e9se"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "A Norton Safe Web elt\u00e1vol\u00edt\u00e1sa"
+  },
+  "Global Privacy Statement": {
+	"message" : "Glob\u00e1lis adatv\u00e9delmi nyilatkozat"
+  },
+  "addQuickLink": {
+    "message" : "Parancsikon hozz\u00e1ad\u00e1sa"
+  },
+	"addNewText": {
+		"message" : "Parancsikon hozz\u00e1ad\u00e1sa"
+	},
+  "Title": {
+    "message" : "C\u00edm"
+  },
+  "URL": {
+    "message" : "URL"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "A hozz\u00e1adni k\u00edv\u00e1nt parancsikon m\u00e1r megkapta."
+  },
+  "Edit shortcut": {
+    "message" : "Parancsikon szerkeszt\u00e9se"
+  },
+  "Add": {
+    "message" : "Hozz\u00e1ad\u00e1s"
+  },
+  "Cancel": {
+    "message" : "M\u00e9gse"
+  },
+  "Save": {
+    "message" : "Ment\u00e9s"
+  },
+  "Edit": {
+    "message" : "Szerkeszt\u00e9s"
+  },
+  "Remove": {
+    "message" : "Elt\u00e1vol\u00edt\u00e1s"
+  },
+  "Quick Links is all new!": {
+    "message" : "A Gyorshivatkoz\u00e1sok a leg\u00fajabb szolg\u00e1ltat\u00e1s!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "Kedvenc webhelyeit hozz\u00e1adhatja az \u00faj Gyorshivatkoz\u00e1sok s\u00e1vj\u00e1hoz."
+  },
+  "Got it": {
+    "message" : "Rendben"
+  },
+  "Type a valid URL": {
+    "message" : "\u00cdrjon be egy \u00e9rv\u00e9nyes URL-t"
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "Gyorshivatkoz\u00e1sok a n\u00e9pszer\u0171 webhelyek egyszer\u0171 el\u00e9r\u00e9s\u00e9hez"
+  },
+  "Editable quick links": {
+    "message" : "Szerkeszthet\u0151 gyorshivatkoz\u00e1sok"
+  },
+  "This website is considered safe.": {
+	  "message" : "Ez a webhely biztons\u00e1gosnak min\u0151s\u00fcl."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "Ez a webhely m\u00e9g nem kapott besorol\u00e1st."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "Ez a webhely hordozhat n\u00e9h\u00e1ny fenyeget\u00e9st."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "Ez a webhely szerepel a k\u00e1rt\u00e9kony weboldalak list\u00e1j\u00e1n."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "Ez egy gyan\u00fas weboldal."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "Teljes Safe Web-jelent\u00e9s megtekint\u00e9se"
+  },
+    "Accept risk and continue" : {
+		"message" : "Kock\u00e1zatok elfogad\u00e1sa \u00e9s folytat\u00e1s"
+	},
+	"Accept and display risk": {
+		"message": "Elfogad\u00e1s \u00e9s kock\u00e1zat megjelen\u00edt\u00e9se"
+	},
+	"Close this website (recommended)": {
+		"message": "Webhely bez\u00e1r\u00e1sa (aj\u00e1nlott)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "A Norton Safe Web \u00faj funkci\u00f3ja"
+	},
+	"Protection from Formjacking": {
+		"message": "\u0170rlapelt\u00e9r\u00edt\u00e9s elleni v\u00e9delem"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "A Norton Safe Web seg\u00edts\u00e9g\u00e9vel elker\u00fclheti az \u0171rlapelt\u00e9r\u00edt\u00e9st online v\u00e1s\u00e1rl\u00e1s k\u00f6zben."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "\u00c9rtes\u00edtj\u00fck \u00d6nt, ha azt \u00e9szlelj\u00fck, hogy a webhely, ahonnan v\u00e1s\u00e1rol, felt\u00f6rt fizet\u00e9si rendszerrel rendelkezik."
+	},
+	"Thanks for installing": {
+		"message": "K\u00f6sz\u00f6nj\u00fck, hogy telep\u00edtette a term\u00e9ket"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web"
+	},
+	"Take advantage of all these great features:": {
+		"message": "Haszn\u00e1lja ki ezeket a nagyszer\u0171 funkci\u00f3kat:"
+	},
+	"Website Ratings": {
+		"message": "Webhelymin\u0151s\u00edt\u00e9sek"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "Webhelymin\u0151s\u00edt\u00e9seink alapj\u00e1n tudhatja, hogy egy adott webhely biztons\u00e1gos-e, vagy \u00f3vatosnak kell lennie, miel\u0151tt megadja az adatait."
+	},
+	"Intrusion Prevention": {
+		"message": "Behatol\u00e1smegel\u0151z\u00e9s"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "A Norton Safe Web a n\u00e9pszer\u0171 b\u00f6ng\u00e9sz\u0151k ismert hib\u00e1i \u00e9s kiberfenyeget\u00e9sei ellen ny\u00fajt v\u00e9delmet."
+	},
+	"Formjacking Prevention": {
+		"message": "Az \u0171rlapelt\u00e9r\u00edt\u00e9s megel\u0151z\u00e9se"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "A Norton Safe Web \u00e9rtes\u00edti \u00d6nt, ha azt \u00e9szleli, hogy egy adott e-kereskedelmi webhely fizet\u00e9si rendszer\u00e9t felt\u00f6rt\u00e9k."
+	},
+	"Website Blocking": {
+		"message": "Webhely blokkol\u00e1sa"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "A Norton Safe Web \u00e9rtes\u00edti \u00d6nt, majd seg\u00edt blokkolni a rosszindulat\u00fa webhelyeket, miel\u0151tt ilyenre kattintana."
+	},
+	"Anti-Phishing Protection": {
+		"message": "Adathal\u00e1szat elleni v\u00e9delem"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "Ezzel a funkci\u00f3val megtudhatja, hogy a megnyitni k\u00edv\u00e1nt webhely rendelkezik-e hivatalos hiteles\u00edt\u00e9ssel, azaz nem adathal\u00e1sz webhely."
+	},
+	"Link Guard": {
+		"message": "Hivatkoz\u00e1sv\u00e9delem"
+	},
+	"Blocking options": {
+		"message": "Blokkol\u00e1si be\u00e1ll\u00edt\u00e1sok"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "V\u00e1lassza ki a v\u00e9delem szintj\u00e9t, amikor a Webbiztons\u00e1g rosszindulat\u00fa vagy adathal\u00e1sz webhelyet \u00e9szlel."
+	},
+	"Block the site": {
+		"message": "A webhely blokkol\u00e1sa <span>Aj\u00e1nlott</span>"
+	},
+	"Show notification banner": {
+		"message": "\u00c9rtes\u00edt\u00e9si s\u00e1vszalag megjelen\u00edt\u00e9se"
+	},
+	"Alert me from extension icon only": {
+		"message": "Csak a b\u0151v\u00edtm\u00e9ny ikonja figyelmeztessen"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "Ellen\u0151rzi a webes levelez\u0151fi\u00f3kokat \u00e9s a k\u00f6z\u00f6ss\u00e9gi oldalakon a h\u00edrfolyamokat gyan\u00fas vagy rosszindulat\u00fa hivatkoz\u00e1sok ut\u00e1n kutatva."
+	},
+	"Learn more": {
+		"message": "Tov\u00e1bbi t\u00e1j\u00e9koztat\u00e1s"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "Er\u0151sen javasoljuk, hogy ne osszon meg semmif\u00e9le szem\u00e9lyes vagy p\u00e9nz\u00fcgyi inform\u00e1ci\u00f3t ezen az oldalon."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "A Norton Safe Web csak a Norton Safe Search haszn\u00e1lata eset\u00e9n jelen\u00edt meg weboldalakra vonatkoz\u00f3 biztons\u00e1gi besorol\u00e1sokat."
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "V\u00e9dje keres\u00e9seit a Norton Safe Search seg\u00edts\u00e9g\u00e9vel"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "A j\u00f6v\u0151ben a Norton Safe Web b\u0151v\u00edtm\u00e9ny csak a Norton Safe Search haszn\u00e1latakor jelen\u00edt meg weboldalakra vonatkoz\u00f3 biztons\u00e1gi besorol\u00e1sokat, a t\u00f6bbi keres\u0151motorn\u00e1l nem."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "Tov\u00e1bbra is blokkoljuk a vesz\u00e9lyes webhelyeket, gondoskodva a biztons\u00e1gos b\u00f6ng\u00e9sz\u00e9sr\u0151l."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "Ha a k\u00e9s\u0151bbiekben is szeretn\u00e9 l\u00e1tni a weboldalakra vonatkoz\u00f3 biztons\u00e1gi besorol\u00e1sokat, telep\u00edtse a Norton Safe Search b\u0151v\u00edtm\u00e9nyt."
+	},
+	"See Forecast": {
+		"message": "L\u00e1sd az el\u0151rejelz\u00e9st"
+	},
+	"Fahrenheit": {
+		"message": "Fahrenheit"
+	},
+	"Celsius": {
+		"message": "Celsius"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0C"
+	},
+	"January": {
+		"message": "janu\u00e1r"
+	},
+	"February": {
+		"message": "febru\u00e1r"
+	},
+	"March": {
+		"message": "m\u00e1rcius"
+	},
+	"April": {
+		"message": "\u00e1prilis"
+	},
+	"May": {
+		"message": "m\u00e1jus"
+	},
+	"June": {
+		"message": "j\u00fanius"
+	},
+	"July": {
+		"message": "j\u00falius"
+	},
+	"August": {
+		"message": "augusztus"
+	},
+	"September": {
+		"message": "szeptember"
+	},
+	"October": {
+		"message": "okt\u00f3ber"
+	},
+	"November": {
+		"message": "november"
+	},
+	"December": {
+		"message": "december"
+	},
+	"Monday": {
+		"message": "H\u00e9tf\u0151"
+	},
+	"Tuesday": {
+		"message": "Kedd"
+	},
+	"Wednesday": {
+		"message": "Szerda"
+	},
+	"Thursday": {
+		"message": "Cs\u00fct\u00f6rt\u00f6k"
+	},
+	"Friday": {
+		"message": "P\u00e9ntek"
+	},
+	"Saturday": {
+		"message": "Szombat"
+	},
+	"Sunday": {
+		"message": "Vas\u00e1rnap"
+	},
+	"General": {
+		"message": "\u00c1ltal\u00e1nos"
+	},
+	"settingsShare": {
+		"message" : "Egy\u00e9b"
+	},
+	"New tab": {
+		"message": "\u00daj lap"
+	},
+	"Shortcuts": {
+		"message": "Parancsikonok"
+	},
+	"Launch the search links in a new tab": {
+		"message": "Keres\u00e9si hivatkoz\u00e1sok \u00faj lapon t\u00f6rt\u00e9n\u0151 elind\u00edt\u00e1sa"
+	},
+	"Show bookmark bar": {
+		"message": "K\u00f6nyvjelz\u0151s\u00e1v megjelen\u00edt\u00e9se"
+	},
+	"Requires additional permission": {
+		"message": "Tov\u00e1bbi enged\u00e9ly sz\u00fcks\u00e9ges"
+	},
+	"Quick links": {
+		"message": "Gyorshivatkoz\u00e1sok"
+	},
+	"Most-visited sites": {
+		"message": "Leggyakrabban felkeresett webhelyek"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "Parancsikonok l\u00e9trehoz\u00e1sa a leggyakrabban felkeresett webhelyeimhez "
+	},
+	"Shown based on websites": {
+		"message": "Az \u00d6n \u00e1ltal gyakran l\u00e1togatott webhelyek alapj\u00e1n  |  Tov\u00e1bbi enged\u00e9ly sz\u00fcks\u00e9ges"
+	},
+	"Custom quick links": {
+		"message": "Egyedi gyorshivatkoz\u00e1sok"
+	},
+	"Create custom shortcuts":{
+		"message": "Egy\u00e9ni parancsikonok l\u00e9trehoz\u00e1sa"
+	},
+	"Quick links added by you": {
+		"message": "\u00d6n \u00e1ltal hozz\u00e1adott gyorshivatkoz\u00e1sok"
+	},
+	"Customize": {
+		"message": "Szem\u00e9lyre szab\u00e1s"
+	},
+	"Widgets below shortcuts": {
+		"message": "Widgetek a parancsikonok alatt"
+	},
+	"BookmarkBar": {
+		"message": "K\u00f6nyvjelz\u0151s\u00e1v"
+	},
+	"Extension theme": {
+		"message": "B\u0151v\u00edtm\u00e9ny t\u00e9m\u00e1ja"
+	},
+	"Show weather widget": {
+		"message": "Id\u0151j\u00e1r\u00e1s widget megjelen\u00edt\u00e9se"
+	},
+	"Show time widget": {
+		"message": "Id\u0151 widget megjelen\u00edt\u00e9se"
+	},
+	"Background image": {
+		"message": "H\u00e1tt\u00e9rk\u00e9p"
+	},
+	"Background": {
+		"message": "H\u00e1tt\u00e9r"
+	},
+	"Choose": {
+		"message": "V\u00e1laszt\u00e1s"
+	},
+	"Restore defaults": {
+		"message": "Vissza\u00e1ll\u00edt\u00e1s az alap\u00e9rtelmezett \u00e9rt\u00e9kre"
+	},
+	"Reset to default": {
+		"message": "Alap\u00e9rt\u00e9kek vissza\u00e1ll\u00edt\u00e1sa"
+	},
+	"Share usage and error data anonymously": {
+		"message": "Ossza meg a haszn\u00e1lati \u00e9s a hibaadatokat a Nortonnal, \u00e9s seg\u00edtse term\u00e9keink fejleszt\u00e9s\u00e9t"
+	},
+	"Light mode": {
+		"message": "Vil\u00e1gos m\u00f3d"
+	},
+	"Dark mode": {
+		"message": "S\u00f6t\u00e9t m\u00f3d"
+	},
+	"Manage bookmarks": {
+		"message": "K\u00f6nyvjelz\u0151k kezel\u00e9se"
+	},
+	"Choose image": {
+		"message": "K\u00e9p v\u00e1laszt\u00e1sa"
+	},
+	"Choose an image from your device": {
+		"message": "K\u00e9p v\u00e1laszt\u00e1sa az eszk\u00f6zr\u0151l"
+	},
+	"Gallery": {
+		"message": "Gal\u00e9ria"
+	},
+	"Choose from one of five images": {
+		"message": "V\u00e1lasszon az al\u00e1bbi n\u00e9gy h\u00e1tt\u00e9r k\u00f6z\u00fcl, vagy v\u00e1lasszon egy k\u00e9pet az eszk\u00f6z\u00e9r\u0151l."
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "H\u00e1tt\u00e9r friss\u00edt\u00e9se"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "V\u00e1lasszon 4 megl\u00e9v\u0151 h\u00e1tt\u00e9r k\u00f6z\u00fcl, vagy t\u00f6ltse fel saj\u00e1tj\u00e1t!"
+	},
+	"Available for Chrome": {
+		"message": "Chrome-hoz \u00e9rhet\u0151 el"
+	},
+	"Show most-visited sites": {
+		"message": "Leggyakrabban felkeresett webhelyek megjelen\u00edt\u00e9se"
+	},
+	"Quick links to websites you visit most": {
+		"message": "Gyorshivatkoz\u00e1sok a leggyakrabban felkeresett webhelyekhez"
+	},
+	"Got It": {
+		"message": "Rendben"
+	},
+	"Account": {
+		"message": "Fi\u00f3k"
+	},
+	"Maps": {
+		"message": "T\u00e9rk\u00e9p"
+	},
+	"Play": {
+		"message": "Play"
+	},
+	"Drive": {
+		"message": "Drive"
+	},
+	"Calendar": {
+		"message": "Napt\u00e1r"
+	},
+	"News": {
+		"message": "H\u00edrek"
+	},
+	"Translate": {
+		"message": "Ford\u00edt\u00f3"
+	},
+	"Photos": {
+		"message": "Fot\u00f3k"
+	},
+	"Chat": {
+		"message": "Cseveg\u00e9s"
+	},
+	"Duo": {
+		"message": "Duo"
+	},
+	"Meet": {
+		"message": "Meet"
+	},
+	"Docs": {
+		"message": "Dokumentumok"
+	},
+	"Contacts": {
+		"message": "N\u00e9vjegyek"
+	},
+	"Classroom": {
+		"message": "Tanterem"
+	},
+	"More Apps": {
+		"message": "Tov\u00e1bbi alkalmaz\u00e1sok"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "AZ ADATOK MEGOSZT\u00c1SA A NORTONNAL"
+	},
+	"PM": {
+		"message": "du."
+	},
+	"AM": {
+		"message": "de."
+	},
+	"Default theme": {
+		"message": "Alap\u00e9rtelmezett t\u00e9ma"
+	},
+	"Hidden bookmarks": {
+		"message": "Rejtett k\u00f6nyvjelz\u0151k"
+	},
+	"Available for Edge": {
+		"message": "Edge-hez \u00e9rhet\u0151 el"
+	},
+	"Manage favorites": {
+		"message": "Kedvencek kezel\u00e9se"
+	},
+	"Show favorites bar": {
+		"message": "Kedvencek s\u00e1v megjelen\u00edt\u00e9se"
+	},
+	"Hidden favourites": {
+		"message": "Rejtett kedvencek"
+	},
+	"Accept Risk and Continue": {
+		"message": "Kock\u00e1zatok elfogad\u00e1sa \u00e9s folytat\u00e1s"
+	},
+	"ProductName":
+	{
+		"message" : "Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "V\u00e1lasszon 4 megl\u00e9v\u0151 h\u00e1tt\u00e9r k\u00f6z\u00fcl, vagy t\u00f6ltse fel saj\u00e1tj\u00e1t!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "Norton kezd\u0151lap!"
+	},
+	"PrivacyAndPermissions": {
+		"message": "Enged\u00e9lyek"
+	},
+	"Permissions": {
+		"message": "Enged\u00e9lyek"
+	},
+	"Install": {
+		"message": "Telep\u00edt\u00e9s"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "Telep\u00edtse a b\u0151v\u00edtm\u00e9nyeket, amelyek seg\u00edts\u00e9g\u00e9vel kiiktathatja a potenci\u00e1lis rosszindulat\u00fa hivatkoz\u00e1sokat a keres\u00e9si tal\u00e1latok k\u00f6z\u00fcl. Nagyobb biztons\u00e1gban b\u00f6ng\u00e9szhet."
+	},
+	"Install Extensions": {
+		"message": "B\u0151v\u00edtm\u00e9nyek telep\u00edt\u00e9se"
+	},
+	"Ad": {
+		"message": "Szponzor\u00e1lt"
+	},
+	"Almost done!": {
+		"message": "Majdnem k\u00e9sz!"
+	},
+	"To complete installation, click": {
+		"message": "A telep\u00edt\u00e9s befejez\u00e9s\u00e9hez kattintson ide:"
+	},
+	"Install Norton Safe Search": {
+		"message": "A Norton Safe Search telep\u00edt\u00e9se"
+	},
+	"No search protection": {
+		"message": "Nincs keres\u00e9sv\u00e9delem"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"Folytat\u00e1s keres\u00e9sv\u00e9delem n\u00e9lk\u00fcl"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"A Norton Safe Search alap\u00e9rtelmezett keres\u0151szolg\u00e1ltat\u00f3k\u00e9nt val\u00f3 be\u00e1ll\u00edt\u00e1sa"
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"A Norton Safe Search bekapcsol\u00e1sa"
+	},
+	"Your searches are not protected":
+	{
+		"message":"Keres\u00e9sei nincsenek v\u00e9dve"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"Javasoljuk a Norton Safe Search bekapcsol\u00e1s\u00e1t, hogy blokkolja a rosszindulat\u00fa hivatkoz\u00e1sokat \u00e9s az adathal\u00e1szatot."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Haszn\u00e1lja a Norton Safe Search szolg\u00e1ltat\u00e1st a biztons\u00e1gosabb b\u00f6ng\u00e9sz\u00e9shez"
+	},
+	"Choose search protection":{
+		"message":"{0} most arra k\u00e9ri, hogy v\u00e1lassza ki a keres\u00e9sv\u00e9delmet. V\u00e1lassza az al\u00e1bbi \u201eA Norton Safe Search bekapcsol\u00e1sa\u201d lehet\u0151s\u00e9get, hogy blokkolja a rosszindulat\u00fa hivatkoz\u00e1sokat, \u00e9s tov\u00e1bbra is biztons\u00e1gosan b\u00f6ng\u00e9szhessen."
+	},
+	"Recommended":{
+		"message":"Aj\u00e1nlott"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "Keressen biztons\u00e1gosabban a Nortonnal"
+	},
+	"Detect risky sites and scams":{
+		"message": "Kapcsolja be a Norton Safe Search szolg\u00e1ltat\u00e1st, hogy az seg\u00edtsen felismerni a kock\u00e1zatos webhelyeket \u00e9s a csal\u00e1sokat."
+	},
+	"Peace of mind with every search ": {
+		"message": "Aggodalommentes keres\u00e9s"
+	},
+	"To keep your searches secure": {
+		"message": "A keres\u00e9sek biztons\u00e1g\u00e1nak fenntart\u00e1s\u00e1hoz <span>kiemelten javasoljuk</span>, hogy telep\u00edtse a Norton Safe Search b\u0151v\u00edtm\u00e9nyt."
+	},
+	"Install now": {
+		"message": "Telep\u00edt\u00e9s most"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "A Norton Safe Web friss\u00edt\u00e9se megt\u00f6rt\u00e9nt"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "A Norton <span>tov\u00e1bbra is</span> \u00e1tvizsg\u00e1lja az \u00d6n \u00e1ltal megl\u00e1togatott webhelyeket, <span>figyelmeztetve \u00d6nt</span> a potenci\u00e1lis kock\u00e1zatokra, p\u00e9ld\u00e1ul a k\u00f6vetkez\u0151kre:"
+	},
+	"Malicious websites": {
+		"message": "Rosszindulat\u00fa webhelyek"
+	},
+	"Phishing websites": {
+		"message": "Adathal\u00e1sz webhelyek"
+	},
+	"Viruses or other online threats": {
+		"message": "V\u00edrusok vagy egy\u00e9b online fenyeget\u00e9sek"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "A Norton mostant\u00f3l <span>csak a Norton Safe Search funkci\u00f3n kereszt\u00fcl jelen\u00edti meg a weboldalakra vonatkoz\u00f3 biztons\u00e1gi besorol\u00e1sokat,</span> kiemelt v\u00e9delmet biztos\u00edtva \u00d6nnek a b\u00f6ng\u00e9sz\u00e9s sor\u00e1n."
+	},
+	"Dangerous website detected": {
+		"message": "Vesz\u00e9lyes weboldal \u00e9szlelve"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "Kiemelten javasoljuk, hogy ne osszon meg semmilyen szem\u00e9lyes vagy p\u00e9nz\u00fcgyi inform\u00e1ci\u00f3t, illetve ne nyissa meg ezt az oldalt."
+	},
+	"Exit this page (recommended)": {
+		"message": "Kil\u00e9p\u00e9s err\u0151l az oldalr\u00f3l (aj\u00e1nlott)"
+	},
+	"BLOCKED BY": {
+		"message": "BLOKKOLTA:"
+	},
+	"Show sponsored banner": {
+		"message": "Szponzor\u00e1lt banner megjelen\u00edt\u00e9se"
+	},
+	"Sponsored": {
+		"message": "Szponzor\u00e1lt"
+	},
+	"Hide": {
+		"message": "Elrejt\u00e9s"
+	},
+	"homePageTitle": {
+		"message": "Kezd\u0151lap"
+	},
+	"Add protection to your searches": {
+		"message": "V\u00e9dje meg a keres\u00e9seit."
+	},
+	"Detect malicious links": {
+		"message": "Kapcsolja be a Norton Safe Search funkci\u00f3t, hogy \u00e9szlelje a rosszindulat\u00fa hivatkoz\u00e1sokat \u00e9s az adathal\u00e1szat-alap\u00fa csal\u00e1sokat."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "Legn\u00e9pszer\u0171bb h\u00edrek"
+	},
+	"crypto": {
+		"message": "Kripto"
+	},
+	"stock": {
+		"message": "R\u00e9szv\u00e9nyek"
+	},
+	"weather": {
+		"message": "Id\u0151j\u00e1r\u00e1s"
+	},
+	"tools": {
+		"message": "Seg\u00e9dprogramok"
+	},
+	"Select your search protection:": {
+		"message": "V\u00e1lassza ki a keres\u00e9sv\u00e9delm\u00e9t:"
+	},
+	"Bookmark bar": {
+		"message": "K\u00f6nyvjelz\u0151s\u00e1v"
+	},
+	"Favorites bar": {
+		"message": "Kedvencek s\u00e1v"
+	},
+	"Other bookmarks": {
+		"message": "Egy\u00e9b k\u00f6nyvjelz\u0151k"
+	},
+	"Welcome to": {
+		"message": "\u00dcdv\u00f6z\u00f6lj\u00fck"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "Tekintse meg a bemutat\u00f3t, ismerje meg az \u00fajdons\u00e1gokat, \u00e9s hozza ki a legt\u00f6bbet a Safe Search funkci\u00f3ib\u00f3l."
+	},
+	"Skip tour": {
+		"message": "Bemutat\u00f3 kihagy\u00e1sa"
+	},
+	"Start tour": {
+		"message": "Bemutat\u00f3 ind\u00edt\u00e1sa"
+	},
+	"Personalise your home page": {
+		"message": "Szabja szem\u00e9lyre a kezd\u0151lapj\u00e1t"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "Szabja szem\u00e9lyre kezd\u0151lapj\u00e1t egy\u00e9ni k\u00e9pekkel, valamint vil\u00e1gos vagy s\u00f6t\u00e9t m\u00f3ddal."
+	},
+	"Customizable shortcuts": {
+		"message": "Testreszabhat\u00f3 parancsikonok"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "A parancsikonok seg\u00edts\u00e9g\u00e9vel k\u00f6nnyed\u00e9n hozz\u00e1f\u00e9rhet kedvenc webhelyeihez"
+	},
+	"Useful widgets": {
+		"message": "Hasznos widgetek"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "Jelen\u00edtsen meg legfeljebb 5 widgetet: id\u0151j\u00e1r\u00e1s, r\u00e9szv\u00e9ny, kripto, sz\u00e1mol\u00f3g\u00e9p & m\u00e9rt\u00e9kegys\u00e9g-\u00e1tv\u00e1lt\u00f3"
+	},
+	"Read today's top news": {
+		"message": "Olvassa el a mai legfontosabb h\u00edreket"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "Legyen t\u00e1j\u00e9kozott a legfrissebb vil\u00e1gh\u00edrc\u00edmekkel kapcsolatban a legk\u00fcl\u00f6nf\u00e9l\u00e9bb t\u00e9m\u00e1kban"
+	},
+	"Link to your apps": {
+		"message": "Hivatkoz\u00e1s az alkalmaz\u00e1saihoz"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "Gyorsan \u00e9s egyszer\u0171en hozz\u00e1f\u00e9rhet az alkalmaz\u00e1saihoz a Norton kezd\u0151lapr\u00f3l."
+	},
+	"Begin tour": {
+		"message": "Bemutat\u00f3 kezd\u00e9se"
+	},
+	"Take a quick tour of features": {
+		"message": "Gyors bemutat\u00f3 a funkci\u00f3kr\u00f3l"
+	}
+}

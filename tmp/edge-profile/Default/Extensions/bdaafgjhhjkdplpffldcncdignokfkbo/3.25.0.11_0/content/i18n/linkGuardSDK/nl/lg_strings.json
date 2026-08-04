@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "We markeren verdachte links in webmail-, Facebook-, Twitter- en andere accounts."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Meer informatie"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "VERDACHTE LINK"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton Safe Web waarschuwt u nu voor gevaarlijke links in e-mails zodat u wordt beschermd tegen schadelijke activiteit."
+    }
+}

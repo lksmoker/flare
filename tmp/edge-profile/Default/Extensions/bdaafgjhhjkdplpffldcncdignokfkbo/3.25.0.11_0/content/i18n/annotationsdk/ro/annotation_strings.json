@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Amenin\u0163\u0103ri: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Acest site nu a fost testat \u00eenc\u0103"
+	},
+    "SAFE":
+    {
+        "message" : "SIGUR\u0102"
+    },
+    "SECURE":
+    {
+        "message" : "SECURIZAT\u0102"
+    },
+    "CAUTION":
+    {
+        "message" : "Aten\u0163ie"
+    },
+    "UNTESTED":
+    {
+        "message" : "NETESTAT"
+    },
+    "UNSAFE":
+    {
+        "message" : "NESIGUR\u0102"
+    },
+	"Full Report" :
+	{
+		"message" : "Raport complet"
+	}
+}

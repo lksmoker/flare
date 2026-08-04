@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Vi vil fremh\u00e6ve mist\u00e6nkelige links i Webmail, Facebook, Twitter og andre konti."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Flere oplysninger"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "MIST\u00c6NKELIGT LINK"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton advarer dig nu om mist\u00e6nkelige links i din mail for at beskytte dig mod skadelig aktivitet."
+    }
+}

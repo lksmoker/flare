@@ -1,0 +1,357 @@
+/*
+ NortonLifeLock copyright header start
+
+ Copyright (c) 2020 NortonLifeLock Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+*/
+
+@font-face {
+	font-family: 'Inter';
+	src: url('../fonts/Inter-Regular.woff2') format("woff2");
+}
+
+@font-face {
+	font-family: 'Inter Bold';
+	src: url('../fonts/Inter-Bold.woff2') format("woff2");
+}
+
+@font-face {
+	font-family: 'Inter-medium';
+	src: url('../fonts/Inter-Medium.woff2') format("woff2");
+}
+
+body {
+	width: 358px;
+	height: 228px;
+	border-radius: 20px;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	overflow-y: hidden;
+  	background-color: #ffffff;
+}
+
+body, div, input {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+div.search {
+	margin-top: 15px;
+	margin-left: 12px;
+	width: 100%;
+	display: none;
+}
+
+#searchbox {
+	width: 330px;
+	height: 23px;
+	padding: 0px;
+	padding-left: 7px;
+    margin-right: 0px;
+	border: 1px solid rgb(200,200,200);
+	float: left;
+	border-right-width: 0;
+	background-image: url('../images/close_search.png');
+	background-position: 98% 50%;
+	background-repeat: no-repeat;
+	padding-right: 15px;
+	outline: none;
+}
+
+#searchbox.hide-bg {
+    background-image: none;
+}
+
+#searchbutton {
+	width: 25px;
+	height: 25px;
+	background-image: url('../images/search-icon.png');
+	margin: 0;
+	padding: 0;
+	border: 0;
+	float: left;
+}
+
+#sitename {
+    width: 345px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	padding: 6px 0;
+	background-color: #fff;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: -0.3px;
+	color: #333333;
+}
+
+.title {
+	margin-left: 10px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+#ratingtext {
+    white-space:pre-wrap;
+	font-family: 'Inter Bold';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 28px;
+	letter-spacing: -0.3px;
+	color: #FFFFFF;
+	display: inline-block;
+}
+.ratingresult{
+    color: white;
+	margin-top: 7px;
+}
+
+.ratingreport{
+    color: white;
+}
+
+.nortonrating{
+    margin-bottom: 6px;
+	font-family: 'Inter Bold';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 18px;
+	letter-spacing: -0.3px;
+	color: #FFFFFF;
+}
+
+.small {
+	font-size: 12px;
+}
+
+span {
+	display: inline-block;
+}
+
+.caption {
+	width: 80px;
+	margin-right: 20px;
+}
+
+.total {
+	width: 50px;
+}
+
+#rating {
+	height:160px;
+	display: flex;
+	flex-flow: column;
+	box-sizing: border-box;
+	padding: 16px 0px 14px 16px;
+}
+
+#rating[rating="untested"] {
+	background-color: rgba(85, 85, 81, 0.6);;
+}
+#rating[rating="safe"] {
+	background-color: #007644;
+}
+#rating[rating="caution"]{
+	background-color: #B85C00;
+}
+#rating[rating="warn"] {
+	background-color: #D40404;
+}
+#rating[rating="suspicious"] {
+	background-color: #ff6600;
+}
+
+.rating-text-wrapper {
+	position: relative;
+}
+
+#rating[rating="untested"] .rating-text-wrapper{
+	margin-bottom: 16px;
+}
+#rating[rating="safe"] .rating-text-wrapper{
+	margin-bottom: 16px;
+}
+#rating[rating="caution"] .rating-text-wrapper{
+	margin-bottom: 16px;
+}
+#rating[rating="warn"] .rating-text-wrapper, #rating[rating="suspicious"]  .rating-text-wrapper{
+	margin-bottom: 13px;
+}
+
+
+#safewebicon {
+	position: relative;
+	top: 2px;
+	width: 18px;
+	height: 18px;
+	/*background-color: white;*/
+	background-repeat: no-repeat;
+	background-size: contain;
+    background-position: center;
+	display: inline-block;
+}
+
+.rating-desc {
+	width: 90%;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	display: flex;
+	align-items: center;
+	letter-spacing: -0.3px;
+	color: #FFFFFF;
+}
+
+.link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#reportsite {
+	font-size: 13px;
+	margin-top: 19px;
+}
+
+#rating[rating="untested"] div > #safewebicon {
+	background-image: url('../images/untested-icon.svg');
+	background-position: center;
+	margin-right: 5px;
+	width: 20px;
+	height: 20px;
+}
+#rating[rating="safe"] div > #safewebicon {
+	background-image: url('../images/safe-icon.svg');
+	margin-right: 5px;
+	width: 20px;
+	height: 15px;
+}
+#rating[rating="warn"] div > #safewebicon {
+	background-image: url('../images/warning-icon.svg');
+	margin-right: 5px;
+	/*background-color: #d8000a;*/
+}
+#rating[rating="caution"] div > #safewebicon {
+	background-image: url('../images/caution-icon.svg');
+	background-position: -4px;
+	margin-right: 2px;
+}
+
+#rating[rating="suspicious"] div > #safewebicon {
+	background-image: url('../images/warning-icon.svg');
+	margin-right: 5px;
+}
+
+#footer {
+	display: flex;
+	height: 40px;
+	align-items: center;
+	padding: 0px 16px 0px 17px;
+}
+
+#nortonicon {
+	width: 14px;
+	height: 14px;
+	background-image: url('../images/norton-icon.svg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.footertext {
+	font-family: 'Inter Bold';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 18px;
+	display: flex;
+	align-items: center;
+	letter-spacing: -0.3px;
+	color: #000000;
+	margin-left: 6px;
+}
+
+#settings {
+	background-image: url('../images/mainui-settings-icon.svg');
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	margin-left: auto;
+}
+
+#placeholder {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+	display: none;
+}
+
+iframe {
+	display: none;
+}
+
+body[dir="rtl"] #rating[rating="untested"] div > #safewebicon {
+	background-position: 4px;
+	margin-left: -5px;
+	margin-right: 0px;
+}
+
+body[dir="rtl"] #rating[rating="caution"] div > #safewebicon {
+	background-position: 4px;
+	margin-left: -7px;
+	margin-right: 0px;
+}
+
+body[dir="rtl"] #rating[rating="safe"] div > #safewebicon {
+	margin-right: 0px;
+	margin-left: 5px;
+}
+body[dir="rtl"] #rating[rating="warn"] div > #safewebicon {
+	margin-right: 0px;
+	margin-left: 5px;
+	/*background-color: #d8000a;*/
+}
+
+body[dir="rtl"] .title {
+	margin-left: 0px;
+	margin-right: 10px;
+}
+
+body[dir="rtl"] #rating {
+	padding: 12px 16px 14px 0px;
+}
+
+body[dir="rtl"] .ratingtext {
+	margin-left: 0px;
+}
+
+body[dir="rtl"] .footertext {
+	margin-left: 0px;
+	margin-right: 4px;
+}
+
+body[dir="rtl"] #settings {
+	margin-left: 0;
+	margin-right: auto;
+}

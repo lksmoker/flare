@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "Alerta"
+	},
+
+	"Untested":
+	{
+		"message": "N\u00c3O TESTADO"
+	},
+
+	"Warning":
+	{
+		"message": "Aviso"
+	},
+	"Norton Secured":
+	{
+		"message": "SEGURO"
+	},
+	"Not Licensed":
+	{
+		"message": "N\u00e3o licenciado"
+	},
+	"Safe":
+	{
+		"message": "Seguro"
+	},
+	"Safe Web is off":
+	{
+		"message": "SEGURO"
+	},
+	"Page not analyzed":
+	{
+		"message": "P\u00e1gina n\u00e3o analisada"
+	},
+	"Norton Rating":
+	{
+		"message": "Classifica\u00e7\u00e3o Norton"
+	},
+	"Computer Threats":
+	{
+		"message": "Amea\u00e7as de computador"
+	},
+	"Identity Threats":
+	{
+		"message": "Amea\u00e7as de identidade"
+	},
+	"Annoyance Threats":
+	{
+		"message": "Amea\u00e7as inoportunas"
+	},
+	"Total Threats":
+	{
+		"message": "Total de amea\u00e7as"
+	},
+	"Full Safe Web report":
+	{
+		"message": "Relat\u00f3rio do Safe Web"
+	},
+	"Report this site":
+	{
+		"message": "Denunciar este site"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "Configura\u00e7\u00f5es do navegador"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "INSEGURA"
+	},
+    "total_threats_id":
+    {
+        "message" : "Amea\u00e7as: "
+    },
+		"untested_text":
+		{
+			"message" : "Este site ainda n\u00e3o foi testado."
+		},
+    "safe_status_id":
+    {
+        "message" : "SEGURO"
+    },
+    "secure_status_id":
+    {
+        "message" : "SEGURO"
+    },
+    "caution_status_id":
+    {
+        "message" : "Cuidado"
+    },
+    "untested_status_id":
+    {
+        "message" : "N\u00c3O TESTADO"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "INSEGURA"
+    },
+		"full_report_id" :
+		{
+				"message" : "Relat\u00f3rio completo"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Classific. Norton:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "Download malicioso detectado"
+	},
+	"Download Cancelled":
+	{
+		"message" : "Download cancelado"
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "Site malicioso bloqueado"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "Site malicioso bloqueado!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "Voc\u00ea tentou acessar:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "Voc\u00ea tentou acessar"
+	},
+	"Website you tried to access:": {
+		"message" : "O site que voc\u00ea tentou acessar:"
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "Este \u00e9 um site malicioso conhecido. Recomenda-se que voc\u00ea N\u00c3O acesse esse site. O"
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "Esta \u00e9 uma p\u00e1gina da Web maliciosa conhecida."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "Este \u00e9 um site malicioso conhecido."
+	},
+	"detailed report" :
+	{
+		"message" : "relat\u00f3rio detalhado"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "explica os riscos \u00e0 seguran\u00e7a presentes no site."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "Para sua prote\u00e7\u00e3o, esse site foi bloqueado. Acesse"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "para obter mais informa\u00e7\u00f5es sobre phishing e seguran\u00e7a na Internet."
+	},
+	"Exit this site" :
+	{
+		"message" : "Sair deste site"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "Quero visualizar este site mesmo assim"
+	},
+	"It is recommended that you" :
+	{
+		"message" : "Recomendamos que voc\u00ea"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "N\u00c3O acesse o site."
+	},
+	"Norton":
+	{
+		"message" : " Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Home page do Norton"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "Site suspeito bloqueado"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "Para sua prote\u00e7\u00e3o, esta p\u00e1gina da Web foi bloqueada e enviada para an\u00e1lise."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "Este site foi bloqueado devido a pirataria ou outras restri\u00e7\u00f5es em sua regi\u00e3o. N\u00e3o recomendamos que voc\u00ea acesse esta p\u00e1gina."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "Recomendamos fortemente que voc\u00ea N\u00c3O acesse essa p\u00e1gina."
+	},
+	"Visit" :
+	{
+		"message" : "Acessar"
+	},
+	"Continue to the site" :
+	{
+		"message" : "Continuar para acessar o site"
+	},
+	"View Full Report" :
+	{
+		"message" : "Exibir relat\u00f3rio completo"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "Pesquisar um site mais seguro"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "P\u00e1gina da Web fraudulenta bloqueada"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "Esta \u00e9 uma p\u00e1gina da Web fraudulenta conhecida."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "P\u00e1gina da Web perigosa bloqueada"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "Esta \u00e9 uma p\u00e1gina da Web perigosa conhecida."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "Agradecemos por usar o {0}! Compartilhe os dados de uso e de erros de maneira an\u00f4nima com o Norton para nos ajudar a tornar nossos produtos ainda melhores."
+	},
+	"OK" :
+	{
+	    "message" : "OK"
+	},
+	"No, thanks" :
+	{
+	    "message" : "N\u00e3o, obrigado"
+	},
+	"Learn More" :
+	{
+	    "message" : "Saiba mais"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "Safe Search"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "Home page"
+	},
+	"Settings"	:
+	{
+			"message" :	"Configura\u00e7\u00f5es"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "COMPARTILHAR DADOS COM O NORTON"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "Compartilhe os dados de uso e de erros anonimamente com o Norton e ajude-nos a tornar nossos produtos ainda melhores."
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Intelig\u00eancia sobre fraude: risco de informa\u00e7\u00f5es pessoais"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "Este site \u00e9 seguro, mas\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "Pede informa\u00e7\u00f5es pessoais e n\u00e3o est\u00e1 bem estabelecido na Norton Community. Tenha cuidado ao digitar qualquer informa\u00e7\u00e3o neste site. "
+	},
+	"Visit " :
+	{
+		"message" : "Acessar "
+	},
+	"Norton " :
+	{
+		"message" : " Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "para saber mais sobre os riscos de informa\u00e7\u00f5es pessoais em sites."
+	},
+	"Age: " :
+	{
+		"message" : "Data de cria\u00e7\u00e3o: "
+	},
+	"Very New" :
+	{
+		"message" : "Muito novo"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "Este site foi publicado muito recentemente."
+	},
+	"New" :
+	{
+		"message" : "Novo"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "Este site est\u00e1 dispon\u00edvel h\u00e1 pouco tempo."
+	},
+	"Prevalence: " :
+	{
+		"message" : "Predomin\u00e2ncia: "
+	},
+	"No Users" :
+	{
+		"message" : "Nenhum usu\u00e1rio"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "Nenhum membro da Norton Community usou este site."
+	},
+	"Few Users" :
+	{
+		"message" : "Poucos usu\u00e1rios"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "Muito poucos membros da Norton Community usaram este site."
+	},
+	"Continue to Site" :
+	{
+		"message" : "Continuar no site"
+	},
+	"Exit Site" :
+	{
+		"message" : "Sair do site"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "Se voc\u00ea achar que este site foi categorizado incorretamente, "
+	},
+	"Report Issue." :
+	{
+		"message" : "relate o problema."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "Conectado como"
+	},
+	"Sign out"			:
+	{
+		"message"		: "Desconectar"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"Voc\u00ea se desconectou de sua conta do NortonLifeLock"
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"Ocorreu um erro. Tente novamente."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "Identifique links perigosos no Webmail, Facebook e Twitter"
+	},
+	"Websites": {
+  		"message": "Sites"
+	},
+	"Isolation Mode On": {
+  		"message": "Modo de isolamento ativado"
+	},
+	"Isolation Mode Off": {
+  		"message": "Modo de isolamento desativado"
+	},
+	"Ask Me": {
+  		"message": "Perguntar"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "Links r\u00e1pidos"
+	},
+	"Privacy": {
+		"message": "Privacidade"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Copyright \u00a9 {0} Gen Digital Inc. Todos os direitos reservados."
+	},
+	"Legal": {
+		"message": "Avisos legais"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "Atualiza\u00e7\u00f5es mais recentes do NortonLifeLock"
+  },
+  "Security & Privacy Center": {
+    "message": "Centro de seguran\u00e7a e privacidade"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "Boas-vindas ao Norton Safe Search"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "Fa\u00e7a um tour para conferir o que mudou e aproveite ao m\u00e1ximo os recursos do Safe Search."
+  },
+  "Start Tour": {
+    "message": "Iniciar tour"
+  },
+  "Peace of mind with every search": {
+    "message": "Tranquilidade a cada pesquisa"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "O Norton Safe Search mostra as classifica\u00e7\u00f5es de seguran\u00e7a do site em seus resultados de pesquisa."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "Obtenha dicas e atualiza\u00e7\u00f5es de seguran\u00e7a do Norton"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "Explore as publica\u00e7\u00f5es mais recentes sobre seguran\u00e7a e privacidade nos blogs do NortonLifeLock e saiba mais sobre seguran\u00e7a digital."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "Um tour da P\u00e1gina inicial do Norton est\u00e1 dispon\u00edvel em Configura\u00e7\u00f5es."
+  },
+  "Next": {
+    "message": "Avan\u00e7ar"
+  },
+  "Done": {
+    "message": "Conclu\u00eddo"
+  },
+  "Welcome to {0}": {
+	"message": "Boas-vindas ao {0}"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "Obrigado por escolher o NortonLifeLock."
+  },
+  "Keep It": {
+	"message": "Manter assim"
+  },
+  "Keep it": {
+	"message": "Manter assim"
+  },
+  "Keep changes": {
+    "message": "Manter altera\u00e7\u00f5es"
+  },
+  "Keep Changes": {
+    "message": "Manter altera\u00e7\u00f5es"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "Mantenha sua prote\u00e7\u00e3o do {0} no Chrome clicando no bot\u00e3o {1} caso uma mensagem do Chrome aparecer na parte superior da tela."
+  },
+  "Thanks for choosing {0}": {
+    "message": "Obrigado por escolher o {0}"
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "Depois de instalar a extens\u00e3o do navegador, clique em {1}, se solicitado pelo Microsoft Edge, para manter o {0}."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "Obrigado por escolher o NortonLifeLock."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Se uma mensagem do Chrome aparecer na parte superior da tela, clique no bot\u00e3o {1} para manter o {0} no Chrome."
+	},
+  "Let us help protect you": {
+    "message" : "Deixe-nos proteg\u00ea-lo"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "O Norton Safe Web precisa de permiss\u00f5es para acessar e coletar os endere\u00e7os da Web (URLs) que voc\u00ea acessa. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "Dessa forma, podemos fornecer classifica\u00e7\u00f5es de seguran\u00e7a para proteg\u00ea-lo durante a navega\u00e7\u00e3o na Web."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "O Norton Safe Search precisa de permiss\u00e3o para acessar e coletar os endere\u00e7os da Web (URLs) que voc\u00ea pesquisa em. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "O Norton Safe Search precisa de permiss\u00e3o para acessar e coletar os endere\u00e7os da Web (URLs) que voc\u00ea acessa por meio da barra de endere\u00e7os e da home page do Norton. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "Precisamos da sua permiss\u00e3o para coletar os endere\u00e7os da web (URLs) que voc\u00ea pesquisa para detectar links que podem ser perigosos. Se voc\u00ea recusar, essa extens\u00e3o ser\u00e1 desinstalada."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "Precisamos da sua permiss\u00e3o para coletar os endere\u00e7os da web (URLs) que voc\u00ea pesquisa para detectar sites que podem ser perigosos. Se voc\u00ea recusar, essa extens\u00e3o ser\u00e1 desinstalada."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "Tamb\u00e9m coletamos dados de uso do produto e registros de erros para an\u00e1lise, a fim de melhorar o desempenho. Voc\u00ea pode optar por n\u00e3o compartilhar esses dados e a extens\u00e3o continuar\u00e1 funcionando."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "Permitir a coleta de dados de uso."
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "Dessa forma, ajudaremos a detectar se os sites pesquisados s\u00e3o maliciosos antes que voc\u00ea os acesse e forneceremos resultados de pesquisa seguros."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "Isso nos permitir\u00e1 detectar se eles s\u00e3o maliciosos e possibilitar\u00e1 que voc\u00ea receba um aviso antes de acess\u00e1-los."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "A home page do Norton precisa de permiss\u00e3o para acessar e coletar os endere\u00e7os da Web (URLs) que voc\u00ea pesquisa."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "Dessa forma, poderemos ajudar a detectar se os sites s\u00e3o maliciosos antes que voc\u00ea os acesse."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "Para entender melhor nossas pol\u00edticas de coleta de dados, acesse nossa"
+  },
+  "Accept": {
+    "message" : "Aceitar"
+  },
+  "Decline": {
+    "message" : "Recusar"
+  },
+  "Your Permission Is Required": {
+    "message" : "Precisamos de sua permiss\u00e3o"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "Se voc\u00ea recusar, o Norton Safe Web n\u00e3o funcionar\u00e1 nem poder\u00e1 fornecer classifica\u00e7\u00f5es de seguran\u00e7a dos sites."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "Se voc\u00ea recusar, o Norton Safe Search n\u00e3o funcionar\u00e1 neste dispositivo nem poder\u00e1 ajudar a proteg\u00ea-lo contra sites maliciosos."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "Se voc\u00ea recusar, a home page do Norton n\u00e3o funcionar\u00e1 e n\u00e3o poder\u00e1 ajudar a proteg\u00ea-lo contra sites maliciosos."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "Se voc\u00ea recusar, o Norton Safe Search n\u00e3o funcionar\u00e1 nem ser\u00e1 capaz de proteg\u00ea-lo contra sites maliciosos nem poderemos lhe fornecer resultados de pesquisa seguros."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Com a desinstala\u00e7\u00e3o do Safe Web, o Norton n\u00e3o poder\u00e1 detectar se os sites s\u00e3o maliciosos para proteg\u00ea-lo. Recomendamos optar por manter instalado e permitir que o Safe Web funcione em seu dispositivo."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "Clique abaixo para analisar sua permiss\u00e3o e aceitar nossa solicita\u00e7\u00e3o para coletar as informa\u00e7\u00f5es anonimamente enviadas por voc\u00ea."
+  },
+	"Search more safely, protect your device": {
+		"message" : "Pesquise com mais seguran\u00e7a, proteja seu dispositivo"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "O Mozilla Firefox atualizou a pol\u00edtica de complementos. Para continuar usando o Norton Safe Search, d\u00ea sua permiss\u00e3o novamente."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "O Safe Search precisa de permiss\u00e3o para coletar os endere\u00e7os da Web que voc\u00ea pesquisa e determinar se os sites s\u00e3o maliciosos antes que eles sejam acessados."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "Se voc\u00ea recusar, o Safe Search n\u00e3o poder\u00e1 ajudar a proteger seu dispositivo contra sites maliciosos."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "Compartilhe os dados de uso e de erros com o Norton anonimamente para ajudar a melhorar ainda mais nossos produtos e servi\u00e7os."
+	},
+	"Decline & Uninstall": {
+		"message" : "Recusar e desinstalar"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "A home page precisa de permiss\u00e3o para acessar e coletar os endere\u00e7os da Web que voc\u00ea pesquisa. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "Se voc\u00ea recusar, o home page n\u00e3o poder\u00e1 ajudar a proteg\u00ea-lo contra sites maliciosos."
+	},
+	"Search more safely from your home page": {
+		"message" : "Pesquise com mais seguran\u00e7a em sua home page"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "O Norton precisa de permiss\u00e3o para acessar e coletar os endere\u00e7os que voc\u00ea acessa na Web por meio da barra de endere\u00e7os e da home page. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "Se voc\u00ea recusar, o Norton n\u00e3o poder\u00e1 ajudar a proteger seu dispositivo contra sites maliciosos nem ser\u00e1 capaz de apresentar resultados de pesquisa seguros."
+	},
+  "Review Your Permissions": {
+    "message" : "Analise suas permiss\u00f5es"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "Remover o Norton Safe Web"
+  },
+  "Global Privacy Statement": {
+	"message" : "Declara\u00e7\u00e3o de Privacidade Global"
+  },
+  "addQuickLink": {
+    "message" : "Adicionar atalho"
+  },
+	"addNewText": {
+		"message" : "Adicionar atalho"
+	},
+  "Title": {
+    "message" : "T\u00edtulo"
+  },
+  "URL": {
+    "message" : "URL"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "O atalho que voc\u00ea est\u00e1 tentando adicionar j\u00e1 foi fornecido."
+  },
+  "Edit shortcut": {
+    "message" : "Editar atalho"
+  },
+  "Add": {
+    "message" : "Adicionar"
+  },
+  "Cancel": {
+    "message" : "Cancelar"
+  },
+  "Save": {
+    "message" : "Salvar"
+  },
+  "Edit": {
+    "message" : "Editar"
+  },
+  "Remove": {
+    "message" : "Remover"
+  },
+  "Quick Links is all new!": {
+    "message" : "Os links r\u00e1pidos foram atualizados!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "Adicione seus sites favoritos \u00e0 nova barra de links r\u00e1pidos."
+  },
+  "Got it": {
+    "message" : "Entendi"
+  },
+  "Type a valid URL": {
+    "message" : "Digite um URL v\u00e1lido"
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "Links r\u00e1pidos para acesso f\u00e1cil a sites populares"
+  },
+  "Editable quick links": {
+    "message" : "Links r\u00e1pidos edit\u00e1veis"
+  },
+  "This website is considered safe.": {
+	  "message" : "Este site \u00e9 considerado seguro."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "Este site ainda n\u00e3o foi classificado."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "Este site pode ter uma pequena quantidade de amea\u00e7as."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "Esta \u00e9 uma p\u00e1gina da Web maliciosa conhecida."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "Esta \u00e9 uma p\u00e1gina da Web suspeita."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "Exibir um relat\u00f3rio completo do Safe Web"
+  },
+    "Accept risk and continue" : {
+		"message" : "Aceitar o risco e continuar"
+	},
+	"Accept and display risk": {
+		"message": "Aceitar e exibir risco"
+	},
+	"Close this website (recommended)": {
+		"message": "Fechar este site (recomendado)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "Novo recurso do Norton Safe Web!"
+	},
+	"Protection from Formjacking": {
+		"message": "Prote\u00e7\u00e3o contra formjacking"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "O Norton Safe Web ajuda a evitar formjacking enquanto voc\u00ea faz compras online."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "Voc\u00ea ser\u00e1 notificado se detectarmos que um site no qual voc\u00ea est\u00e1 fazendo compras tem um sistema de pagamento comprometido."
+	},
+	"Thanks for installing": {
+		"message": "Obrigado por instalar"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web!"
+	},
+	"Take advantage of all these great features:": {
+		"message": "Aproveite todos estes recursos incr\u00edveis:"
+	},
+	"Website Ratings": {
+		"message": "Classifica\u00e7\u00f5es de sites"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "Nossas classifica\u00e7\u00f5es de sites informam se um site \u00e9 seguro ou se voc\u00ea deve ter cautela antes de fornecer seus dados."
+	},
+	"Intrusion Prevention": {
+		"message": "Preven\u00e7\u00e3o contra intrus\u00f5es"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "O Norton Safe Web protege contra bugs conhecidos e amea\u00e7as cibern\u00e9ticas em navegadores populares."
+	},
+	"Formjacking Prevention": {
+		"message": "Preven\u00e7\u00e3o contra formjacking"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "O Norton Safe Web o notifica caso detecte que um site de com\u00e9rcio eletr\u00f4nico tem um sistema de pagamento comprometido."
+	},
+	"Website Blocking": {
+		"message": "Bloqueio de sites"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "O Norton Safe Web notifica voc\u00ea e bloqueia sites maliciosos antes de voc\u00ea clicar neles."
+	},
+	"Anti-Phishing Protection": {
+		"message": "Prote\u00e7\u00e3o contra phishing"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "Esse recurso informa se o site que voc\u00ea est\u00e1 acessando \u00e9 certificado oficialmente, e n\u00e3o um site de phishing."
+	},
+	"Link Guard": {
+		"message": "Verifica\u00e7\u00e3o de link"
+	},
+	"Blocking options": {
+		"message": "Op\u00e7\u00f5es de bloqueio"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "Escolha o n\u00edvel de prote\u00e7\u00e3o quando o Safe Web detectar um site malicioso ou de phishing."
+	},
+	"Block the site": {
+		"message": "Bloquear o site <span>Recomendado</span>"
+	},
+	"Show notification banner": {
+		"message": "Mostrar banner de notifica\u00e7\u00e3o"
+	},
+	"Alert me from extension icon only": {
+		"message": "Alertar-me apenas pelo \u00edcone da extens\u00e3o"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "Verifica o webmail e os feeds de m\u00eddias sociais em busca de links suspeitos ou maliciosos."
+	},
+	"Learn more": {
+		"message": "Saiba mais"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "N\u00e3o recomendamos o compartilhamento de informa\u00e7\u00f5es pessoais ou financeiras nesta p\u00e1gina."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "O Norton Safe Web s\u00f3 fornecer\u00e1 classifica\u00e7\u00f5es de sites no Norton Safe Search"
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "Proteja suas pesquisas com o Norton Safe Search"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "A partir de agora, a extens\u00e3o do Norton Safe Web deixar\u00e1 de fornecer classifica\u00e7\u00f5es de sites para todos os mecanismos de pesquisa, exceto para o Norton Safe Search."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "Continuaremos bloqueando sites perigosos para manter sua navega\u00e7\u00e3o segura e protegida."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "Para continuar vendo as classifica\u00e7\u00f5es de sites, instale a extens\u00e3o do Norton Safe Search."
+	},
+	"See Forecast": {
+		"message": "Ver previs\u00e3o"
+	},
+	"Fahrenheit": {
+		"message": "Fahrenheit"
+	},
+	"Celsius": {
+		"message": "Celsius"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0 F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0 C"
+	},
+	"January": {
+		"message": "Janeiro"
+	},
+	"February": {
+		"message": "Fevereiro"
+	},
+	"March": {
+		"message": "Mar\u00e7o"
+	},
+	"April": {
+		"message": "Abril"
+	},
+	"May": {
+		"message": "Maio"
+	},
+	"June": {
+		"message": "Junho"
+	},
+	"July": {
+		"message": "Julho"
+	},
+	"August": {
+		"message": "Agosto"
+	},
+	"September": {
+		"message": "Setembro"
+	},
+	"October": {
+		"message": "Outubro"
+	},
+	"November": {
+		"message": "Novembro"
+	},
+	"December": {
+		"message": "Dezembro"
+	},
+	"Monday": {
+		"message": "Segunda-feira"
+	},
+	"Tuesday": {
+		"message": "Ter\u00e7a-feira"
+	},
+	"Wednesday": {
+		"message": "Quarta-feira"
+	},
+	"Thursday": {
+		"message": "Quinta-feira"
+	},
+	"Friday": {
+		"message": "Sexta-feira"
+	},
+	"Saturday": {
+		"message": "S\u00e1bado"
+	},
+	"Sunday": {
+		"message": "Domingo"
+	},
+	"General": {
+		"message": "Geral"
+	},
+	"settingsShare": {
+		"message" : "Outro"
+	},
+	"New tab": {
+		"message": "Nova aba"
+	},
+	"Shortcuts": {
+		"message": "Atalhos"
+	},
+	"Launch the search links in a new tab": {
+		"message": "Iniciar links de pesquisa em nova guia"
+	},
+	"Show bookmark bar": {
+		"message": "Mostrar barra de favoritos"
+	},
+	"Requires additional permission": {
+		"message": "Exige permiss\u00e3o adicional"
+	},
+	"Quick links": {
+		"message": "Links r\u00e1pidos"
+	},
+	"Most-visited sites": {
+		"message": "Sites mais visitados"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "Crie atalhos dos meus sites mais visitados "
+	},
+	"Shown based on websites": {
+		"message": "Mostrar com base em sites visitados com frequ\u00eancia | Exige permiss\u00e3o adicional"
+	},
+	"Custom quick links": {
+		"message": "Links r\u00e1pidos personaliz\u00e1veis"
+	},
+	"Create custom shortcuts":{
+		"message": "Crie atalhos personalizados"
+	},
+	"Quick links added by you": {
+		"message": "Links r\u00e1pidos adicionados por voc\u00ea"
+	},
+	"Customize": {
+		"message": "Personalizar"
+	},
+	"Widgets below shortcuts": {
+		"message": "Widgets abaixo dos atalhos"
+	},
+	"BookmarkBar": {
+		"message": "Barra de favoritos"
+	},
+	"Extension theme": {
+		"message": "Tama da extens\u00e3o"
+	},
+	"Show weather widget": {
+		"message": "Mostrar widget de clima"
+	},
+	"Show time widget": {
+		"message": "Mostrar widget de hora"
+	},
+	"Background image": {
+		"message": "Imagem de fundo"
+	},
+	"Background": {
+		"message": "Plano de fundo"
+	},
+	"Choose": {
+		"message": "Escolher"
+	},
+	"Restore defaults": {
+		"message": "Restaurar padr\u00f5es"
+	},
+	"Reset to default": {
+		"message": "Redefinir para padr\u00e3o"
+	},
+	"Share usage and error data anonymously": {
+		"message": "Compartilhe os dados de uso e de erros anonimamente com o Norton e ajude-nos a tornar nossos produtos ainda melhores."
+	},
+	"Light mode": {
+		"message": "Modo claro"
+	},
+	"Dark mode": {
+		"message": "Modo escuro"
+	},
+	"Manage bookmarks": {
+		"message": "Gerenciar favoritos"
+	},
+	"Choose image": {
+		"message": "Escolher imagem"
+	},
+	"Choose an image from your device": {
+		"message": "Escolha uma imagem do seu dispositivo"
+	},
+	"Gallery": {
+		"message": "Galeria"
+	},
+	"Choose from one of five images": {
+		"message": "Escolha um dos quatro planos de fundo fornecidos abaixo ou selecione uma imagem do seu dispositivo."
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "Atualize o plano de fundo"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "Escolha um dos 4 planos de fundo fornecidos ou carregue seu pr\u00f3prio!"
+	},
+	"Available for Chrome": {
+		"message": "Dispon\u00edvel para Chrome"
+	},
+	"Show most-visited sites": {
+		"message": "Mostrar sites mais visitados"
+	},
+	"Quick links to websites you visit most": {
+		"message": "Links r\u00e1pidos para sites mais visitados"
+	},
+	"Got It": {
+		"message": "Entendi"
+	},
+	"Account": {
+		"message": "Conta"
+	},
+	"Maps": {
+		"message": "Maps"
+	},
+	"Play": {
+		"message": "Play"
+	},
+	"Drive": {
+		"message": "Drive"
+	},
+	"Calendar": {
+		"message": "Agenda"
+	},
+	"News": {
+		"message": "Not\u00edcias"
+	},
+	"Translate": {
+		"message": "Tradutor"
+	},
+	"Photos": {
+		"message": "Fotos"
+	},
+	"Chat": {
+		"message": "Chat"
+	},
+	"Duo": {
+		"message": "Duo"
+	},
+	"Meet": {
+		"message": "Meet"
+	},
+	"Docs": {
+		"message": "Documentos"
+	},
+	"Contacts": {
+		"message": "Contatos"
+	},
+	"Classroom": {
+		"message": "Google Sala de Aula"
+	},
+	"More Apps": {
+		"message": "Mais aplicativos"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "COMPARTILHAR DADOS COM O NORTON"
+	},
+	"PM": {
+		"message": "da tarde/noite"
+	},
+	"AM": {
+		"message": "da manh\u00e3"
+	},
+	"Default theme": {
+		"message": "Tema padr\u00e3o"
+	},
+	"Hidden bookmarks": {
+		"message": "Favoritos ocultos"
+	},
+	"Available for Edge": {
+		"message": "Dispon\u00edvel para Edge"
+	},
+	"Manage favorites": {
+		"message": "Gerenciar favoritos"
+	},
+	"Show favorites bar": {
+		"message": "Mostrar barra de favoritos"
+	},
+	"Hidden favourites": {
+		"message": "Favoritos ocultos"
+	},
+	"Accept Risk and Continue": {
+		"message": "Aceitar o risco e continuar"
+	},
+	"ProductName":
+	{
+		"message" : " Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "Escolha um dos 4 planos de fundo fornecidos ou carregue seu pr\u00f3prio!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "P\u00e1gina inicial do Norton"
+	},
+	"PrivacyAndPermissions": {
+		"message": "Permiss\u00f5es"
+	},
+	"Permissions": {
+		"message": "Permiss\u00f5es"
+	},
+	"Install": {
+		"message": "Instalar"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "agora as extens\u00f5es ajudam a proteger suas pesquisas contra links potencialmente maliciosos. Navegue na Web com mais seguran\u00e7a."
+	},
+	"Install Extensions": {
+		"message": "Instalar extens\u00f5es"
+	},
+	"Ad": {
+		"message": "Patrocinado"
+	},
+	"Almost done!": {
+		"message": "Falta pouco!"
+	},
+	"To complete installation, click": {
+		"message": "Para concluir a instala\u00e7\u00e3o, clique em"
+	},
+	"Install Norton Safe Search": {
+		"message": "Instalar Norton Safe Search"
+	},
+	"No search protection": {
+		"message": "Nenhuma prote\u00e7\u00e3o para pesquisas"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"Continuar sem prote\u00e7\u00e3o de pesquisa"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"Defina o Norton Safe Search como sua pesquisa padr\u00e3o"
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"Ativar o Norton Safe Search"
+	},
+	"Your searches are not protected":
+	{
+		"message":"Suas pesquisas n\u00e3o est\u00e3o protegidas"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"Recomendamos ativar o Norton Safe Search para bloquear links maliciosos e golpes de phishing."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Use o Norton Safe Search para navegar com mais seguran\u00e7a"
+	},
+	"Choose search protection":{
+		"message":"{0} agora solicita que voc\u00ea selecione a prote\u00e7\u00e3o de pesquisa. Selecione \"Ativar o Norton Safe Search\" abaixo para bloquear links maliciosos e continuar navegando com seguran\u00e7a."
+	},
+	"Recommended":{
+		"message":"Recomendado"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "Fique mais seguro ao pesquisar com o Norton"
+	},
+	"Detect risky sites and scams":{
+		"message": "Ative o Norton Safe Search para ajudar a detectar sites perigosos e golpes."
+	},
+	"Peace of mind with every search ": {
+		"message": "Tranquilidade a cada pesquisa"
+	},
+	"To keep your searches secure": {
+		"message": "Para manter suas pesquisas protegidas, <span>recomendamos fortemente</span> instalar a extens\u00e3o do Norton Safe Search."
+	},
+	"Install now": {
+		"message": "Instalar agora"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "O Norton Safe Web foi atualizado"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "O Norton <span>continuar\u00e1</span> verificando os sites que voc\u00ea visita e enviando <span>alertas</span> sobre riscos potenciais como:"
+	},
+	"Malicious websites": {
+		"message": "Sites maliciosos"
+	},
+	"Phishing websites": {
+		"message": "Sites de phishing"
+	},
+	"Viruses or other online threats": {
+		"message": "V\u00edrus ou outras amea\u00e7as online"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "A partir de agora, o Norton <span>mostrar\u00e1 as classifica\u00e7\u00f5es dos sites apenas atrav\u00e9s do Norton Safe Search,</span> garantindo maior seguran\u00e7a enquanto voc\u00ea navega."
+	},
+	"Dangerous website detected": {
+		"message": "Site perigoso detectado"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "Recomendamos enfaticamente n\u00e3o compartilhar nenhuma informa\u00e7\u00e3o pessoal nem acessar este site."
+	},
+	"Exit this page (recommended)": {
+		"message": "Sair desta p\u00e1gina (recomendado)"
+	},
+	"BLOCKED BY": {
+		"message": "BLOQUEADO POR"
+	},
+	"Show sponsored banner": {
+		"message": "Mostrar banner patrocinado"
+	},
+	"Sponsored": {
+		"message": "Patrocinado"
+	},
+	"Hide": {
+		"message": "Ocultar"
+	},
+	"homePageTitle": {
+		"message": "Home page"
+	},
+	"Add protection to your searches": {
+		"message": "Adicione prote\u00e7\u00e3o \u00e0s suas pesquisas."
+	},
+	"Detect malicious links": {
+		"message": "Ative o Norton Safe Search para detectar links maliciosos e golpes de phishing."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "Hist\u00f3rias principais"
+	},
+	"crypto": {
+		"message": "Criptomoedas"
+	},
+	"stock": {
+		"message": "A\u00e7\u00f5es"
+	},
+	"weather": {
+		"message": "Clima"
+	},
+	"tools": {
+		"message": "Utilit\u00e1rios"
+	},
+	"Select your search protection:": {
+		"message": "Selecione sua prote\u00e7\u00e3o de pesquisa:"
+	},
+	"Bookmark bar": {
+		"message": "Barra de favoritos"
+	},
+	"Favorites bar": {
+		"message": "Barra de favoritos"
+	},
+	"Other bookmarks": {
+		"message": "Outros favoritos"
+	},
+	"Welcome to": {
+		"message": "Bem-vindo ao"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "Fa\u00e7a um tour para ver o que h\u00e1 de novo e aproveite ao m\u00e1ximo os recursos do Safe Search."
+	},
+	"Skip tour": {
+		"message": "Ignorar tour"
+	},
+	"Start tour": {
+		"message": "Iniciar tour"
+	},
+	"Personalise your home page": {
+		"message": "Personalize sua p\u00e1gina inicial"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "Personalize sua p\u00e1gina inicial com imagens personalizadas e modos claro ou escuro"
+	},
+	"Customizable shortcuts": {
+		"message": "Atalhos personaliz\u00e1veis"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "Os atalhos permitem acessar seus sites favoritos com facilidade"
+	},
+	"Useful widgets": {
+		"message": "Widgets \u00fateis"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "Exiba at\u00e9 5 widgets: clima, a\u00e7\u00f5es, criptomoedas, calculadora e conversor de unidades"
+	},
+	"Read today's top news": {
+		"message": "Leia as principais not\u00edcias de hoje"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "Mantenha-se informado com as \u00faltimas manchetes do mundo sobre diversos assuntos"
+	},
+	"Link to your apps": {
+		"message": "Vincule seus apps"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "Acesse seus apps com rapidez e facilidade da P\u00e1gina inicial do Norton"
+	},
+	"Begin tour": {
+		"message": "Iniciar tour"
+	},
+	"Take a quick tour of features": {
+		"message": "Fazer um tour r\u00e1pido dos recursos"
+	}
+}

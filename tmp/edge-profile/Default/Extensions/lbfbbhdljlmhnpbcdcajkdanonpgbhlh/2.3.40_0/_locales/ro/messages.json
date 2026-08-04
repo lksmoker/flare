@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "ro"
+   },
+   "downloadButton": {
+      "message": "Descărcați"
+   },
+   "downloadMessage": {
+      "message": "Pentru a utiliza Favorite iCloud, descărcați iCloud pentru Windows."
+   },
+   "enableBookmarksMessage": {
+      "message": "Pentru a utiliza Favorite iCloud cu Edge, activați opțiunea Favorite în iCloud pentru Windows."
+   },
+   "extDescription": {
+      "message": "Păstrați favoritele Edge de pe Windows sincronizate cu favoritele Safari de pe iPhone, iPad și Mac."
+   },
+   "extName": {
+      "message": "Favorite iCloud"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Deschideți iCloud pentru Windows"
+   },
+   "syncedMessage": {
+      "message": "Favoritele Edge sunt sincronizate cu iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Extensia pe care încercați să o instalați este concepută să ruleze pe Windows. Dacă utilizați un Mac, favoritele Safari se vor sincroniza automat pe iPhone, iPad și Mac dacă vă autentificați pe iCloud de pe toate dispozitivele dvs."
+   }
+}

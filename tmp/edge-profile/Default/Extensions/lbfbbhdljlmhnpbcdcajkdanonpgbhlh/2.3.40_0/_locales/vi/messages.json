@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "vi"
+   },
+   "downloadButton": {
+      "message": "Tải về"
+   },
+   "downloadMessage": {
+      "message": "Tải về iCloud cho Windows để sử dụng Dấu trang iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "Cho phép Dấu trang trong iCloud cho Windows sử dụng Dấu trang iCloud với Edge."
+   },
+   "extDescription": {
+      "message": "Cập nhật các dấu trang Edge trên Windows bằng các dấu trang Safari trên iPhone, iPad và máy Mac của bạn."
+   },
+   "extName": {
+      "message": "Dấu trang iCloud"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Mở iCloud cho Windows"
+   },
+   "syncedMessage": {
+      "message": "Các dấu trang Edge của bạn được đồng bộ hóa với iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Phần mở rộng mà bạn đang cố gắng cài đặt được thiết kế để chạy trên Windows. Nếu bạn đang sử dụng máy Mac thì các dấu trang Safari sẽ tự động đồng bộ hóa với iPhone, iPad và máy Mac khi bạn đăng nhập vào iCloud trên tất cả các thiết bị của mình."
+   }
+}

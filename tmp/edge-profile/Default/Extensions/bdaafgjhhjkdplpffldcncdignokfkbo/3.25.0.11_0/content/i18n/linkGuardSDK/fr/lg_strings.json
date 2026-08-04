@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Nous mettrons en \u00e9vidence les liens suspects dans les comptes Webmail, Facebook, Twitter et autres."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "En savoir plus"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "LIEN SUSPECT"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton vous avertit d\u00e9sormais des liens suspects dans votre messagerie pour vous prot\u00e9ger contre les activit\u00e9s malveillantes."
+    }
+}

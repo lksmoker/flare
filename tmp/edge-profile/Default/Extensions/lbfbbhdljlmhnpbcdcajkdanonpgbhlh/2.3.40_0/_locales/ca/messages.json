@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "ca"
+   },
+   "downloadButton": {
+      "message": "Descarregar"
+   },
+   "downloadMessage": {
+      "message": "Descarrega’t l’iCloud per a Windows per poder utilitzar els marcadors a l’iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "Activa l’extensió de marcadors a l’iCloud per a Windows per utilitzar-la amb l’Edge."
+   },
+   "extDescription": {
+      "message": "Sincronitza els marcadors de l’Edge del Windows amb els del Safari de l’iPhone, l’iPad i el Mac."
+   },
+   "extName": {
+      "message": "Marcadors a l’iCloud"
+   },
+   "okButton": {
+      "message": "D’acord"
+   },
+   "signinButton": {
+      "message": "Obrir l’iCloud per a Windows"
+   },
+   "syncedMessage": {
+      "message": "Els marcadors de l’Edge s’han sincronitzat amb l’iCloud."
+   },
+   "unsupportedOS": {
+      "message": "L’extensió que vols instal·lar s’ha dissenyat per al Windows. Si tens un Mac, els marcadors del Safari se sincronitzaran automàticament amb l’iPhone, l’iPad i el Mac quan iniciïs sessió a l’iCloud en tots els teus dispositius."
+   }
+}

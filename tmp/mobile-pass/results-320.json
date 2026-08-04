@@ -1,0 +1,402 @@
+[
+  {
+    "label": "welcome",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "flare-home",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "checkpoint-modal",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "flare-response-offered",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "flare-plan-step",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "end-plan-confirm",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "history",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "customize",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "support-group-modal",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  },
+  {
+    "label": "flare-plan-modal",
+    "path": "/flare/",
+    "title": "",
+    "bodyText": "WELCOME\nHold on to your support and your clarity\nDifficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.\nPrepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.\nYour support\nThe people and encouragement you have chosen to keep close when you need them.\nYour clarity\nThe plans, reminders, and intentions you created while thinking clearly.\nWHAT TO DO NEXT\nGet started by preparing the support words, reminders, and next steps you want ready before you need them.\nGet started\nWHAT SIGNING IN ADDS\nYou can begin without an account. Signing in adds saved setup across sessions, account-backed history and plan reloads, and account-based features like Support Group.\nGo to sign in",
+    "width": 320,
+    "height": 568,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "scrollHeight": 568,
+    "clientHeight": 568,
+    "buttons": [
+      {
+        "text": "Get started",
+        "rect": {
+          "x": 43,
+          "y": 987,
+          "width": 234,
+          "height": 54,
+          "top": 987,
+          "right": 277,
+          "bottom": 1041,
+          "left": 43
+        }
+      },
+      {
+        "text": "Go to sign in",
+        "rect": {
+          "x": 43,
+          "y": 1219,
+          "width": 83.78125,
+          "height": 44,
+          "top": 1219,
+          "right": 126.78125,
+          "bottom": 1263,
+          "left": 43
+        }
+      }
+    ]
+  }
+]

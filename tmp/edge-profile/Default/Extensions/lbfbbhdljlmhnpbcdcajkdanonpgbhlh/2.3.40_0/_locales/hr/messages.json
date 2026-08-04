@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "hr"
+   },
+   "downloadButton": {
+      "message": "Preuzmi"
+   },
+   "downloadMessage": {
+      "message": "Preuzmite iCloud za Windows za uporabu iCloud knjižnih oznaka."
+   },
+   "enableBookmarksMessage": {
+      "message": "Omogućite Knjižne oznake u aplikaciji iCloud za Windows kako biste mogli koristiti iCloud knjižne oznake uz Edge."
+   },
+   "extDescription": {
+      "message": "Održavajte svoje Edge knjižne oznake iz sustava Windows ažuriranima sa Safari knjižnim oznakama na iPhoneu, iPadu i Macu."
+   },
+   "extName": {
+      "message": "iCloud knjižne oznake"
+   },
+   "okButton": {
+      "message": "U redu"
+   },
+   "signinButton": {
+      "message": "Otvori iCloud za Windows"
+   },
+   "syncedMessage": {
+      "message": "Vaše Edge knjižne oznake sinkronizirane su s iCloudom."
+   },
+   "unsupportedOS": {
+      "message": "Ekstenzija koju pokušavate instalirati dizajnirana je za rad na Windowsima. Ako koristite Mac, vaše Safari knjižne oznake automatski će se sinkronizirati s vašim iPhoneom, iPadom i Macom kad se prijavite na iCloud na svim uređajima."
+   }
+}

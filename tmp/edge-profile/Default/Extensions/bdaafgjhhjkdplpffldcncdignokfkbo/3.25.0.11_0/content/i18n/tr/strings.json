@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "Dikkat"
+	},
+
+	"Untested":
+	{
+		"message": "TEST ED\u0130LMED\u0130"
+	},
+
+	"Warning":
+	{
+		"message": "Uyar\u0131"
+	},
+	"Norton Secured":
+	{
+		"message": "G\u00dcVENL\u0130"
+	},
+	"Not Licensed":
+	{
+		"message": "Lisansl\u0131 de\u011fil"
+	},
+	"Safe":
+	{
+		"message": "G\u00fcvenli"
+	},
+	"Safe Web is off":
+	{
+		"message": "G\u00dcVENL\u0130"
+	},
+	"Page not analyzed":
+	{
+		"message": "Sayfa analiz edilmedi"
+	},
+	"Norton Rating":
+	{
+		"message": "Norton De\u011ferlendirmesi"
+	},
+	"Computer Threats":
+	{
+		"message": "Bilgisayar Tehditleri"
+	},
+	"Identity Threats":
+	{
+		"message": "Kimlik Tehditleri"
+	},
+	"Annoyance Threats":
+	{
+		"message": "Rahats\u0131zl\u0131k Veren Tehditler"
+	},
+	"Total Threats":
+	{
+		"message": "Toplam Tehdit"
+	},
+	"Full Safe Web report":
+	{
+		"message": "Tam G\u00fcvenli Web Raporu"
+	},
+	"Report this site":
+	{
+		"message": "Bu siteyi rapor et"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "Taray\u0131c\u0131 Ayarlar\u0131"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "G\u00dcVENS\u0130Z"
+	},
+    "total_threats_id":
+    {
+        "message" : "Tehditler: "
+    },
+		"untested_text":
+		{
+			"message" : "Bu site hen\u00fcz de\u011ferlendirilmedi"
+		},
+    "safe_status_id":
+    {
+        "message" : "G\u00dcVENL\u0130"
+    },
+    "secure_status_id":
+    {
+        "message" : "G\u00dcVENL\u0130"
+    },
+    "caution_status_id":
+    {
+        "message" : "Dikkat"
+    },
+    "untested_status_id":
+    {
+        "message" : "TEST ED\u0130LMED\u0130"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "G\u00dcVENS\u0130Z"
+    },
+		"full_report_id" :
+		{
+				"message" : "Tam Rapor"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Norton De\u011ferlendirmesi:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "K\u00f6t\u00fc Ama\u00e7l\u0131 \u0130ndirme Alg\u0131land\u0131"
+	},
+	"Download Cancelled":
+	{
+		"message" : "\u0130ndirme \u0130ptal edildi"
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "K\u00f6t\u00fc Ama\u00e7l\u0131 Web Sayfas\u0131 Engellendi"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "K\u00f6t\u00fc Ama\u00e7l\u0131 Site Engellendi!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "Buraya eri\u015fmeye \u00e7al\u0131\u015ft\u0131n\u0131z:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "Buraya eri\u015fmeye \u00e7al\u0131\u015ft\u0131n\u0131z:"
+	},
+	"Website you tried to access:": {
+		"message" : "Eri\u015fmeye \u00e7al\u0131\u015ft\u0131\u011f\u0131n\u0131z web sitesi:"
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "Bu bilinen k\u00f6t\u00fc ama\u00e7l\u0131 bir web sitedir. Bu siteyi ziyaret ETMEMEN\u0130Z \u00f6nerilir."
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "Bu web sayfas\u0131 bilinen k\u00f6t\u00fc ama\u00e7l\u0131 bir web sayfas\u0131d\u0131r."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "Bu site, k\u00f6t\u00fc ama\u00e7l\u0131 oldu\u011fu bilinen bir web sitesidir."
+	},
+	"detailed report" :
+	{
+		"message" : "ayr\u0131nt\u0131l\u0131 raporda"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "a\u00e7\u0131klanmaktad\u0131r."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "G\u00fcvenli\u011finiz i\u00e7in bu web sitesi engellendi. Ziyaret et"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "web sitesini ziyaret edin."
+	},
+	"Exit this site" :
+	{
+		"message" : "Bu siteden \u00e7\u0131k"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "Bu Web sitesini yine de g\u00f6r\u00fcnt\u00fclemek istiyorum"
+	},
+	"It is recommended that you" :
+	{
+		"message" : "Bu web sayfas\u0131n\u0131 ziyaret"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "Bu Web Sitesini ziyaret ETMEY\u0130N."
+	},
+	"Norton":
+	{
+		"message" : "Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Norton Giri\u015f Sayfas\u0131"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "\u015e\u00fcpheli Web Sayfas\u0131 Engellendi"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "G\u00fcvenli\u011finiz i\u00e7in bu web sayfas\u0131 engellendi ve inceleme i\u00e7in g\u00f6nderildi."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "Bu site, b\u00f6lgenizdeki korsanl\u0131k veya di\u011fer k\u0131s\u0131tlamalar nedeniyle engellendi. Bu sayfay\u0131 ziyaret etmemenizi \u015fiddetle tavsiye ederiz."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "Bu sayfay\u0131 ziyaret ETMEMEN\u0130Z \u00f6nemle tavsiye edilir."
+	},
+	"Visit" :
+	{
+		"message" : "Ziyaret et"
+	},
+	"Continue to the site" :
+	{
+		"message" : "Siteye devam et"
+	},
+	"View Full Report" :
+	{
+		"message" : "Tam Raporu G\u00f6r\u00fcnt\u00fcle"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "Daha g\u00fcvenli bir site ara"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "Doland\u0131r\u0131c\u0131 Web sayfas\u0131 Engellendi"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "Bu web sayfas\u0131, bilinen doland\u0131r\u0131c\u0131 bir web sayfas\u0131d\u0131r."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "Tehlikeli Web Sayfas\u0131 Engellendi"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "Bu site bilinen tehlikeli bir web sayfas\u0131d\u0131r."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "{0} \u00fcr\u00fcnlerini kulland\u0131\u011f\u0131n\u0131z i\u00e7in te\u015fekk\u00fcrler. Kullan\u0131m ve hata verilerini Norton ile anonim olarak payla\u015f\u0131n ve \u00fcr\u00fcnlerimizi daha iyi hale getirmemizde bize yard\u0131mc\u0131 olun."
+	},
+	"OK" :
+	{
+	    "message" : "Tamam"
+	},
+	"No, thanks" :
+	{
+	    "message" : "Hay\u0131r, te\u015fekk\u00fcrler"
+	},
+	"Learn More" :
+	{
+	    "message" : "Daha Fazla Bilgi"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "G\u00fcvenli Arama"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "Ana Sayfa"
+	},
+	"Settings"	:
+	{
+			"message" :	"Ayarlar"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "VER\u0130LER\u0130 NORTON \u0130LE PAYLA\u015e"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "Kullan\u0131m ve hata verilerini Norton ile anonim olarak payla\u015f\u0131n ve \u00fcr\u00fcnlerimizi daha iyi hale getirmemizde bize yard\u0131mc\u0131 olun."
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Doland\u0131r\u0131c\u0131l\u0131k Sicili: Ki\u015fisel Bilgi Riskleri"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "Bu site g\u00fcvenlidir, ancak\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "Ki\u015fisel bilgiler talep ediyor ve Norton Community taraf\u0131ndan tam olarak tan\u0131nm\u0131yor. Bu siteye herhangi bir bilginizi girerken dikkatli olun. "
+	},
+	"Visit " :
+	{
+		"message" : "Ziyaret et "
+	},
+	"Norton " :
+	{
+		"message" : "Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "Web sitelerindeki ki\u015fisel bilgi riskleri hakk\u0131nda daha fazla bilgi i\u00e7in."
+	},
+	"Age: " :
+	{
+		"message" : "Ya\u015f: "
+	},
+	"Very New" :
+	{
+		"message" : "\u00c7ok Yeni"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "Bu web sitesi k\u0131sa bir zaman \u00f6nce yay\u0131nlanm\u0131\u015f."
+	},
+	"New" :
+	{
+		"message" : "Yeni"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "Bu web sitesi k\u0131sa bir s\u00fcredir kullan\u0131l\u0131yor."
+	},
+	"Prevalence: " :
+	{
+		"message" : "Yayg\u0131nl\u0131k: "
+	},
+	"No Users" :
+	{
+		"message" : "Kullan\u0131c\u0131s\u0131 Yok"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "Norton community \u00fcyeleri bu siteyi kullanmam\u0131\u015f."
+	},
+	"Few Users" :
+	{
+		"message" : "Az Kullan\u0131c\u0131"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "\u00c7ok az say\u0131da Norton Community \u00fcyesi bu siteyi kullanm\u0131\u015f."
+	},
+	"Continue to Site" :
+	{
+		"message" : "Siteye Git"
+	},
+	"Exit Site" :
+	{
+		"message" : "Siteden \u00c7\u0131k"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "Bu sitenin yanl\u0131\u015f s\u0131n\u0131fland\u0131r\u0131ld\u0131\u011f\u0131n\u0131 d\u00fc\u015f\u00fcn\u00fcyorsan\u0131z, "
+	},
+	"Report Issue." :
+	{
+		"message" : "Sorun Bildir."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "Farkl\u0131 oturum a\u00e7\u0131n"
+	},
+	"Sign out"			:
+	{
+		"message"		: "Oturumu kapat"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"NortonLifeLock Hesab\u0131 oturumunuzu ba\u015far\u0131yla kapatt\u0131n\u0131z"
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"\u00dczg\u00fcn\u00fcz, bir hata olu\u015ftu. L\u00fctfen yeniden deneyin."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "Webmail, Facebook ve Twitter'da g\u00fcvenli olmayan ba\u011flant\u0131lar\u0131 belirleyin"
+	},
+	"Websites": {
+  		"message": "Web siteleri"
+	},
+	"Isolation Mode On": {
+  		"message": "\u0130zolasyon Modu A\u00e7\u0131k"
+	},
+	"Isolation Mode Off": {
+  		"message": "\u0130zolasyon Modu Kapal\u0131"
+	},
+	"Ask Me": {
+  		"message": "Bana Sor"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "H\u0131zl\u0131 Ba\u011flant\u0131lar"
+	},
+	"Privacy": {
+		"message": "Gizlilik"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Telif hakk\u0131 \u00a9 {0} Gen Digital Inc. T\u00fcm haklar\u0131 sakl\u0131d\u0131r."
+	},
+	"Legal": {
+		"message": "Yasal"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "NortonLifeLock Son G\u00fcncellemeleri"
+  },
+  "Security & Privacy Center": {
+    "message": "G\u00fcvenlik ve Gizlilik Merkezi"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "Norton Safe Search'e Ho\u015f Geldiniz"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "Nelerin de\u011fi\u015fti\u011fini g\u00f6rmek ve Safe Search \u00f6zelliklerinizden en iyi \u015fekilde yararlanmak i\u00e7in bir tur at\u0131n."
+  },
+  "Start Tour": {
+    "message": "Turu Ba\u015flat"
+  },
+  "Peace of mind with every search": {
+    "message": "Her araman\u0131zda g\u00f6n\u00fcl rahatl\u0131\u011f\u0131"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "Norton Safe Search arama sonu\u00e7lar\u0131n\u0131zda site g\u00fcvenlik derecelendirmelerini g\u00f6sterir."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "Norton'dan g\u00fcvenlik g\u00fcncellemeleri ve ipu\u00e7lar\u0131 al\u0131n"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "NortonLifeLock'tan en son g\u00fcvenlik ve gizlilik bloglar\u0131n\u0131 ke\u015ffedin ve dijital g\u00fcvenlik hakk\u0131nda daha fazla bilgi edinin."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "Ayarlar'da Norton Ana Sayfas\u0131 turu mevcuttur."
+  },
+  "Next": {
+    "message": "\u0130leri"
+  },
+  "Done": {
+    "message": "Bitti"
+  },
+  "Welcome to {0}": {
+	"message": "{0} program\u0131na ho\u015f geldiniz"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "NortonLifeLock\u2019u se\u00e7ti\u011finiz i\u00e7in te\u015fekk\u00fcrler."
+  },
+  "Keep It": {
+	"message": "Sakla"
+  },
+  "Keep it": {
+	"message": "Sakla"
+  },
+  "Keep changes": {
+    "message": "De\u011fi\u015fiklikleri koru"
+  },
+  "Keep Changes": {
+    "message": "De\u011fi\u015fiklikleri Kaydet"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "Ekran\u0131n \u00fcst k\u0131sm\u0131nda bir Chrome mesaj\u0131 g\u00f6r\u00fcn\u00fcrse {0} d\u00fc\u011fmesine basarak {1} koruman\u0131z\u0131 Chrome'da s\u00fcrd\u00fcr\u00fcn."
+  },
+  "Thanks for choosing {0}": {
+    "message": "{0} tercihiniz i\u00e7in te\u015fekk\u00fcrler."
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "Taray\u0131c\u0131 uzant\u0131s\u0131n\u0131 y\u00fckledikten sonra, Microsoft Edge taraf\u0131ndan istenirse {0}'\u00fcn\u00fcz\u00fc korumak i\u00e7in {1}'e t\u0131klay\u0131n."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "NortonLifeLock\u2019u se\u00e7ti\u011finiz i\u00e7in te\u015fekk\u00fcrler."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Ekran\u0131n \u00fcst k\u0131sm\u0131nda bir Chrome mesaj\u0131 g\u00f6r\u00fcn\u00fcrse, {0} koruman\u0131z\u0131 Chrome s\u00fcrd\u00fcrmek i\u00e7in {1} d\u00fc\u011fmesine t\u0131kay\u0131n."
+	},
+  "Let us help protect you": {
+    "message" : "Korunman\u0131za yard\u0131mc\u0131 olal\u0131m"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "Norton Safe Web, ziyaret etti\u011finiz web adreslerine (url'ler) eri\u015fme ve bunlar\u0131 toplama izinlerine sahip olmal\u0131d\u0131r. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "Bu \u015fekilde, Web'de gezinirken korumaya yard\u0131mc\u0131 olabilecek g\u00fcvenlik derecelendirmeleri sa\u011flayabiliriz."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "Norton Safe Search, \u00fczerinde arama yapt\u0131\u011f\u0131n\u0131z web adreslerine (url'ler) eri\u015fme ve bunlar\u0131 toplama iznine sahip olmal\u0131d\u0131r. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "Norton Safe Search, web'de tarad\u0131\u011f\u0131n\u0131z web adreslerine (url'ler) adres \u00e7ubu\u011funuzdan ve Norton Giri\u015f Sayfan\u0131zdan eri\u015fme ve bunlar\u0131 toplama iznine sahip olmal\u0131d\u0131r. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "Potansiyel olarak tehlikeli ba\u011flant\u0131lar\u0131 tespit etmek \u00fczere, arad\u0131\u011f\u0131n\u0131z web adreslerini (URL\u2019ler) toplamak i\u00e7in izninize ihtiyac\u0131m\u0131z var. Reddederseniz bu uzant\u0131 kald\u0131r\u0131lacakt\u0131r."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "Potansiyel olarak tehlikeli web sitelerini tespit etmek \u00fczere, gezindi\u011finiz web adreslerini (URL\u2019ler) toplamak i\u00e7in izninize ihtiyac\u0131m\u0131z var. Reddederseniz bu uzant\u0131 kald\u0131r\u0131lacakt\u0131r."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "Ayr\u0131ca, performans\u0131 iyile\u015ftirmek amac\u0131yla analitik i\u00e7in \u00fcr\u00fcn kullan\u0131m verilerini ve hata g\u00fcnl\u00fcklerini de topluyoruz. Bu verilerin payla\u015f\u0131lmas\u0131n\u0131 devre d\u0131\u015f\u0131 b\u0131rakabilirsiniz ve uzant\u0131 \u00e7al\u0131\u015fmaya devam eder."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "Kullan\u0131m verilerini toplamam\u0131za izin verin."
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "Bu \u015fekilde, arama yapt\u0131\u011f\u0131n\u0131z sitelerin siz daha eri\u015fmeden k\u00f6t\u00fc ama\u00e7l\u0131 olup olmad\u0131\u011f\u0131n\u0131 tespit etmenize yard\u0131mc\u0131 olabilir ve size g\u00fcvenli arama sonu\u00e7lar\u0131 sa\u011flayabiliriz."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "Bu, k\u00f6t\u00fc niyetli olup olmad\u0131klar\u0131n\u0131 tespit etmemizi sa\u011flayacak ve onlara eri\u015fmeden \u00f6nce sizi uyarmam\u0131za izin verecektir."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "Norton Giri\u015f Sayfas\u0131, arad\u0131\u011f\u0131n\u0131z web adreslerine (url'ler) eri\u015fme ve bunlar\u0131 toplama iznine sahip olmal\u0131d\u0131r."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "Bu \u015fekilde, siz eri\u015fmeden \u00f6nce sitelerin k\u00f6t\u00fc ama\u00e7l\u0131 olup olmad\u0131\u011f\u0131n\u0131 tespit etmenize yard\u0131mc\u0131 olabiliriz."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "Veri toplama politikalar\u0131m\u0131z\u0131 daha iyi anlamak i\u00e7in l\u00fctfen a\u015fa\u011f\u0131daki sayfay\u0131 ziyaret edin:"
+  },
+  "Accept": {
+    "message" : "Kabul et"
+  },
+  "Decline": {
+    "message" : "Reddet"
+  },
+  "Your Permission Is Required": {
+    "message" : "\u0130zniniz Gerekli"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "Reddederseniz, Norton Safe Web \u00e7al\u0131\u015fmayacak ve sitelerde size g\u00fcvenlik derecelendirmeleri sa\u011flayamayacakt\u0131r."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "Reddederseniz, Norton Safe Search bu cihazda \u00e7al\u0131\u015fmayacak ve sizi k\u00f6t\u00fc niyetli web sitelerinden korumaya yard\u0131mc\u0131 olamayacakt\u0131r."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "Reddederseniz, Norton Giri\u015f Sayfas\u0131 \u00e7al\u0131\u015fmayacak ve sizi k\u00f6t\u00fc niyetli sitelerden korumaya yard\u0131mc\u0131 olamayacakt\u0131r."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "Reddederseniz, Norton Safe Search \u00e7al\u0131\u015fmaz ve sizi k\u00f6t\u00fc niyetli web sitelerinden korumaya yard\u0131mc\u0131 olamaz ve biz de size g\u00fcvenli arama sonu\u00e7lar\u0131 sa\u011flayamay\u0131z."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Safe Web'in kald\u0131r\u0131lmas\u0131, Norton'un sitelerin k\u00f6t\u00fc ama\u00e7l\u0131 olup olmad\u0131\u011f\u0131n\u0131 alg\u0131layamayaca\u011f\u0131 ve sizi korumaya yard\u0131mc\u0131 olamayaca\u011f\u0131 anlam\u0131na gelir. Safe Web'in cihaz\u0131n\u0131zda \u00e7al\u0131\u015fmas\u0131 Y\u00fckl\u00fc kals\u0131n'\u0131 t\u0131klaman\u0131z\u0131 ve Safe Web'e izin vermenizi \u00f6neririz."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "\u0130zninizi incelemek ve g\u00f6nderdi\u011finiz anonim bilgileri toplama talebimizi kabul etmek i\u00e7in l\u00fctfen a\u015fa\u011f\u0131ya t\u0131klay\u0131n."
+  },
+	"Search more safely, protect your device": {
+		"message" : "Daha g\u00fcvenli arama yap\u0131n, cihaz\u0131n\u0131z\u0131 koruyun"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "Mozilla Firefox, eklenti politikas\u0131n\u0131 g\u00fcncelledi. Norton Safe Search'\u00fc kullanmaya devam etmek i\u00e7in l\u00fctfen tekrar izin verin."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "Safe Search, siz ziyaret etmeden \u00f6nce sitelerin k\u00f6t\u00fc ama\u00e7l\u0131 olup olmad\u0131\u011f\u0131n\u0131 belirlemek i\u00e7in, arad\u0131\u011f\u0131n\u0131z web adreslerini toplama iznine sahip olmal\u0131d\u0131r."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "Reddederseniz Safe Search, cihaz\u0131n\u0131z\u0131 k\u00f6t\u00fc ama\u00e7l\u0131 sitelerden korumaya yard\u0131mc\u0131 olamaz."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "\u00dcr\u00fcnlerimizi ve hizmetlerimizi daha da iyi hale getirmemize yard\u0131mc\u0131 olmak i\u00e7in kullan\u0131m ve hata verilerini Norton ile anonim olarak payla\u015f\u0131n."
+	},
+	"Decline & Uninstall": {
+		"message" : "Reddet ve Kald\u0131r"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "Giri\u015f Sayfas\u0131, \u00fczerinde arama yapt\u0131\u011f\u0131n\u0131z web adreslerine eri\u015fme ve bunlar\u0131 toplama iznine sahip olmal\u0131d\u0131r. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "Reddederseniz, Giri\u015f Sayfas\u0131 sizi k\u00f6t\u00fc niyetli sitelerden korumaya yard\u0131mc\u0131 olamaz."
+	},
+	"Search more safely from your home page": {
+		"message" : "Ana sayfan\u0131zdan daha g\u00fcvenli arama yap\u0131n"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "Norton, web'de g\u00f6z att\u0131\u011f\u0131n\u0131z web adreslerine adres \u00e7ubu\u011funuzdan ve ana sayfan\u0131zdan eri\u015fme ve bunlar\u0131 toplama iznine sahip olmal\u0131d\u0131r. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "Reddederseniz Norton, cihaz\u0131n\u0131z\u0131 k\u00f6t\u00fc niyetli sitelerden korumaya yard\u0131mc\u0131 olamayacak veya size g\u00fcvenli arama sonu\u00e7lar\u0131 sa\u011flayamayacakt\u0131r."
+	},
+  "Review Your Permissions": {
+    "message" : "\u0130zinlerinizi G\u00f6zden Ge\u00e7irin"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "Norton Safe Web'i Kald\u0131r"
+  },
+  "Global Privacy Statement": {
+	"message" : "K\u00fcresel Gizlilik Bildirimi"
+  },
+  "addQuickLink": {
+    "message" : "K\u0131sayol ekle"
+  },
+	"addNewText": {
+		"message" : "K\u0131sayol ekle"
+	},
+  "Title": {
+    "message" : "Ba\u015fl\u0131k"
+  },
+  "URL": {
+    "message" : "URL"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "Eklemeye \u00e7al\u0131\u015ft\u0131\u011f\u0131n\u0131z k\u0131sayol zaten sizin i\u00e7in sa\u011flanm\u0131\u015ft\u0131r."
+  },
+  "Edit shortcut": {
+    "message" : "K\u0131sayolu d\u00fczenle"
+  },
+  "Add": {
+    "message" : "Ekle"
+  },
+  "Cancel": {
+    "message" : "\u0130ptal"
+  },
+  "Save": {
+    "message" : "Kaydet"
+  },
+  "Edit": {
+    "message" : "D\u00fczenle"
+  },
+  "Remove": {
+    "message" : "Kald\u0131r"
+  },
+  "Quick Links is all new!": {
+    "message" : "H\u0131zl\u0131 Ba\u011flant\u0131lar yenilendi!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "Favori sitelerinizi yeni H\u0131zl\u0131 Ba\u011flant\u0131lar \u00e7ubu\u011funa ekleyin."
+  },
+  "Got it": {
+    "message" : "Anlad\u0131m"
+  },
+  "Type a valid URL": {
+    "message" : "Ge\u00e7erli bir URL yaz\u0131n"
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "Pop\u00fcler sitelere kolayl\u0131kla eri\u015fmek i\u00e7in h\u0131zl\u0131 ba\u011flant\u0131lar"
+  },
+  "Editable quick links": {
+    "message" : "D\u00fczenlenebilir h\u0131zl\u0131 ba\u011flant\u0131lar"
+  },
+  "This website is considered safe.": {
+	  "message" : "Bu web sitesi g\u00fcvenli kabul edilir."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "Bu site hen\u00fcz de\u011ferlendirilmedi."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "Bu web sitesinde az say\u0131da tehdit olabilir."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "Bu web sayfas\u0131 bilinen k\u00f6t\u00fc ama\u00e7l\u0131 bir web sayfas\u0131d\u0131r."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "Bu \u015f\u00fcpheli bir sitedir."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "Tam Safe Web Raporunu g\u00f6r\u00fcnt\u00fcle"
+  },
+    "Accept risk and continue" : {
+		"message" : "Riski kabul et ve devam et"
+	},
+	"Accept and display risk": {
+		"message": "Riski kabul edin ve g\u00f6sterin"
+	},
+	"Close this website (recommended)": {
+		"message": "Bu web sitesini kapat\u0131n (\u00f6nerilir)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "Norton Safe Web'den yeni \u00f6zellik!"
+	},
+	"Protection from Formjacking": {
+		"message": "Form H\u0131rs\u0131zl\u0131\u011f\u0131 Korumas\u0131"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "Norton Safe Web, \u00e7evrimi\u00e7i al\u0131\u015fveri\u015f yaparken form h\u0131rs\u0131zl\u0131\u011f\u0131ndan ka\u00e7\u0131nman\u0131za yard\u0131mc\u0131 olabilir."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "Sat\u0131n ald\u0131\u011f\u0131n\u0131z sitenin g\u00fcvenli\u011fi ihlal edilmi\u015f bir \u00f6deme sistemine sahip oldu\u011funu tespit edersek sizi bilgilendirece\u011fiz."
+	},
+	"Thanks for installing": {
+		"message": "Y\u00fckledi\u011finiz i\u00e7in te\u015fekk\u00fcrler"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web!"
+	},
+	"Take advantage of all these great features:": {
+		"message": "T\u00fcm bu harika \u00f6zelliklerden yararlan\u0131n:"
+	},
+	"Website Ratings": {
+		"message": "Web Sitesi Derecelendirmeleri"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "Web sitesi derecelendirmelerimiz, bir sitenin g\u00fcvenli olup olmad\u0131\u011f\u0131n\u0131 veya verilerinizi sa\u011flamadan \u00f6nce dikkatli olman\u0131z gerekip gerekmedi\u011fini size bildirir."
+	},
+	"Intrusion Prevention": {
+		"message": "\u0130zinsiz Giri\u015fi \u00d6nleme"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "Norton Safe Web, pop\u00fcler taray\u0131c\u0131larda bilinen hatalara ve siber tehditlere kar\u015f\u0131 korunmaya yard\u0131mc\u0131 olur."
+	},
+	"Formjacking Prevention": {
+		"message": "Form H\u0131rs\u0131zl\u0131\u011f\u0131 Korumas\u0131"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "Norton Safe Web, bir e-ticaret sitesinin g\u00fcvenli\u011fi ihlal edilmi\u015f bir \u00f6deme sistemine sahip oldu\u011funu tespit ederse sizi bilgilendirecektir."
+	},
+	"Website Blocking": {
+		"message": "Web Sitesi Engelleme"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "Norton Safe Web sizi bilgilendirir ve ard\u0131ndan siz t\u0131klamadan \u00f6nce k\u00f6t\u00fc ama\u00e7l\u0131 siteleri engellemeye yard\u0131mc\u0131 olur."
+	},
+	"Anti-Phishing Protection": {
+		"message": "Kimlik Av\u0131na Kar\u015f\u0131 Koruma"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "Bu \u00f6zellik, t\u0131klad\u0131\u011f\u0131n\u0131z sitenin bir kimlik av\u0131 sitesi de\u011fil, resmi olarak onaylanm\u0131\u015f olup olmad\u0131\u011f\u0131n\u0131 bilmenizi sa\u011flar."
+	},
+	"Link Guard": {
+		"message": "Ba\u011flant\u0131 Korumas\u0131"
+	},
+	"Blocking options": {
+		"message": "Engelleme se\u00e7enekleri"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "G\u00fcvenli Web k\u00f6t\u00fc ama\u00e7l\u0131 veya kimlik av\u0131 ama\u00e7l\u0131 bir web sitesi alg\u0131lad\u0131\u011f\u0131nda devreye al\u0131nacak koruma d\u00fczeyini se\u00e7in."
+	},
+	"Block the site": {
+		"message": "Siteyi engelle <span>\u00d6nerilir</span>"
+	},
+	"Show notification banner": {
+		"message": "Bildirim ba\u015fl\u0131\u011f\u0131n\u0131 g\u00f6ster"
+	},
+	"Alert me from extension icon only": {
+		"message": "Beni yaln\u0131zca uzant\u0131 simgesinden uyar"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "\u015e\u00fcpheli veya k\u00f6t\u00fc niyetli ba\u011flant\u0131lar i\u00e7in web postas\u0131n\u0131 ve sosyal medya beslemelerini tarar."
+	},
+	"Learn more": {
+		"message": "Daha fazla bilgi"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "Bu sayfada herhangi bir ki\u015fisel veya finansal bilgi payla\u015fmaman\u0131z\u0131 \u015fiddetle tavsiye ederiz."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "Norton Safe Web yaln\u0131zca Norton Safe Search\u2019teki aramalarda site derecelendirmeleri sa\u011flayacakt\u0131r"
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "Norton Safe Search ile aramalar\u0131n\u0131z\u0131 koruyun"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "Norton Safe Web uzant\u0131s\u0131, Norton Safe Search d\u0131\u015f\u0131ndaki t\u00fcm arama motorlar\u0131na site derecelendirmeleri sa\u011flamay\u0131 durduracakt\u0131r."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "G\u00fcvenle gezinmeye devam edebilmeniz i\u00e7in tehlikeli web sitelerini engellemeye devam edece\u011fiz."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "Site derecelendirmelerini g\u00f6rmeye devam etmek i\u00e7in Norton Safe Search uzant\u0131s\u0131n\u0131 y\u00fckleyin."
+	},
+	"See Forecast": {
+		"message": "Hava durumu tahminini g\u00f6ster"
+	},
+	"Fahrenheit": {
+		"message": "Fahrenhayt"
+	},
+	"Celsius": {
+		"message": "Santigrat"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0C"
+	},
+	"January": {
+		"message": "Ocak"
+	},
+	"February": {
+		"message": "\u015eubat"
+	},
+	"March": {
+		"message": "Mart"
+	},
+	"April": {
+		"message": "Nisan"
+	},
+	"May": {
+		"message": "May\u0131s"
+	},
+	"June": {
+		"message": "Haziran"
+	},
+	"July": {
+		"message": "Temmuz"
+	},
+	"August": {
+		"message": "A\u011fustos"
+	},
+	"September": {
+		"message": "Eyl\u00fcl"
+	},
+	"October": {
+		"message": "Ekim"
+	},
+	"November": {
+		"message": "Kas\u0131m"
+	},
+	"December": {
+		"message": "Aral\u0131k"
+	},
+	"Monday": {
+		"message": "Pazartesi"
+	},
+	"Tuesday": {
+		"message": "Sal\u0131"
+	},
+	"Wednesday": {
+		"message": "\u00c7ar\u015famba"
+	},
+	"Thursday": {
+		"message": "Per\u015fembe"
+	},
+	"Friday": {
+		"message": "Cuma"
+	},
+	"Saturday": {
+		"message": "Cumartesi"
+	},
+	"Sunday": {
+		"message": "Pazar"
+	},
+	"General": {
+		"message": "Genel"
+	},
+	"settingsShare": {
+		"message" : "Di\u011fer"
+	},
+	"New tab": {
+		"message": "Yeni sekme"
+	},
+	"Shortcuts": {
+		"message": "K\u0131sayollar"
+	},
+	"Launch the search links in a new tab": {
+		"message": "Arama ba\u011flant\u0131lar\u0131n\u0131 yeni bir sekmede ba\u015flat\u0131n"
+	},
+	"Show bookmark bar": {
+		"message": "Yer imi \u00e7ubu\u011funu g\u00f6ster"
+	},
+	"Requires additional permission": {
+		"message": "Ek izin gerektirir"
+	},
+	"Quick links": {
+		"message": "H\u0131zl\u0131 ba\u011flant\u0131lar"
+	},
+	"Most-visited sites": {
+		"message": "En \u00e7ok ziyaret edilen siteler"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "En \u00e7ok ziyaret etti\u011fim sitelerin k\u0131sayollar\u0131n\u0131 olu\u015ftur "
+	},
+	"Shown based on websites": {
+		"message": "S\u0131k ziyaret etti\u011finiz web sitelerine g\u00f6re g\u00f6sterilir | Ek izin gerektirir"
+	},
+	"Custom quick links": {
+		"message": "\u00d6zel h\u0131zl\u0131 ba\u011flant\u0131lar"
+	},
+	"Create custom shortcuts":{
+		"message": "\u00d6zel k\u0131sayollar olu\u015ftur"
+	},
+	"Quick links added by you": {
+		"message": "Taraf\u0131n\u0131zdan eklenen h\u0131zl\u0131 ba\u011flant\u0131lar"
+	},
+	"Customize": {
+		"message": "\u00d6zelle\u015ftir"
+	},
+	"Widgets below shortcuts": {
+		"message": "K\u0131sayollar\u0131n alt\u0131ndaki Widget'lar"
+	},
+	"BookmarkBar": {
+		"message": "Yer imi \u00e7ubu\u011fu"
+	},
+	"Extension theme": {
+		"message": "Uzant\u0131 temas\u0131"
+	},
+	"Show weather widget": {
+		"message": "Hava durumu arac\u0131n\u0131 g\u00f6ster"
+	},
+	"Show time widget": {
+		"message": "Zaman arac\u0131n\u0131 g\u00f6ster"
+	},
+	"Background image": {
+		"message": "Arka plan g\u00f6r\u00fcnt\u00fcs\u00fc"
+	},
+	"Background": {
+		"message": "Arka plan"
+	},
+	"Choose": {
+		"message": "Se\u00e7"
+	},
+	"Restore defaults": {
+		"message": "Varsay\u0131lana geri y\u00fckle"
+	},
+	"Reset to default": {
+		"message": "Varsay\u0131lana s\u0131f\u0131rla"
+	},
+	"Share usage and error data anonymously": {
+		"message": "Kullan\u0131m ve hata verilerini Norton ile anonim olarak payla\u015f\u0131n ve \u00fcr\u00fcnlerimizi daha iyi hale getirmemizde bize yard\u0131mc\u0131 olun."
+	},
+	"Light mode": {
+		"message": "A\u00e7\u0131k mod"
+	},
+	"Dark mode": {
+		"message": "Karanl\u0131k mod"
+	},
+	"Manage bookmarks": {
+		"message": "Yer imlerini y\u00f6net"
+	},
+	"Choose image": {
+		"message": "Resim se\u00e7in"
+	},
+	"Choose an image from your device": {
+		"message": "Cihaz\u0131n\u0131zdan bir resim se\u00e7in"
+	},
+	"Gallery": {
+		"message": "Galeri"
+	},
+	"Choose from one of five images": {
+		"message": "A\u015fa\u011f\u0131da sa\u011flanan d\u00f6rt arka plandan birini se\u00e7in veya cihaz\u0131n\u0131zdan bir resim se\u00e7in."
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "Arka plan\u0131n\u0131z\u0131 g\u00fcncelleyin"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "Sa\u011flanan 4 arka plan aras\u0131ndan se\u00e7im yap\u0131n veya kendi arka plan\u0131n\u0131z\u0131 y\u00fckleyin!"
+	},
+	"Available for Chrome": {
+		"message": "Chrome'da kullan\u0131labilir"
+	},
+	"Show most-visited sites": {
+		"message": "En \u00e7ok ziyaret edilen siteleri g\u00f6ster"
+	},
+	"Quick links to websites you visit most": {
+		"message": "En \u00e7ok ziyaret etti\u011finiz web sitelerine h\u0131zl\u0131 ba\u011flant\u0131lar"
+	},
+	"Got It": {
+		"message": "Anlad\u0131m"
+	},
+	"Account": {
+		"message": "Hesap"
+	},
+	"Maps": {
+		"message": "Haritalar"
+	},
+	"Play": {
+		"message": "Oynat"
+	},
+	"Drive": {
+		"message": "S\u00fcr\u00fcc\u00fc"
+	},
+	"Calendar": {
+		"message": "Takvim"
+	},
+	"News": {
+		"message": "Haberler"
+	},
+	"Translate": {
+		"message": "\u00c7evir"
+	},
+	"Photos": {
+		"message": "Foto\u011fraflar"
+	},
+	"Chat": {
+		"message": "Sohbet"
+	},
+	"Duo": {
+		"message": "Duo"
+	},
+	"Meet": {
+		"message": "Toplant\u0131"
+	},
+	"Docs": {
+		"message": "Belgeler"
+	},
+	"Contacts": {
+		"message": "Ki\u015filer"
+	},
+	"Classroom": {
+		"message": "S\u0131n\u0131f"
+	},
+	"More Apps": {
+		"message": "Daha Fazla Uygulama"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "VER\u0130LER\u0130 NORTON \u0130LE PAYLA\u015e"
+	},
+	"PM": {
+		"message": "\u00d6S"
+	},
+	"AM": {
+		"message": "\u00d6\u00d6"
+	},
+	"Default theme": {
+		"message": "Varsay\u0131lan tema"
+	},
+	"Hidden bookmarks": {
+		"message": "Gizli yer imleri"
+	},
+	"Available for Edge": {
+		"message": "Edge'de kullan\u0131labilir"
+	},
+	"Manage favorites": {
+		"message": "S\u0131k kullan\u0131lanlar\u0131 y\u00f6net"
+	},
+	"Show favorites bar": {
+		"message": "S\u0131k kullan\u0131lanlar \u00e7ubu\u011funu g\u00f6ster"
+	},
+	"Hidden favourites": {
+		"message": "Gizli s\u0131k kullan\u0131lanlar"
+	},
+	"Accept Risk and Continue": {
+		"message": "Riski Kabul Et ve Devam Et"
+	},
+	"ProductName":
+	{
+		"message" : "Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "Sa\u011flanan 4 arka plan aras\u0131ndan se\u00e7im yap\u0131n veya kendi arka plan\u0131n\u0131z\u0131 y\u00fckleyin!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "Norton Giri\u015f Sayfas\u0131!"
+	},
+	"PrivacyAndPermissions": {
+		"message": "\u0130zinler"
+	},
+	"Permissions": {
+		"message": "\u0130zinler"
+	},
+	"Install": {
+		"message": "Y\u00fckle"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "uzant\u0131lar\u0131n\u0131 y\u00fckleyerek aramalar\u0131n\u0131z\u0131 olas\u0131 k\u00f6t\u00fc ama\u00e7l\u0131 ba\u011flant\u0131lardan koruyabilirsiniz. \u0130nternette daha g\u00fcvenli gezinin."
+	},
+	"Install Extensions": {
+		"message": "Uzant\u0131lar\u0131 Y\u00fckleyin"
+	},
+	"Ad": {
+		"message": "Sponsorlu"
+	},
+	"Almost done!": {
+		"message": "Neredeyse bitti!"
+	},
+	"To complete installation, click": {
+		"message": "Y\u00fcklemeyi tamamlamak i\u00e7in \u015fu d\u00fc\u011fmeye t\u0131klay\u0131n:"
+	},
+	"Install Norton Safe Search": {
+		"message": "Norton Safe Search\u2019\u00fc Y\u00fckle"
+	},
+	"No search protection": {
+		"message": "Arama korumas\u0131 yok"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"Arama korumas\u0131 olmadan devam et"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"Norton Safe Search'\u00fc varsay\u0131lan araman\u0131z olarak ayarlay\u0131n"
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"Norton Safe Search'\u00fc etkinle\u015ftirin"
+	},
+	"Your searches are not protected":
+	{
+		"message":"Aramalar\u0131n\u0131z korunmuyor"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"K\u00f6t\u00fc ama\u00e7l\u0131 ba\u011flant\u0131lar\u0131 ve kimlik av\u0131 doland\u0131r\u0131c\u0131l\u0131klar\u0131n\u0131 engellemek i\u00e7in Norton Safe Search'\u00fc etkinle\u015ftirmenizi \u00f6neririz."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Daha g\u00fcvenli gezinme i\u00e7in Norton Safe Search kullan\u0131n"
+	},
+	"Choose search protection":{
+		"message":"{0} \u015fimdi arama koruman\u0131z\u0131 se\u00e7menizi istiyor. K\u00f6t\u00fc ama\u00e7l\u0131 ba\u011flant\u0131lar\u0131 engellemek ve g\u00fcvenle gezinmeye devam etmek i\u00e7in a\u015fa\u011f\u0131dan 'Norton Safe Search'\u00fc etkinle\u015ftir'i se\u00e7in."
+	},
+	"Recommended":{
+		"message":"\u00d6nerilen"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "Norton ile arama yaparken daha g\u00fcvende kal\u0131n"
+	},
+	"Detect risky sites and scams":{
+		"message": "Riskli siteleri ve doland\u0131r\u0131c\u0131l\u0131klar\u0131 alg\u0131lamaya yard\u0131mc\u0131 olmak i\u00e7in Norton Safe Search'\u00fc etkinle\u015ftirin."
+	},
+	"Peace of mind with every search ": {
+		"message": "Her araman\u0131zda g\u00f6n\u00fcl rahatl\u0131\u011f\u0131"
+	},
+	"To keep your searches secure": {
+		"message": "Aramalar\u0131n\u0131z\u0131 g\u00fcvende tutmak i\u00e7in Norton Safe Search uzant\u0131s\u0131n\u0131 y\u00fcklemenizi <span>kesinlikle \u00f6neririz</span>."
+	},
+	"Install now": {
+		"message": "\u015eimdi y\u00fckle"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "Norton Safe Web g\u00fcncellendi"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "Norton, ziyaret etti\u011finiz web sitelerini taramaya <span>devam ederek</span> a\u015fa\u011f\u0131daki gibi potansiyel risklere kar\u015f\u0131 <span>sizi uyar\u0131r</span>:"
+	},
+	"Malicious websites": {
+		"message": "K\u00f6t\u00fc ama\u00e7l\u0131 web siteleri"
+	},
+	"Phishing websites": {
+		"message": "Kimlik av\u0131 web siteleri"
+	},
+	"Viruses or other online threats": {
+		"message": "Vir\u00fcsler veya di\u011fer \u00e7evrim i\u00e7i tehditler"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "Norton art\u0131k <span>yaln\u0131zca Norton Safe Search arac\u0131l\u0131\u011f\u0131yla site derecelendirmelerini g\u00f6sterecek</span> ve siz gezinirken daha fazla g\u00fcvenlik sa\u011flayacakt\u0131r."
+	},
+	"Dangerous website detected": {
+		"message": "Tehlikeli web sitesi alg\u0131land\u0131"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "Herhangi bir ki\u015fisel bilgi payla\u015fmaman\u0131z\u0131 veya bu siteye eri\u015fmemenizi \u00f6nemle \u00f6neririz."
+	},
+	"Exit this page (recommended)": {
+		"message": "Bu sayfadan \u00e7\u0131k\u0131n (\u00f6nerilir)"
+	},
+	"BLOCKED BY": {
+		"message": "ENGELLEND\u0130:"
+	},
+	"Show sponsored banner": {
+		"message": "Sponsorlu banner'\u0131 g\u00f6ster"
+	},
+	"Sponsored": {
+		"message": "Sponsorlu"
+	},
+	"Hide": {
+		"message": "Gizle"
+	},
+	"homePageTitle": {
+		"message": "Ana Sayfa"
+	},
+	"Add protection to your searches": {
+		"message": "Aramalar\u0131n\u0131za koruma ekleyin."
+	},
+	"Detect malicious links": {
+		"message": "K\u00f6t\u00fc ama\u00e7l\u0131 ba\u011flant\u0131lar\u0131 ve kimlik av\u0131 doland\u0131r\u0131c\u0131l\u0131klar\u0131n\u0131 tespit etmek i\u00e7in Norton Safe Search'\u00fc a\u00e7\u0131n."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "\u00d6ne \u00c7\u0131kan Haberler"
+	},
+	"crypto": {
+		"message": "Kripto"
+	},
+	"stock": {
+		"message": "Hisse senetleri"
+	},
+	"weather": {
+		"message": "Hava Durumu"
+	},
+	"tools": {
+		"message": "Ara\u00e7lar"
+	},
+	"Select your search protection:": {
+		"message": "Arama koruman\u0131z\u0131 se\u00e7in:"
+	},
+	"Bookmark bar": {
+		"message": "Yer imi \u00e7ubu\u011fu"
+	},
+	"Favorites bar": {
+		"message": "S\u0131k kullan\u0131lanlar \u00e7ubu\u011fu"
+	},
+	"Other bookmarks": {
+		"message": "Di\u011fer Yer \u0130\u015faretleri"
+	},
+	"Welcome to": {
+		"message": "Ho\u015f geldiniz"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "Yenilikleri g\u00f6rmek ve Safe Search \u00f6zelliklerinizden en iyi \u015fekilde yararlanmak i\u00e7in tura kat\u0131l\u0131n."
+	},
+	"Skip tour": {
+		"message": "Turu atla"
+	},
+	"Start tour": {
+		"message": "Turu ba\u015flat\u0131n"
+	},
+	"Personalise your home page": {
+		"message": "Giri\u015f sayfan\u0131z\u0131 ki\u015fiselle\u015ftirin"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "\u00d6zel g\u00f6rseller ve a\u00e7\u0131k veya koyu modlarla giri\u015f sayfan\u0131z\u0131 ki\u015fiselle\u015ftirin."
+	},
+	"Customizable shortcuts": {
+		"message": "\u00d6zelle\u015ftirilebilir K\u0131sayollar"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "K\u0131sayollar, favori sitelerinize kolayl\u0131kla eri\u015fmenizi sa\u011flar"
+	},
+	"Useful widgets": {
+		"message": "Yararl\u0131 widget'lar"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "En fazla 5 ara\u00e7 tak\u0131m\u0131 g\u00f6r\u00fcnt\u00fcleyin: hava durumu, hisse senedi, kripto, hesap makinesi &amp; birim d\u00f6n\u00fc\u015ft\u00fcr\u00fcc\u00fc"
+	},
+	"Read today's top news": {
+		"message": "Bug\u00fcn'\u00fcn en \u00f6nemli haberlerini okuyun"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "\u00c7e\u015fitli konulardaki en yeni d\u00fcnya man\u015fetleriyle g\u00fcncel bilgi al\u0131n"
+	},
+	"Link to your apps": {
+		"message": "Uygulamalar\u0131n\u0131za ba\u011flant\u0131"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "Norton Ana Sayfas\u0131'ndan uygulamalar\u0131n\u0131za h\u0131zl\u0131 ve kolayca eri\u015fin"
+	},
+	"Begin tour": {
+		"message": "Tura Ba\u015fla"
+	},
+	"Take a quick tour of features": {
+		"message": "\u00d6zelliklere h\u0131zl\u0131 bir tur at\u0131n"
+	}
+}

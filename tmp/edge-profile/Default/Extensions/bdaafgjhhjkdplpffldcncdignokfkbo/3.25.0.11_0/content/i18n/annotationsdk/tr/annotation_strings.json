@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Tehditler: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Bu site hen\u00fcz de\u011ferlendirilmedi"
+	},
+    "SAFE":
+    {
+        "message" : "G\u00dcVENL\u0130"
+    },
+    "SECURE":
+    {
+        "message" : "G\u00dcVENL\u0130"
+    },
+    "CAUTION":
+    {
+        "message" : "Dikkat"
+    },
+    "UNTESTED":
+    {
+        "message" : "TEST ED\u0130LMED\u0130"
+    },
+    "UNSAFE":
+    {
+        "message" : "G\u00dcVENS\u0130Z"
+    },
+	"Full Report" :
+	{
+		"message" : "Tam Rapor"
+	}
+}

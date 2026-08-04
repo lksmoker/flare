@@ -1,0 +1,126 @@
+/*
+ Gen Digital copyright header start
+
+ Copyright (c) 2024 Gen Digital Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF Gen Digital
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF Gen Digital INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ Gen Digital copyright header stop
+*/
+
+[fg_rewritten]
+{
+    padding-left:3px;
+    padding-right:3px;
+    padding-bottom:3px;
+    color:#ffffff !important;
+    background-color:#c81a00 !important;
+}
+
+/* Styles specific to the security popup up */
+#security_popup_iframe {
+  display: block;
+  position: absolute;
+  margin: 0 !important;
+  overflow: visible !important;
+  z-index: 1000000 !important;
+  width: 233px !important;
+  height: auto !important;
+  border: 1px solid #cccccc !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.security_popup {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  font-weight: normal !important;
+  text-align: left !important;
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  color: #ffffff !important;
+}
+
+.popup {
+  background-color: #ffffff !important;
+  padding: 0 !important;
+}
+
+.popup_header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px !important;
+  background-color: #c81a00 !important;
+  background-repeat: no-repeat !important;
+  background-size: 25px 45px !important;
+  background-position: center !important;
+  padding: 0 10px !important;
+}
+
+.popup_header > p {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  color: #ffffff !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px !important;
+  background-position: 10px 8px !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  flex-grow: 1 !important;
+  white-space: text-wrap !important;
+  word-wrap: break-word !important;
+}
+
+@media (max-width: 300px) {
+  .popup_header > p {
+    font-size: 13px !important;
+  }
+}
+
+.popup_header > .icon {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0 !important;
+}
+
+.popup_header > .icon.left {
+  margin-right: 8px !important;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbpJREFUSA3FVzFOw0AQzFkp8ga+QYfyCKRIKcI/8oN0+UakkIofuKOCB6SlQHKdMggzY62J77J3LMb4VhrufDu7411f7MNNDFbXdQHaHXAP3AI3AgyTd8Erxifg2Tn3ibG/QXAGrIEKsBq5jJn1UkbgAngD+hpjF2ZxkB2w6aumxDGXS94ACcBeCf7rEnPGxeEcstLwZjdq1WDxmf63+c8caty9sY10hm8FPAI/GTnkMkYzalx2Oy64/TVjgiVbhHEKpMTpmwp3iXlMfN20HIQCqADNVg1J/oAQE/8WbfngsnLNqFWwkrnmlTUtYShu4YQScwpvw9XgOpU45QvSeJdbCpfekn4RE2ieaae9YTf0bNCk8DHmDdavxFtBjuBaRZn2yIATZ0Y7gOdV2RGlz2onfu5yWP2bVqvVtneNUtlqa9VNq0tDf66erwh5bZc1i3jJVvPkkLIDnA84VXy0JApgviNk3riEw5cOY1L2wlZne4HkeWWyH6h6/I+ECOf5LIr4+AcBCtPQ8vGPPiKc57DXER+ycuaKnzAp2jWQxz3QB+Lc7fypVYDVyGXM5VDXTSpzUwuQZPB/2r4AsypAnu0lRpoAAAAASUVORK5CYII=);
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+.popup_header > .icon.right {
+  margin-left: 8px !important;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zMiAxNi4wMDA0QzMyIDI0LjgyMjcgMjQuODIyNyAzMiAxNi4wMDA0IDMyQzcuMTc3MzIgMzIgMCAyNC44MjI3IDAgMTYuMDAwNEMwIDcuMTc3MjQgNy4xNzczMiAwIDE2LjAwMDQgMEMxOC40Mzg4IDAgMjAuNzUxMyAwLjU0NzY5IDIyLjgyMTcgMS41Mjc2OUwyMC4xNjQyIDQuOTUxMTdDMTguODY4NCA0LjQ2MTYgMTcuNDY1NyA0LjE5Mzc1IDE2LjAwMDQgNC4xOTM3NUM5Ljc3OTExIDQuMTkzNzUgNC42NjcwMiA5LjAyOTM3IDQuMjI0NTggMTUuMTQwM0M0LjIxNjA1IDE1LjI2MzUgNC4yMDkyMSAxNS4zODc2IDQuMjA0MDUgMTUuNTEyNUM0LjE5NzIxIDE1LjY3NDMgNC4xOTM3NSAxNS44MzcgNC4xOTM3NSAxNi4wMDA0QzQuMTkzNzUgMjIuNTEwMSA5LjQ4OTg5IDI3LjgwNjMgMTYuMDAwNCAyNy44MDYzQzIyLjUxMDEgMjcuODA2MyAyNy44MDYzIDIyLjUxMDEgMjcuODA2MyAxNi4wMDA0QzI3LjgwNjMgMTUuMTMgMjcuNzExMiAxNC4yODEgMjcuNTMyNCAxMy40NjQ0TDMwLjYxNjEgOS40OTI0MkMzMS41MDUzIDExLjQ4MTQgMzIgMTMuNjg0NSAzMiAxNi4wMDA0WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yOC43MzgzIDYuMzI5MTNMMjYuMDQzMiA5Ljc5OTY2TDE2LjU4MjQgMjEuOTg2NEw4Ljg2NDI2IDE1LjA4NjNMMTEuNjU4NiAxMS45NTk4TDE2LjAyNjEgMTUuODY0M0wyMy4xODggNi42Mzk4TDI1Ljc1ODIgMy4zMjg0OUMyNi44Nzg1IDQuMTkyODUgMjcuODgxNSA1LjIwMjgzIDI4LjczODMgNi4zMjkxM1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjguODM5NSAzMC4zNTM5VjI5LjAzNThIMjkuMzE0NUwyOS41NjM5IDMwLjEyODNIMjkuNjIzMkwyOS44NzI2IDI5LjAzNThIMzAuMzQ3NlYzMC4zNTM5SDMwLjA5ODJWMjkuMjYxNEgzMC4wMzg5TDI5Ljc4OTQgMzAuMzUzOUgyOS4zOTc2TDI5LjE0ODIgMjkuMjYxNEgyOS4wODg5VjMwLjM1MzlIMjguODM5NVpNMjcuOTcyNiAzMC4zNTM5VjI5LjI2MTRIMjcuNTMzMlYyOS4wMzU4SDI4LjY2MTRWMjkuMjYxNEgyOC4yMjJWMzAuMzUzOUgyNy45NzI2WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==);
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+.popup_description {
+  height: 70px !important;
+  background-color: #ffffff !important;
+  padding: 10px !important;
+}
+
+.popup_description > p {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  color: #000000 !important;
+}

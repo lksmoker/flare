@@ -43,12 +43,14 @@ function ActionButton({
   label,
   muted = false,
   onPress,
+  variant = "light",
 }: {
   busyLabel?: string;
   disabled?: boolean;
   label: string;
   muted?: boolean;
   onPress: () => void;
+  variant?: "light" | "solid";
 }) {
   return (
     <Pressable
@@ -56,9 +58,20 @@ function ActionButton({
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={[styles.primaryButton, muted ? styles.primaryButtonMuted : null, disabled ? styles.buttonDisabled : null]}
+      style={[
+        styles.primaryButton,
+        variant === "solid" ? styles.primaryButtonSolid : null,
+        muted ? styles.primaryButtonMuted : null,
+        disabled ? styles.buttonDisabled : null,
+      ]}
     >
-      <Text style={[styles.primaryButtonLabel, muted ? styles.primaryButtonMutedLabel : null]}>
+      <Text
+        style={[
+          styles.primaryButtonLabel,
+          variant === "solid" ? styles.primaryButtonSolidLabel : null,
+          muted ? styles.primaryButtonMutedLabel : null,
+        ]}
+      >
         {disabled && busyLabel ? busyLabel : label}
       </Text>
     </Pressable>
@@ -164,6 +177,7 @@ export function FlareResponse({
               disabled={isMutationPending}
               busyLabel="Saving..."
               label="Done"
+              variant="solid"
               onPress={() => {
                 if (run && onResolveActionDone) {
                   onResolveActionDone(run.id, currentAction.id);
@@ -513,6 +527,12 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.primaryStrong,
     fontSize: 15,
     fontWeight: "800",
+  },
+  primaryButtonSolid: {
+    backgroundColor: flareTheme.colors.primary,
+  },
+  primaryButtonSolidLabel: {
+    color: flareTheme.colors.onPrimary,
   },
   primaryButtonMuted: {
     backgroundColor: flareTheme.colors.primaryMuted,

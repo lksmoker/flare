@@ -31,5 +31,6 @@ yarn-error.log*
 .tmp_expo_template/
 .tmp_expo_router/
 .tmp/
-
+tmp/edge-profile-*/
+tmp/mobile-pass-*/
 .tmp/

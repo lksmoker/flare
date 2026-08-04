@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Webmail, Facebook, Twitter ve di\u011fer hesaplardaki \u015f\u00fcpheli ba\u011flant\u0131lara dikkat \u00e7ekeriz."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Daha Fazla Bilgi"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "Tamam"
+    },
+    "suspicious.links.popup.header": {
+        "message": "\u015e\u00dcPHEL\u0130 BA\u011eLANTI"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton, sizi k\u00f6t\u00fc niyetli etkinliklerden korumak i\u00e7in e-postan\u0131zdaki \u015f\u00fcpheli ba\u011flant\u0131lar konusunda sizi uyar\u0131yor."
+    }
+}

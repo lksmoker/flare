@@ -1,4 +1,5 @@
 import { render, waitFor } from "@testing-library/react-native";
+import { StyleSheet } from "react-native";
 
 import { FlareResponse } from "../FlareResponse";
 import {
@@ -7,6 +8,34 @@ import {
 } from "../../state/AnchorNoteContext";
 import type { FlareEvent } from "../../state/FlareEventContext";
 import type { FlarePlanRun } from "../../services/flareResponseApi";
+import { flareTheme } from "../../theme/flareTheme";
+
+function findAncestorStyleValue(
+  node: { parent?: unknown; props?: { style?: unknown } } | null | undefined,
+  styleKey: string,
+) {
+  let currentNode = node;
+
+  while (currentNode) {
+    const flattenedStyle = StyleSheet.flatten(currentNode.props?.style);
+
+    if (
+      flattenedStyle &&
+      Object.prototype.hasOwnProperty.call(flattenedStyle, styleKey)
+    ) {
+      return flattenedStyle[styleKey as keyof typeof flattenedStyle];
+    }
+
+    currentNode =
+      currentNode.parent &&
+      typeof currentNode.parent === "object" &&
+      "props" in currentNode.parent
+        ? (currentNode.parent as { parent?: unknown; props?: { style?: unknown } })
+        : undefined;
+  }
+
+  return undefined;
+}
 
 function renderFlareResponse({
   anchorNote = null,
@@ -311,6 +340,47 @@ describe("FlareResponse", () => {
     const rendered = JSON.stringify(toJSON());
     expect(rendered.indexOf("Checkpoint / Reflection")).toBeLessThan(
       rendered.indexOf("Flare Plan skipped for now"),
+    );
+  });
+
+  it("keeps the in-progress Done action visually primary on the white plan sheet", () => {
+    const view = renderFlareResponse({
+      run: {
+        id: "run-1",
+        flare_event_id: "event-1",
+        source_plan_id: "plan-1",
+        status: "in_progress",
+        current_action: {
+          id: "action-1",
+          title: "Move to a different room",
+          description: "Create some distance from where the pattern was happening.",
+          position: 1,
+        },
+        progress: {
+          current_position: 1,
+          total_count: 4,
+          done_count: 0,
+          skipped_count: 0,
+          not_reached_count: 0,
+          pending_count: 4,
+        },
+        actions: [],
+        offered_at: "2026-07-09T00:00:00Z",
+        started_at: "2026-07-09T00:00:10Z",
+        declined_at: null,
+        completed_at: null,
+        ended_at: null,
+        updated_at: "2026-07-09T00:00:10Z",
+      },
+    });
+
+    const doneLabel = view.getByText("Done");
+
+    expect(findAncestorStyleValue(doneLabel, "backgroundColor")).toBe(
+      flareTheme.colors.primary,
+    );
+    expect(findAncestorStyleValue(doneLabel, "color")).toBe(
+      flareTheme.colors.onPrimary,
     );
   });
 });

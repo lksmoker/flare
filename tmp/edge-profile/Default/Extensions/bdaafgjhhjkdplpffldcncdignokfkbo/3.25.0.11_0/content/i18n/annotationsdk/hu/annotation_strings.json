@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Fenyeget\u00e9sek: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Ezt a webhelyet m\u00e9g nem tesztelt\u00e9k"
+	},
+    "SAFE":
+    {
+        "message" : "BIZTONS\u00c1GOS"
+    },
+    "SECURE":
+    {
+        "message" : "BIZTONS\u00c1GOS"
+    },
+    "CAUTION":
+    {
+        "message" : "Figyelem"
+    },
+    "UNTESTED":
+    {
+        "message" : "NEM ELLEN\u0150RZ\u00d6TT"
+    },
+    "UNSAFE":
+    {
+        "message" : "NEM BIZTONS\u00c1GOS"
+    },
+	"Full Report" :
+	{
+		"message" : "Teljes jelent\u00e9s"
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Minacce: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Questo sito non \u00e8 ancora stato testato"
+	},
+    "SAFE":
+    {
+        "message" : "SICURA"
+    },
+    "SECURE":
+    {
+        "message" : "PROTETTA"
+    },
+    "CAUTION":
+    {
+        "message" : "Attenzione"
+    },
+    "UNTESTED":
+    {
+        "message" : "NON VERIFICATA"
+    },
+    "UNSAFE":
+    {
+        "message" : "NON SICURA"
+    },
+	"Full Report" :
+	{
+		"message" : "Report completo"
+	}
+}

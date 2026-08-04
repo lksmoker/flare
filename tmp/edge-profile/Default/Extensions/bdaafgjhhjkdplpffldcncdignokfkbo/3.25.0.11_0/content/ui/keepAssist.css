@@ -1,0 +1,92 @@
+/*
+NortonLifeLock copyright header start
+
+Copyright (c) 2021 NortonLifeLock Inc. All rights reserved.
+
+THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+The Licensed Software and Documentation are deemed to be commercial computer
+software as defined in FAR 12.212 and subject to restricted rights as defined
+in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+Computer Software Documentation", as applicable, and any successor regulations.
+Any use, modification, reproduction release, performance, display or disclosure
+of the Licensed Software and Documentation by the U.S. Government shall be
+solely in accordance with the terms of this Agreement.
+
+NortonLifeLock copyright header stop
+*/
+
+@font-face {
+  font-family: 'Inter Regular';
+  src: url('../../fonts/Inter-Regular.woff2') format('woff2'); /* Pretty Modern Browsers */
+}
+
+@font-face {
+  font-family: 'Inter Bold';
+  src: url('../../fonts/Inter-Bold.woff2') format('woff2'); /* Pretty Modern Browsers */
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.keep-assist-container {
+  background: #FBFAF9;
+  box-shadow: 0px 0px 24px 0px #0000003D;
+  min-width: 444px;
+  min-height: 263px;
+  border-radius: 16px
+}
+
+section.keep-assist-section {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+div.title {
+  display: flex;
+  margin-top: 26px;
+  font-family: Inter Regular;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.30000001192092896px;
+}
+
+.bold {
+  font-family: Inter Bold;
+  font-weight: 700;
+}
+
+.guided-ui {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+div.description-title {
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.30000001192092896px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.keep-assist-container > img.arrow-top-position {
+  position: absolute;
+  margin-top: -13px;
+  margin-left: 350px;
+}

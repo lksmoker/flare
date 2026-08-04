@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "he"
+   },
+   "downloadButton": {
+      "message": "הורד"
+   },
+   "downloadMessage": {
+      "message": "יש להוריד את ״iCloud עבור Windows״ כדי להשתמש ב״סימניות ב-iCloud״."
+   },
+   "enableBookmarksMessage": {
+      "message": "יש לאפשר לסימניות ב״iCloud עבור Windows״ להשתמש ב״סימניות ב-iCloud״ עם Edge."
+   },
+   "extDescription": {
+      "message": "שמור על הסימניות שלך בדפדפן Edge ב-Windows בסנכרון עם הסימניות שלך ב-Safari במכשירי iPhone‏, iPad ו-Mac."
+   },
+   "extName": {
+      "message": "סימניות ב-iCloud"
+   },
+   "okButton": {
+      "message": "אישור"
+   },
+   "signinButton": {
+      "message": "פתח את ״iCloud עבור Windows״"
+   },
+   "syncedMessage": {
+      "message": "הסימניות שלך ב-Edge מסונכרנות עם iCloud."
+   },
+   "unsupportedOS": {
+      "message": "ההרחבה שאתה מנסה כרגע להתקין מיועדת להתקנה במערכת Windows. אם אתה משתמש ב-Mac, הסימניות שלך ב-Safari יסונכרנו באופן אוטומטי עם ה-iPhone, ה-iPad וה-Mac שלך ברגע שתתחבר אל חשבון ה-iCloud שלך בכל המכשירים."
+   }
+}

@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Destacaremos v\u00ednculos sospechosos en el correo web, en Facebook, en Twitter y en otras cuentas."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "M\u00e1s informaci\u00f3n"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "Aceptar"
+    },
+    "suspicious.links.popup.header": {
+        "message": "V\u00cdNCULO SOSPECHOSO"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton ahora le advierte sobre v\u00ednculos sospechosos en su correo electr\u00f3nico para protegerle de actividad maliciosa."
+    }
+}

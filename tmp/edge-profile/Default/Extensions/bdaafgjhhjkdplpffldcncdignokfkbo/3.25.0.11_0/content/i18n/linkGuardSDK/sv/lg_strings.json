@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Vi markerar misst\u00e4nkta l\u00e4nkar i webbmejl, Facebook, Twitter och andra konton."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Mer information"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "MISST\u00c4NKT L\u00c4NK"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Nu varnar Norton dig f\u00f6r misst\u00e4nkta l\u00e4nkar i din e-post som skydd mot skadlig aktivitet."
+    }
+}

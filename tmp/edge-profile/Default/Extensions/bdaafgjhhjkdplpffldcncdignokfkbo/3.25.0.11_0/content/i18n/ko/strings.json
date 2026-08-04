@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "\uc8fc\uc758"
+	},
+
+	"Untested":
+	{
+		"message": "\ud14c\uc2a4\ud2b8\ub418\uc9c0 \uc54a\uc74c"
+	},
+
+	"Warning":
+	{
+		"message": "\uacbd\uace0"
+	},
+	"Norton Secured":
+	{
+		"message": "\uc548\uc804"
+	},
+	"Not Licensed":
+	{
+		"message": "\ub77c\uc774\uc13c\uc2a4\uac00 \ubd80\uc5ec\ub418\uc9c0 \uc54a\uc74c"
+	},
+	"Safe":
+	{
+		"message": "\uc548\uc804\ud568"
+	},
+	"Safe Web is off":
+	{
+		"message": "\uc548\uc804"
+	},
+	"Page not analyzed":
+	{
+		"message": "\ud398\uc774\uc9c0\uac00 \ubd84\uc11d\ub418\uc9c0 \uc54a\uc74c"
+	},
+	"Norton Rating":
+	{
+		"message": "Norton \ub4f1\uae09"
+	},
+	"Computer Threats":
+	{
+		"message": "\uc2dc\uc2a4\ud15c \uc704\ud611 \uc694\uc18c"
+	},
+	"Identity Threats":
+	{
+		"message": "\uc2e0\uc6d0 \uc815\ubcf4 \uc704\ud611 \uc694\uc18c"
+	},
+	"Annoyance Threats":
+	{
+		"message": "\ubd88\ud3b8 \uc704\ud611 \uc694\uc18c"
+	},
+	"Total Threats":
+	{
+		"message": "\uc804\uccb4 \uc704\ud611 \uc694\uc18c"
+	},
+	"Full Safe Web report":
+	{
+		"message": "\uc804\uccb4 Safe Web \ubcf4\uace0\uc11c"
+	},
+	"Report this site":
+	{
+		"message": "\uc774 \uc0ac\uc774\ud2b8 \ubcf4\uace0"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "\ube0c\ub77c\uc6b0\uc800 \uc124\uc815"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "\uc548\uc804\ud558\uc9c0 \uc54a\uc74c"
+	},
+    "total_threats_id":
+    {
+        "message" : "\uc704\ud611 \uc694\uc18c: "
+    },
+		"untested_text":
+		{
+			"message" : "\uc774 \uc0ac\uc774\ud2b8\ub294 \uc544\uc9c1 \ud14c\uc2a4\ud2b8\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4"
+		},
+    "safe_status_id":
+    {
+        "message" : "\uc548\uc804"
+    },
+    "secure_status_id":
+    {
+        "message" : "\uc548\uc804"
+    },
+    "caution_status_id":
+    {
+        "message" : "\uc8fc\uc758"
+    },
+    "untested_status_id":
+    {
+        "message" : "\ud14c\uc2a4\ud2b8\ub418\uc9c0 \uc54a\uc74c"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "\uc548\uc804\ud558\uc9c0 \uc54a\uc74c"
+    },
+		"full_report_id" :
+		{
+				"message" : "\uc804\uccb4 \ub9ac\ud3ec\ud2b8"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Norton \ub4f1\uae09:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "\uc545\uc131 \ub2e4\uc6b4\ub85c\ub4dc\uac00 \ud0d0\uc9c0\ub428"
+	},
+	"Download Cancelled":
+	{
+		"message" : "\ub2e4\uc6b4\ub85c\ub4dc\uac00 \ucde8\uc18c\ub428"
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "\uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8 \ucc28\ub2e8"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "\uc545\uc131 \uc0ac\uc774\ud2b8 \ucc28\ub2e8\ub428!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "\ub2e4\uc74c\uc5d0 \uc561\uc138\uc2a4 \uc2dc\ub3c4:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "\uc2dc\ub3c4\ud55c \uc561\uc138\uc2a4 \uc704\uce58"
+	},
+	"Website you tried to access:": {
+		"message" : "\uc561\uc138\uc2a4\ud558\ub824\uace0 \uc2dc\ub3c4\ud55c \uc6f9\uc0ac\uc774\ud2b8."
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\ub294 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4. \uc774 \uc0ac\uc774\ud2b8\ub97c \ubc29\ubb38\ud558\uc9c0 \uc54a\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4. \ud574\ub2f9"
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "\uc774 \uc6f9 \ud398\uc774\uc9c0\ub294 \uc545\uc131 \uc6f9 \ud398\uc774\uc9c0\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\ub294 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"detailed report" :
+	{
+		"message" : "\uc0c1\uc138 \ub9ac\ud3ec\ud2b8"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "\uc5d0\uc11c \uc774 \uc0ac\uc774\ud2b8\uc758 \ubcf4\uc548 \uc704\ud5d8 \uc694\uc18c\uc5d0 \ub300\ud574 \uc124\uba85\ud569\ub2c8\ub2e4."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "\ubcf4\ud638\ub97c \uc704\ud574 \uc774 \uc6f9\uc0ac\uc774\ud2b8\ub97c \ucc28\ub2e8\ud588\uc2b5\ub2c8\ub2e4. \ubc29\ubb38"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "\uc5d0\uc11c \ud53c\uc2f1 \ubc0f \uc778\ud130\ub137 \ubcf4\uc548\uc5d0 \ub300\ud574 \uc790\uc138\ud788 \uc54c\uc544\ubcf4\uc2ed\uc2dc\uc624."
+	},
+	"Exit this site" :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uac00\uae30"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "\uadf8\ub798\ub3c4 \uc774 \uc6f9\uc0ac\uc774\ud2b8\ub97c \ubcf4\uaca0\uc2b5\ub2c8\ub2e4."
+	},
+	"It is recommended that you" :
+	{
+		"message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub97c \ubc29\ubb38\ud558\uc9c0"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub97c \ubc29\ubb38\ud558\uc9c0 \ub9c8\uc2ed\uc2dc\uc624."
+	},
+	"Norton":
+	{
+		"message" : "Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Norton Home Page"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "\uc758\uc2ec\uc2a4\ub7ec\uc6b4 \uc6f9\uc0ac\uc774\ud2b8 \ucc28\ub2e8\ub428"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "\ubcf4\ud638\ub97c \uc704\ud574 \uc774 \uc6f9 \ud398\uc774\uc9c0\ub97c \ucc28\ub2e8\ud558\uace0 \ud655\uc778\uc744 \uc704\ud574 \uc81c\ucd9c\ud588\uc2b5\ub2c8\ub2e4."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\ub294 \ubb34\ub2e8 \ubcf5\uc81c \ub610\ub294 \ud574\ub2f9 \uc9c0\uc5ed\uc758 \uae30\ud0c0 \uc81c\ud55c\uc73c\ub85c \uc778\ud574 \ucc28\ub2e8\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc774 \ud398\uc774\uc9c0\ub97c \ubc29\ubb38\ud558\uc9c0 \uc54a\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "\uc774 \ud398\uc774\uc9c0\ub97c \ubc29\ubb38\ud558\uc9c0 \uc54a\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4."
+	},
+	"Visit" :
+	{
+		"message" : "\ubc29\ubb38"
+	},
+	"Continue to the site" :
+	{
+		"message" : "\uc0ac\uc774\ud2b8 \uacc4\uc18d \ubc29\ubb38"
+	},
+	"View Full Report" :
+	{
+		"message" : "\uc804\uccb4 \ub9ac\ud3ec\ud2b8 \ubcf4\uae30"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "\ubcf4\ub2e4 \uc548\uc804\ud55c \uc0ac\uc774\ud2b8 \uac80\uc0c9"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "\uc0ac\uc774\uc131 \uc6f9 \ud398\uc774\uc9c0 \ucc28\ub2e8"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "\uc774 \uc6f9 \ud398\uc774\uc9c0\ub294 \uc0ac\uae30\uc131 \uc6f9 \ud398\uc774\uc9c0\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "\uc704\ud5d8\ud55c \uc6f9 \ud398\uc774\uc9c0 \ucc28\ub2e8\ub428"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "\uc774 \uc6f9 \ud398\uc774\uc9c0\ub294 \uc704\ud5d8\ud55c \uc6f9 \ud398\uc774\uc9c0\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "{0}\uc744(\ub97c) \uc0ac\uc6a9\ud574 \uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4! \uc81c\ud488\uc744 \uac1c\uc120\ud558\ub294 \ub370 \ub3c4\uc6c0\uc774 \ub418\ub3c4\ub85d Norton\uacfc \uc0ac\uc6a9\ub7c9 \ubc0f \uc624\ub958 \ub370\uc774\ud130\ub97c \uc775\uba85\uc73c\ub85c \uacf5\uc720\ud574 \uc8fc\uc2ed\uc2dc\uc624."
+	},
+	"OK" :
+	{
+	    "message" : "\ud655\uc778"
+	},
+	"No, thanks" :
+	{
+	    "message" : "\uc544\ub2c8\uc694"
+	},
+	"Learn More" :
+	{
+	    "message" : "\uc790\uc138\ud788 \ubcf4\uae30"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "\ubcf4\uc548 \uac80\uc0c9"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "\ud648 \ud398\uc774\uc9c0"
+	},
+	"Settings"	:
+	{
+			"message" :	"\uc124\uc815"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "NORTON\uacfc \ub370\uc774\ud130 \uacf5\uc720"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "\uc81c\ud488 \uac1c\uc120\uc5d0 \ub3c4\uc6c0\uc774 \ub418\ub3c4\ub85d \uc0ac\uc6a9 \ubc0f \uc624\ub958 \ub370\uc774\ud130\ub97c \uc775\uba85\uc73c\ub85c Norton\uacfc \uacf5\uc720\ud558\uae30"
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Scam Insight: \uac1c\uc778 \uc815\ubcf4 \uc704\ud5d8 \uc694\uc18c"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\ub294 \uc548\uc804\ud569\ub2c8\ub2e4. \ud558\uc9c0\ub9cc\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "\uac1c\uc778 \uc815\ubcf4\ub97c \uc694\uccad\ud558\uba70 Norton Community\uc5d0\uc11c \uc548\uc804\ud55c \uc0ac\uc774\ud2b8\ub85c \uc54c\ub824\uc9c0\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \uc774 \uc0ac\uc774\ud2b8\uc5d0 \uac1c\uc778 \uc815\ubcf4\ub97c \uc785\ub825\ud560 \ub54c \uc8fc\uc758\ud558\uc2ed\uc2dc\uc624. "
+	},
+	"Visit " :
+	{
+		"message" : "\ubc29\ubb38 "
+	},
+	"Norton " :
+	{
+		"message" : "Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "\ud398\uc774\uc9c0\ub97c \ubc29\ubb38\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Age: " :
+	{
+		"message" : "\uc5f0\ub839: "
+	},
+	"Very New" :
+	{
+		"message" : "\ub9e4\uc6b0 \ucd5c\uadfc"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub294 \ucd5c\uadfc\uc5d0 \uac8c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
+	},
+	"New" :
+	{
+		"message" : "\uc0c8\ub85c \ub9cc\ub4e4\uae30"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub294 \ucd5c\uadfc\uc5d0 \uacf5\uac1c\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
+	},
+	"Prevalence: " :
+	{
+		"message" : "\uc0ac\uc6a9 \uc815\ub3c4: "
+	},
+	"No Users" :
+	{
+		"message" : "\uc0ac\uc6a9\uc790 \uc5c6\uc74c"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "\uc774 \uc0ac\uc774\ud2b8\ub97c \uc0ac\uc6a9\ud55c Norton Community \ud68c\uc6d0\uc774 \uc5c6\uc2b5\ub2c8\ub2e4."
+	},
+	"Few Users" :
+	{
+		"message" : "\uc801\uc740 \uc0ac\uc6a9\uc790"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "\ub9e4\uc6b0 \uc801\uc740 \uc218\uc758 Norton Community \ud68c\uc6d0\ub9cc \uc774 \uc0ac\uc774\ud2b8\ub97c \uc0ac\uc6a9\ud588\uc2b5\ub2c8\ub2e4."
+	},
+	"Continue to Site" :
+	{
+		"message" : "\uc0ac\uc774\ud2b8 \uacc4\uc18d \ubc29\ubb38"
+	},
+	"Exit Site" :
+	{
+		"message" : "\uc0ac\uc774\ud2b8 \ub098\uac00\uae30"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\uac00 \uc798\ubabb \ubd84\ub958\ub418\uc5c8\ub2e4\uace0 \uc0dd\uac01\ud558\uc2e0\ub2e4\uba74 "
+	},
+	"Report Issue." :
+	{
+		"message" : "\ubb38\uc81c\ub97c \ubcf4\uace0\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "\ub85c\uadf8\uc778 \uacc4\uc815:"
+	},
+	"Sign out"			:
+	{
+		"message"		: "\ub85c\uadf8\uc544\uc6c3"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"\ub178\ud134\ub77c\uc774\ud504\ub77d \uacc4\uc815\uc5d0\uc11c \ub85c\uadf8\uc544\uc6c3\ud588\uc2b5\ub2c8\ub2e4"
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"\uc8c4\uc1a1\ud569\ub2c8\ub2e4. \ubb38\uc81c\uac00 \ubc1c\uc0dd\ud588\uc2b5\ub2c8\ub2e4.  \ub2e4\uc2dc \uc2dc\ub3c4\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "\uc6f9 \uba54\uc77c, Facebook \ubc0f Twitter\uc758 \uc548\uc804\ud558\uc9c0 \uc54a\uc740 \ub9c1\ud06c \uc2dd\ubcc4"
+	},
+	"Websites": {
+  		"message": "\uc6f9\uc0ac\uc774\ud2b8"
+	},
+	"Isolation Mode On": {
+  		"message": "\uaca9\ub9ac \ubaa8\ub4dc \uc2e4\ud589"
+	},
+	"Isolation Mode Off": {
+  		"message": "\uaca9\ub9ac \ubaa8\ub4dc \uc2e4\ud589 \uc911\uc9c0"
+	},
+	"Ask Me": {
+  		"message": "\uba54\uc2dc\uc9c0 \ud45c\uc2dc"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "\ube60\ub978 \ub9c1\ud06c"
+	},
+	"Privacy": {
+		"message": "\uac1c\uc778 \uc815\ubcf4"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Copyright \u00a9 {0} Gen Digital Inc. All rights reserved."
+	},
+	"Legal": {
+		"message": "\ubc95\uc801"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "\ub178\ud134\ub77c\uc774\ud504\ub77d \ucd5c\uc2e0 \uc5c5\ub370\uc774\ud2b8"
+  },
+  "Security & Privacy Center": {
+    "message": "\ubcf4\uc548 \ubc0f \uac1c\uc778 \uc815\ubcf4 \ubcf4\ud638 \uc13c\ud130"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "Norton Safe Search \uc2dc\uc791"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "\ubcc0\uacbd\ub41c \uc0ac\ud56d\uc744 \ud655\uc778\ud558\uace0 Safe Search \uae30\ub2a5\uc744 \ucd5c\ub300\ud55c \ud65c\uc6a9\ud558\uc2ed\uc2dc\uc624."
+  },
+  "Start Tour": {
+    "message": "\ub458\ub7ec\ubcf4\uae30 \uc2dc\uc791"
+  },
+  "Peace of mind with every search": {
+    "message": "\uc548\uc2ec\ud558\uace0 \ubaa8\ub4e0 \uac80\uc0c9 \uc218\ud589"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "Norton Safe Search\ub294 \uac80\uc0c9 \uacb0\uacfc\uc5d0 \uc0ac\uc774\ud2b8 \uc548\uc804 \ub4f1\uae09\uc744 \ud45c\uc2dc\ud569\ub2c8\ub2e4."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "Norton\uc758 \ubcf4\uc548 \uc5c5\ub370\uc774\ud2b8 \ubc0f \ud301 \ubc1b\uae30"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "\ub178\ud134\ub77c\uc774\ud504\ub77d\uc758 \ucd5c\uc2e0 \ubcf4\uc548 \ubc0f \uac1c\uc778 \uc815\ubcf4 \uad00\ub828 \ube14\ub85c\uadf8\ub97c \ud0d0\uc0c9\ud558\uace0 \ub514\uc9c0\ud138 \ubcf4\uc548\uc5d0 \ub300\ud574 \uc790\uc138\ud788 \uc54c\uc544\ubcf4\uc2ed\uc2dc\uc624."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "\uc124\uc815\uc5d0\uc11c Norton \ud648 \ud398\uc774\uc9c0 \ub458\ub7ec\ubcf4\uae30\ub97c \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+  },
+  "Next": {
+    "message": "\ub2e4\uc74c"
+  },
+  "Done": {
+    "message": "\uc644\ub8cc"
+  },
+  "Welcome to {0}": {
+	"message": "{0} \uc2dc\uc791"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "\ub178\ud134\ub77c\uc774\ud504\ub77d\uc744 \uc120\ud0dd\ud574 \uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4."
+  },
+  "Keep It": {
+	"message": "\uc720\uc9c0"
+  },
+  "Keep it": {
+	"message": "\uc720\uc9c0"
+  },
+  "Keep changes": {
+    "message": "\ubcc0\uacbd \uc0ac\ud56d \uc720\uc9c0"
+  },
+  "Keep Changes": {
+    "message": "\ubcc0\uacbd \uc0ac\ud56d \uc720\uc9c0"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "Chrome \uba54\uc2dc\uc9c0\uac00 \ud654\uba74 \uc0c1\ub2e8\uc5d0 \ud45c\uc2dc\ub418\uba74 {1} \ubc84\ud2bc\uc744 \ub20c\ub7ec Chrome\uc5d0\uc11c {0} \ubcf4\ud638 \uae30\ub2a5\uc744 \uc720\uc9c0\ud558\uc2ed\uc2dc\uc624."
+  },
+  "Thanks for choosing {0}": {
+    "message": "{0}\uc744(\ub97c) \uc120\ud0dd\ud574 \uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4."
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "\ube0c\ub77c\uc6b0\uc800 \ud655\uc7a5\uc744 \uc124\uce58\ud55c \ud6c4 Microsoft Edge \ud504\ub86c\ud504\ud2b8\uac00 \ud45c\uc2dc\ub418\uba74 {1}\uc744(\ub97c) \ub20c\ub7ec {0}\uc744(\ub97c) \uc720\uc9c0\ud558\uc2ed\uc2dc\uc624."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "\ub178\ud134\ub77c\uc774\ud504\ub77d\uc744 \uc120\ud0dd\ud574 \uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Chrome \uba54\uc2dc\uc9c0\uac00 \ud654\uba74 \uc0c1\ub2e8\uc5d0 \ud45c\uc2dc\ub418\uba74 {1} \ubc84\ud2bc\uc744 \ub20c\ub7ec Chrome\uc5d0\uc11c {0}\uc744(\ub97c) \uc720\uc9c0\ud558\uc2ed\uc2dc\uc624."
+	},
+  "Let us help protect you": {
+    "message" : "\ubcf4\ud638\ud558\ub824\uba74 \uad8c\ud55c\uc774 \ud544\uc694\ud569\ub2c8\ub2e4"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "Norton Safe Web\uc5d0\ub294 \uc0ac\uc6a9\uc790\uac00 \ubc29\ubb38\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "\uc774\ub7ec\ud55c \ubc29\uc2dd\uc73c\ub85c \uc6f9\uc744 \uac80\uc0c9\ud560 \ub54c \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud558\ub294 \uc548\uc804 \ub4f1\uae09\uc744 \uc81c\uacf5\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "Norton Safe Search\uc5d0\ub294 \uc0ac\uc6a9\uc790\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "Norton Safe Search\uc5d0\ub294 \uc8fc\uc18c \ud45c\uc2dc\uc904 \ubc0f Norton \ud648 \ud398\uc774\uc9c0\uc5d0\uc11c \uc0ac\uc6a9\uc790\uac00 \ud0d0\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "\uc7a0\uc7ac\uc801\uc73c\ub85c \uc704\ud5d8\ud55c \ub9c1\ud06c\ub97c \ud0d0\uc9c0\ud558\uae30 \uc704\ud574 \uadc0\ud558\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\ub97c \uc218\uc9d1\ud558\ub824\uba74 \uadc0\ud558\uc758 \uad8c\ud55c\uc774 \ud544\uc694\ud569\ub2c8\ub2e4. \uac70\ubd80\ud558\uba74 \uc774 \ud655\uc7a5\uc774 \uc81c\uac70\ub429\ub2c8\ub2e4."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "\uc7a0\uc7ac\uc801\uc73c\ub85c \uc704\ud5d8\ud55c \uc6f9\uc0ac\uc774\ud2b8\ub97c \ud0d0\uc9c0\ud558\uae30 \uc704\ud574 \uadc0\ud558\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\ub97c \uc218\uc9d1\ud558\ub824\uba74 \uadc0\ud558\uc758 \uad8c\ud55c\uc774 \ud544\uc694\ud569\ub2c8\ub2e4. \uac70\ubd80\ud558\uba74 \uc774 \ud655\uc7a5\uc774 \uc81c\uac70\ub429\ub2c8\ub2e4."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "\ub610\ud55c \uc131\ub2a5 \uac1c\uc120\uc744 \uc704\ud55c \ubd84\uc11d\uc744 \uc704\ud574 \uc81c\ud488 \uc0ac\uc6a9 \ub370\uc774\ud130\uc640 \uc624\ub958 \ub85c\uadf8\ub97c \uc218\uc9d1\ud569\ub2c8\ub2e4. \uc774 \ub370\uc774\ud130 \uacf5\uc720\ub97c \uc120\ud0dd \ud574\uc81c\ud574\ub3c4 \ud655\uc7a5\uc740 \uacc4\uc18d \uc791\ub3d9\ud569\ub2c8\ub2e4."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "\uc0ac\uc6a9 \ub370\uc774\ud130\ub97c \uc218\uc9d1\ud558\ub3c4\ub85d \ud5c8\uc6a9\ud569\ub2c8\ub2e4"
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "\uc774\ub7ec\ud55c \ubc29\uc2dd\uc73c\ub85c \uc0ac\uc6a9\uc790\uac00 \uc561\uc138\uc2a4\ud558\uae30 \uc804\uc5d0 \uac80\uc0c9\ud55c \uc0ac\uc774\ud2b8\uc758 \uc545\uc131 \uc5ec\ubd80\ub97c \ud0d0\uc9c0\ud558\ub294 \ub370 \ub3c4\uc6c0\uc744 \uc8fc\uace0 \uc548\uc804\ud55c \uac80\uc0c9 \uacb0\uacfc\ub97c \uc81c\uacf5\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "\uc774\ub97c \ud1b5\ud574 \uc545\uc131 \uc5ec\ubd80\ub97c \ud0d0\uc9c0\ud558\uace0 \uc0ac\uc6a9\uc790\uac00 \uc561\uc138\uc2a4\ud558\uae30 \uc804\uc5d0 \uacbd\uace0\ub97c \ubcf4\ub0bc \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "Norton \ud648 \ud398\uc774\uc9c0\uc5d0\ub294 \uc0ac\uc6a9\uc790\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c(URL)\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "\uc774\ub7ec\ud55c \ubc29\uc2dd\uc73c\ub85c \uc0ac\uc6a9\uc790\uac00 \uc561\uc138\uc2a4\ud558\uae30 \uc804\uc5d0 \ud574\ub2f9 \uc0ac\uc774\ud2b8\uc758 \uc545\uc131 \uc5ec\ubd80\ub97c \ud0d0\uc9c0\ud558\ub294 \ub370 \ub3c4\uc6c0\uc744 \uc904 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "\ub370\uc774\ud130 \uc218\uc9d1 \uc815\ucc45\uc744 \ub354 \uc798 \uc774\ud574\ud558\ub824\uba74 \ub2e4\uc74c\uc744 \ubc29\ubb38\ud558\uc2ed\uc2dc\uc624:"
+  },
+  "Accept": {
+    "message" : "\ub3d9\uc758"
+  },
+  "Decline": {
+    "message" : "\uac70\ubd80"
+  },
+  "Your Permission Is Required": {
+    "message" : "\ud5c8\uc6a9 \uad8c\ud55c \ud544\uc694"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "\uac70\ubd80\ud558\uba74 Norton Safe Web\uc774 \uc791\ub3d9\ud558\uc9c0 \uc54a\uc73c\uba70 \uc0ac\uc6a9\uc790\ub97c \uc704\ud574 \uc0ac\uc774\ud2b8 \uc548\uc804 \ub4f1\uae09\uc744 \uc81c\uacf5\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "\uac70\ubd80\ud558\uba74 Norton Safe Search\uac00 \uc774 \uc7a5\uce58\uc5d0\uc11c \uc791\ub3d9\ud558\uc9c0 \uc54a\uc73c\uba70 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "\uac70\ubd80\ud558\uba74 Norton \ud648 \ud398\uc774\uc9c0\uac00 \uc791\ub3d9\ud558\uc9c0 \uc54a\uc73c\uba70 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "\uac70\ubd80\ud558\uba74 Norton Safe Search\uac00 \uc791\ub3d9\ud558\uc9c0 \uc54a\uc73c\uba70 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc73c\uba70 \uc548\uc804\ud55c \uac80\uc0c9 \uacb0\uacfc\ub97c \uc81c\uacf5\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Safe Web\uc744 \uc81c\uac70\ud558\uba74 Norton\uc740 \uc0ac\uc774\ud2b8\uac00 \uc545\uc131\uc778\uc9c0 \ud0d0\uc9c0\ud560 \uc218 \uc5c6\uc73c\uba70 \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. [\uc124\uce58 \uc720\uc9c0]\ub97c \ud074\ub9ad\ud558\uace0 Safe Web\uc774 \uc7a5\uce58\uc5d0\uc11c \uc791\ub3d9\ud558\ub3c4\ub85d \uad8c\ud55c\uc744 \uc218\ub77d\ud558\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "\uc544\ub798\ub97c \ub20c\ub7ec \uad8c\ud55c\uc744 \ud655\uc778\ud558\uace0 \uc0ac\uc6a9\uc790\uac00 \uc81c\ucd9c\ud55c \uc775\uba85 \uc815\ubcf4\ub97c \uc218\uc9d1\ud558\ub294 \uc694\uccad\uc744 \uc218\ub77d\ud558\uc2ed\uc2dc\uc624."
+  },
+	"Search more safely, protect your device": {
+		"message" : "\ub354 \uc548\uc804\ud558\uac8c \uac80\uc0c9, \uc7a5\uce58 \ubcf4\ud638"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "Mozilla Firefox\uac00 \uc560\ub4dc\uc628 \uc815\ucc45\uc744 \uc5c5\ub370\uc774\ud2b8\ud588\uc2b5\ub2c8\ub2e4. Norton Safe Search\ub97c \uacc4\uc18d \uc0ac\uc6a9\ud558\ub824\uba74 \uad8c\ud55c\uc744 \ub2e4\uc2dc \ubd80\uc5ec\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "Safe Search\ub294 \uc0ac\uc6a9\uc790\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c\ub97c \uc218\uc9d1\ud560 \uc218 \uc788\ub294 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \uc0ac\uc6a9\uc790\uac00 \ubc29\ubb38\ud558\uae30 \uc804\uc5d0 \ud574\ub2f9 \uc0ac\uc774\ud2b8\uac00 \uc545\uc131\uc778\uc9c0\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "\uac70\ubd80\ud558\uba74 Safe Search\ub294 \uc545\uc131 \uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc7a5\uce58\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "\uc81c\ud488 \ubc0f \uc11c\ube44\uc2a4 \uac1c\uc120\uc5d0 \ub3c4\uc6c0\uc774 \ub418\ub3c4\ub85d \uc0ac\uc6a9 \ubc0f \uc624\ub958 \ub370\uc774\ud130\ub97c \uc775\uba85\uc73c\ub85c Norton\uacfc \uacf5\uc720\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Decline & Uninstall": {
+		"message" : "\uac70\ubd80 \ubc0f \uc81c\uac70"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "\ud648 \ud398\uc774\uc9c0\ub294 \uc0ac\uc6a9\uc790\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "\uac70\ubd80\ud558\uba74 \ud648 \ud398\uc774\uc9c0\ub294 \uc545\uc131 \uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc0ac\uc6a9\uc790\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+	},
+	"Search more safely from your home page": {
+		"message" : "\ud648 \ud398\uc774\uc9c0\uc5d0\uc11c \ub354 \uc548\uc804\ud558\uac8c \uac80\uc0c9"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "Norton\uc740 \uc6f9 , \uc8fc\uc18c \ud45c\uc2dc\uc904 \ubc0f \ud648 \ud398\uc774\uc9c0\uc5d0\uc11c \uc0ac\uc6a9\uc790\uac00 \uac80\uc0c9\ud558\ub294 \uc6f9 \uc8fc\uc18c\uc5d0 \ub300\ud55c \uc561\uc138\uc2a4 \ubc0f \uc218\uc9d1 \uad8c\ud55c\uc774 \uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "\uac70\ubd80\ud558\uba74 Norton\uc740 \uc545\uc131 \uc0ac\uc774\ud2b8\ub85c\ubd80\ud130 \uc7a5\uce58\ub97c \ubcf4\ud638\ud560 \uc218 \uc5c6\uc73c\uba70 \uc548\uc804\ud55c \uac80\uc0c9 \uacb0\uacfc\ub97c \uc81c\uacf5\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."
+	},
+  "Review Your Permissions": {
+    "message" : "\ud5c8\uc6a9 \uad8c\ud55c \uac80\ud1a0"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "Norton Safe Web \uc81c\uac70"
+  },
+  "Global Privacy Statement": {
+	"message" : "\uae00\ub85c\ubc8c \uac1c\uc778 \uc815\ubcf4 \ubcf4\ud638 \uc815\ucc45"
+  },
+  "addQuickLink": {
+    "message" : "\ubc14\ub85c \uac00\uae30 \ucd94\uac00"
+  },
+	"addNewText": {
+		"message" : "\ubc14\ub85c \uac00\uae30 \ucd94\uac00"
+	},
+  "Title": {
+    "message" : "\uc81c\ubaa9"
+  },
+  "URL": {
+    "message" : "URL"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "\ucd94\uac00\ud558\ub824\ub294 \ubc14\ub85c \uac00\uae30\uac00 \uc774\ubbf8 \uc81c\uacf5\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
+  },
+  "Edit shortcut": {
+    "message" : "\ubc14\ub85c \uac00\uae30 \ud3b8\uc9d1"
+  },
+  "Add": {
+    "message" : "\ucd94\uac00"
+  },
+  "Cancel": {
+    "message" : "\ucde8\uc18c"
+  },
+  "Save": {
+    "message" : "\uc800\uc7a5"
+  },
+  "Edit": {
+    "message" : "\ud3b8\uc9d1"
+  },
+  "Remove": {
+    "message" : "\uc81c\uac70"
+  },
+  "Quick Links is all new!": {
+    "message" : "\ube60\ub978 \ub9c1\ud06c\uac00 \uc0c8\ub86d\uac8c \ud0c8\ubc14\uafc8\ud588\uc2b5\ub2c8\ub2e4!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "\uc990\uaca8 \ucc3e\ub294 \uc0ac\uc774\ud2b8\ub97c \uc0c8 \ube60\ub978 \ub9c1\ud06c \ubaa8\uc74c\uc5d0 \ucd94\uac00\ud558\uc2ed\uc2dc\uc624."
+  },
+  "Got it": {
+    "message" : "\ud655\uc778"
+  },
+  "Type a valid URL": {
+    "message" : "\uc62c\ubc14\ub978 URL\uc744 \uc785\ub825\ud558\uc2ed\uc2dc\uc624"
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "\uc720\uba85 \uc0ac\uc774\ud2b8\uc5d0 \uc27d\uac8c \uc561\uc138\uc2a4\ud560 \uc218 \uc788\ub294 \ube60\ub978 \ub9c1\ud06c"
+  },
+  "Editable quick links": {
+    "message" : "\ud3b8\uc9d1\ud560 \uc218 \uc788\ub294 \ube60\ub978 \ub9c1\ud06c"
+  },
+  "This website is considered safe.": {
+	  "message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub294 \uc548\uc804\ud55c \uac83\uc73c\ub85c \uac04\uc8fc\ub429\ub2c8\ub2e4."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\ub294 \uc544\uc9c1 \ud3c9\uac00\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "\uc774 \uc6f9\uc0ac\uc774\ud2b8\uc5d0\ub294 \uc801\uc740 \uc218\uc758 \uc704\ud611 \uc694\uc18c\uac00 \uc788\uc744 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "\uc774\ub294 \uc545\uc131 \uc6f9 \ud398\uc774\uc9c0\ub85c \uc54c\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "\uc758\uc2ec\uc2a4\ub7ec\uc6b4 \uc6f9 \ud398\uc774\uc9c0\uc785\ub2c8\ub2e4."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "\uc804\uccb4 Safe Web \ub9ac\ud3ec\ud2b8 \ubcf4\uae30"
+  },
+    "Accept risk and continue" : {
+		"message" : "\uc704\ud5d8\uc744 \uac10\uc218\ud558\uace0 \uacc4\uc18d\ud558\uae30"
+	},
+	"Accept and display risk": {
+		"message": "\uc704\ud5d8 \uc218\uc6a9 \ubc0f \ud45c\uc2dc\ub428"
+	},
+	"Close this website (recommended)": {
+		"message": "\uc774 \uc6f9\uc0ac\uc774\ud2b8 \ub2eb\uae30 (\uad8c\uc7a5)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "Norton Safe Web\uc758 \uc0c8\ub85c\uc6b4 \uae30\ub2a5!"
+	},
+	"Protection from Formjacking": {
+		"message": "\ud3fc\uc7ac\ud0b9\uc73c\ub85c\ubd80\ud130 \ubcf4\ud638"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "Norton Safe Web\uc740 \uc628\ub77c\uc778 \uc1fc\ud551\uc744 \ud558\ub294 \ub3d9\uc548 \ud3fc\uc7ac\ud0b9\uc744 \ubc29\uc9c0\ud558\ub294 \ub370 \ub3c4\uc6c0\uc774 \ub429\ub2c8\ub2e4."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "\uad6c\ub9e4\ud558\ub824\ub294 \uc0ac\uc774\ud2b8\uc758 \uacb0\uc81c \uc2dc\uc2a4\ud15c\uc774 \uc190\uc0c1\ub41c \uac83\uc73c\ub85c \uac10\uc9c0\ub418\uba74 \uc54c\ub824\ub4dc\ub9bd\ub2c8\ub2e4."
+	},
+	"Thanks for installing": {
+		"message": "\uc124\uce58 \uc644\ub8cc -"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web!"
+	},
+	"Take advantage of all these great features:": {
+		"message": "\ub2e4\uc74c\uacfc \uac19\uc740 \ub6f0\uc5b4\ub09c \uae30\ub2a5\uc744 \ubaa8\ub450 \ud65c\uc6a9\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Website Ratings": {
+		"message": "\uc6f9\uc0ac\uc774\ud2b8 \ud3c9\uc810"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "\ub2f9\uc0ac\uc758 \uc6f9\uc0ac\uc774\ud2b8 \ub4f1\uae09\uc740 \uc0ac\uc774\ud2b8\uc5d0 \ub370\uc774\ud130\ub97c \uc81c\uacf5\ud558\uae30 \uc804\uc5d0 \ud574\ub2f9 \uc0ac\uc774\ud2b8\uac00 \uc548\uc804\ud55c\uc9c0 \ub610\ub294 \uc8fc\uc758\ud574\uc57c \ud558\ub294\uc9c0\ub97c \uc54c\ub824\uc90d\ub2c8\ub2e4."
+	},
+	"Intrusion Prevention": {
+		"message": "\uce68\uc785 \ucc28\ub2e8"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "Norton Safe Web\uc740 \ub110\ub9ac \uc0ac\uc6a9\ub418\ub294 \ube0c\ub77c\uc6b0\uc800\uc5d0\uc11c \uc54c\ub824\uc9c4 \ubc84\uadf8\uc640 \uc0ac\uc774\ubc84 \uc704\ud611\uc73c\ub85c\ubd80\ud130 \ubcf4\ud638\ud558\ub294 \ub370 \ub3c4\uc6c0\uc774 \ub429\ub2c8\ub2e4."
+	},
+	"Formjacking Prevention": {
+		"message": "\ud3fc\uc7ac\ud0b9 \ucc28\ub2e8"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "Norton Safe Web\uc740 \uc804\uc790 \uc0c1\uac70\ub798 \uc0ac\uc774\ud2b8\uc5d0 \uc190\uc0c1\ub41c \uacb0\uc81c \uc2dc\uc2a4\ud15c\uc774 \uc788\ub294 \uac83\uc774 \uac10\uc9c0\ub418\uba74 \uc54c\ub824\ub4dc\ub9bd\ub2c8\ub2e4."
+	},
+	"Website Blocking": {
+		"message": "\uc6f9\uc0ac\uc774\ud2b8 \ucc28\ub2e8"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "Norton Safe Web\uc740 \uc545\uc131 \uc0ac\uc774\ud2b8\ub97c \ub204\ub974\uae30 \uc804\uc5d0 \uc0ac\uc6a9\uc790\uc5d0\uac8c \uc54c\ub824\uc8fc\uace0 \ucc28\ub2e8\ud558\ub3c4\ub85d \ub3c4\uc640\uc90d\ub2c8\ub2e4."
+	},
+	"Anti-Phishing Protection": {
+		"message": "\ud53c\uc2f1 \ucc28\ub2e8 \ubcf4\ud638"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "\uc774 \uae30\ub2a5\uc744 \uc0ac\uc6a9\ud558\uba74 \ub204\ub974\ub294 \uc0ac\uc774\ud2b8\uac00 \ud53c\uc2f1 \uc0ac\uc774\ud2b8\uac00 \uc544\ub2cc \uacf5\uc2dd \uc778\uc99d\ub41c \uc0ac\uc774\ud2b8\uc778\uc9c0 \uc54c \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+	},
+	"Link Guard": {
+		"message": "\ub9c1\ud06c \uac00\ub4dc"
+	},
+	"Blocking options": {
+		"message": "\ucc28\ub2e8 \uc635\uc158"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "\uc548\uc804\ud55c \uc6f9\uc774 \uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8\ub098 \ud53c\uc2f1 \uc6f9\uc0ac\uc774\ud2b8\ub97c \uac10\uc9c0\ud560 \ub54c \uc0ac\uc6a9\ud560 \ubcf4\ud638 \uc218\uc900\uc744 \uc120\ud0dd\ud558\uc2ed\uc2dc\uc624."
+	},
+	"Block the site": {
+		"message": "\uc0ac\uc774\ud2b8 \ucc28\ub2e8 <span>\uad8c\uc7a5</span>"
+	},
+	"Show notification banner": {
+		"message": "\uc54c\ub9bc \ubc30\ub108 \ud45c\uc2dc"
+	},
+	"Alert me from extension icon only": {
+		"message": "\ud655\uc7a5 \ud504\ub85c\uadf8\ub7a8 \uc544\uc774\ucf58\uc5d0\uc11c\ub9cc \uc54c\ub9ac\uae30"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "\uc6f9\uba54\uc77c \ubc0f \uc18c\uc15c \ubbf8\ub514\uc5b4 \ud53c\ub4dc\uc5d0\uc11c \uc758\uc2ec\uc2a4\ub7fd\uac70\ub098 \uc545\uc758\uc801\uc778 \ub9c1\ud06c\ub97c \uac80\uc0c9\ud569\ub2c8\ub2e4."
+	},
+	"Learn more": {
+		"message": "\uc790\uc138\ud788 \ubcf4\uae30"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "\uc774 \ud398\uc774\uc9c0\uc5d0\uc11c \uac1c\uc778 \uc815\ubcf4 \ub610\ub294 \uc7ac\ubb34 \uc815\ubcf4\ub97c \uacf5\uc720\ud558\uc9c0 \uc54a\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "Norton Safe Web\uc740 Norton Safe Search\uc5d0 \ub300\ud55c \uc0ac\uc774\ud2b8 \ub4f1\uae09\ub9cc \uc81c\uacf5\ud569\ub2c8\ub2e4"
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "Norton Safe Search\ub85c \uac80\uc0c9\uc744 \ubcf4\ud638\ud558\uc2ed\uc2dc\uc624"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "\uc55e\uc73c\ub85c Norton Safe Web \ud655\uc7a5\uc740 Norton Safe Search\ub97c \uc81c\uc678\ud55c \ubaa8\ub4e0 \uac80\uc0c9 \uc5d4\uc9c4\uc5d0 \ub300\ud55c \uc0ac\uc774\ud2b8 \ub4f1\uae09 \uc81c\uacf5\uc744 \uc911\ub2e8\ud569\ub2c8\ub2e4."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "\uadc0\ud558\uc758 \uac80\uc0c9\uc744 \uc548\uc804\ud558\uac8c \ubcf4\ud638\ud558\uae30 \uc704\ud574 \uc704\ud5d8\ud55c \uc6f9 \uc0ac\uc774\ud2b8\ub294 \uacc4\uc18d \ucc28\ub2e8\ud560 \uac83\uc785\ub2c8\ub2e4."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "\uc0ac\uc774\ud2b8 \ub4f1\uae09\uc744 \uacc4\uc18d \ud655\uc778\ud558\ub824\uba74 Norton Safe Search \ud655\uc7a5\uc744 \uc124\uce58\ud558\uc2ed\uc2dc\uc624."
+	},
+	"See Forecast": {
+		"message": "\uc608\ubcf4 \ubcf4\uae30"
+	},
+	"Fahrenheit": {
+		"message": "\ud654\uc528"
+	},
+	"Celsius": {
+		"message": "\uc12d\uc528"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0C"
+	},
+	"January": {
+		"message": "1\uc6d4"
+	},
+	"February": {
+		"message": "2\uc6d4"
+	},
+	"March": {
+		"message": "3\uc6d4"
+	},
+	"April": {
+		"message": "4\uc6d4"
+	},
+	"May": {
+		"message": "5\uc6d4"
+	},
+	"June": {
+		"message": "6\uc6d4"
+	},
+	"July": {
+		"message": "7\uc6d4"
+	},
+	"August": {
+		"message": "8\uc6d4"
+	},
+	"September": {
+		"message": "9\uc6d4"
+	},
+	"October": {
+		"message": "10\uc6d4"
+	},
+	"November": {
+		"message": "11\uc6d4"
+	},
+	"December": {
+		"message": "12\uc6d4"
+	},
+	"Monday": {
+		"message": "\uc6d4\uc694\uc77c"
+	},
+	"Tuesday": {
+		"message": "\ud654\uc694\uc77c"
+	},
+	"Wednesday": {
+		"message": "\uc218\uc694\uc77c"
+	},
+	"Thursday": {
+		"message": "\ubaa9\uc694\uc77c"
+	},
+	"Friday": {
+		"message": "\uae08\uc694\uc77c"
+	},
+	"Saturday": {
+		"message": "\ud1a0\uc694\uc77c"
+	},
+	"Sunday": {
+		"message": "\uc77c\uc694\uc77c"
+	},
+	"General": {
+		"message": "\uc77c\ubc18"
+	},
+	"settingsShare": {
+		"message" : "\uae30\ud0c0"
+	},
+	"New tab": {
+		"message": "\uc0c8 \ud0ed"
+	},
+	"Shortcuts": {
+		"message": "\ubc14\ub85c \uac00\uae30"
+	},
+	"Launch the search links in a new tab": {
+		"message": "\uc0c8 \ud0ed\uc5d0\uc11c \uac80\uc0c9 \ub9c1\ud06c \uc2e4\ud589"
+	},
+	"Show bookmark bar": {
+		"message": "\ubd81\ub9c8\ud06c\ubc14 \ud45c\uc2dc"
+	},
+	"Requires additional permission": {
+		"message": "\ucd94\uac00 \uad8c\ud55c \ud544\uc694"
+	},
+	"Quick links": {
+		"message": "\ube60\ub978 \ub9c1\ud06c"
+	},
+	"Most-visited sites": {
+		"message": "\uac00\uc7a5 \ub9ce\uc774 \ubc29\ubb38\ud55c \uc0ac\uc774\ud2b8"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "\uac00\uc7a5 \ub9ce\uc774 \ubc29\ubb38\ud55c \uc0ac\uc774\ud2b8\uc758 \ubc14\ub85c \uac00\uae30 \ub9cc\ub4e4\uae30 "
+	},
+	"Shown based on websites": {
+		"message": "\uc790\uc8fc \ubc29\ubb38\ud558\ub294 \uc6f9\uc0ac\uc774\ud2b8\ub97c \uae30\uc900\uc73c\ub85c \ud45c\uc2dc\ub428 | \ucd94\uac00 \uad8c\ud55c \ud544\uc694"
+	},
+	"Custom quick links": {
+		"message": "\uc0ac\uc6a9\uc790 \uc815\uc758 \ube60\ub978 \ub9c1\ud06c"
+	},
+	"Create custom shortcuts":{
+		"message": "\uc0ac\uc6a9\uc790 \uc9c0\uc815 \ubc14\ub85c \uac00\uae30 \uc0dd\uc131"
+	},
+	"Quick links added by you": {
+		"message": "\ub0b4\uac00 \ucd94\uac00\ud55c \ube60\ub978 \ub9c1\ud06c"
+	},
+	"Customize": {
+		"message": "\uc0ac\uc6a9\uc790 \uc815\uc758"
+	},
+	"Widgets below shortcuts": {
+		"message": "\ubc14\ub85c \uac00\uae30 \uc544\ub798 \uc704\uc82f"
+	},
+	"BookmarkBar": {
+		"message": "\ucc45\uac08\ud53c \ud45c\uc2dc\uc904"
+	},
+	"Extension theme": {
+		"message": "\ud655\uc7a5 \uae30\ub2a5 \ud14c\ub9c8"
+	},
+	"Show weather widget": {
+		"message": "\ub0a0\uc528 \uc704\uc82f \ud45c\uc2dc"
+	},
+	"Show time widget": {
+		"message": "\uc2dc\uac04 \uc704\uc82f \ud45c\uc2dc"
+	},
+	"Background image": {
+		"message": "\ubc30\uacbd \uc774\ubbf8\uc9c0"
+	},
+	"Background": {
+		"message": "\ubc14\ud0d5 \ud654\uba74"
+	},
+	"Choose": {
+		"message": "\uc120\ud0dd"
+	},
+	"Restore defaults": {
+		"message": "\uae30\ubcf8\uac12\uc73c\ub85c \ubcf5\uc6d0"
+	},
+	"Reset to default": {
+		"message": "\uae30\ubcf8\uac12\uc73c\ub85c \uc7ac\uc124\uc815"
+	},
+	"Share usage and error data anonymously": {
+		"message": "\uc81c\ud488 \uac1c\uc120\uc5d0 \ub3c4\uc6c0\uc774 \ub418\ub3c4\ub85d \uc0ac\uc6a9 \ubc0f \uc624\ub958 \ub370\uc774\ud130\ub97c \uc775\uba85\uc73c\ub85c Norton\uacfc \uacf5\uc720\ud558\uae30"
+	},
+	"Light mode": {
+		"message": "\ub77c\uc774\ud2b8 \ubaa8\ub4dc"
+	},
+	"Dark mode": {
+		"message": "\ub2e4\ud06c \ubaa8\ub4dc"
+	},
+	"Manage bookmarks": {
+		"message": "\ubd81\ub9c8\ud06c \uad00\ub9ac"
+	},
+	"Choose image": {
+		"message": "\uc774\ubbf8\uc9c0 \uc120\ud0dd"
+	},
+	"Choose an image from your device": {
+		"message": "\uc7a5\uce58\uc5d0\uc11c \uc774\ubbf8\uc9c0\ub97c \uc120\ud0dd\ud558\uc2ed\uc2dc\uc624"
+	},
+	"Gallery": {
+		"message": "\uac24\ub7ec\ub9ac"
+	},
+	"Choose from one of five images": {
+		"message": "\uc544\ub798 \uc81c\uacf5\ub41c 4\uac1c\uc758 \ubc14\ud0d5 \ud654\uba74 \uc911 \ud558\ub098\ub97c \uc120\ud0dd\ud558\uac70\ub098 \uc7a5\uce58\uc5d0\uc11c \uc774\ubbf8\uc9c0\ub97c \uc120\ud0dd\ud558\uc2ed\uc2dc\uc624"
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "\ubc14\ud0d5 \ud654\uba74\uc744 \uc5c5\uadf8\ub808\uc774\ub4dc\ud558\uc138\uc694"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "\uc81c\uacf5\ub41c 4\uac00\uc9c0 \ubc14\ud0d5 \ud654\uba74 \uc911\uc5d0\uc11c \uc120\ud0dd\ud558\uac70\ub098 \uc790\uc2e0\uc758 \ubc14\ud0d5 \ud654\uba74\uc744 \uc5c5\ub85c\ub4dc\ud558\uc2ed\uc2dc\uc624!"
+	},
+	"Available for Chrome": {
+		"message": "Chrome\uc5d0\uc11c \uc0ac\uc6a9 \uac00\ub2a5"
+	},
+	"Show most-visited sites": {
+		"message": "\uac00\uc7a5 \ub9ce\uc774 \ubc29\ubb38\ud55c \uc0ac\uc774\ud2b8 \ud45c\uc2dc"
+	},
+	"Quick links to websites you visit most": {
+		"message": "\uc790\uc8fc \ubc29\ubb38\ud558\ub294 \uc6f9\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d\ud558\ub294 \ube60\ub978 \ub9c1\ud06c"
+	},
+	"Got It": {
+		"message": "\ud655\uc778"
+	},
+	"Account": {
+		"message": "\uacc4\uc815"
+	},
+	"Maps": {
+		"message": "\uc9c0\ub3c4"
+	},
+	"Play": {
+		"message": "\uac8c\uc784"
+	},
+	"Drive": {
+		"message": "\ub4dc\ub77c\uc774\ube0c"
+	},
+	"Calendar": {
+		"message": "\ub2ec\ub825"
+	},
+	"News": {
+		"message": "\ub274\uc2a4"
+	},
+	"Translate": {
+		"message": "\ubc88\uc5ed"
+	},
+	"Photos": {
+		"message": "\uc0ac\uc9c4"
+	},
+	"Chat": {
+		"message": "\ucc44\ud305"
+	},
+	"Duo": {
+		"message": "\ub4c0\uc624"
+	},
+	"Meet": {
+		"message": "\ub9cc\ub0a8"
+	},
+	"Docs": {
+		"message": "\ubb38\uc11c"
+	},
+	"Contacts": {
+		"message": "\uc5f0\ub77d\ucc98"
+	},
+	"Classroom": {
+		"message": "\uac15\uc758\uc2e4"
+	},
+	"More Apps": {
+		"message": "\uc571 \ub354 \ubcf4\uae30"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "NORTON\uacfc \ub370\uc774\ud130 \uacf5\uc720"
+	},
+	"PM": {
+		"message": "\uc624\ud6c4"
+	},
+	"AM": {
+		"message": "\uc624\uc804"
+	},
+	"Default theme": {
+		"message": "\uae30\ubcf8 \ud14c\ub9c8"
+	},
+	"Hidden bookmarks": {
+		"message": "\uc228\uaca8\uc9c4 \ubd81\ub9c8\ud06c"
+	},
+	"Available for Edge": {
+		"message": "Edge\uc5d0\uc11c \uc0ac\uc6a9 \uac00\ub2a5"
+	},
+	"Manage favorites": {
+		"message": "\uc990\uaca8\ucc3e\uae30 \uad00\ub9ac"
+	},
+	"Show favorites bar": {
+		"message": "\uc990\uaca8\ucc3e\uae30\ubc14 \ud45c\uc2dc"
+	},
+	"Hidden favourites": {
+		"message": "\uc228\uaca8\uc9c4 \uc990\uaca8\ucc3e\uae30"
+	},
+	"Accept Risk and Continue": {
+		"message": "\uc704\ud5d8\uc744 \uac10\uc218\ud558\uace0 \uacc4\uc18d\ud558\uae30"
+	},
+	"ProductName":
+	{
+		"message" : "Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "\uc81c\uacf5\ub41c 4\uac00\uc9c0 \ubc14\ud0d5 \ud654\uba74 \uc911\uc5d0\uc11c \uc120\ud0dd\ud558\uac70\ub098 \uc790\uc2e0\uc758 \ubc14\ud0d5 \ud654\uba74\uc744 \uc5c5\ub85c\ub4dc\ud558\uc2ed\uc2dc\uc624!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "\ub178\ud134 \ud648 \ud398\uc774\uc9c0!"
+	},
+	"PrivacyAndPermissions": {
+		"message": "\uad8c\ud55c"
+	},
+	"Permissions": {
+		"message": "\uad8c\ud55c"
+	},
+	"Install": {
+		"message": "\uc124\uce58"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "\uc7a0\uc7ac\uc801\uc778 \uc545\uc131 \ub9c1\ud06c\ub85c\ubd80\ud130 \uac80\uc0c9\uc744 \ubcf4\ud638\ud558\ub294 \ub370 \ub3c4\uc6c0\uc774 \ub418\ub294 \ud655\uc7a5 \uae30\ub2a5\uc785\ub2c8\ub2e4. \ub354\uc6b1 \uc548\uc804\ud558\uac8c \uc6f9\uc744 \ud0d0\uc0c9\ud558\uc138\uc694."
+	},
+	"Install Extensions": {
+		"message": "\ud655\uc7a5 \ud504\ub85c\uadf8\ub7a8 \uc124\uce58"
+	},
+	"Ad": {
+		"message": "\ud6c4\uc6d0 \uc5c5\uccb4"
+	},
+	"Almost done!": {
+		"message": "\uac70\uc758 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4!"
+	},
+	"To complete installation, click": {
+		"message": "\uc124\uce58\ub97c \uc644\ub8cc\ud558\ub824\uba74 \ub2e4\uc74c\uc744 \ub204\ub974\uc2ed\uc2dc\uc624."
+	},
+	"Install Norton Safe Search": {
+		"message": "Norton Safe Search \uc124\uce58"
+	},
+	"No search protection": {
+		"message": "\uac80\uc0c9 \ubcf4\ud638 \uc5c6\uc74c"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"\uac80\uc0c9 \ubcf4\ud638 \uc5c6\uc774 \uacc4\uc18d\ud558\uae30"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"Norton Safe Search\ub97c \uae30\ubcf8 \uac80\uc0c9\uc73c\ub85c \uc124\uc815"
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"Norton Safe Search \uc2e4\ud589"
+	},
+	"Your searches are not protected":
+	{
+		"message":"\uac80\uc0c9\uc774 \ubcf4\ud638\ub418\uc9c0 \uc54a\uc74c"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"\uc545\uc131 \ub9c1\ud06c\uc640 \ud53c\uc2f1 \uc2a4\ucea0\uc744 \ucc28\ub2e8\ud560 \uc218 \uc788\ub3c4\ub85d Norton Safe Search\ub97c \ud65c\uc131\ud654\ud558\ub294 \uac83\uc744 \uad8c\uc7a5\ud569\ub2c8\ub2e4."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Norton Safe Search\ub97c \uc0ac\uc6a9\ud574 \ub354 \uc548\uc804\ud558\uac8c \ucc3e\uc544\ubcf4\uc138\uc694"
+	},
+	"Choose search protection":{
+		"message":"{0}\uc5d0\uc11c \uac80\uc0c9 \ubcf4\ud638 \uae30\ub2a5\uc744 \uc120\ud0dd\ud558\ub77c\ub294 \uba54\uc2dc\uc9c0\uac00 \ud45c\uc2dc\ub429\ub2c8\ub2e4. \uc544\ub798\uc758 'Norton Safe Search \uc2e4\ud589'\uc744 \uc120\ud0dd\ud558\uc5ec \uc545\uc131 \ub9c1\ud06c\ub97c \ucc28\ub2e8\ud558\uace0 \uc548\uc804\ud558\uac8c \uacc4\uc18d \ucc3e\uc544\ubcf4\uc138\uc694."
+	},
+	"Recommended":{
+		"message":"\uad8c\uc7a5"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "\ub178\ud134\uc73c\ub85c \uac80\uc0c9\ud560 \ub54c \ub354 \uc548\uc804\ud558\uac8c \uc774\uc6a9\ud558\uc138\uc694"
+	},
+	"Detect risky sites and scams":{
+		"message": "Norton Safe Search\ub97c \uc0ac\uc6a9 \uc124\uc815\ud558\uc5ec \uc704\ud5d8\ud55c \uc0ac\uc774\ud2b8\uc640 \uc2a4\ucea0\uc744 \uac10\uc9c0\ud558\ub294 \ub370 \ub3c4\uc6c0\uc744 \ubc1b\uc73c\uc138\uc694."
+	},
+	"Peace of mind with every search ": {
+		"message": "\uc548\uc2ec\ud558\uace0 \ubaa8\ub4e0 \uac80\uc0c9 \uc218\ud589"
+	},
+	"To keep your searches secure": {
+		"message": "\uacc4\uc18d\ud574\uc11c \uc548\uc804\ud558\uac8c \uac80\uc0c9\ud558\ub824\uba74 Norton Safe Search \ud655\uc7a5\uc744<span>\uc124\uce58\ud558\ub294 \uac83\uc774 \uc88b\uc2b5\ub2c8\ub2e4</span>."
+	},
+	"Install now": {
+		"message": "\uc9c0\uae08 \uc124\uce58"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "Norton Safe Web \uc5c5\ub370\uc774\ud2b8\ub428"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "\ub178\ud134\uc740 \uc0ac\uc6a9\uc790\uac00 \ubc29\ubb38\ud558\ub294 \uc6f9\uc0ac\uc774\ud2b8\ub97c <span>\uc9c0\uc18d\uc801\uc73c\ub85c</span> \uac80\uc0ac\ud558\uc5ec \ub2e4\uc74c\uacfc \uac19\uc740 \uc7a0\uc7ac\uc801 \uc704\ud5d8\uc5d0 \ub300\ud574 <span>\uacbd\uace0</span>\ud569\ub2c8\ub2e4."
+	},
+	"Malicious websites": {
+		"message": "\uc545\uc131 \uc6f9\uc0ac\uc774\ud2b8"
+	},
+	"Phishing websites": {
+		"message": "\ud53c\uc2f1 \uc6f9\uc0ac\uc774\ud2b8"
+	},
+	"Viruses or other online threats": {
+		"message": "\ubc14\uc774\ub7ec\uc2a4 \ub610\ub294 \uae30\ud0c0 \uc704\ud611 \uc694\uc18c"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "\ub178\ud134\uc740 \uc774\uc81c <span>Norton Safe Search\ub97c \ud1b5\ud574\uc11c\ub9cc \uc0ac\uc774\ud2b8 \ub4f1\uae09\uc744 \ud45c\uc2dc</span>\ud558\ubbc0\ub85c \ud0d0\uc0c9\ud558\ub294 \ub3d9\uc548 \ubcf4\uc548\uc774 \uac15\ud654\ub429\ub2c8\ub2e4."
+	},
+	"Dangerous website detected": {
+		"message": "\uc704\ud5d8\ud55c \uc6f9\uc0ac\uc774\ud2b8 \ud0d0\uc9c0\ub428"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "\uac1c\uc778 \uc815\ubcf4\ub97c \uacf5\uc720\ud558\uac70\ub098 \uc774 \uc0ac\uc774\ud2b8\uc5d0 \uc561\uc138\uc2a4\ud558\uc9c0 \ub9c8\uc2ed\uc2dc\uc624."
+	},
+	"Exit this page (recommended)": {
+		"message": "\uc774 \ud398\uc774\uc9c0\uc5d0\uc11c \ub098\uac00\uae30(\uad8c\uc7a5)"
+	},
+	"BLOCKED BY": {
+		"message": "\ucc28\ub2e8\uc790"
+	},
+	"Show sponsored banner": {
+		"message": "\ud6c4\uc6d0 \uc5c5\uccb4 \ubc30\ub108 \ud45c\uc2dc"
+	},
+	"Sponsored": {
+		"message": "\ud6c4\uc6d0 \uc5c5\uccb4"
+	},
+	"Hide": {
+		"message": "\uc228\uae30\uae30"
+	},
+	"homePageTitle": {
+		"message": "\ud648 \ud398\uc774\uc9c0"
+	},
+	"Add protection to your searches": {
+		"message": "\uac80\uc0c9\uc5d0 \ubcf4\ud638 \uae30\ub2a5\uc744 \ucd94\uac00\ud558\uc138\uc694."
+	},
+	"Detect malicious links": {
+		"message": "Norton Safe Search\ub97c \uc2e4\ud589\ud558\uc5ec \uc545\uc131 \ub9c1\ud06c \ubc0f \ud53c\uc2f1 \uc2a4\ucea0\uc744 \ud0d0\uc9c0\ud558\uc138\uc694."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "\uc8fc\uc694 \ub274\uc2a4"
+	},
+	"crypto": {
+		"message": "\uc554\ud638\ud654\ud3d0"
+	},
+	"stock": {
+		"message": "\uc8fc\uc2dd"
+	},
+	"weather": {
+		"message": "\ub0a0\uc528"
+	},
+	"tools": {
+		"message": "\uc720\ud2f8\ub9ac\ud2f0"
+	},
+	"Select your search protection:": {
+		"message": "\uac80\uc0c9 \ubcf4\ud638 \uae30\ub2a5\uc744 \uc120\ud0dd\ud558\uc138\uc694."
+	},
+	"Bookmark bar": {
+		"message": "\ucc45\uac08\ud53c \ud45c\uc2dc\uc904"
+	},
+	"Favorites bar": {
+		"message": "\uc990\uaca8\ucc3e\uae30\ubc14"
+	},
+	"Other bookmarks": {
+		"message": "\uae30\ud0c0 \ucc45\uac08\ud53c"
+	},
+	"Welcome to": {
+		"message": "\ud658\uc601\ud569\ub2c8\ub2e4"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "\ub458\ub7ec\ubcf4\uba70 \uc0c8\ub85c\uc6b4 \uae30\ub2a5\uc744 \ud655\uc778\ud558\uace0 Safe Search \uae30\ub2a5\uc744 \ucd5c\ub300\ud55c \ud65c\uc6a9\ud558\uc138\uc694."
+	},
+	"Skip tour": {
+		"message": "\ub458\ub7ec\ubcf4\uae30 \uac74\ub108\ub6f0\uae30"
+	},
+	"Start tour": {
+		"message": "\ub458\ub7ec\ubcf4\uae30 \uc2dc\uc791"
+	},
+	"Personalise your home page": {
+		"message": "\ud648 \ud398\uc774\uc9c0 \ub9de\ucda4 \uc124\uc815"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "\uc0ac\uc6a9\uc790 \uc9c0\uc815 \uc774\ubbf8\uc9c0\uc640 \ub77c\uc774\ud2b8 \ubaa8\ub4dc \ub610\ub294 \ub2e4\ud06c \ubaa8\ub4dc\ub85c \ud648 \ud398\uc774\uc9c0\ub97c \ub098\ub9cc\uc758 \uc2a4\ud0c0\uc77c\ub85c \uafb8\ubbf8\uc138\uc694"
+	},
+	"Customizable shortcuts": {
+		"message": "\uc0ac\uc6a9\uc790 \uc9c0\uc815 \uac00\ub2a5\ud55c \ubc14\ub85c \uac00\uae30"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "\ubc14\ub85c \uac00\uae30\ub85c \uc990\uaca8 \ucc3e\ub294 \uc0ac\uc774\ud2b8\uc5d0 \uc27d\uac8c \uc561\uc138\uc2a4\ud558\uc138\uc694"
+	},
+	"Useful widgets": {
+		"message": "\uc720\uc6a9\ud55c \uc704\uc82f"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "\ub0a0\uc528, \uc8fc\uc2dd, \uc554\ud638\ud654\ud3d0, \uacc4\uc0b0\uae30 & \ub2e8\uc704 \ubcc0\ud658\uae30 \ub4f1 \ucd5c\ub300 5\uac1c\uc758 \uc704\uc82f \ud45c\uc2dc"
+	},
+	"Read today's top news": {
+		"message": "\uc624\ub298\uc758 \uc8fc\uc694 \ub274\uc2a4 \ubcf4\uae30"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "\ub2e4\uc591\ud55c \uc8fc\uc81c\uc758 \ucd5c\uc2e0 \uc138\uacc4 \ud5e4\ub4dc\ub77c\uc778\uc73c\ub85c \ucd5c\uc2e0 \uc815\ubcf4\ub97c \ud30c\uc545\ud558\uc138\uc694"
+	},
+	"Link to your apps": {
+		"message": "\uc571\uc5d0 \uc5f0\uacb0"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "Norton \ud648 \ud398\uc774\uc9c0\uc5d0\uc11c \uc571\uc5d0 \ube60\ub974\uace0 \uc27d\uac8c \uc561\uc138\uc2a4\ud558\uc138\uc694"
+	},
+	"Begin tour": {
+		"message": "\ub458\ub7ec\ubcf4\uae30 \uc2dc\uc791\ud558\uae30"
+	},
+	"Take a quick tour of features": {
+		"message": "\uae30\ub2a5 \ube60\ub978 \ub458\ub7ec\ubcf4\uae30"
+	}
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Concert Version="3.0">
+  <project Name="NSSS_3.14.1">
+    <P4WorkspaceLineEnd>Local</P4WorkspaceLineEnd>
+    <P4Charset />
+  </project>
+  <file Lang="en" Name="strings.json" Encoding="65001" HasBOM="False" Parser="JSON" GenerationType="4" Phase="" Home="i18n/en/">
+    <target Lang="1025">
+      <output Encoding="65001" HasBOM="False" Relativepath="../ar/">strings.json</output>
+    </target>
+    <target Lang="1037">
+      <output Encoding="65001" HasBOM="False" Relativepath="../he/">strings.json</output>
+    </target>
+    <target Lang="1046">
+      <output Encoding="65001" HasBOM="False" Relativepath="../pt_br/">strings.json</output>
+    </target>
+    <target Lang="1036">
+      <output Encoding="65001" HasBOM="False" Relativepath="../fr/">strings.json</output>
+    </target>
+    <target Lang="1031">
+      <output Encoding="65001" HasBOM="False" Relativepath="../de/">strings.json</output>
+    </target>
+    <target Lang="1028">
+      <output Encoding="65001" HasBOM="False" Relativepath="../zh_tw/">strings.json</output>
+    </target>
+    <target Lang="2052">
+      <output Encoding="65001" HasBOM="False" Relativepath="../zh_cn/">strings.json</output>
+    </target>
+    <target Lang="1030">
+      <output Encoding="65001" HasBOM="False" Relativepath="../da/">strings.json</output>
+    </target>
+    <target Lang="1043">
+      <output Encoding="65001" HasBOM="False" Relativepath="../nl/">strings.json</output>
+    </target>
+    <target Lang="1035">
+      <output Encoding="65001" HasBOM="False" Relativepath="../fi/">strings.json</output>
+    </target>
+    <target Lang="1038">
+      <output Encoding="65001" HasBOM="False" Relativepath="../hu/">strings.json</output>
+    </target>
+    <target Lang="1040">
+      <output Encoding="65001" HasBOM="False" Relativepath="../it/">strings.json</output>
+    </target>
+    <target Lang="1041">
+      <output Encoding="65001" HasBOM="False" Relativepath="../ja/">strings.json</output>
+    </target>
+    <target Lang="1045">
+      <output Encoding="65001" HasBOM="False" Relativepath="../pl/">strings.json</output>
+    </target>
+    <target Lang="2070">
+      <output Encoding="65001" HasBOM="False" Relativepath="../pt/">strings.json</output>
+      <!--<output Encoding="65001" HasBOM="False" Relativepath="../pt_pt/">strings.json</output>-->
+    </target>
+    <target Lang="3082">
+      <output Encoding="65001" HasBOM="False" Relativepath="../es/">strings.json</output>
+    </target>
+    <target Lang="1044">
+      <output Encoding="65001" HasBOM="False" Relativepath="../no/">strings.json</output>
+      <output Encoding="65001" HasBOM="False" Relativepath="../nb/">strings.json</output>
+    </target>
+    <target Lang="1053">
+      <output Encoding="65001" HasBOM="False" Relativepath="../sv/">strings.json</output>
+    </target>
+    <target Lang="1055">
+      <output Encoding="65001" HasBOM="False" Relativepath="../tr">strings.json</output>
+    </target>
+    <target Lang="1042">
+      <output Encoding="65001" HasBOM="False" Relativepath="../ko/">strings.json</output>
+    </target>
+    <target Lang="1029">
+      <output Encoding="65001" HasBOM="False" Relativepath="../cs/">strings.json</output>
+    </target>
+    <target Lang="1049">
+      <output Encoding="65001" HasBOM="False" Relativepath="../ru/">strings.json</output>
+    </target>
+    <target Lang="1032">
+      <output Encoding="65001" HasBOM="False" Relativepath="../el/">strings.json</output>
+    </target>
+    <target Lang="1048">
+      <output Encoding="65001" HasBOM="False" Relativepath="../ro/">strings.json</output>
+    </target>
+  </file>
+</Concert>

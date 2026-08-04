@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "ru"
+   },
+   "downloadButton": {
+      "message": "Загрузить"
+   },
+   "downloadMessage": {
+      "message": "Чтобы использовать Закладки iCloud, загрузите приложение «iCloud для Windows»."
+   },
+   "enableBookmarksMessage": {
+      "message": "Чтобы использовать Закладки iCloud с Edge, включите параметр «Закладки» в приложении «iCloud для Windows»."
+   },
+   "extDescription": {
+      "message": "Синхронизируйте свои закладки в Edge на устройстве с Windows с закладками в Safari на iPhone, iPad и Mac."
+   },
+   "extName": {
+      "message": "Закладки iCloud"
+   },
+   "okButton": {
+      "message": "ОК"
+   },
+   "signinButton": {
+      "message": "Открыть iCloud для Windows"
+   },
+   "syncedMessage": {
+      "message": "Ваши закладки в Edge синхронизированы с iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Расширение, которое Вы пытаетесь установить, предназначено для работы в Windows. Если Вы используете Mac, Ваши закладки в Safari будут автоматически синхронизироваться на iPhone, iPad и Mac, когда Вы войдете в iCloud на всех своих устройствах."
+   }
+}

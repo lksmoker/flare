@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Hot: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Webbplatsen har inte testats \u00e4nnu"
+	},
+    "SAFE":
+    {
+        "message" : "S\u00c4KER"
+    },
+    "SECURE":
+    {
+        "message" : "S\u00c4KERT"
+    },
+    "CAUTION":
+    {
+        "message" : "Obs!"
+    },
+    "UNTESTED":
+    {
+        "message" : "EJ TESTAD"
+    },
+    "UNSAFE":
+    {
+        "message" : "OS\u00c4KER"
+    },
+	"Full Report" :
+	{
+		"message" : "Fullst\u00e4ndig rapport"
+	}
+}

@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "id"
+   },
+   "downloadButton": {
+      "message": "Unduh"
+   },
+   "downloadMessage": {
+      "message": "Unduh iCloud untuk Windows untuk menggunakan Penanda iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "Aktifkan Penanda di iCloud untuk Windows untuk menggunakan Penanda iCloud dengan Edge."
+   },
+   "extDescription": {
+      "message": "Jaga agar penanda Edge Anda tetap terbaru dengan penanda Safari di iPhone, iPad, dan Mac Anda."
+   },
+   "extName": {
+      "message": "Penanda iCloud"
+   },
+   "okButton": {
+      "message": "OKE"
+   },
+   "signinButton": {
+      "message": "Buka iCloud untuk Windows"
+   },
+   "syncedMessage": {
+      "message": "Penanda Edge Anda diselaraskan dengan iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Ekstensi yang sedang Anda coba instal dirancang untuk dijalankan di Windows. Jika Anda menggunakan Mac, penanda Safari Anda akan diselaraskan secara otomatis dengan iPhone, iPad, dan Mac saat Anda masuk ke iCloud di semua perangkat Anda."
+   }
+}

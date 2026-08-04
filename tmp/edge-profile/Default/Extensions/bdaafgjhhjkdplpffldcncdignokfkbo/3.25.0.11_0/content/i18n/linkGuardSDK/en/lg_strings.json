@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "We’ll highlight suspicious links in Webmail, Facebook, Twitter and other accounts."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Learn More"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "SUSPICIOUS LINK"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton now warns you of suspicious links in your email to protect you from malicious activity."
+    }
+}

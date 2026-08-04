@@ -1,0 +1,304 @@
+/*
+ NortonLifeLock copyright header start
+
+ Copyright (c) 2024 NortonLifeLock Inc. All rights reserved.
+
+ THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+ INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+ EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+ The Licensed Software and Documentation are deemed to be commercial computer
+ software as defined in FAR 12.212 and subject to restricted rights as defined
+ in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+ and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+ Computer Software Documentation", as applicable, and any successor regulations.
+ Any use, modification, reproduction release, performance, display or disclosure
+ of the Licensed Software and Documentation by the U.S. Government shall be
+ solely in accordance with the terms of this Agreement.
+
+ NortonLifeLock copyright header stop
+*/
+
+/** safeSearchPopup style starts here**/
+@font-face {
+  font-family: 'Mier B03 Regular';
+  src: url('../fonts/MierB03-Regular.woff2') format("woff2");
+}
+
+@font-face {
+  font-family: 'Mier B03 Bold';
+  src: url('../fonts/MierB03-Bold.woff2') format("woff2");
+}
+
+@font-face {
+  font-family: 'Mier B03 ExtraBold';
+  src: url('../fonts/MierB03-ExtraBold.woff2') format("woff2");
+}
+
+#container {
+  --bgColor: #FFFCFA;
+  --boxShadow: rgba(0, 0, 0, 0.12);
+  --textColor: #071D2B;
+  --dangerousText: #D93511;
+  --subtextColor: rgba(7, 29, 43, 0.75);
+  --buttonBgColor: #0070F6;
+  --buttonTextColor: #FFF;
+  --buttonBoxShadow: rgba(0, 0, 0, 0.00);
+}
+
+#container.avast {
+  --bgColor: #FFFCFA;
+  --boxShadow: rgba(0, 0, 0, 0.12);
+  --textColor: #071D2B;
+  --dangerousText: #D93511;
+  --subtextColor: rgba(7, 29, 43, 0.75);
+  --buttonBgColor: #0070F6;
+  --buttonTextColor: #FFF;
+  --buttonBoxShadow: rgba(0, 0, 0, 0.00);
+}
+
+#container.avast.dark {
+  --bgColor: #04121A;
+  --boxShadow: rgba(0, 0, 0, 0.12);
+  --textColor: #FFF;
+  --dangerousText: #FF5833;
+  --subtextColor: rgba(255, 255, 255, 0.75);
+  --buttonBgColor: #0070F6;
+  --buttonTextColor: #FFF;
+  --buttonBoxShadow: rgba(0, 0, 0, 0.00);
+}
+
+#container.avg {
+  --bgColor: #2B323F;
+  --boxShadow: rgba(0, 0, 0, 0.12);
+  --textColor: #FFF;
+  --dangerousText: #E46;
+  --subtextColor: rgba(255, 255, 255, 0.75);
+  --buttonBgColor: #4C8;
+  --buttonTextColor: #000;
+  --buttonBoxShadow: rgba(0, 0, 0, 0.00);
+}
+
+#container.avg.dark {
+  --bgColor: #FFF;
+  --boxShadow: rgba(0, 0, 0, 0.12);
+  --textColor: #000;
+  --dangerousText: #E00029;
+  --subtextColor: rgba(0, 0, 0, 0.75);
+  --buttonBgColor: #008030;
+  --buttonTextColor: #FFF;
+  --buttonBoxShadow: rgba(0, 0, 0, 0.00);
+}
+
+#container {
+  background: var(--bgColor);
+  width: 360px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 0px 6px 0px var(--boxShadow), 0px 0px 12px 0px var(--boxShadow);
+}
+
+@media (max-height: 767px) {
+  #container {
+    align-items: flex-start;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.safe-search-popup-modal {
+  background: var(--bgColor);
+}
+
+.safe-search-popup-header {    
+  display: flex;
+  padding: 8px 8px 4px 8px;
+  align-items: center;
+}
+
+.safe-search-popup-controls {
+  margin-left: auto;
+  margin-right: 4px;
+}
+
+.safe-search-popup-icon {
+  background: url(../../ic_24_product_safe_search.svg) no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.safe-search-popup-header-text {
+  color: var(--textColor);
+  font-family: "Mier B03 Bold";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  margin-left: 7px;
+  white-space: nowrap;
+}
+
+.safe-search-popup-settings {
+  background: url(../../ic_24_settings.svg) no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.safe-search-popup-close {
+  background: url(../../ic_24_close.svg) no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+.illustration-welcome {
+  margin: 24 auto;
+  background: url(../../illustration-welcome.svg) no-repeat;
+  width: 244px;
+  height: 106px;
+  background-position: center;
+}
+
+.illustration-danger,
+.illustration-blockPage {
+  margin: 24 auto;
+  background: url(../../illustration-danger.svg) no-repeat;
+  width: 244px;
+  height: 106px;
+  background-position: center;
+}
+
+.illustration-safe,
+.illustration-safePage {
+  margin: 24 auto;
+  background: url(../../illustration-safe.svg) no-repeat;
+  width: 244px;
+  height: 106px;
+  background-position: center;
+}
+
+.action-wrapper {
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-bottom: 32px;
+}
+
+.action-title {
+  color: var(--textColor);
+  text-align: center;
+  font-family: "Mier B03 Bold";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 28px;
+}
+
+.popup-blockPage .action-title,
+.popup-blockPage .action-subheading,
+.popup-danger .action-title { 
+  color: var(--dangerousText);
+}
+
+.action-description {
+  color: var(--subtextColor);
+  text-align: center;
+  font-family: "Mier B03 Regular";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 4px;
+}
+
+.action-subheading {
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 28px;
+}
+
+.action-button {
+  width: 130px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  background: var(--buttonBgColor);
+  box-shadow: 0px 0px 0px 0px var(--buttonBoxShadow);
+  color: var(--buttonTextColor);
+  text-align: center;
+  font-family: "Mier B03 Bold";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  margin: 24 auto;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+#container.dark {
+
+  .safe-search-popup-icon {
+    background: url(../../ic_24_product_safe_search_dark.svg) no-repeat;
+  }
+
+  .safe-search-popup-settings {
+    background: url(../../ic_24_settings_dark.svg) no-repeat;
+  }
+
+  .safe-search-popup-close {
+    background: url(../../ic_24_close_dark.svg) no-repeat;
+  }
+
+  .illustration-welcome {
+    background: url(../../illustration-welcome-dark.svg) no-repeat;
+    background-position: center;
+  }
+
+  .illustration-safe,
+  .illustration-safePage {
+    background: url(../../illustration-safe-dark.svg) no-repeat;
+    background-position: center;
+  }
+
+  .illustration-danger,
+  .illustration-blockPage  {
+    background: url(../../illustration-danger-dark.svg) no-repeat;
+    background-position: center;
+  }
+}
+
+body[dir="rtl"] {
+
+  #container {
+    right: 2px;
+    left: 0;
+  }
+
+  .safe-search-popup-controls {
+    margin-right: auto;
+    margin-left: 4px;
+  }
+
+  .safe-search-popup-header-text {
+    margin-right: 7px;
+    margin-left: 0;
+  }
+
+  .safe-search-popup-close {
+    margin-left: 0;
+    margin-right: 16px;
+  }
+}
+
+
+/** safeSearchPopup style ends here**/

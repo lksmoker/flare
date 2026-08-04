@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Hrozby: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Tato str\u00e1nka je\u0161t\u011b nebyla testov\u00e1na."
+	},
+    "SAFE":
+    {
+        "message" : "BEZPE\u010cN\u00c9"
+    },
+    "SECURE":
+    {
+        "message" : "ZABEZPE\u010cENO"
+    },
+    "CAUTION":
+    {
+        "message" : "Upozorn\u011bn\u00ed"
+    },
+    "UNTESTED":
+    {
+        "message" : "NETESTOV\u00c1NO"
+    },
+    "UNSAFE":
+    {
+        "message" : "NEBEZPE\u010cN\u00c9"
+    },
+	"Full Report" :
+	{
+		"message" : "\u00dapln\u00e1 zpr\u00e1va"
+	}
+}

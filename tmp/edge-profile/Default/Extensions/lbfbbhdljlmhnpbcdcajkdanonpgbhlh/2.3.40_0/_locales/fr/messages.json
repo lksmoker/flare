@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "fr"
+   },
+   "downloadButton": {
+      "message": "Télécharger"
+   },
+   "downloadMessage": {
+      "message": "Téléchargez iCloud pour Windows afin d’utiliser Signets iCloud."
+   },
+   "enableBookmarksMessage": {
+      "message": "Activez les signets dans iCloud pour Windows afin d’utiliser les signets iCloud avec Edge."
+   },
+   "extDescription": {
+      "message": "Tenez vos signets Edge sur Windows à jour grâce aux signets Safari sur votre iPhone, iPad et Mac."
+   },
+   "extName": {
+      "message": "Signets iCloud"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Ouvrir iCloud pour Windows"
+   },
+   "syncedMessage": {
+      "message": "Vos signets Edge sont synchronisés avec iCloud."
+   },
+   "unsupportedOS": {
+      "message": "L’extension que vous essayez d’installer est conçue pour être exécutée sous Windows. Si vous utilisez un Mac, vos signets Safari seront automatiquement synchronisés avec votre iPhone, iPad et Mac lorsque vous vous connectez à iCloud sur l’ensemble de vos appareils."
+   }
+}

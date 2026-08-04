@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Destacaremos links suspeitos no seu email, Facebook, Twitter e outras contas."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Saiba mais"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "LINK SUSPEITO"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Agora, o Norton avisa voc\u00ea sobre links suspeitos em seu email para proteg\u00ea-lo de atividades maliciosas."
+    }
+}

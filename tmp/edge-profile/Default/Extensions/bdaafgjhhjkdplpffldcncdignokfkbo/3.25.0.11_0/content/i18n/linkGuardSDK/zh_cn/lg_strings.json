@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "\u6211\u4eec\u4f1a\u7a81\u51fa\u663e\u793a Webmail\u3001Facebook\u3001Twitter \u548c\u5176\u4ed6\u5e10\u6237\u4e2d\u7684\u53ef\u7591\u94fe\u63a5\u3002"
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "\u4e86\u89e3\u66f4\u591a\u4fe1\u606f"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "\u786e\u5b9a"
+    },
+    "suspicious.links.popup.header": {
+        "message": "\u53ef\u7591\u94fe\u63a5"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton \u73b0\u5728\u4f1a\u8b66\u544a\u60a8\u7535\u5b50\u90ae\u4ef6\u4e2d\u5b58\u5728\u53ef\u7591\u94fe\u63a5\uff0c\u4ee5\u4fdd\u62a4\u60a8\u514d\u53d7\u6076\u610f\u6d3b\u52a8\u7684\u4fb5\u5bb3\u3002"
+    }
+}

@@ -1,0 +1,46 @@
+/*———————————————————————————————————————————————————————————————————————————————————————
+
+NortonLifeLock copyright header start
+
+Copyright (c) 2024 NortonLifeLock Inc. All rights reserved.
+
+THIS SOFTWARE CONTAINS CONFIDENTIAL INFORMATION AND TRADE SECRETS OF NORTONLIFELOCK
+INC.  USE, DISCLOSURE OR REPRODUCTION IS PROHIBITED WITHOUT THE PRIOR
+EXPRESS WRITTEN PERMISSION OF NORTONLIFELOCK INC.
+
+The Licensed Software and Documentation are deemed to be commercial computer
+software as defined in FAR 12.212 and subject to restricted rights as defined
+in FAR Section 52.227-19 "Commercial Computer Software - Restricted Rights"
+and DFARS 227.7202, "Rights in Commercial Computer Software or Commercial
+Computer Software Documentation", as applicable, and any successor regulations.
+Any use, modification, reproduction release, performance, display or disclosure
+of the Licensed Software and Documentation by the U.S. Government shall be
+solely in accordance with the terms of this Agreement.
+
+NortonLifeLock copyright header stop
+———————————————————————————————————————————————————————————————————————————————————————*/
+body {
+    margin: 0;
+  }
+  
+  .banner-toggle-icon-container {
+    width: 40px;
+    background-color: #D40404;
+    height: 24px;
+    border-radius: 0 0 7px 7px;
+    float: right;
+    cursor: pointer;
+  }
+  
+  .banner-toggle-icon-image {
+    background-image: url(../images/collapse.svg);
+    background-repeat: no-repeat;
+    margin: auto;
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  
+  .banner-toggle-icon-image[state="collapsed"] {
+    background-image: url(../images/uncollapse.svg);
+  }

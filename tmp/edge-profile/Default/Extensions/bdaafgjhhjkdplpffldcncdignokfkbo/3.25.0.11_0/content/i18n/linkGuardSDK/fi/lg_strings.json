@@ -1,0 +1,17 @@
+{
+    "suspicious.links.notification.main": {
+        "message": "Sovellus korostaa ep\u00e4ilytt\u00e4v\u00e4t linkit verkkos\u00e4hk\u00f6postissa, Facebookissa, Twitteriss\u00e4 ja muilla tileill\u00e4."
+    },
+    "suspicious.links.notification.learnMore": {
+        "message": "Lue lis\u00e4\u00e4"
+    },
+    "suspicious.links.notification.ok": {
+        "message": "OK"
+    },
+    "suspicious.links.popup.header": {
+        "message": "EP\u00c4ILYTT\u00c4V\u00c4 LINKKI"
+    },
+    "suspicious.links.popup.content": {
+        "message": "Norton suojaa sinua haitalliselta toiminnalta varoittamalla nyt ep\u00e4ilytt\u00e4vist\u00e4 linkeist\u00e4 s\u00e4hk\u00f6postissa."
+    }
+}

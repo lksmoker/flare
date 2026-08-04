@@ -1,0 +1,32 @@
+{
+   "_lang": {
+      "message": "pl"
+   },
+   "downloadButton": {
+      "message": "Pobierz"
+   },
+   "downloadMessage": {
+      "message": "Aby używać Zakładek iCloud, pobierz iCloud dla Windows."
+   },
+   "enableBookmarksMessage": {
+      "message": "Aby używać Zakładek iCloud z Edge, włącz opcję Zakładki w iCloud dla Windows."
+   },
+   "extDescription": {
+      "message": "Synchronizuj swoje zakładki Edge w systemie Windows z zakładkami Safari na iPhonie, iPadzie i Macu."
+   },
+   "extName": {
+      "message": "Zakładki iCloud"
+   },
+   "okButton": {
+      "message": "OK"
+   },
+   "signinButton": {
+      "message": "Otwórz iCloud dla Windows"
+   },
+   "syncedMessage": {
+      "message": "Twoje zakładki Edge są synchronizowane z iCloud."
+   },
+   "unsupportedOS": {
+      "message": "Rozszerzenie, które próbujesz zainstalować, zostało zaprojektowane dla systemu Windows. Jeżeli używasz Maca, zakładki Safari będą automatycznie synchronizowane z iPhone’em, iPadem i Makiem, gdy zalogujesz się w iCloud na wszystkich swoich urządzeniach."
+   }
+}

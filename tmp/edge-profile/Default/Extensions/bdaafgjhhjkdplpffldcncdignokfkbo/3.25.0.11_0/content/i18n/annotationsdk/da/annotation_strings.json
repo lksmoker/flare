@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "Trusler: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "Dette websted er ikke testet endnu"
+	},
+    "SAFE":
+    {
+        "message" : "SIKKERT"
+    },
+    "SECURE":
+    {
+        "message" : "SIKKER"
+    },
+    "CAUTION":
+    {
+        "message" : "Advarsel"
+    },
+    "UNTESTED":
+    {
+        "message" : "IKKE TESTET"
+    },
+    "UNSAFE":
+    {
+        "message" : "USIKKER"
+    },
+	"Full Report" :
+	{
+		"message" : "Komplet rapport"
+	}
+}

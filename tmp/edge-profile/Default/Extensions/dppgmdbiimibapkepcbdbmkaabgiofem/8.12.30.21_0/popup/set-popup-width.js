@@ -1,0 +1,1 @@
+import{c as t}from"/chunks/chunk-64UFZMSF.js";import"/chunks/chunk-BGBVTSFQ.js";import"/chunks/chunk-ZTX3HEAE.js";import"/chunks/chunk-NJ45OJHT.js";import"/chunks/chunk-KE7XYCUB.js";var d=t()??"double-pane";document.body.setAttribute("data-width",d);

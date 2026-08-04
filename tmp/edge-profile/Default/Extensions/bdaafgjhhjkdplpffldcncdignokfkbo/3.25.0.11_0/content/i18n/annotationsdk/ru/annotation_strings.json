@@ -1,0 +1,34 @@
+{
+	"Threats":
+    {
+        "message" : "\u0423\u0433\u0440\u043e\u0437\u044b: "
+    },
+	"This site has not been tested yet":
+	{
+		"message" : "\u042d\u0442\u043e\u0442 \u0432\u0435\u0431-\u0441\u0430\u0439\u0442 \u0435\u0449\u0435 \u043d\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d"
+	},
+    "SAFE":
+    {
+        "message" : "\u0411\u0415\u0417\u041e\u041f\u0410\u0421\u041d\u041e"
+    },
+    "SECURE":
+    {
+        "message" : "\u0417\u0410\u0429\u0418\u0429\u0415\u041d\u041e"
+    },
+    "CAUTION":
+    {
+        "message" : "\u0412\u043d\u0438\u043c\u0430\u043d\u0438\u0435"
+    },
+    "UNTESTED":
+    {
+        "message" : "\u041d\u0415 \u041f\u0420\u041e\u0412\u0415\u0420\u0415\u041d\u041e"
+    },
+    "UNSAFE":
+    {
+        "message" : "\u041d\u0415\u0411\u0415\u0417\u041e\u041f\u0410\u0421\u041d\u041e"
+    },
+	"Full Report" :
+	{
+		"message" : "\u041f\u043e\u043b\u043d\u044b\u0439 \u043e\u0442\u0447\u0435\u0442"
+	}
+}

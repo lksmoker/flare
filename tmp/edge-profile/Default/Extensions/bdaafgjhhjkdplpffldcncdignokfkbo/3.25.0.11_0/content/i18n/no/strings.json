@@ -1,0 +1,1234 @@
+{
+	"Caution":
+	{
+		"message": "Forsiktig"
+	},
+
+	"Untested":
+	{
+		"message": "IKKE TESTET"
+	},
+
+	"Warning":
+	{
+		"message": "Advarsel"
+	},
+	"Norton Secured":
+	{
+		"message": "SIKKERT"
+	},
+	"Not Licensed":
+	{
+		"message": "Ikke lisensiert"
+	},
+	"Safe":
+	{
+		"message": "Sikkert"
+	},
+	"Safe Web is off":
+	{
+		"message": "SIKKER"
+	},
+	"Page not analyzed":
+	{
+		"message": "Side ikke analysert"
+	},
+	"Norton Rating":
+	{
+		"message": "Norton-rangering"
+	},
+	"Computer Threats":
+	{
+		"message": "Datamaskin-\ntrusler"
+	},
+	"Identity Threats":
+	{
+		"message": "Identitets-\ntrusler"
+	},
+	"Annoyance Threats":
+	{
+		"message": "Irritasjons-\ntrusler"
+	},
+	"Total Threats":
+	{
+		"message": "Totalt antall trusler"
+	},
+	"Full Safe Web report":
+	{
+		"message": "Full Safe Web-rapport"
+	},
+	"Report this site":
+	{
+		"message": "Rapporter dette nettstedet"
+	},
+	"Norton Safe Web":
+	{
+		"message": "Norton Safe Web"
+	},
+	"Browser Settings":
+	{
+		"message": "Nettleserinnstillinger"
+	},
+	"Unsafe to Shop":
+	{
+		"message" : "UTRYGG"
+	},
+    "total_threats_id":
+    {
+        "message" : "Trusler: "
+    },
+		"untested_text":
+		{
+			"message" : "Dette omr\u00e5det har ikke blitt testet enda"
+		},
+    "safe_status_id":
+    {
+        "message" : "SIKKER"
+    },
+    "secure_status_id":
+    {
+        "message" : "SIKKERT"
+    },
+    "caution_status_id":
+    {
+        "message" : "Forsiktig"
+    },
+    "untested_status_id":
+    {
+        "message" : "IKKE TESTET"
+    },
+    "unsafe_status_id":
+    {
+        "message" : "UTRYGG"
+    },
+		"full_report_id" :
+		{
+				"message" : "Full rapport"
+		},
+	"nortonrating_id":
+	{
+		"message" : "Norton-rangering:"
+	},
+	"Malicious Download Detected":
+	{
+		"message" : "Skadelig nettside oppdaget"
+	},
+	"Download Cancelled":
+	{
+		"message" : "Nedlastingen ble avbrutt"
+	},
+	"Malicious Website Blocked":
+	{
+		"message" : "Ondsinnet nettsted blokkert"
+	},
+	"Malicious Site Blocked!":
+	{
+		"message" : "Skadelig nettsted blokkert!"
+	},
+	"You attempted to access:" :
+	{
+		"message" : "Du fors\u00f8kte \u00e5 f\u00e5 tilgang til:"
+	},
+	"You attempted to access" :
+	{
+		"message" : "Du fors\u00f8kte \u00e5 f\u00e5 tilgang til"
+	},
+	"Website you tried to access:": {
+		"message" : "Nettstedet du pr\u00f8vde \u00e5 \u00e5pne:"
+	},
+	"This is a known malicious website. It is recommended that you do NOT visit this site. The" :
+	{
+		"message" : "Dette er et kjent ondsinnet nettsted. Vi anbefaler at du IKKE bes\u00f8ker dette nettstedet. Den"
+	},
+	"This webpage is a known malicious webpage." :
+	{
+		"message" : "Dette nettstedet er kjent som et ondsinnet nettsted."
+	},
+	"This site is a known malicious website." :
+	{
+		"message" : "Dette er et kjent skadelig nettsted."
+	},
+	"detailed report" :
+	{
+		"message" : "detaljerte rapporten v\u00e5r"
+	},
+	"explains the security risks on this site." :
+	{
+		"message" : "forklarer sikkerhetsrisikoene p\u00e5 dette omr\u00e5det."
+	},
+	"For your protection, this website has been blocked. Visit" :
+	{
+		"message" : "Dette nettstedet er blokkert for din sikkerhet. G\u00e5 til"
+	},
+	"to learn more about phishing and internet security." :
+	{
+		"message" : "for \u00e5 l\u00e6re mer om nettfisking og Internett-sikkerhet."
+	},
+	"Exit this site" :
+	{
+		"message" : "G\u00e5 ut av dette nettstedet"
+	},
+	"I want to view this Website anyway" :
+	{
+		"message" : "Jeg vil se dette nettstedet uansett"
+	},
+	"It is recommended that you" :
+	{
+		"message" : "Det anbefales at du"
+	},
+	"DO NOT visit this Website." :
+	{
+		"message" : "IKKE bes\u00f8k dette nettstedet."
+	},
+	"Norton":
+	{
+		"message" : "Norton"
+	},
+	"Norton Home Page" :
+	{
+		"message" : "Nortons startside"
+	},
+	"Suspicious Website Blocked" : {
+		"message" : "Mistenkelig nettsted blokkert"
+	},
+	"For your protection, this webpage has been blocked and submitted for review." :
+	{
+		"message" : "Dette nettstedet er blokkert for din sikkerhet. Den er sendt inn til evaluering."
+	},
+	"This site has been blocked due to piracy or other restrictions in your region. We highly recommend that you do not visit this page." :
+	{
+		"message" : "Dette nettstedet er blokkert, enten p\u00e5 grunn av piratkopiering eller andre restriksjoner i ditt omr\u00e5de. Vi anbefaler p\u00e5 det sterkeste at du ikke bes\u00f8ker nettstedet."
+	},
+	"It is highly recommended that you do NOT visit this page." :
+	{
+		"message" : "Vi anbefaler sterkt at du IKKE bes\u00f8ker denne siden."
+	},
+	"Visit" :
+	{
+		"message" : "G\u00e5 til"
+	},
+	"Continue to the site" :
+	{
+		"message" : "Fortsett til nettstedet"
+	},
+	"View Full Report" :
+	{
+		"message" : "Vis full rapport"
+	},
+	"Search for a safer site" :
+	{
+		"message" : "S\u00f8k etter et sikrere nettsted"
+	},
+	"Fraudulent Webpage Blocked" :
+	{
+		"message" : "Bedragersk nettsted blokkert"
+	},
+	"This webpage is a known fraudulent webpage.":
+	{
+		"message" : "Dette nettstedet er et kjent bedragersk nettsted."
+	},
+	"Dangerous Webpage Blocked" :
+	{
+		"message" : "Skadelig nettside blokkert"
+	},
+	"This is a known dangerous webpage." :
+	{
+		"message" : "Dette er et kjent farlig nettsted."
+	},
+	"Thank you for using {0}! Share usage and error data anonymously with Norton to help make our products even better." : {
+		"message" : "Takk for at du bruker {0}! Del bruks- og feildata anonymt med Norton og hjelp oss med \u00e5 gj\u00f8re produktene v\u00e5re enda bedre."
+	},
+	"OK" :
+	{
+	    "message" : "OK"
+	},
+	"No, thanks" :
+	{
+	    "message" : "Nei, takk"
+	},
+	"Learn More" :
+	{
+	    "message" : "Les mer"
+	},
+	"Safe Web"	:
+	{
+			"message" : "Safe Web"
+	},
+	"Safe Search"	:
+	{
+			"message"	: "Safe Search"
+	},
+	"Secure Search"	:
+	{
+			"message"	: "Secure Search"
+	},
+	"Home Page"	:
+	{
+			"message"	: "Startside"
+	},
+	"Settings"	:
+	{
+			"message" :	"Innstillinger"
+	},
+	"Share Data with ProductName"	:
+	{
+			"message"	: "DEL DATA MED NORTON"
+	},
+	"Share usage and error data anonymously with Norton and help us make our products even better"	:
+	{
+			"message"	: "Del bruks- og feildata med Norton og hjelp oss med \u00e5 gj\u00f8re produktene v\u00e5re enda bedre"
+	},
+	"Scam Insight: Personal Information Risk" :
+	{
+		"message" : "Scam Insight: risiko for personopplysninger"
+	},
+	"This site is safe, but…" :
+	{
+		"message" : "Dette omr\u00e5det er trygt, men\u00a0\u2026"
+	},
+	"It asks for personal information and is not well established with the Norton Community. Use caution when entering any of your information on this site. " :
+	{
+		"message" : "Det ber om personopplysninger og er ikke veletablert i Norton-fellesskapet. Du b\u00f8r tenke deg om f\u00f8r du oppgir informasjon p\u00e5 dette nettstedet. "
+	},
+	"Visit " :
+	{
+		"message" : "G\u00e5 til "
+	},
+	"Norton " :
+	{
+		"message" : "Norton"
+	},
+	"to learn more about personal information risk on Websites." :
+	{
+		"message" : "for \u00e5 l\u00e6re mer om risiko for informasjonsrisikoer p\u00e5 nettsteder."
+	},
+	"Age: " :
+	{
+		"message" : "Alder: "
+	},
+	"Very New" :
+	{
+		"message" : "Helt ny"
+	},
+	"This website was published very recently." :
+	{
+		"message" : "Dette nettstedet ble publisert sv\u00e6rt nylig."
+	},
+	"New" :
+	{
+		"message" : "Nytt"
+	},
+	"This website has been available for a short time." :
+	{
+		"message" : "Dette nettstedet har bare v\u00e6rt tilgjengelig en kort stund."
+	},
+	"Prevalence: " :
+	{
+		"message" : "Utbredelse: "
+	},
+	"No Users" :
+	{
+		"message" : "Ingen brukere"
+	},
+	"No Norton community members have used this site." :
+	{
+		"message" : "Ingen medlemmer av Norton-fellesskapet har brukt dette nettstedet."
+	},
+	"Few Users" :
+	{
+		"message" : "F\u00e5 brukere"
+	},
+	"Very few Norton community members have used this site." :
+	{
+		"message" : "Sv\u00e6rt f\u00e5 medlemmer av Norton-fellesskapet har brukt dette nettstedet."
+	},
+	"Continue to Site" :
+	{
+		"message" : "Fortsett til omr\u00e5det"
+	},
+	"Exit Site" :
+	{
+		"message" : "Avslutt omr\u00e5de"
+	},
+	"If you think this website is categorized incorrectly, " :
+	{
+		"message" : "Hvis du mener dette nettstedet er feilkategorisert, "
+	},
+	"Report Issue." :
+	{
+		"message" : "Rapporter problem."
+	},
+	"Signed in as"		:
+	{
+		"message"		: "Logget p\u00e5 som"
+	},
+	"Sign out"			:
+	{
+		"message"		: "Logg av"
+	},
+	"You have successfully logged out of your NortonLifeLock Account"	: {
+		"message"	:	"Du har logget av NortonLifeLock-kontoen"
+	},
+	"Sorry, something went wrong. Please try again." :	{
+		"message"	:	"Beklager, men noe har g\u00e5tt galt. Pr\u00f8v p\u00e5 nytt."
+	},
+	"Identify unsafe links in Webmail, Facebook, and Twitter": {
+		"message": "Identifiser usikre koblinger p\u00e5 Webmail, Facebook og Twitter"
+	},
+	"Websites": {
+  		"message": "Nettsteder"
+	},
+	"Isolation Mode On": {
+  		"message": "Isolasjonsmodus P\u00e5"
+	},
+	"Isolation Mode Off": {
+  		"message": "Isolasjonsmodus Av"
+	},
+	"Ask Me": {
+  		"message": "Sp\u00f8r meg"
+	},
+	"Norton Secure Search": {
+		"message": "Norton Secure Search"
+	},
+	"Quick Links": {
+		"message": "Hurtigkoblinger"
+	},
+	"Privacy": {
+		"message": "Personvern"
+	},
+	"Copyright © {0} Gen Digital Inc. All rights reserved.": {
+		"message": "Copyright \u00a9 {0} Gen Digital Inc. Med enerett."
+	},
+	"Legal": {
+		"message": "Juridisk"
+  },
+  "NortonLifeLock Latest Updates": {
+    "message": "Siste oppdateringer av NortonLifeLock"
+  },
+  "Security & Privacy Center": {
+    "message": "Sikkerhets- og personvernsenter"
+  },
+  "Welcome to Norton Safe Search": {
+    "message": "Velkommen til Norton Safe Search"
+  },
+  "Take a tour to see what has changed and make the most of your Safe Search features.": {
+    "message": "Ta en tur for \u00e5 se hva som er endret og f\u00e5 mest mulig ut av Safe Search-funksjonene."
+  },
+  "Start Tour": {
+    "message": "Start omvisning"
+  },
+  "Peace of mind with every search": {
+    "message": "Sjelefred for hvert eneste s\u00f8k"
+  },
+  "Norton Safe Search shows site safety ratings in your search results.": {
+    "message": "Norton Safe Search viser vurderinger av nettstedssikkerhet i s\u00f8keresultatene."
+  },
+  "Get security updates and tips from Norton": {
+    "message": "F\u00e5 sikkerhetsoppdateringer og tips fra Norton"
+  },
+  "Explore the latest security and privacy blogs from NortonLifeLock and learn more about digital safety.": {
+    "message": "Utforsk de siste sikkerhets- og personvernbloggene fra NortonLifeLock og les mer om digital sikkerhet."
+  },
+  "A tour of Norton Home Page is available in Settings.": {
+    "message": "En omvisning i Norton startside er tilgjengelig under Instillinger."
+  },
+  "Next": {
+    "message": "Neste"
+  },
+  "Done": {
+    "message": "Fullf\u00f8rt"
+  },
+  "Welcome to {0}": {
+	"message": "Velkommen til {0}"
+  },
+  "Thank you for choosing NortonLifeLock.": {
+	  "message": "Takk for at du valgte NortonLifeLock."
+  },
+  "Keep It": {
+	"message": "Behold det"
+  },
+  "Keep it": {
+	"message": "Nei"
+  },
+  "Keep changes": {
+    "message": "Behold endringer"
+  },
+  "Keep Changes": {
+    "message": "Behold endringer"
+  },
+  "Maintain your {0} protection in Chrome by clicking the {1} button if a Chrome message appears at the top of the screen.": {
+	  "message": "Behold {0}-beskyttelsen i Chrome ved \u00e5 klikke p\u00e5 {1}-knappen hvis en Chrome-melding vises \u00f8verst p\u00e5 skjermen."
+  },
+  "Thanks for choosing {0}": {
+    "message": "Takk for at du valgte {0}"
+  },
+  "Once you've installed the browser extension, click {1}, if prompted by Microsoft Edge, to preserve your {0}.": {
+	  "message": "Dersom du blir oppfordret til det i Microsoft Edge, klikker du p\u00e5 {1} s\u00e5 snart du har installert leserutvidelsen for \u00e5 bevare {0}."
+  },
+  "Thanks for choosing NortonLifeLock.": {
+	  "message": "Takk for at du valgte NortonLifeLock."
+  },
+  "If a Chrome message appears at the top of the screen, click the {1} button to preserve your {0} in Chrome.": {
+	  "message": "Hvis en Chrome-melding vises \u00f8verst p\u00e5 skjermen, klikker du p\u00e5 {1}-knappen for \u00e5 bevare {0} i Chrome."
+	},
+  "Let us help protect you": {
+    "message" : "La oss beskytte deg"
+  },
+  "Norton Safe Web must have permissions to access and collect the web addresses (urls) that you visit. ": {
+    "message" : "Norton Safe Web trenger tillatelser for \u00e5 f\u00e5 tilgang til og samle inn nettadressene (url-ene) du bes\u00f8ker. "
+  },
+	"This way, we can provide safety ratings that can help protect while browsing the Web.": {
+		"message" : "P\u00e5 denne m\u00e5ten kan vi gi sikkerhetsvurderinger som kan bidra til \u00e5 beskytte deg mens du surfer p\u00e5 nettet."
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you search on. ": {
+		"message" : "Norton Safe Search m\u00e5 ha tillatelse for \u00e5 f\u00e5 tilgang til og samle inn nettadressene (url-ene) du s\u00f8ker etter. "
+	},
+	"Norton Safe Search must have permission to access and collect the web addresses (urls) that you browser on the web from your address bar and Norton Home Page. ": {
+		"message" : "Norton Safe Search m\u00e5 ha tillatelse for \u00e5 f\u00e5 tilgang til og samle inn nettadressene (url-ene) du bes\u00f8ker p\u00e5 nettet fra adresselinjen og Nortons startside. "
+	},
+	"We need your permission to collect web addresses (URLs) you search to detect potentially dangerous links. If you decline, this extension will be uninstalled.": {
+		"message" : "Vi trenger tillatelse fra deg til \u00e5 innhente nettadressene (URL) du s\u00f8ker for \u00e5 oppdage potensielt farlige koblinger. Hvis du nekter, vil denne utvidelsen bli avinstallert."
+	},
+	"We need your permission to collect web addresses (URLs) you browse to detect potentially dangerous websites. If you decline, this extension will be uninstalled." : {
+		"message" : "Vi trenger tillatelse fra deg til \u00e5 innhente nettadressene (URL) du er inne p\u00e5 for \u00e5 oppdage potensielt farlige nettsteder. Hvis du avsl\u00e5r, vil denne utvidelsen bli avinstallert."
+	},
+	"We also collect product usage data and error logs for analytics to improve performance. You can opt out of sharing this data and the extension will still function.": {
+		"message" : "Vi innhenter ogs\u00e5 data om produktbruk og feillogger for analyse, i den hensikt \u00e5 forbedre ytelsen. Utvidelsen vil fungere selv om du velger \u00e5 ikke dele disse dataene."
+	},
+	"Allow us to collect usage data.": {
+		"message" : "Gi oss tillatelse til \u00e5 innhente bruksdata."
+	},
+	"This way, we can help detect whether the sites you searched are malicious before you access them, and provide you with safe search results.": {
+		"message" : "P\u00e5 denne m\u00e5ten kan vi hjelpe deg \u00e5 sjekke om nettstedene du s\u00f8ker etter er skadelige, f\u00f8r du bes\u00f8ker dem. Vi kan ogs\u00e5 tilby deg sikre s\u00f8keresultater."
+	},
+	"This will enable us to detect whether they are malicious, and will let us warn you before you access them.": {
+		"message" : "Vi kan deretter vurdere om de er skadelige, slik at vi kan advare deg f\u00f8r du bes\u00f8ker dem."
+	},
+	"Norton Home Page must have permission to access and collect the web addresses (urls) that you search.": {
+		"message" : "Nortons startside trenger tillatelse for \u00e5 f\u00e5 tilgang til og samle inn nettadressene (url-ene) du s\u00f8ker etter."
+	},
+	"This way, we can help detect whether these sites are malicious before you access them.": {
+		"message" : "P\u00e5 denne m\u00e5ten kan vi hjelpe deg med \u00e5 sjekke om nettstedene er skadelige, f\u00f8r du bes\u00f8ker dem."
+	},
+  "To better understand our data collection policies, please visit our": {
+    "message" : "For \u00e5 forst\u00e5 v\u00e5re retningslinjer for datainnsamling, g\u00e5 til den"
+  },
+  "Accept": {
+    "message" : "Godta"
+  },
+  "Decline": {
+    "message" : "Avsl\u00e5"
+  },
+  "Your Permission Is Required": {
+    "message" : "Din tillatelse er n\u00f8dvendig"
+  },
+  "Should you decline, Norton Safe Web will not work and won't be able to provide safety ratings for sites for you.": {
+    "message" : "Hvis du avsl\u00e5r, vil ikke Norton Safe Web fungere og kan ikke tilby sikkerhetsvurderinger for nettsteder."
+  },
+	"Should you decline, Norton Safe Search will not work on this device, and won't be able to help protect you from any malicious websites.": {
+    "message" : "Hvis du avsl\u00e5r, vil ikke Norton Safe Search fungere p\u00e5 denne enheten. Da kan ikke funksjonen bidra til \u00e5 beskytte deg mot skadelige nettsteder."
+  },
+	"Should you decline, Norton Home Page will not work and won't be able to help protect you from any malicious sites.": {
+    "message" : "Hvis du avsl\u00e5r, vil ikke Nortons startside fungere. Da kan den ikke beskytte deg mot skadelige nettsteder."
+  },
+	"Should you decline, Norton Safe Search won't work, and won't be able to help protect you from malicious websites, nor we will be able to provide you with safe search results.": {
+		"message" : "Norton Safe Search fungerer ikke, og kan dermed ikke bidra til \u00e5 beskytte deg mot skadelige nettsteder. Vi kan heller ikke tilby deg sikre s\u00f8keresultater."
+	},
+  "Uninstalling Safe Web will mean that Norton will not be able to detect if sites are malicious and can't help protect you. We recommend clicking keep Installed and accepting permission for Safe Web to operate on your device.": {
+    "message" : "Hvis du avinstallerer Safe Web, kan ikke Norton sjekke om nettsteder er skadelige, og bidra til \u00e5 beskytte deg. Vi anbefaler at du klikker p\u00e5 Behold installert og gir Safe Web tillatelse til \u00e5 kj\u00f8re p\u00e5 enheten."
+  },
+  "Please click below to review your permission and accept our request to collect the anonymous information you submit.": {
+    "message" : "Klikk nedenfor for \u00e5 g\u00e5 gjennom tillatelsen og godta v\u00e5r foresp\u00f8rsel om \u00e5 samle inn informasjonen du sender inn anonymt."
+  },
+	"Search more safely, protect your device": {
+		"message" : "S\u00f8k sikrere, beskytt enheten din"
+	},
+	"Mozilla Firefox has updated its add-ons policy. Please give your permission again to continue using Norton Safe Search.": {
+		"message" : "Mozilla Firefox har oppdatert retningslinjene for tillegg. Du m\u00e5 gi tillatelse p\u00e5 nytt for \u00e5 fortsette \u00e5 bruke Norton Safe Search."
+	},
+	"Safe Search must have permission to collect the web addresses you search on, to determine if the sites are malicious before you visit them.": {
+		"message" : "Safe Search trenger tillatelse for \u00e5 samle inn nettadressene du s\u00f8ker etter, for \u00e5 finne ut om sidene er skadelige f\u00f8r du bes\u00f8ker dem."
+	},
+	"If you decline, Safe Search will not be able to help protect your device from malicious sites.": {
+		"message" : "Hvis du avsl\u00e5r, kan ikke Sikkert s\u00f8k hjelpe deg med \u00e5 beskytte enheten mot skadelige nettsteder."
+	},
+	"Share usage and error data anonymously with Norton to help make our products and services even better.": {
+		"message" : "Del bruks- og feildata anonymt med Norton s\u00e5 vi kan gj\u00f8re produktene og tjenestene v\u00e5re enda bedre."
+	},
+	"Decline & Uninstall": {
+		"message" : "Avsl\u00e5 og avinstaller"
+	},
+	"Home Page must have permission to access and collect the web addresses that you search on. ": {
+		"message" : "Norton Safe Search trenger tillatelse for \u00e5 f\u00e5 tilgang til og samle inn nettadressene du s\u00f8ker etter. "
+	},
+	"If you decline, Home Page will not be able to help protect you from malicious sites.": {
+		"message" : "Hvis du avsl\u00e5r, kan ikke Nortons startside lenger beskytte deg mot skadelige nettsteder."
+	},
+	"Search more safely from your home page": {
+		"message" : "S\u00f8k tryggere fra startsiden"
+	},
+	"Norton must have permission to access and collect the web addresses that you browse on the web, from your address bar, and your home page. ": {
+		"message" : "Norton Safe Search trenger tillatelse for \u00e5 f\u00e5 tilgang til og samle inn nettadressene du bes\u00f8ker p\u00e5 nettet fra adresselinjen og startsiden. "
+	},
+	"If you decline, Norton will not be able to help protect your device from malicious sites, nor will we be able to provide you with safe search results.": {
+		"message" : "Hvis du avsl\u00e5r, kan ikke Norton hjelpe deg med \u00e5 beskytte enheten mot skadelige nettsteder eller gi deg sikre s\u00f8keresultater."
+	},
+  "Review Your Permissions": {
+    "message" : "G\u00e5 gjennom tillatelsene dine"
+  },
+  "Remove Norton Safe Web": {
+    "message" : "Aktiver Norton Safe Web"
+  },
+  "Global Privacy Statement": {
+	"message" : "globale personvernerkl\u00e6ringen"
+  },
+  "addQuickLink": {
+    "message" : "Legg til snarvei"
+  },
+	"addNewText": {
+		"message" : "Legg til snarvei"
+	},
+  "Title": {
+    "message" : "Tittel"
+  },
+  "URL": {
+    "message" : "URL-adresse"
+  },
+  "The Quick Link you're trying to add is already provided for you.": {
+    "message" : "Snarveien du pr\u00f8ver \u00e5 legge til, er allerede tilgjengelig for deg."
+  },
+  "Edit shortcut": {
+    "message" : "Rediger snarvei"
+  },
+  "Add": {
+    "message" : "Legg til"
+  },
+  "Cancel": {
+    "message" : "Avbryt"
+  },
+  "Save": {
+    "message" : "Lagre"
+  },
+  "Edit": {
+    "message" : "Rediger"
+  },
+  "Remove": {
+    "message" : "Fjern"
+  },
+  "Quick Links is all new!": {
+    "message" : "Hurtigkoblinger er helt nytt!"
+  },
+  "Add your favorite sites to the new Quick Links bar.": {
+    "message" : "Legg til favorittsidene dine i den nye hurtigkoblingslinjen."
+  },
+  "Got it": {
+    "message" : "OK"
+  },
+  "Type a valid URL": {
+    "message" : "Oppgi en gyldig URL-adresse"
+  },
+  "Quick links to access popular sites with ease": {
+    "message" : "Hurtigkoblinger til popul\u00e6re nettsteder"
+  },
+  "Editable quick links": {
+    "message" : "Redigerbare hurtigkoblinger"
+  },
+  "This website is considered safe.": {
+	  "message" : "Dette nettstedet regnes som trygt."
+  },
+  "This website has not been rated yet.": {
+	  "message" : "Dette nettstedet er ikke vurdert enn\u00e5."
+  },
+  "This website may have a small number of threats.": {
+	  "message" : "Dette nettstedet kan ha noen f\u00e5 trusler."
+  },
+  "This is a known malicious webpage." : {
+	  "message" : "Dette er en kjent skadelig nettside."
+  },
+  "This is a suspicious webpage." : {
+	  "message" : "Dette er en mistenkelig nettside."
+  },
+  "View a full Safe Web report" : {
+	  "message" : "Vis hele Safe Web-rapporten"
+  },
+    "Accept risk and continue" : {
+		"message" : "Godta risikoen og fortsett"
+	},
+	"Accept and display risk": {
+		"message": "Godta og vise risiko"
+	},
+	"Close this website (recommended)": {
+		"message": "Lukk dette nettstedet (anbefalt)"
+	},
+	"New feature from Norton Safe Web!" : {
+		"message": "Ny funksjon fra Norton Safe Web!"
+	},
+	"Protection from Formjacking": {
+		"message": "Beskyttelse mot formjacking"
+	},
+	"Norton Safe Web can help you avoid formjacking while you shop online.": {
+		"message": "Norton Safe Web kan hjelpe deg med \u00e5 unng\u00e5 formjacking n\u00e5r du handler p\u00e5 nettet."
+	},
+	"We'll notify you if we detect that the site you're buying from has a compromised payment system.": {
+		"message": "Vi varsler deg hvis vi oppdager at nettstedet du handler fra har et kompromittert betalingssystem."
+	},
+	"Thanks for installing": {
+		"message": "Takk for at du installerte den"
+	},
+	"Norton Safe Web!": {
+		"message": "Norton Safe Web!"
+	},
+	"Take advantage of all these great features:": {
+		"message": "Benytt deg av alle de flotte funksjonene:"
+	},
+	"Website Ratings": {
+		"message": "Nettstedvurderinger"
+	},
+	"Our website ratings will let you know if a site is safe or if you should be cautious before providing it with your data.": {
+		"message": "V\u00e5re nettstedvurderinger forteller deg om et nettsted er trygt eller om du b\u00f8r v\u00e6re forsiktig f\u00f8r du oppgir data."
+	},
+	"Intrusion Prevention": {
+		"message": "Inntrengingsforhindring"
+	},
+	"Norton Safe Web helps protect against known bugs and cyberthreats in popular browsers.": {
+		"message": "Norton Safe Web bidrar til \u00e5 beskytte mot kjente feil og nettrusler i popul\u00e6re nettlesere."
+	},
+	"Formjacking Prevention": {
+		"message": "Formjackingforhindring"
+	},
+	"Norton Safe Web will notify you if it detects an e-commerce site has a compromised payment system.": {
+		"message": "Norton Safe Web varsler deg hvis det avdekkes at et e-handelsomr\u00e5de har et kompromittert betalingssystem."
+	},
+	"Website Blocking": {
+		"message": "Blokkering av nettsted"
+	},
+	"Norton Safe Web notifies you, then helps block malicious sites before you click.": {
+		"message": "Norton Safe Web varsler deg og hjelper deg deretter med \u00e5 blokkere skadelige nettsteder f\u00f8r du klikker."
+	},
+	"Anti-Phishing Protection": {
+		"message": "Beskyttelse mot nettfisking"
+	},
+	"This feature lets you know if the site you're clicking on is officially certified, not a phishing site.": {
+		"message": "Denne funksjonen gir beskjed om nettstedet du klikker p\u00e5 er offisielt sertifisert og ikke et nettfiskingsnettsted."
+	},
+	"Link Guard": {
+		"message": "Koblingsvern"
+	},
+	"Blocking options": {
+		"message": "Blokkeringsalternativer"
+	},
+	"Choose the level of protection when Safe Web detects a malicious or phishing website.": {
+		"message": "Velg beskyttelsesniv\u00e5et for n\u00e5r sikker surfing oppdager et skadelig nettsted eller en nettside med nettfisking."
+	},
+	"Block the site": {
+		"message": "Blokker nettstedet <span>Anbefalt</span>"
+	},
+	"Show notification banner": {
+		"message": "Vis varslingsbanner"
+	},
+	"Alert me from extension icon only": {
+		"message": "Varsle meg bare fra utvidelsesikon"
+	},
+	"Scans webmail and social media feeds for links that are suspicious or malicious.": {
+		"message": "S\u00f8ker i webmail og sosiale mediefeeder etter koblinger som er mistenkelige eller skadelige."
+	},
+	"Learn more": {
+		"message": "Les mer"
+	},
+	"We strongly recommend that you do not share any personal or financial information on this page.": {
+		"message": "Vi anbefaler sterkt at du ikke deler personopplysninger eller \u00f8konomisk informasjon p\u00e5 denne siden."
+	},
+	"Norton Safe Web will only provide site ratings on Norton Safe Search" :{
+		"message": "Norton Safe Web gir bare nettstedsrangeringer p\u00e5 Norton Safe Search"
+	},
+	"Protect your searches with Norton Safe Search" :{
+		"message": "Beskytt s\u00f8kene dine med Norton Safe Search"
+	},
+	"Moving forward, the Norton Safe Web extension will stop providing site ratings to all search engines except for Norton Safe Search.": {
+		"message": "Norton Safe Web-utvidelsen vil fra n\u00e5 av ikke levere nettstedsrangeringer for alle s\u00f8kemotorer, bortsett fra Norton Safe Search."
+	},
+	"We will continue to block dangerous websites to keep your browsing safe and secure.": {
+		"message": "Vi vil fortsette \u00e5 blokkere farlige nettsteder slik at du kan surfe trygt."
+	},
+	"To continue to see site ratings, install the Norton Safe Search extension.": {
+		"message": "Installer Norton Safe Search-utvidelsen for \u00e5 fortsette \u00e5 se nettstedsrangeringer."
+	},
+	"See Forecast": {
+		"message": "Se v\u00e6rvarsel"
+	},
+	"Fahrenheit": {
+		"message": "Fahrenheit"
+	},
+	"Celsius": {
+		"message": "Celsius"
+	},
+	"FarenheitUnit": {
+		"message": "\u00b0F"
+	},
+	"CelsiusUnit": {
+		"message": "\u00b0C"
+	},
+	"January": {
+		"message": "Januar"
+	},
+	"February": {
+		"message": "Februar"
+	},
+	"March": {
+		"message": "Mars"
+	},
+	"April": {
+		"message": "April"
+	},
+	"May": {
+		"message": "Mai"
+	},
+	"June": {
+		"message": "Juni"
+	},
+	"July": {
+		"message": "Juli"
+	},
+	"August": {
+		"message": "August"
+	},
+	"September": {
+		"message": "September"
+	},
+	"October": {
+		"message": "Oktober"
+	},
+	"November": {
+		"message": "November"
+	},
+	"December": {
+		"message": "Desember"
+	},
+	"Monday": {
+		"message": "Mandag"
+	},
+	"Tuesday": {
+		"message": "Tirsdag"
+	},
+	"Wednesday": {
+		"message": "Onsdag"
+	},
+	"Thursday": {
+		"message": "Torsdag"
+	},
+	"Friday": {
+		"message": "Fredag"
+	},
+	"Saturday": {
+		"message": "L\u00f8rdag"
+	},
+	"Sunday": {
+		"message": "S\u00f8ndag"
+	},
+	"General": {
+		"message": "Generelt"
+	},
+	"settingsShare": {
+		"message" : "Annet"
+	},
+	"New tab": {
+		"message": "Ny fane"
+	},
+	"Shortcuts": {
+		"message": "Snarveier"
+	},
+	"Launch the search links in a new tab": {
+		"message": "Start s\u00f8kekoblingene i en ny fane"
+	},
+	"Show bookmark bar": {
+		"message": "Vis bokmerkelinje"
+	},
+	"Requires additional permission": {
+		"message": "Krever ytterligere tillatelse"
+	},
+	"Quick links": {
+		"message": "Hurtigkoblinger"
+	},
+	"Most-visited sites": {
+		"message": "Ofte bes\u00f8kte nettsteder"
+	},
+	"Create shortcuts of my most-visited sites": {
+		"message": "Opprett snarveier til mine ofte bes\u00f8kte nettsteder "
+	},
+	"Shown based on websites": {
+		"message": "Vises basert p\u00e5 nettsteder du bes\u00f8ker ofte | Krever ytterligere tillatelse"
+	},
+	"Custom quick links": {
+		"message": "Egendefinerte hurtigkoblinger"
+	},
+	"Create custom shortcuts":{
+		"message": "Opprett egendefinerte snarveier"
+	},
+	"Quick links added by you": {
+		"message": "Hurtigkoblinger lagt til av deg"
+	},
+	"Customize": {
+		"message": "Tilpass"
+	},
+	"Widgets below shortcuts": {
+		"message": "Kontrollprogrammer under snarveier"
+	},
+	"BookmarkBar": {
+		"message": "Bokmerkelinje"
+	},
+	"Extension theme": {
+		"message": "Utvidelsestema"
+	},
+	"Show weather widget": {
+		"message": "Vis kontrollprogram for v\u00e6r"
+	},
+	"Show time widget": {
+		"message": "Vis kontrollprogram for tid"
+	},
+	"Background image": {
+		"message": "Bakgrunnsbilde"
+	},
+	"Background": {
+		"message": "Bakgrunn"
+	},
+	"Choose": {
+		"message": "Velg"
+	},
+	"Restore defaults": {
+		"message": "Gjenopprett til standardinnstilling"
+	},
+	"Reset to default": {
+		"message": "Tilbakestill til standard"
+	},
+	"Share usage and error data anonymously": {
+		"message": "Del bruks- og feildata med Norton og hjelp oss med \u00e5 gj\u00f8re produktene v\u00e5re enda bedre"
+	},
+	"Light mode": {
+		"message": "Lys modus"
+	},
+	"Dark mode": {
+		"message": "M\u00f8rk modus"
+	},
+	"Manage bookmarks": {
+		"message": "Administrer bokmerker"
+	},
+	"Choose image": {
+		"message": "Velg bilde"
+	},
+	"Choose an image from your device": {
+		"message": "Velg et bilde fra enheten din"
+	},
+	"Gallery": {
+		"message": "Galleri"
+	},
+	"Choose from one of five images": {
+		"message": "Velg en av de fire bakgrunnene nedenfor, eller velg et bilde fra enheten din."
+	},
+	"Norton Safe Search!": {
+		"message": "Norton Safe Search!"
+	},
+	"Upload one of your own": {
+		"message": "Oppdater bakgrunnen"
+	},
+	"Choose from 5 Norton backgrounds": {
+		"message": "Velg mellom 4 ferdige bakgrunner, eller last opp en av dine egne!"
+	},
+	"Available for Chrome": {
+		"message": "Tilgjengelig for Chrome"
+	},
+	"Show most-visited sites": {
+		"message": "Vis ofte bes\u00f8kte nettsteder"
+	},
+	"Quick links to websites you visit most": {
+		"message": "Hurtigkoblinger til nettsteder du bes\u00f8ker ofte"
+	},
+	"Got It": {
+		"message": "OK"
+	},
+	"Account": {
+		"message": "Konto"
+	},
+	"Maps": {
+		"message": "Kart"
+	},
+	"Play": {
+		"message": "Spill av"
+	},
+	"Drive": {
+		"message": "Stasjon"
+	},
+	"Calendar": {
+		"message": "Kalender"
+	},
+	"News": {
+		"message": "Nyheter"
+	},
+	"Translate": {
+		"message": "Oversett"
+	},
+	"Photos": {
+		"message": "Bilder"
+	},
+	"Chat": {
+		"message": "Nettprat"
+	},
+	"Duo": {
+		"message": "Duo"
+	},
+	"Meet": {
+		"message": "M\u00f8te"
+	},
+	"Docs": {
+		"message": "Dokumenter"
+	},
+	"Contacts": {
+		"message": "Kontakter"
+	},
+	"Classroom": {
+		"message": "Klasserom"
+	},
+	"More Apps": {
+		"message": "Flere apper"
+	},
+	"SHARE DATA WITH NORTON": {
+		"message": "DEL DATA MED NORTON"
+	},
+	"PM": {
+		"message": "PM"
+	},
+	"AM": {
+		"message": "AM"
+	},
+	"Default theme": {
+		"message": "Standard tema"
+	},
+	"Hidden bookmarks": {
+		"message": "Skjulte bokmerker"
+	},
+	"Available for Edge": {
+		"message": "Tilgjengelig for Edge"
+	},
+	"Manage favorites": {
+		"message": "Administrere favoritter"
+	},
+	"Show favorites bar": {
+		"message": "Vis favorittlinje"
+	},
+	"Hidden favourites": {
+		"message": "Skjulte favoritter"
+	},
+	"Accept Risk and Continue": {
+		"message": "Godta risikoen og fortsett"
+	},
+	"ProductName":
+	{
+		"message" : "Norton"
+	},
+	"Choose from 5 ProductName backgrounds":{
+		"message": "Velg mellom 4 ferdige bakgrunner, eller last opp en av dine egne!"
+	},
+	"ProductName Home Page!":
+	{
+		"message" : "Nortons startside!"
+	},
+	"PrivacyAndPermissions": {
+		"message": "Tillatelser"
+	},
+	"Permissions": {
+		"message": "Tillatelser"
+	},
+	"Install": {
+		"message": "Installer"
+	},
+	"extensions now to help protect your searches from potential malicious links. Browse the web more safely.": {
+		"message": "utvidelser n\u00e5 for \u00e5 beskytte s\u00f8kene dine mot potensielt skadelige koblinger. Surf sikrere p\u00e5 nettet."
+	},
+	"Install Extensions": {
+		"message": "Installer utvidelser"
+	},
+	"Ad": {
+		"message": "Sponset"
+	},
+	"Almost done!": {
+		"message": "Nesten ferdig!"
+	},
+	"To complete installation, click": {
+		"message": "Fullf\u00f8r installasjonen ved \u00e5 klikke p\u00e5"
+	},
+	"Install Norton Safe Search": {
+		"message": "Installer Norton Safe Search"
+	},
+	"No search protection": {
+		"message": "Ingen s\u00f8kebeskyttelse"
+	},
+	"Chrome": {
+		"message": "Chrome"
+	},
+	"Continue without search protection":
+	{
+		"message":"Fortsett uten s\u00f8kebeskyttelse"
+	},
+	"Set Norton Safe Search as your default search":
+	{
+		"message":"Angi Norton Safe Search som standard s\u00f8kemotor"
+	},
+	"Enable Norton Safe Search":
+	{
+		"message":"Aktiver Norton Safe Search"
+	},
+	"Your searches are not protected":
+	{
+		"message":"S\u00f8kene dine er ikke beskyttet"
+	},
+	"Recommend enable Norton Safe Search":
+	{
+		"message":"Vi anbefaler at du aktiverer Norton Safe Search for \u00e5 blokkere ondsinnede koblinger og nettfiskingssvindel."
+	},
+	"Use Norton Safe Search for safer browsing": {
+		"message": "Bruk Norton Safe Search for tryggere surfing"
+	},
+	"Choose search protection":{
+		"message":"{0} ber deg n\u00e5 om \u00e5 velge s\u00f8kebeskyttelse. Velg \"Aktiver Norton Safe Search\" nedenfor for \u00e5 blokkere skadelige lenker og surfe trygt videre."
+	},
+	"Recommended":{
+		"message":"Anbefalt"
+	},
+	"Stay safer when you search with Norton": {
+		"message": "Hold deg tryggere n\u00e5r du s\u00f8ker med Norton"
+	},
+	"Detect risky sites and scams":{
+		"message": "Aktiver Norton Safe Search for \u00e5 bidra til \u00e5 oppdage risikable nettsteder og svindel."
+	},
+	"Peace of mind with every search ": {
+		"message": "Sjelefred for hvert eneste s\u00f8k"
+	},
+	"To keep your searches secure": {
+		"message": "For \u00e5 s\u00f8rge for sikre s\u00f8k, <span>anbefaler vi sterkt</span> \u00e5 installere Norton Safe Search-utvidelsen."
+	},
+	"Install now": {
+		"message": "Installer n\u00e5"
+	},
+	"Norton Safe Web has been updated": {
+		"message": "Norton Safe Web har blitt oppdatert"
+	},
+	"Norton will continue to scan the websites you visit": {
+		"message": "Norton vil <span>fortsette</span> \u00e5 skanne nettstedene du bes\u00f8ker og <span>varsle deg</span> om potensielle risikoer, for eksempel:"
+	},
+	"Malicious websites": {
+		"message": "Skadelige nettsteder"
+	},
+	"Phishing websites": {
+		"message": "Nettsteder med nettfisking"
+	},
+	"Viruses or other online threats": {
+		"message": "Virus eller andre nettrusler"
+	},
+	"Norton will now only show site ratings through Norton Safe Search, ensuring enhanced security while you browse.": {
+		"message": "Norton vil n\u00e5 <span>bare vise nettstedrangeringer gjennom Norton Safe Search,</span> slik at du f\u00e5r \u00f8kt sikkerhet n\u00e5r du surfer."
+	},
+	"Dangerous website detected": {
+		"message": "Farlig nettsted oppdaget"
+	},
+	"We strongly recommend not to share any personal information or access this site.": {
+		"message": "Vi anbefaler sterkt \u00e5 ikke dele personopplysninger eller \u00e5pne dette nettstedet."
+	},
+	"Exit this page (recommended)": {
+		"message": "G\u00e5 ut av denne siden (anbefalt)"
+	},
+	"BLOCKED BY": {
+		"message": "BLOKKERT AV"
+	},
+	"Show sponsored banner": {
+		"message": "Vis sponset banner"
+	},
+	"Sponsored": {
+		"message": "Sponset"
+	},
+	"Hide": {
+		"message": "Skjul"
+	},
+	"homePageTitle": {
+		"message": "Startside"
+	},
+	"Add protection to your searches": {
+		"message": "Legg til beskyttelse for s\u00f8kene dine."
+	},
+	"Detect malicious links": {
+		"message": "Sl\u00e5 p\u00e5 Norton Safe Search for \u00e5 oppdage ondsinnede koblinger og nettfiskingssvindel."
+	},
+	"Top Stories Chicklet Label": {
+		"message": "Hovedsaker"
+	},
+	"crypto": {
+		"message": "Krypto"
+	},
+	"stock": {
+		"message": "Aksjer"
+	},
+	"weather": {
+		"message": "V\u00e6r"
+	},
+	"tools": {
+		"message": "Verkt\u00f8y"
+	},
+	"Select your search protection:": {
+		"message": "Velg s\u00f8kebeskyttelse:"
+	},
+	"Bookmark bar": {
+		"message": "Bokmerkelinje"
+	},
+	"Favorites bar": {
+		"message": "Favorittlinje"
+	},
+	"Other bookmarks": {
+		"message": "Andre bokmerker"
+	},
+	"Welcome to": {
+		"message": "Velkommen til"
+	},
+	"Take a tour to see what's new and make the most of your Safe Search features.": {
+		"message": "Ta en omvisning for \u00e5 se hva som er nytt og f\u00e5 mest mulig ut av Safe Search-funksjonene dine."
+	},
+	"Skip tour": {
+		"message": "Hopp over omvisning"
+	},
+	"Start tour": {
+		"message": "Start omvisning"
+	},
+	"Personalise your home page": {
+		"message": "Tilpass hjemmesiden din"
+	},
+	"Make your home page your own with custom images and light or dark modes": {
+		"message": "Gj\u00f8r hjemmesiden til din egen med egendefinerte bilder og lys eller m\u00f8rk modus"
+	},
+	"Customizable shortcuts": {
+		"message": "Tilpassbare snarveier"
+	},
+	"Shortcuts let you access your favourite  sites with ease": {
+		"message": "Snarveier lar deg f\u00e5 tilgang til favorittnettstedene dine p\u00e5 en enkel m\u00e5te"
+	},
+	"Useful widgets": {
+		"message": "Nyttige kontrollprogrammer"
+	},
+	"Display up to 5 widgets: weather, stock, crypto, calculator & unit converter": {
+		"message": "Vis opptil 5 moduler: v\u00e6r, aksjer, krypto, kalkulator & enhetskonverterer"
+	},
+	"Read today's top news": {
+		"message": "Les dagens viktigste nyheter"
+	},
+	"Stay informed with the latest world headlines about a variety of topics": {
+		"message": "Hold deg informert med de nyeste overskriftene fra hele verden om en rekke emner"
+	},
+	"Link to your apps": {
+		"message": "Kobling til appene dine"
+	},
+	"Access your apps quickly and easily from your Norton Home Page": {
+		"message": "F\u00e5 tilgang til appene dine raskt og enkelt fra Norton startside"
+	},
+	"Begin tour": {
+		"message": "Start omvisning"
+	},
+	"Take a quick tour of features": {
+		"message": "Ta en rask omvisning i funksjonene"
+	}
+}
