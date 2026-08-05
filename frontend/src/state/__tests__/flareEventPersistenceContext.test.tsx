@@ -511,6 +511,130 @@ describe("FlareEventProvider persistence", () => {
     });
   });
 
+  it("replaces authenticated history when ownership switches to a different signed-in user", async () => {
+    const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
+      createFlareEvent: jest.fn(),
+      loadFlareEvents: jest.fn().mockImplementation(async (userId: string) =>
+        userId === "user-123"
+          ? [
+              {
+                createdAt: "2026-07-02T02:00:00.000Z",
+                flareEvent: {
+                  anchorNoteId: null,
+                  anchorNoteVersion: null,
+                  archivedAt: null,
+                  behaviorDescriptionSnapshot: null,
+                  behaviorLabelSnapshot: "Owner one history",
+                  behaviorPatternId: null,
+                  checkpoint: null,
+                  closedAt: null,
+                  createdAt: "2026-07-02T02:00:00.000Z",
+                  id: "event-1",
+                  responseMode: "fallback-generic",
+                  status: "active",
+                  supportActionShown: null,
+                  supportActionTaken: null,
+                  updatedAt: "2026-07-02T02:00:00.000Z",
+                  userId,
+                },
+                id: "event-1",
+                updatedAt: "2026-07-02T02:00:00.000Z",
+                userId,
+              },
+            ]
+          : [
+              {
+                createdAt: "2026-07-03T02:00:00.000Z",
+                flareEvent: {
+                  anchorNoteId: null,
+                  anchorNoteVersion: null,
+                  archivedAt: null,
+                  behaviorDescriptionSnapshot: null,
+                  behaviorLabelSnapshot: "Owner two history",
+                  behaviorPatternId: null,
+                  checkpoint: null,
+                  closedAt: null,
+                  createdAt: "2026-07-03T02:00:00.000Z",
+                  id: "event-2",
+                  responseMode: "fallback-generic",
+                  status: "active",
+                  supportActionShown: null,
+                  supportActionTaken: null,
+                  updatedAt: "2026-07-03T02:00:00.000Z",
+                  userId,
+                },
+                id: "event-2",
+                updatedAt: "2026-07-03T02:00:00.000Z",
+                userId,
+              },
+            ],
+      ),
+      restoreFlareEvent: jest.fn(),
+      updateFlareEventStatus: jest.fn(),
+    };
+
+    const { getByText, queryByText, rerender } = renderWithProviders({
+      authState: {
+        kind: "authenticated",
+        userEmail: "owner-one@example.com",
+        userId: "user-123",
+      },
+      flareEventRepository,
+    });
+
+    await waitFor(() => {
+      expect(getByText("event count: 1")).toBeTruthy();
+      expect(getByText("event labels: Owner one history")).toBeTruthy();
+    });
+
+    rerender(
+      <BehaviorPatternProvider
+        authState={{
+          kind: "authenticated",
+          userEmail: "owner-two@example.com",
+          userId: "user-456",
+        }}
+      >
+        <AnchorNoteProvider
+          authState={{
+            kind: "authenticated",
+            userEmail: "owner-two@example.com",
+            userId: "user-456",
+          }}
+        >
+          <FlareEventProvider
+            authState={{
+              kind: "authenticated",
+              userEmail: "owner-two@example.com",
+              userId: "user-456",
+            }}
+            flareEventRepository={flareEventRepository}
+          >
+            <FlareEventHarness />
+          </FlareEventProvider>
+        </AnchorNoteProvider>
+      </BehaviorPatternProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("event count: 1")).toBeTruthy();
+      expect(getByText("event labels: Owner two history")).toBeTruthy();
+      expect(queryByText("event labels: Owner one history")).toBeNull();
+    });
+
+    expect(flareEventRepository.loadFlareEvents).toHaveBeenNthCalledWith(
+      1,
+      "user-123",
+      { includeArchived: true },
+    );
+    expect(flareEventRepository.loadFlareEvents).toHaveBeenNthCalledWith(
+      2,
+      "user-456",
+      { includeArchived: true },
+    );
+  });
+
   it("supports local-only archive and restore without Supabase writes", async () => {
     const flareEventRepository: FlareEventRepository = {
       archiveFlareEvent: jest.fn(),

@@ -383,4 +383,152 @@ describe("setup persistence providers", () => {
       expect(queryByText("Loaded behavior")).toBeNull();
     });
   });
+
+  it("reloads owner-scoped setup records when authentication switches to a different user", async () => {
+    const behaviorPatternRepository: BehaviorPatternRepository = {
+      loadActiveBehaviorPattern: jest
+        .fn<Promise<PersistedBehaviorPattern | null>, [string]>()
+        .mockImplementation(async (userId) =>
+          userId === "user-123"
+            ? {
+                behaviorPattern: {
+                  behaviorName: "Owner one behavior",
+                  shortDescription: "Owner one description",
+                  commonTriggers: "Owner one trigger",
+                  riskTimesOrSituations: "Owner one risk",
+                  preferredRecoveryActions: "Owner one action",
+                },
+                createdAt: "2026-06-28T01:00:00.000Z",
+                id: "pattern-1",
+                updatedAt: "2026-06-28T02:00:00.000Z",
+                userId,
+              }
+            : {
+                behaviorPattern: {
+                  behaviorName: "Owner two behavior",
+                  shortDescription: "Owner two description",
+                  commonTriggers: "Owner two trigger",
+                  riskTimesOrSituations: "Owner two risk",
+                  preferredRecoveryActions: "Owner two action",
+                },
+                createdAt: "2026-06-29T01:00:00.000Z",
+                id: "pattern-2",
+                updatedAt: "2026-06-29T02:00:00.000Z",
+                userId,
+              },
+        ),
+      saveBehaviorPattern: jest.fn(),
+    };
+    const anchorNoteRepository: AnchorNoteRepository = {
+      loadActiveAnchorNote: jest
+        .fn<Promise<PersistedAnchorNote | null>, [string]>()
+        .mockImplementation(async (userId) =>
+          userId === "user-123"
+            ? {
+                anchorNote: {
+                  interruptionReasons: "Owner one reason",
+                  continuingCosts: "Owner one cost",
+                  groundedReminders: "Owner one reminder",
+                  emergencyActions: "Owner one action",
+                  supportivePhrase: "Owner one phrase",
+                },
+                createdAt: "2026-06-28T01:00:00.000Z",
+                id: "anchor-1",
+                updatedAt: "2026-06-28T02:00:00.000Z",
+                userId,
+                version: 1,
+              }
+            : {
+                anchorNote: {
+                  interruptionReasons: "Owner two reason",
+                  continuingCosts: "Owner two cost",
+                  groundedReminders: "Owner two reminder",
+                  emergencyActions: "Owner two action",
+                  supportivePhrase: "Owner two phrase",
+                },
+                createdAt: "2026-06-29T01:00:00.000Z",
+                id: "anchor-2",
+                updatedAt: "2026-06-29T02:00:00.000Z",
+                userId,
+                version: 2,
+              },
+        ),
+      saveAnchorNote: jest.fn(),
+    };
+
+    const { getByText, queryByText, rerender } = render(
+      <BehaviorPatternProvider
+        authState={{
+          kind: "authenticated",
+          userEmail: "owner-one@example.com",
+          userId: "user-123",
+        }}
+        behaviorPatternRepository={behaviorPatternRepository}
+      >
+        <AnchorNoteProvider
+          anchorNoteRepository={anchorNoteRepository}
+          authState={{
+            kind: "authenticated",
+            userEmail: "owner-one@example.com",
+            userId: "user-123",
+          }}
+        >
+          <BehaviorPatternHarness />
+          <AnchorNoteHarness />
+        </AnchorNoteProvider>
+      </BehaviorPatternProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("Owner one behavior")).toBeTruthy();
+      expect(getByText("Owner one phrase")).toBeTruthy();
+    });
+
+    rerender(
+      <BehaviorPatternProvider
+        authState={{
+          kind: "authenticated",
+          userEmail: "owner-two@example.com",
+          userId: "user-456",
+        }}
+        behaviorPatternRepository={behaviorPatternRepository}
+      >
+        <AnchorNoteProvider
+          anchorNoteRepository={anchorNoteRepository}
+          authState={{
+            kind: "authenticated",
+            userEmail: "owner-two@example.com",
+            userId: "user-456",
+          }}
+        >
+          <BehaviorPatternHarness />
+          <AnchorNoteHarness />
+        </AnchorNoteProvider>
+      </BehaviorPatternProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByText("Owner two behavior")).toBeTruthy();
+      expect(getByText("Owner two phrase")).toBeTruthy();
+      expect(queryByText("Owner one behavior")).toBeNull();
+      expect(queryByText("Owner one phrase")).toBeNull();
+    });
+
+    expect(behaviorPatternRepository.loadActiveBehaviorPattern).toHaveBeenNthCalledWith(
+      1,
+      "user-123",
+    );
+    expect(behaviorPatternRepository.loadActiveBehaviorPattern).toHaveBeenNthCalledWith(
+      2,
+      "user-456",
+    );
+    expect(anchorNoteRepository.loadActiveAnchorNote).toHaveBeenNthCalledWith(
+      1,
+      "user-123",
+    );
+    expect(anchorNoteRepository.loadActiveAnchorNote).toHaveBeenNthCalledWith(
+      2,
+      "user-456",
+    );
+  });
 });

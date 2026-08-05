@@ -390,4 +390,52 @@ describe("FlarePlanProvider loading behavior", () => {
 
     expect(repository.loadTemplates).toHaveBeenCalledTimes(2);
   });
+
+  it("reloads the authenticated plan when the signed-in owner changes", async () => {
+    const ownerPlans: Record<string, ActiveFlarePlan> = {
+      "user-123": createPlan([createAction("action-1", "Owner one action", 1)]),
+      "user-456": createPlan([createAction("action-2", "Owner two action", 1)]),
+    };
+    let currentUserId = "user-123";
+    const repository = createRepository();
+    repository.loadPlan.mockImplementation(async () => ownerPlans[currentUserId]);
+
+    const rendered = renderWithProviders(repository, {
+      authState: {
+        kind: "authenticated",
+        userEmail: "owner-one@example.com",
+        userId: currentUserId,
+      },
+    });
+
+    await waitFor(() => {
+      expect(latestContext?.plan?.actions[0]?.title).toBe("Owner one action");
+    });
+
+    currentUserId = "user-456";
+    rendered.rerender(
+      <FlareAuthProvider
+        initialAuthState={{
+          kind: "authenticated",
+          userEmail: "owner-two@example.com",
+          userId: "user-456",
+        }}
+        resolveAuthState={async () => ({
+          kind: "authenticated",
+          userEmail: "owner-two@example.com",
+          userId: "user-456",
+        })}
+        subscribe={() => null}
+      >
+        <FlarePlanProvider flarePlanRepository={repository}>
+          <Probe tick={1} />
+        </FlarePlanProvider>
+      </FlareAuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(repository.loadPlan).toHaveBeenCalledTimes(2);
+      expect(latestContext?.plan?.actions[0]?.title).toBe("Owner two action");
+    });
+  });
 });
