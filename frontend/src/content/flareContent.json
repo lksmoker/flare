@@ -3,9 +3,18 @@
     "name": "Flare"
   },
   "navigation": {
-    "flare": "Flare",
-    "history": "History",
-    "customize": "Customize"
+    "flare": {
+      "label": "Flare",
+      "hint": "Get support for this moment"
+    },
+    "history": {
+      "label": "History",
+      "hint": "Review past flare events"
+    },
+    "customize": {
+      "label": "Customize",
+      "hint": "Set up your saved support"
+    }
   },
   "common": {
     "actions": {
@@ -112,9 +121,9 @@
     },
     "welcome": {
       "screenLabel": "Welcome",
-      "title": "Hold on to your support and your clarity",
-      "subtitle": "Difficult moments can make it hard to reach your support and your clarity. Flare helps you reconnect with both.",
-      "intro": "Prepare them while you are thinking clearly, so they are ready when you need them most. Gather the reminders, plans, and encouragement you want available before a difficult moment, so you do not have to invent them when you are already overwhelmed.",
+      "title": "Prepare support before a hard moment",
+      "subtitle": "Flare keeps your support words, reminders, and next steps ready so you do not have to invent them under pressure.",
+      "intro": "Use it signed out if you want to start now on this device. Sign in later from Customize when you want your setup and account-based history saved across sessions.",
       "sections": {
         "supportTitle": "Your support",
         "supportCopy": "The people and encouragement you have chosen to keep close when you need them.",
@@ -125,11 +134,10 @@
         "alreadySignedInCopy": "You are already signed in, so your setup can be saved to your account, reloaded when you return, and used with account-based features like Support Group.",
         "clientUnavailableCopy": "You can still begin here, but account saving is not available in this build yet, so your setup stays on this device.",
         "nextStepTitle": "What to do next",
-        "nextStepCopy": "Get started by preparing the support words, reminders, and next steps you want ready before you need them."
+        "nextStepCopy": "Start with one step in setup, then return here any time you want to send a Flare and open your saved support."
       },
       "actions": {
-        "primary": "Get started",
-        "signIn": "Go to sign in"
+        "primary": "Get started"
       }
     },
     "flare": {
@@ -137,13 +145,16 @@
       "title": "Pause, remember your reasons, and choose a next step",
       "subtitle": "Use one simple action to open your saved support words and mark the moment.",
       "setupHero": {
-        "title": "Finish setting up Flare",
-        "copy": "Set up your saved support so Flare is ready when you need it.",
+        "title": "Set up what Flare should show you",
+        "copy": "Finish the core setup so Flare can open your saved support words and next steps when you need them.",
         "nextStepPrefix": "Next:",
-        "primaryAction": "Continue setup",
-        "signedOutCopy": "You can start setup on this device now. Sign in when you want to save it and use it across devices.",
-        "clientUnavailableCopy": "You can keep setting things up on this device now. Sign-in is not available yet, so your setup stays local for now.",
-        "signInAction": "Go to sign in"
+        "primaryAction": "Open next setup step",
+        "signedOutTitle": "Pick one setup step before you need it",
+        "signedOutCopy": "You can still use Send Flare now on this device. Add your own support words and reminders so the response becomes personal instead of generic.",
+        "signedOutNextStepPrefix": "Start with:",
+        "signedOutPrimaryAction": "Start setup",
+        "signedOutSecondaryCopy": "Sign in later from Customize if you want to save this setup across devices.",
+        "clientUnavailableCopy": "You can keep setting things up on this device now. Sign-in is not available yet, so your setup stays local for now."
       },
       "readiness": {
         "title": "Readiness",

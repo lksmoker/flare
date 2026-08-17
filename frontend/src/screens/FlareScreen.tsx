@@ -180,13 +180,22 @@ export function FlareScreen() {
     authStatus === "ready" && authState.kind === "authenticated";
   const isSetupComplete = readinessModel.isSetupComplete;
   const canSendFlare = !requiresSavedSetup || isSetupComplete;
-  const shouldShowSetupHero = requiresSavedSetup && !isSetupComplete;
+  const shouldShowSetupHero = !isSetupComplete;
+  const isSignedOutSetupHero =
+    authStatus === "ready" &&
+    (authState.kind === "no-session" || authState.kind === "client-unavailable");
   const setupHeroCopy =
     authStatus === "ready" && authState.kind === "no-session"
       ? flareContent.screens.flare.setupHero.signedOutCopy
       : authStatus === "ready" && authState.kind === "client-unavailable"
         ? flareContent.screens.flare.setupHero.clientUnavailableCopy
         : flareContent.screens.flare.setupHero.copy;
+  const setupHeroTitle = isSignedOutSetupHero
+    ? flareContent.screens.flare.setupHero.signedOutTitle
+    : flareContent.screens.flare.setupHero.title;
+  const setupHeroPrimaryAction = isSignedOutSetupHero
+    ? flareContent.screens.flare.setupHero.signedOutPrimaryAction
+    : flareContent.screens.flare.setupHero.primaryAction;
   const nextSetupLabel =
     readinessModel.items.find(
       (item) => item.focus === readinessModel.nextRequiredFocus,
@@ -292,9 +301,7 @@ export function FlareScreen() {
       currentPath="/"
       screenLabel={flareContent.screens.flare.screenLabel}
       subtitle={
-        canSendFlare
-          ? flareContent.screens.flare.subtitle
-          : setupHeroCopy
+        canSendFlare ? flareContent.screens.flare.subtitle : setupHeroCopy
       }
       title={
         canSendFlare
@@ -305,13 +312,22 @@ export function FlareScreen() {
       {shouldShowSetupHero ? (
         <View style={styles.setupHeroCard}>
           <View style={styles.setupHeroCopyBlock}>
-            <Text style={styles.setupHeroTitle}>
-              {flareContent.screens.flare.setupHero.title}
-            </Text>
+            <Text style={styles.setupHeroTitle}>{setupHeroTitle}</Text>
             <Text style={styles.setupHeroCopy}>{setupHeroCopy}</Text>
             {nextSetupLabel ? (
               <Text style={styles.setupHeroNextStep}>
                 {flareContent.screens.flare.setupHero.nextStepPrefix} {nextSetupLabel}
+              </Text>
+            ) : null}
+            {isSignedOutSetupHero && nextSetupLabel ? (
+              <Text style={styles.setupHeroSecondaryCopy}>
+                {flareContent.screens.flare.setupHero.signedOutNextStepPrefix}{" "}
+                {nextSetupLabel}.
+              </Text>
+            ) : null}
+            {isSignedOutSetupHero ? (
+              <Text style={styles.setupHeroSecondaryCopy}>
+                {flareContent.screens.flare.setupHero.signedOutSecondaryCopy}
               </Text>
             ) : null}
           </View>
@@ -324,12 +340,12 @@ export function FlareScreen() {
             }}
             style={styles.setupHeroButton}
           >
-            <Text style={styles.setupHeroButtonLabel}>
-              {flareContent.screens.flare.setupHero.primaryAction}
-            </Text>
+            <Text style={styles.setupHeroButtonLabel}>{setupHeroPrimaryAction}</Text>
           </Pressable>
         </View>
-      ) : (
+      ) : null}
+
+      {canSendFlare ? (
         <SendFlareButton
           disabled={isSendingFlare}
           isPending={isSendingFlare}
@@ -412,7 +428,7 @@ export function FlareScreen() {
             }
           }}
         />
-      )}
+      ) : null}
 
       {sendError && !isFlareResponseVisible ? (
         <View style={styles.inlineStateCard}>
@@ -749,6 +765,11 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.text,
     fontSize: 14,
     fontWeight: "700",
+  },
+  setupHeroSecondaryCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
   },
   setupHeroTitle: {
     color: flareTheme.colors.textStrong,

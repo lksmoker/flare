@@ -9,9 +9,9 @@ type AppNavigationProps = {
 };
 
 const navigationItems = [
-  { href: "/" as const, label: flareContent.navigation.flare },
-  { href: "/history" as const, label: flareContent.navigation.history },
-  { href: "/customize" as const, label: flareContent.navigation.customize },
+  { href: "/" as const, ...flareContent.navigation.flare },
+  { href: "/history" as const, ...flareContent.navigation.history },
+  { href: "/customize" as const, ...flareContent.navigation.customize },
 ];
 
 export function AppNavigation({ currentPath }: AppNavigationProps) {
@@ -26,15 +26,29 @@ export function AppNavigation({ currentPath }: AppNavigationProps) {
 
         return (
           <Link key={item.href} href={item.href} asChild>
-            <Pressable accessibilityRole="button" style={tabStyle}>
-              <Text
-                style={[
-                  styles.tabLabel,
-                  isActive ? styles.activeTabLabel : styles.inactiveTabLabel,
-                ]}
-              >
-                {item.label}
-              </Text>
+            <Pressable
+              accessibilityRole="link"
+              accessibilityState={{ selected: isActive }}
+              style={tabStyle}
+            >
+              <View style={styles.tabCopy}>
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    isActive ? styles.activeTabLabel : styles.inactiveTabLabel,
+                  ]}
+                >
+                  {item.label}
+                </Text>
+                <Text
+                  style={[
+                    styles.tabHint,
+                    isActive ? styles.activeTabHint : styles.inactiveTabHint,
+                  ]}
+                >
+                  {item.hint}
+                </Text>
+              </View>
             </Pressable>
           </Link>
         );
@@ -52,12 +66,17 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     minWidth: 0,
-    minHeight: 46,
+    minHeight: 58,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 18,
     borderWidth: 1,
     paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  tabCopy: {
+    alignItems: "center",
+    gap: 2,
   },
   activeTab: {
     borderColor: flareTheme.colors.primaryStrong,
@@ -71,10 +90,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
   },
+  tabHint: {
+    fontSize: 11,
+    lineHeight: 14,
+    textAlign: "center",
+  },
   activeTabLabel: {
     color: flareTheme.colors.onPrimary,
   },
+  activeTabHint: {
+    color: flareTheme.colors.onPrimary,
+    opacity: 0.9,
+  },
   inactiveTabLabel: {
     color: flareTheme.colors.textMuted,
+  },
+  inactiveTabHint: {
+    color: flareTheme.colors.textSubtle,
   },
 });

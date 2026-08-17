@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,7 +12,6 @@ import {
 } from "../services/welcomeState";
 
 export function WelcomeGateScreen() {
-  const router = useRouter();
   const { authState, authStatus } = useFlareAuth();
   const [isWelcomeResolved, setIsWelcomeResolved] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -74,9 +72,6 @@ export function WelcomeGateScreen() {
               onGetStarted={() => {
                 setShowWelcome(false);
                 void writeWelcomeCompletion();
-              }}
-              onSignIn={() => {
-                router.push("/customize?focus=auth");
               }}
             />
           </View>

@@ -8,7 +8,6 @@ type WelcomeContentProps = {
   authState: FlareSupabaseAuthState;
   authStatus: "loading" | "ready";
   onGetStarted?: () => void;
-  onSignIn?: () => void;
 };
 
 function getSignInStateCopy(
@@ -34,11 +33,7 @@ export function WelcomeContent({
   authState,
   authStatus,
   onGetStarted,
-  onSignIn,
 }: WelcomeContentProps) {
-  const showSignInAction =
-    authStatus === "ready" && authState.kind === "no-session" && onSignIn;
-
   return (
     <View style={styles.stack}>
       <View style={styles.heroBlock}>
@@ -108,17 +103,6 @@ export function WelcomeContent({
         <Text style={styles.sectionCopy}>
           {getSignInStateCopy(authStatus, authState)}
         </Text>
-        {showSignInAction ? (
-          <Pressable
-            accessibilityRole="button"
-            onPress={onSignIn}
-            style={styles.secondaryAction}
-          >
-            <Text style={styles.secondaryActionLabel}>
-              {flareContent.screens.welcome.actions.signIn}
-            </Text>
-          </Pressable>
-        ) : null}
       </View>
     </View>
   );
@@ -205,19 +189,6 @@ const styles = StyleSheet.create({
     color: flareTheme.colors.textStrong,
     fontSize: 18,
     lineHeight: 23,
-    fontWeight: "700",
-  },
-  secondaryAction: {
-    alignSelf: "flex-start",
-    minHeight: 44,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 4,
-    paddingBottom: 8,
-  },
-  secondaryActionLabel: {
-    color: flareTheme.colors.primaryStrong,
-    fontSize: 14,
     fontWeight: "700",
   },
   stack: {

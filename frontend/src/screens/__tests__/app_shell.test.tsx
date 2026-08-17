@@ -372,17 +372,20 @@ describe("V0 app shell", () => {
     emptyFlareEventRepositoryMocks.updateFlareEventStatus.mockReset();
   });
 
-  it("renders the top-level navigation labels and Send Flare for signed-out users", () => {
+  it("renders self-describing navigation and Send Flare for signed-out users", () => {
     enableBuiltInDefaultPlan();
-    const { getAllByText, queryByText } = render(<FlareScreen />, {
+    const { getAllByText, getByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
     expect(getAllByText("Flare").length).toBeGreaterThanOrEqual(1);
     expect(getAllByText("History").length).toBeGreaterThanOrEqual(1);
     expect(getAllByText("Customize").length).toBeGreaterThanOrEqual(1);
+    expect(getByText("Get support for this moment")).toBeTruthy();
+    expect(getByText("Review past flare events")).toBeTruthy();
+    expect(getByText("Set up your saved support")).toBeTruthy();
     expect(getAllByText("Send Flare").length).toBeGreaterThanOrEqual(1);
-    expect(queryByText("Finish setting up Flare")).toBeNull();
+    expect(getByText("Pick one setup step before you need it")).toBeTruthy();
   });
 
   it("renders Send Flare before the Readiness panel for signed-out users", () => {
@@ -424,7 +427,7 @@ describe("V0 app shell", () => {
       expect(getByText("Send Flare")).toBeTruthy();
     });
 
-    expect(queryByText("Continue setup")).toBeNull();
+    expect(queryByText("Open next setup step")).toBeNull();
   });
 
   it("expands and collapses the Readiness panel with correct accessibility state", () => {
@@ -471,16 +474,17 @@ describe("V0 app shell", () => {
         "Signed-out Flare still uses the built-in default plan. Sign in to save your own personal plan.",
       ),
     ).toBeTruthy();
-    expect(queryByText("Continue setup")).toBeNull();
+    expect(queryByText("Open next setup step")).toBeNull();
   });
 
-  it("does not show the setup CTA for signed-out users when the built-in default plan is available", () => {
+  it("shows a setup CTA for signed-out users while preserving Send Flare", () => {
     enableBuiltInDefaultPlan();
-    const { queryByText } = render(<FlareScreen />, {
+    const { getByText } = render(<FlareScreen />, {
       wrapper: TestProviders,
     });
 
-    expect(queryByText("Continue setup")).toBeNull();
+    expect(getByText("Start setup")).toBeTruthy();
+    expect(getByText("Send Flare")).toBeTruthy();
   });
 
   it("updates signed-out readiness when local setup is partially filled in", async () => {
@@ -552,7 +556,7 @@ describe("V0 app shell", () => {
       expect(getByText("2 of 4 configured")).toBeTruthy();
     });
 
-    fireEvent.press(getByText("Continue setup"));
+    fireEvent.press(getByText("Open next setup step"));
 
     expect(expoRouter.__push).toHaveBeenCalledWith("/customize?focus=anchor-note");
   });
