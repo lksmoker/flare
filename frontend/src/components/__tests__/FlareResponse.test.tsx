@@ -352,9 +352,13 @@ describe("FlareResponse", () => {
         status: "in_progress",
         current_action: {
           id: "action-1",
+          source_action_id: "source-action-1",
+          source_template_key: null,
           title: "Move to a different room",
           description: "Create some distance from where the pattern was happening.",
           position: 1,
+          outcome: "pending",
+          responded_at: null,
         },
         progress: {
           current_position: 1,
