@@ -222,17 +222,17 @@ export function FlareScreen() {
     router.push(`/customize?focus=${focus}`);
   };
   const responseEventId = responseState?.flareEvent?.id ?? null;
+  const persistedEventForResponse = responseEventId
+    ? flareEvents.find((flareEvent) => flareEvent.id === responseEventId)
+    : undefined;
   const eventForResponse =
-    (responseEventId
-      ? flareEvents.find((flareEvent) => flareEvent.id === responseEventId) ?? null
-      : null) ??
+    persistedEventForResponse ??
     responseState?.flareEvent ??
     activeEvent ??
     currentEvent;
-  const checkpointEvent =
-    (checkpointEventId
-      ? flareEvents.find((flareEvent) => flareEvent.id === checkpointEventId) ?? null
-      : null) ?? null;
+  const checkpointEvent = checkpointEventId
+    ? flareEvents.find((flareEvent) => flareEvent.id === checkpointEventId) ?? null
+    : null;
   const deliveryStateForResponse =
     externalSupportState ?? mapPersistedSupportDelivery(responseState?.supportDelivery ?? null);
 
