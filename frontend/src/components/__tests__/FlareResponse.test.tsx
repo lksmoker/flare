@@ -79,7 +79,7 @@ function renderFlareResponse({
         <FlareResponse
           externalSupportState={externalSupportState}
           flareEvent={flareEvent}
-          onOpenCheckpoint={(_flareEventId) => undefined}
+          onOpenCheckpoint={() => undefined}
           run={run}
         />
     </AnchorNoteProvider>,
