@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 import flareContent from "../content/flareContent.json";
@@ -14,23 +14,59 @@ type BehaviorPatternSetupModalProps = {
   visible: boolean;
 };
 
+const starterChoices =
+  flareContent.components.behaviorPattern.starterChoices as string[];
+const customChoiceLabel = flareContent.components.behaviorPattern.customChoiceLabel;
+
+function resolveSelectedChoice(behaviorName: string) {
+  const trimmedBehaviorName = behaviorName.trim();
+
+  if (trimmedBehaviorName.length === 0) {
+    return null;
+  }
+
+  return starterChoices.includes(trimmedBehaviorName)
+    ? trimmedBehaviorName
+    : customChoiceLabel;
+}
+
 export function BehaviorPatternSetupModal({
   onClose,
   visible,
 }: BehaviorPatternSetupModalProps) {
   const { behaviorPattern, saveBehaviorPattern } = useBehaviorPattern();
   const [draft, setDraft] = useState(createEmptyBehaviorPattern);
+  const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const behaviorNameInputRef = useRef<TextInput | null>(null);
 
   useEffect(() => {
     if (!visible) {
       return;
     }
 
-    setDraft(behaviorPattern ?? createEmptyBehaviorPattern());
+    const nextDraft = behaviorPattern ?? createEmptyBehaviorPattern();
+
+    setDraft(nextDraft);
+    setSelectedChoice(resolveSelectedChoice(nextDraft.behaviorName));
   }, [behaviorPattern, visible]);
 
-  const saveDisabled =
-    draft.behaviorName.trim().length === 0;
+  const saveDisabled = draft.behaviorName.trim().length === 0;
+
+  function handleBehaviorNameChange(value: string) {
+    setDraft((current) => ({ ...current, behaviorName: value }));
+    setSelectedChoice(resolveSelectedChoice(value));
+  }
+
+  function handleStarterSelection(choice: string) {
+    setSelectedChoice(choice);
+
+    if (choice === customChoiceLabel) {
+      behaviorNameInputRef.current?.focus();
+      return;
+    }
+
+    setDraft((current) => ({ ...current, behaviorName: choice }));
+  }
 
   return (
     <PlaceholderModal
@@ -80,15 +116,76 @@ export function BehaviorPatternSetupModal({
 
         <View style={styles.field}>
           <Text style={styles.label}>
+            {flareContent.components.behaviorPattern.starterChoicesLabel}
+          </Text>
+          <Text style={styles.choiceHelperCopy}>
+            {flareContent.components.behaviorPattern.starterChoicesHelperCopy}
+          </Text>
+          <View style={styles.choiceList}>
+            {starterChoices.map((choice) => {
+              const selected = selectedChoice === choice;
+
+              return (
+                <Pressable
+                  accessibilityLabel={choice}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected }}
+                  key={choice}
+                  onPress={() => handleStarterSelection(choice)}
+                  style={[
+                    styles.choiceButton,
+                    selected ? styles.choiceButtonSelected : null,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.choiceButtonLabel,
+                      selected ? styles.choiceButtonLabelSelected : null,
+                    ]}
+                  >
+                    {choice}
+                  </Text>
+                </Pressable>
+              );
+            })}
+            <Pressable
+              accessibilityLabel={
+                flareContent.components.behaviorPattern.customChoiceLabel
+              }
+              accessibilityRole="radio"
+              accessibilityState={{ selected: selectedChoice === customChoiceLabel }}
+              onPress={() => handleStarterSelection(customChoiceLabel)}
+              style={[
+                styles.choiceButton,
+                selectedChoice === customChoiceLabel
+                  ? styles.choiceButtonSelected
+                  : null,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.choiceButtonLabel,
+                  selectedChoice === customChoiceLabel
+                    ? styles.choiceButtonLabelSelected
+                    : null,
+                ]}
+              >
+                {flareContent.components.behaviorPattern.customChoiceLabel}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+
+        <View style={styles.field}>
+          <Text style={styles.label}>
             {flareContent.components.behaviorPattern.fields.behaviorName.label}
           </Text>
           <TextInput
             accessibilityLabel={
               flareContent.components.behaviorPattern.fields.behaviorName.label
             }
-            onChangeText={(value) =>
-              setDraft((current) => ({ ...current, behaviorName: value }))
-            }
+            ref={behaviorNameInputRef}
+            onChangeText={handleBehaviorNameChange}
             placeholder={
               flareContent.components.behaviorPattern.fields.behaviorName
                 .placeholder
@@ -190,8 +287,39 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  choiceHelperCopy: {
+    color: flareTheme.colors.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+  },
   field: {
     gap: 6,
+  },
+  choiceList: {
+    gap: 10,
+  },
+  choiceButton: {
+    minHeight: 48,
+    justifyContent: "center",
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: flareTheme.colors.border,
+    backgroundColor: flareTheme.colors.surfaceStrong,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  choiceButtonSelected: {
+    borderColor: flareTheme.colors.primary,
+    backgroundColor: flareTheme.colors.primaryMuted,
+  },
+  choiceButtonLabel: {
+    color: flareTheme.colors.text,
+    fontSize: 15,
+    lineHeight: 22,
+    fontWeight: "600",
+  },
+  choiceButtonLabelSelected: {
+    color: flareTheme.colors.primaryStrong,
   },
   label: {
     color: flareTheme.colors.text,

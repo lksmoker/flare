@@ -226,9 +226,21 @@
       "modalTitle": "Behavior Pattern",
       "modalSubtitle": "Keep it concrete enough to recognize, and simple enough to update.",
       "intro": "Describe the pattern you want Flare to help you pause and reflect on.",
+      "starterChoicesLabel": "Choose a starting point",
+      "starterChoicesHelperCopy": "Pick a plain-language pattern or add your own wording.",
+      "customChoiceLabel": "Add your own",
       "helperCopy": "Save requires a behavior name.",
       "saveButton": "Save Behavior Pattern",
       "summaryEmptyCopy": "Add a lightweight pattern so Flare knows what you are trying to pause.",
+      "starterChoices": [
+        "Scrolling or phone use",
+        "Avoidance or procrastination",
+        "Shopping or spending",
+        "Gambling or betting",
+        "Anger or reactive behavior",
+        "Pornography or sexual behavior",
+        "Drinking or substance use"
+      ],
       "fields": {
         "behaviorName": {
           "label": "Behavior name",
