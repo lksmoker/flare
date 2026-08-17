@@ -59,13 +59,29 @@ describe("CheckpointReflectionModal", () => {
     fireEvent.press(getByText("Save Reflection"));
 
     expect(mockSaveCheckpointReflection).toHaveBeenCalledWith({
-      actionTaken: "",
-      howIFeelNow: "Steadier.",
-      note: "Two minutes helped.",
-      outcome: "reduced",
-      whatHappened: "A spike hit.",
-      whatHelped: "Cold water.",
+      checkpointReflection: {
+        actionTaken: "",
+        howIFeelNow: "Steadier.",
+        note: "Two minutes helped.",
+        outcome: "reduced",
+        whatHappened: "A spike hit.",
+        whatHelped: "Cold water.",
+      },
+      flareEventId: "event-1",
     });
     expect(onSave).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails closed when no flare event is provided", () => {
+    const { queryByText, queryByLabelText } = render(
+      <CheckpointReflectionModal
+        flareEvent={null}
+        onClose={jest.fn()}
+        visible
+      />,
+    );
+
+    expect(queryByText("Checkpoint / Reflection")).toBeNull();
+    expect(queryByLabelText("What happened?")).toBeNull();
   });
 });

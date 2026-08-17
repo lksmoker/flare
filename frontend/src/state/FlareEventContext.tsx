@@ -76,6 +76,11 @@ export type SaveCheckpointReflectionInput = {
   whatHelped: string;
 };
 
+export type SaveCheckpointReflectionRequest = {
+  checkpointReflection: SaveCheckpointReflectionInput;
+  flareEventId: string;
+};
+
 type FlareEventContextValue = {
   activeEvent: FlareEvent | null;
   archiveFlareEvent: (eventId: string) => void;
@@ -86,7 +91,7 @@ type FlareEventContextValue = {
   isLoadingEvents: boolean;
   reloadFlareEvents: () => Promise<void>;
   restoreFlareEvent: (eventId: string) => void;
-  saveCheckpointReflection: (input: SaveCheckpointReflectionInput) => void;
+  saveCheckpointReflection: (request: SaveCheckpointReflectionRequest) => void;
   upsertPersistedFlareEvent: (persistedRecord: PersistedFlareEvent) => void;
 };
 
@@ -519,24 +524,23 @@ export function FlareEventProvider({
           }
         })();
       },
-      saveCheckpointReflection: (input) => {
+      saveCheckpointReflection: ({ checkpointReflection: input, flareEventId }) => {
         const checkpoint = createCheckpointReflectionRecord(input);
         let targetEvent: FlareEvent | null = null;
 
         setFlareEvents((currentEvents) => {
-          const currentActiveEvent = currentEvents.find(
-            (flareEvent) =>
-              flareEvent.status === "active" && !isArchivedFlareEvent(flareEvent),
+          const currentTargetEvent = currentEvents.find(
+            (flareEvent) => flareEvent.id === flareEventId,
           );
 
-          if (!currentActiveEvent) {
+          if (!currentTargetEvent || isArchivedFlareEvent(currentTargetEvent)) {
             return currentEvents;
           }
 
-          targetEvent = currentActiveEvent;
+          targetEvent = currentTargetEvent;
 
           return currentEvents.map((flareEvent) =>
-            flareEvent.id === currentActiveEvent.id
+            flareEvent.id === currentTargetEvent.id
               ? {
                   ...flareEvent,
                   checkpoint,
@@ -558,26 +562,23 @@ export function FlareEventProvider({
               return;
             }
 
-            const currentActiveEvent =
+            const currentTargetEvent =
               targetEvent ??
               flareEventsRef.current.find(
-                (flareEvent) =>
-                  ((flareEvent.status === "active" ||
-                    flareEvent.status === "reflected") &&
-                    !isArchivedFlareEvent(flareEvent)),
+                (flareEvent) => flareEvent.id === flareEventId,
               ) ??
               null;
 
-            if (!currentActiveEvent) {
+            if (!currentTargetEvent || isArchivedFlareEvent(currentTargetEvent)) {
               return;
             }
 
             const latestMatchingEvent =
               flareEventsRef.current.find(
                 (flareEvent) =>
-                  flareEvent.id === currentActiveEvent.id ||
-                  flareEvent.createdAt === currentActiveEvent.createdAt,
-              ) ?? currentActiveEvent;
+                  flareEvent.id === currentTargetEvent.id ||
+                  flareEvent.createdAt === currentTargetEvent.createdAt,
+              ) ?? currentTargetEvent;
             const persistedCheckpointReflection =
               await checkpointReflectionRepository.saveCheckpointReflection({
                 checkpointReflection: input,
@@ -594,7 +595,7 @@ export function FlareEventProvider({
             setFlareEvents((currentEvents) =>
               currentEvents.map((flareEvent) => {
                 if (
-                  flareEvent.id !== currentActiveEvent.id &&
+                  flareEvent.id !== currentTargetEvent.id &&
                   flareEvent.id !== latestMatchingEvent.id
                 ) {
                   return flareEvent;

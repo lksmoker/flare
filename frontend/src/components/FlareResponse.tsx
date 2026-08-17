@@ -29,7 +29,7 @@ type FlareResponseProps = {
   onBeginPlan?: (runId: string) => void;
   onDeclinePlan?: (runId: string) => void;
   onEndPlan?: (runId: string) => void;
-  onOpenCheckpoint: () => void;
+  onOpenCheckpoint: (flareEventId: string) => void;
   onOpenSupportSetup?: () => void;
   onResolveActionDone?: (runId: string, actionId: string) => void;
   onResolveActionSkipped?: (runId: string, actionId: string) => void;
@@ -84,6 +84,7 @@ function trimCopy(value: string | null | undefined) {
 
 export function FlareResponse({
   externalSupportState = null,
+  flareEvent,
   isMutationPending = false,
   isSupportRetryPending = false,
   mutationError = null,
@@ -308,11 +309,11 @@ export function FlareResponse({
         </View>
       ) : null}
 
-      {run?.status !== "offered" && run?.status !== "in_progress" ? (
+      {run?.status !== "offered" && run?.status !== "in_progress" && flareEvent ? (
         <View style={styles.reflectionSection}>
           <Pressable
             accessibilityRole="button"
-            onPress={onOpenCheckpoint}
+            onPress={() => onOpenCheckpoint(flareEvent.id)}
             style={styles.sheetSecondaryButton}
           >
             <Text style={styles.sheetSecondaryButtonLabel}>

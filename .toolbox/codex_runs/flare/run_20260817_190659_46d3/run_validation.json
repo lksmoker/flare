@@ -1,0 +1,232 @@
+{
+  "manifest_version": "toolbox.run_validation.v1",
+  "identity": {
+    "work_intent_id": "5830820b-67c4-40e5-9945-a40219dc632e",
+    "work_item_id": "afa38869-ca4e-41d0-adba-2613420b237f",
+    "work_item_version": 1,
+    "execution_packet_id": "a41322f1-5c16-4d1c-8431-2a158707d1c1",
+    "execution_packet_fingerprint": "92ba07579307e62534e930dd1e2e66ec3e89a5f0045702178d9ea555f86a3248",
+    "feature_run_id": "fedb4241-0a55-49a9-958b-063c7b80195d",
+    "codex_run_id": "run_20260817_190659_46d3",
+    "manifest_contract": "toolbox.run_validation.v1",
+    "immutable_fingerprint": "af2a7b543f6002f124ab8735ab041f184126e25464a9fbf599aa3096105d7530"
+  },
+  "requirements": {
+    "criteria": [
+      {
+        "criterion_id": "AC-1",
+        "criterion_text": "The general Flare home does not render a standalone Checkpoint / Reflection action before or outside an event response.",
+        "validation_method_hint": "none_known",
+        "expected_evidence": [
+          "Focused app-shell/FlareScreen regression coverage proves the standalone secondary action is absent."
+        ],
+        "manual_verification_allowed": true,
+        "manual_verification_required": false,
+        "required": true
+      },
+      {
+        "criterion_id": "AC-2",
+        "criterion_text": "An eligible Flare Event response still presents the Checkpoint / Reflection action and opens the reflection flow for that event.",
+        "validation_method_hint": "none_known",
+        "expected_evidence": [
+          "FlareResponse and integration-level screen tests cover eligible response states and opening the modal."
+        ],
+        "manual_verification_allowed": true,
+        "manual_verification_required": false,
+        "required": true
+      },
+      {
+        "criterion_id": "AC-3",
+        "criterion_text": "Saving a reflection targets the exact Flare Event that opened the reflection and transitions that event to reflected without selecting a different current or active event.",
+        "validation_method_hint": "none_known",
+        "expected_evidence": [
+          "Focused FlareEventContext or screen-level regression coverage asserts event-specific save binding."
+        ],
+        "manual_verification_allowed": true,
+        "manual_verification_required": false,
+        "required": true
+      },
+      {
+        "criterion_id": "AC-4",
+        "criterion_text": "No-event context cannot produce an editable reflection form with an ultimately disabled save path.",
+        "validation_method_hint": "none_known",
+        "expected_evidence": [
+          "CheckpointReflectionModal/screen regression coverage proves the flow fails closed before editable form presentation."
+        ],
+        "manual_verification_allowed": true,
+        "manual_verification_required": false,
+        "required": true
+      },
+      {
+        "criterion_id": "AC-5",
+        "criterion_text": "Existing reflection field validation, persisted shape, signed-out/local behavior, and authenticated persistence behavior remain passing.",
+        "validation_method_hint": "none_known",
+        "expected_evidence": [
+          "Existing checkpoint/reflection and affected Flare event tests pass unchanged or with bounded updates."
+        ],
+        "manual_verification_allowed": true,
+        "manual_verification_required": false,
+        "required": true
+      }
+    ],
+    "commands": [
+      {
+        "command_id": "validation_command_1",
+        "command_text": "npm test -- --run src/components/__tests__/CheckpointReflectionModal.test.tsx",
+        "command_kind": "validation_command",
+        "required": true
+      }
+    ],
+    "completion_output_requirements": [
+      "scope completed",
+      "files changed",
+      "behavior changed",
+      "event-binding implementation used",
+      "tests and checks run",
+      "validation result",
+      "human-review status",
+      "risks and follow-ups",
+      "anything intentionally not changed",
+      "unexpected scope expansion"
+    ]
+  },
+  "results": {
+    "criteria": [
+      {
+        "criterion_id": "AC-1",
+        "status": "passed",
+        "summary": "Flare home no longer renders a standalone reflection entry before any event exists.",
+        "validation_method": "automated_tests",
+        "system_attempted": true,
+        "observed_behavior": "The home screen shows `Send Flare` and readiness content only; the old standalone checkpoint action is absent.",
+        "evidence": [
+          "frontend/src/screens/FlareScreen.tsx removed the standalone secondary checkpoint card and now opens checkpoint only from `FlareResponse` with a bound event id.",
+          "frontend/src/screens/__tests__/app_shell.test.tsx asserts `Checkpoint / Reflection` is absent before any event exists.",
+          "Command: `cd frontend && npm test -- --runInBand src/components/__tests__/CheckpointReflectionModal.test.tsx src/components/__tests__/FlareResponse.test.tsx src/screens/__tests__/app_shell.test.tsx` passed on 2026-08-17."
+        ],
+        "gaps": [],
+        "manual_verification_required": false,
+        "manual_reason": "",
+        "manual_review_status": null,
+        "manual_review_response": null,
+        "manual_review_actor": null,
+        "manual_review_recorded_at": null,
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      },
+      {
+        "criterion_id": "AC-2",
+        "status": "passed",
+        "summary": "Eligible response states still expose reflection and the action opens for the specific rendered event.",
+        "validation_method": "automated_tests",
+        "system_attempted": true,
+        "observed_behavior": "Completed and declined response states still render `Checkpoint / Reflection`, and the callback receives the current event id.",
+        "evidence": [
+          "frontend/src/components/FlareResponse.tsx only renders the reflection CTA when `flareEvent` is present and passes `flareEvent.id` to `onOpenCheckpoint`.",
+          "frontend/src/components/__tests__/FlareResponse.test.tsx covers completed and declined states and asserts checkpoint opening is bound to `event-1`.",
+          "frontend/src/screens/__tests__/app_shell.test.tsx opens reflection from the event response flow after sending a flare."
+        ],
+        "gaps": [],
+        "manual_verification_required": false,
+        "manual_reason": "",
+        "manual_review_status": null,
+        "manual_review_response": null,
+        "manual_review_actor": null,
+        "manual_review_recorded_at": null,
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      },
+      {
+        "criterion_id": "AC-3",
+        "status": "passed",
+        "summary": "Reflection save now targets the initiating event explicitly, including when a newer event becomes active before save.",
+        "validation_method": "automated_tests",
+        "system_attempted": true,
+        "observed_behavior": "Checkpoint persistence requires `flareEventId` and updates only the requested event to `reflected`.",
+        "evidence": [
+          "frontend/src/state/FlareEventContext.tsx changed `saveCheckpointReflection` to require `{ flareEventId, checkpointReflection }` and resolve/persist against that exact event id.",
+          "frontend/src/components/CheckpointReflectionModal.tsx passes `flareEvent.id` into `saveCheckpointReflection` on save.",
+          "frontend/src/state/__tests__/flareEventPersistenceContext.test.tsx adds a regression where a newer event becomes active before saving the older event's reflection and asserts persistence still targets `event-1`.",
+          "Command: `cd frontend && npm test -- --runInBand src/state/__tests__/flareEventPersistenceContext.test.tsx` passed on 2026-08-17."
+        ],
+        "gaps": [],
+        "manual_verification_required": false,
+        "manual_reason": "",
+        "manual_review_status": null,
+        "manual_review_response": null,
+        "manual_review_actor": null,
+        "manual_review_recorded_at": null,
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      },
+      {
+        "criterion_id": "AC-4",
+        "status": "passed",
+        "summary": "No-event context now fails closed instead of rendering an editable reflection form.",
+        "validation_method": "automated_tests",
+        "system_attempted": true,
+        "observed_behavior": "The reflection modal returns `null` when `visible` is true but no `flareEvent` is bound, so no form fields or save action render.",
+        "evidence": [
+          "frontend/src/components/CheckpointReflectionModal.tsx returns `null` when `!visible || !flareEvent`.",
+          "frontend/src/components/__tests__/CheckpointReflectionModal.test.tsx asserts the modal and `What happened?` input do not render when `flareEvent={null}`.",
+          "frontend/src/content/flareContent.json` retires the missing-event copy and keeps only event-bound context copy."
+        ],
+        "gaps": [],
+        "manual_verification_required": false,
+        "manual_reason": "",
+        "manual_review_status": null,
+        "manual_review_response": null,
+        "manual_review_actor": null,
+        "manual_review_recorded_at": null,
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      },
+      {
+        "criterion_id": "AC-5",
+        "status": "passed",
+        "summary": "Reflection validation, persistence shape, local behavior, and authenticated persistence remain covered and passing.",
+        "validation_method": "automated_tests",
+        "system_attempted": true,
+        "observed_behavior": "Existing required reflection fields still gate save, repository payload shape remains unchanged except for explicit `flareEventId`, and both signed-out/local plus authenticated paths continue to pass focused coverage.",
+        "evidence": [
+          "frontend/src/components/__tests__/CheckpointReflectionModal.test.tsx still verifies allowed outcome saving and required field gating via save-disabled behavior.",
+          "frontend/src/state/__tests__/flareEventPersistenceContext.test.tsx passes for local-only creation, authenticated persistence, and exact-event reflection binding.",
+          "frontend/src/screens/__tests__/app_shell.test.tsx passes the send-flare, response, and history reflection integration coverage after the flow change.",
+          "frontend/src/services/checkpointReflectionRepository.ts and persisted backend payload shape were not changed beyond continuing to receive the same reflection fields plus explicit `flareEventId` from the caller."
+        ],
+        "gaps": [],
+        "manual_verification_required": false,
+        "manual_reason": "",
+        "manual_review_status": null,
+        "manual_review_response": null,
+        "manual_review_actor": null,
+        "manual_review_recorded_at": null,
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      }
+    ],
+    "commands": [
+      {
+        "command_id": "validation_command_1",
+        "status": "passed",
+        "summary": "The required modal test file passed as part of the broader focused frontend validation command.",
+        "evidence": [
+          "Executed: `cd frontend && npm test -- --runInBand src/components/__tests__/CheckpointReflectionModal.test.tsx src/components/__tests__/FlareResponse.test.tsx src/screens/__tests__/app_shell.test.tsx`",
+          "Result: PASS for `src/components/__tests__/CheckpointReflectionModal.test.tsx` on 2026-08-17."
+        ],
+        "recorded_at": "2026-08-17T15:13:14.2761088-04:00",
+        "updated_at": "2026-08-17T15:13:14.2761088-04:00"
+      }
+    ],
+    "aggregate": {
+      "status": "passed",
+      "summary": "All required acceptance criteria have automated evidence from focused frontend and FlareEventContext regression tests. Manual mobile pass and human review remain outside this manifest and are still pending.",
+      "unresolved_required_criterion_ids": [],
+      "failed_required_criterion_ids": [],
+      "blocked_required_criterion_ids": [],
+      "unresolved_required_command_ids": [],
+      "failed_required_command_ids": [],
+      "blocked_required_command_ids": []
+    }
+  }
+}

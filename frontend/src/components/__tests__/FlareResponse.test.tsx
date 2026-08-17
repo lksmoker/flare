@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { StyleSheet } from "react-native";
 
 import { FlareResponse } from "../FlareResponse";
@@ -79,7 +79,7 @@ function renderFlareResponse({
         <FlareResponse
           externalSupportState={externalSupportState}
           flareEvent={flareEvent}
-          onOpenCheckpoint={() => undefined}
+          onOpenCheckpoint={(_flareEventId) => undefined}
           run={run}
         />
     </AnchorNoteProvider>,
@@ -309,6 +309,7 @@ describe("FlareResponse", () => {
 
   it("makes checkpoint the primary post-plan action after the plan is skipped", () => {
     const { getByText, queryByText, toJSON } = renderFlareResponse({
+      flareEvent,
       run: {
         id: "run-1",
         flare_event_id: "event-1",
@@ -386,5 +387,43 @@ describe("FlareResponse", () => {
     expect(findAncestorStyleValue(doneLabel, "color")).toBe(
       flareTheme.colors.onPrimary,
     );
+  });
+
+  it("binds checkpoint opening to the rendered flare event", () => {
+    const onOpenCheckpoint = jest.fn();
+    const view = render(
+      <AnchorNoteProvider>
+        <FlareResponse
+          flareEvent={flareEvent}
+          onOpenCheckpoint={onOpenCheckpoint}
+          run={{
+            id: "run-1",
+            flare_event_id: "event-1",
+            source_plan_id: "plan-1",
+            status: "completed",
+            current_action: null,
+            progress: {
+              current_position: null,
+              total_count: 2,
+              done_count: 2,
+              skipped_count: 0,
+              not_reached_count: 0,
+              pending_count: 0,
+            },
+            actions: [],
+            offered_at: "2026-07-09T00:00:00Z",
+            started_at: "2026-07-09T00:00:10Z",
+            declined_at: null,
+            completed_at: "2026-07-09T00:00:20Z",
+            ended_at: null,
+            updated_at: "2026-07-09T00:00:20Z",
+          }}
+        />
+      </AnchorNoteProvider>,
+    );
+
+    fireEvent.press(view.getByText("Checkpoint / Reflection"));
+
+    expect(onOpenCheckpoint).toHaveBeenCalledWith("event-1");
   });
 });

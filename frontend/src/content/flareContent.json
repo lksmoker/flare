@@ -173,10 +173,7 @@
         "connectedPrefix": "Connected:",
         "supportChannelSetup": "Set it up in Customize"
       },
-      "secondaryAction": {
-        "label": "Checkpoint / Reflection",
-        "copy": "Open a short reflection without leaving this screen."
-      }
+      "secondaryAction": null
     },
     "history": {
       "screenLabel": "Past moments",
@@ -487,9 +484,7 @@
       "saveButton": "Save Reflection",
       "context": {
         "activeLabel": "Attaching to current event",
-        "activeCopy": "This reflection will be saved to the event you started from Send Flare.",
-        "missingLabel": "No active Flare Event",
-        "missingCopy": "Send Flare first to create an event, then save a reflection here."
+        "activeCopy": "This reflection will be saved to the specific Flare Event that opened it."
       },
       "intro": "Notice what happened, what helped, and what you want to remember next time.",
       "fields": {

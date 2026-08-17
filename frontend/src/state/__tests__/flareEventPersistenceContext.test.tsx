@@ -97,16 +97,45 @@ function FlareEventHarness() {
       </Pressable>
       <Pressable
         onPress={() => {
+          if (!activeEvent) {
+            return;
+          }
+
           saveCheckpointReflection({
-            howIFeelNow: "Less flooded and more steady.",
-            note: "The first minute was the hardest part.",
-            outcome: "avoided",
-            whatHappened: "I felt the spike right after finishing work.",
-            whatHelped: "I left the room and drank cold water.",
+            checkpointReflection: {
+              howIFeelNow: "Less flooded and more steady.",
+              note: "The first minute was the hardest part.",
+              outcome: "avoided",
+              whatHappened: "I felt the spike right after finishing work.",
+              whatHelped: "I left the room and drank cold water.",
+            },
+            flareEventId: activeEvent.id,
           });
         }}
       >
         <Text>save reflection</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          const oldestEvent = flareEvents.at(-1);
+
+          if (!oldestEvent) {
+            return;
+          }
+
+          saveCheckpointReflection({
+            checkpointReflection: {
+              howIFeelNow: "Older event feels steadier now.",
+              note: "Bound to the original event.",
+              outcome: "reduced",
+              whatHappened: "The earlier event almost took over.",
+              whatHelped: "I paused before it escalated.",
+            },
+            flareEventId: oldestEvent.id,
+          });
+        }}
+      >
+        <Text>save oldest reflection</Text>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -375,6 +404,124 @@ describe("FlareEventProvider persistence", () => {
         getByText(
           "event checkpoints: I felt the spike right after finishing work.",
         ),
+      ).toBeTruthy();
+    });
+  });
+
+  it("persists the reflection against the requested event even after a newer event becomes active", async () => {
+    const updateFlareEventStatus = jest.fn().mockImplementation(async ({ eventId }) => ({
+      createdAt: eventId === "event-1"
+        ? "2026-07-02T02:00:00.000Z"
+        : "2026-07-02T03:00:00.000Z",
+      flareEvent: {
+        anchorNoteId: "anchor-1",
+        anchorNoteVersion: 4,
+        archivedAt: null,
+        behaviorDescriptionSnapshot:
+          "I start checking feeds when I feel depleted.",
+        behaviorLabelSnapshot:
+          eventId === "event-1" ? "Late-night scrolling" : "Fresh active event",
+        behaviorPatternId: "pattern-1",
+        checkpoint: null,
+        closedAt: null,
+        createdAt:
+          eventId === "event-1"
+            ? "2026-07-02T02:00:00.000Z"
+            : "2026-07-02T03:00:00.000Z",
+        id: eventId,
+        responseMode: "configured",
+        status: eventId === "event-1" ? "reflected" : "active",
+        supportActionShown: "Leave the room and drink water.",
+        supportActionTaken: null,
+        updatedAt: "2026-07-02T03:05:00.000Z",
+        userId: "user-123",
+      },
+      id: eventId,
+      updatedAt: "2026-07-02T03:05:00.000Z",
+      userId: "user-123",
+    }));
+    const saveCheckpointReflection = jest.fn().mockResolvedValue({
+      checkpointReflection: {
+        actionTaken: "",
+        createdAt: "2026-07-02T03:04:00.000Z",
+        howIFeelNow: "Older event feels steadier now.",
+        id: "reflection-older",
+        note: "Bound to the original event.",
+        outcome: "reduced",
+        updatedAt: "2026-07-02T03:04:00.000Z",
+        userId: "user-123",
+        whatHappened: "The earlier event almost took over.",
+        whatHelped: "I paused before it escalated.",
+      },
+      flareEventId: "event-1",
+      id: "reflection-older",
+      updatedAt: "2026-07-02T03:04:00.000Z",
+      userId: "user-123",
+    });
+    const flareEventRepository: FlareEventRepository = {
+      archiveFlareEvent: jest.fn(),
+      createFlareEvent: jest.fn(),
+      loadFlareEvents: jest.fn().mockResolvedValue([]),
+      restoreFlareEvent: jest.fn(),
+      updateFlareEventStatus,
+    };
+    const checkpointReflectionRepository: CheckpointReflectionRepository = {
+      saveCheckpointReflection,
+    };
+
+    const { getByText } = renderWithProviders({
+      anchorNoteRecord,
+      authState: {
+        kind: "authenticated",
+        userEmail: "flare@example.com",
+        userId: "user-123",
+      },
+      behaviorPatternRecord,
+      checkpointReflectionRepository,
+      flareEventRepository,
+    });
+
+    await waitFor(() => {
+      expect(getByText("event count: 0")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("hydrate persisted event"));
+
+    await waitFor(() => {
+      expect(getByText("event count: 1")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("send flare"));
+
+    await waitFor(() => {
+      expect(getByText("event count: 2")).toBeTruthy();
+      expect(getByText(/active event: flare-event-\d+/)).toBeTruthy();
+      expect(getByText("event statuses: active,closed")).toBeTruthy();
+    });
+
+    fireEvent.press(getByText("save oldest reflection"));
+
+    await waitFor(() => {
+      expect(saveCheckpointReflection).toHaveBeenCalledWith({
+        checkpointReflection: {
+          howIFeelNow: "Older event feels steadier now.",
+          note: "Bound to the original event.",
+          outcome: "reduced",
+          whatHappened: "The earlier event almost took over.",
+          whatHelped: "I paused before it escalated.",
+        },
+        flareEventId: "event-1",
+        userId: "user-123",
+      });
+      expect(updateFlareEventStatus).toHaveBeenCalledWith({
+        eventId: "event-1",
+        status: "reflected",
+        userId: "user-123",
+      });
+      expect(getByText("event statuses: active,reflected")).toBeTruthy();
+      expect(getByText("event labels: Late-night scrolling,Late-night scrolling")).toBeTruthy();
+      expect(
+        getByText("event checkpoints: none,The earlier event almost took over."),
       ).toBeTruthy();
     });
   });

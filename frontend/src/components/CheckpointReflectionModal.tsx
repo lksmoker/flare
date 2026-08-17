@@ -43,11 +43,14 @@ export function CheckpointReflectionModal({
   }, [visible]);
 
   const saveDisabled =
-    !flareEvent ||
     draft.whatHappened.trim().length === 0 ||
     draft.whatHelped.trim().length === 0 ||
     draft.howIFeelNow.trim().length === 0 ||
     draft.outcome.trim().length === 0;
+
+  if (!visible || !flareEvent) {
+    return null;
+  }
 
   return (
     <PlaceholderModal
@@ -70,8 +73,15 @@ export function CheckpointReflectionModal({
               accessibilityRole="button"
               disabled={saveDisabled}
               onPress={() => {
-                saveCheckpointReflection(draft);
-                onSave?.();
+                saveCheckpointReflection({
+                  checkpointReflection: draft,
+                  flareEventId: flareEvent.id,
+                });
+                if (onSave) {
+                  onSave();
+                  return;
+                }
+
                 onClose();
               }}
               style={[
@@ -92,25 +102,14 @@ export function CheckpointReflectionModal({
       visible={visible}
     >
       <View style={styles.form}>
-        {flareEvent ? (
-          <View style={styles.contextCard}>
-            <Text style={styles.contextLabel}>
-              {flareContent.components.checkpointReflection.context.activeLabel}
-            </Text>
-            <Text style={styles.contextCopy}>
-              {flareContent.components.checkpointReflection.context.activeCopy}
-            </Text>
-          </View>
-        ) : (
-          <View style={styles.contextCard}>
-            <Text style={styles.contextLabel}>
-              {flareContent.components.checkpointReflection.context.missingLabel}
-            </Text>
-            <Text style={styles.contextCopy}>
-              {flareContent.components.checkpointReflection.context.missingCopy}
-            </Text>
-          </View>
-        )}
+        <View style={styles.contextCard}>
+          <Text style={styles.contextLabel}>
+            {flareContent.components.checkpointReflection.context.activeLabel}
+          </Text>
+          <Text style={styles.contextCopy}>
+            {flareContent.components.checkpointReflection.context.activeCopy}
+          </Text>
+        </View>
         <Text style={styles.intro}>
           {flareContent.components.checkpointReflection.intro}
         </Text>

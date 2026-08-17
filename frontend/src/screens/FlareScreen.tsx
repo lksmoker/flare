@@ -133,6 +133,7 @@ export function FlareScreen() {
   const router = useRouter();
   const [isFlareResponseVisible, setIsFlareResponseVisible] = useState(false);
   const [isCheckpointVisible, setIsCheckpointVisible] = useState(false);
+  const [checkpointEventId, setCheckpointEventId] = useState<string | null>(null);
   const [isReadinessExpanded, setIsReadinessExpanded] = useState(false);
   const [isSendingFlare, setIsSendingFlare] = useState(false);
   const [isRetryingSupportDelivery, setIsRetryingSupportDelivery] = useState(false);
@@ -147,7 +148,13 @@ export function FlareScreen() {
     string | null
   >(null);
   const { behaviorPattern, behaviorPatternRecord, isConfigured } = useBehaviorPattern();
-  const { activeEvent, createFlareEvent, currentEvent, upsertPersistedFlareEvent } = useFlareEvents();
+  const {
+    activeEvent,
+    createFlareEvent,
+    currentEvent,
+    flareEvents,
+    upsertPersistedFlareEvent,
+  } = useFlareEvents();
   const { anchorNote, anchorNoteRecord, isConfigured: isAnchorNoteConfigured } = useAnchorNote();
   const { authState, authStatus } = useFlareAuth();
   const {
@@ -201,20 +208,33 @@ export function FlareScreen() {
       (item) => item.focus === readinessModel.nextRequiredFocus,
     )?.label ?? null;
 
-  const openCheckpoint = () => {
+  const openCheckpoint = (flareEventId: string) => {
+    setCheckpointEventId(flareEventId);
     setIsFlareResponseVisible(false);
     setIsCheckpointVisible(true);
+  };
+  const closeCheckpoint = () => {
+    setIsCheckpointVisible(false);
+    setCheckpointEventId(null);
+    setIsFlareResponseVisible(responseState !== null);
   };
   const navigateToCustomize = (focus: FlareReadinessFocus) => {
     router.push(`/customize?focus=${focus}`);
   };
-  const eventForResponse = responseState?.flareEvent ?? activeEvent ?? currentEvent;
+  const responseEventId = responseState?.flareEvent?.id ?? null;
+  const eventForResponse =
+    (responseEventId
+      ? flareEvents.find((flareEvent) => flareEvent.id === responseEventId) ?? null
+      : null) ??
+    responseState?.flareEvent ??
+    activeEvent ??
+    currentEvent;
+  const checkpointEvent =
+    (checkpointEventId
+      ? flareEvents.find((flareEvent) => flareEvent.id === checkpointEventId) ?? null
+      : null) ?? null;
   const deliveryStateForResponse =
     externalSupportState ?? mapPersistedSupportDelivery(responseState?.supportDelivery ?? null);
-  const canOpenSecondaryCheckpoint =
-    canSendFlare &&
-    !isSendingFlare &&
-    !(isFlareResponseVisible && responseState?.run?.status === "in_progress");
 
   async function attemptSupportDelivery(flareEventId: string) {
     const externalContent = flareContent.components.flareResponse.externalSupport;
@@ -440,21 +460,6 @@ export function FlareScreen() {
         </View>
       ) : null}
 
-      {canOpenSecondaryCheckpoint ? (
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => setIsCheckpointVisible(true)}
-          style={styles.secondaryButton}
-        >
-          <Text style={styles.secondaryButtonLabel}>
-            {flareContent.screens.flare.secondaryAction.label}
-          </Text>
-          <Text style={styles.secondaryButtonCopy}>
-            {flareContent.screens.flare.secondaryAction.copy}
-          </Text>
-        </Pressable>
-      ) : null}
-
       <View style={styles.readinessCard}>
         <Pressable
           accessibilityLabel={
@@ -591,11 +596,10 @@ export function FlareScreen() {
       </PlaceholderModal>
 
       <CheckpointReflectionModal
-        flareEvent={activeEvent}
-        onClose={() => setIsCheckpointVisible(false)}
+        flareEvent={checkpointEvent}
+        onClose={closeCheckpoint}
         onSave={() => {
-          setIsCheckpointVisible(false);
-          setIsFlareResponseVisible(true);
+          closeCheckpoint();
         }}
         visible={isCheckpointVisible}
       />
@@ -683,15 +687,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  secondaryButton: {
-    ...flareTheme.shadows.card,
-    gap: 4,
-    padding: 18,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: flareTheme.colors.border,
-    backgroundColor: flareTheme.colors.surfaceStrong,
-  },
   inlineStateCard: {
     ...flareTheme.shadows.card,
     gap: 6,
@@ -776,16 +771,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 30,
     fontWeight: "800",
-  },
-  secondaryButtonLabel: {
-    color: flareTheme.colors.textStrong,
-    fontSize: 18,
-    lineHeight: 22,
-    fontWeight: "700",
-  },
-  secondaryButtonCopy: {
-    color: flareTheme.colors.textMuted,
-    fontSize: 14,
-    lineHeight: 20,
   },
 });

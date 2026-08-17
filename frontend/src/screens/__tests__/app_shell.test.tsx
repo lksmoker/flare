@@ -1315,19 +1315,18 @@ describe("V0 app shell", () => {
     expect(queryByText("Support message failed")).toBeNull();
   });
 
-  it("opens the Checkpoint / Reflection sheet and shows guidance when no active event exists", async () => {
+  it("does not show a standalone Checkpoint / Reflection entry before any flare event exists", async () => {
     enableConfiguredFlarePlan();
-    const { getByText } = render(<FlareScreen />, {
+    const { getByText, queryByText } = render(<FlareScreen />, {
       wrapper: ConfiguredProviders,
     });
 
     await waitFor(() => {
-      expect(getByText("Checkpoint / Reflection")).toBeTruthy();
+      expect(getByText("Send Flare")).toBeTruthy();
     });
-    fireEvent.press(getByText("Checkpoint / Reflection"));
 
-    expect(getByText("No active Flare Event")).toBeTruthy();
-    expect(getByText("Save Reflection")).toBeTruthy();
+    expect(queryByText("Checkpoint / Reflection")).toBeNull();
+    expect(queryByText("No active Flare Event")).toBeNull();
   });
 
   it("renders the History empty state before any flare events exist", () => {
